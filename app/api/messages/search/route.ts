@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export const POST = async (req: Request) => {
   try {
     const body = await req.json();
-    const messages = await MessagesRepository.findOne(body);
+    const messages = await MessagesRepository.find(body);
     return NextResponse.json(messages);
   } catch (error) {
     console.error(error);

@@ -1,5 +1,5 @@
 import clientPromise from "@/mongodb";
-import { MessageRepositoryFilter, MessageRepositoryFilterModel } from "@/types/RepositoryTypes/Message";
+import { MessageInput, MessageInputModel, MessageRepositoryFilter, MessageRepositoryFilterModel } from "@/types/RepositoryTypes/Message";
 import _ from "lodash";
 import { Db } from "mongodb";
 
@@ -26,7 +26,13 @@ export class MessagesRepository {
     return messages;
   }
 
-  static async insertOne() {
+  static async insertOne(message: MessageInput) {
+    await init();
+    message.timestamp = new Date();
+    message.role = 'assistant';
+    const messageParsed = await MessageInputModel.parse(message);
+    await db.collection('whatsapp-messages').insertOne(messageParsed);
+    return 'Message inserted';
   }
 
   static async updateOne() {

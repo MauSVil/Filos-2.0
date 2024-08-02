@@ -21,6 +21,7 @@ export default function ChatInput(props: Props) {
     event.preventDefault();
     if (!prompt) return;
     socket.emit('send_message', { phone_id: selectedChat, message: prompt, type: 'text' });
+    socket.emit('update_contact', { phone_id: selectedChat, aiEnabled: false });
     setPrompt("");
   };
 

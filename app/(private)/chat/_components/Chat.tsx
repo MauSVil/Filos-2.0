@@ -1,9 +1,8 @@
 import ChatInput from "@/components/chat/input";
-import { UseQueryResult } from "@tanstack/react-query";
 import moment from "moment";
 import { useEffect, useRef, useState } from "react";
-import { Message, SerializedError, socket } from "../page";
-import { CircularProgress, Switch } from "@nextui-org/react";
+import { Message, socket } from "../page";
+import { Switch } from "@nextui-org/react";
 
 type Props = {
   selectedChat: string;
@@ -16,9 +15,7 @@ const Chat = (props: Props) => {
   const chatRef = useRef<HTMLDivElement>(null);
 
   const handleSwitchChange = (value: boolean) => {
-    console.log(selectedChat, 'selectedChat');
     socket.emit('update_contact', { phone_id: selectedChat, aiEnabled: value });
-    setSwitchValue(value);
   }
 
   const scrollToBottom = () => {
@@ -30,6 +27,16 @@ const Chat = (props: Props) => {
   useEffect(() => {
     scrollToBottom();
   }, [selectedChat, messages.length]);
+
+  useEffect(() => {
+    socket.on('contact_updated', (contact) => {
+      setSwitchValue(contact.aiEnabled);
+    });
+
+    return () => {
+      socket.off('contact_updated');
+    };
+  }, []);
 
   return (
     <div className="flex flex-col flex-1 gap-4">

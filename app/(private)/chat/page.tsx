@@ -1,15 +1,15 @@
 "use client";
 
-import ChatInput from "@/components/chat/input";
 import { dehydrate, HydrationBoundary, QueryClient, useQuery } from "@tanstack/react-query";
 import ky from "ky";
-import { Key, useEffect, useRef, useState } from "react";
+import { Key, useEffect, useState } from "react";
 import _ from "lodash";
 import { MessageRepositoryFilter } from "@/types/RepositoryTypes/Message";
-import moment from "moment";
 import Contacts from "./_components/Contacts";
 import Chat from "./_components/Chat";
+import io from 'socket.io-client';
 
+export const socket = io('https://filosbot.mausvil.dev');
 
 export type Contact = {
   id: string;
@@ -34,6 +34,7 @@ export type SerializedError = {
 
 const ChatPage = () => {
   const [selectedChat, setSelectedChat] = useState("");
+  const [messages, setMessages] = useState<{ [key: string]: Message[] }>({});
   const queryClient = new QueryClient();
 
   const contactsQuery = useQuery<Contact[], SerializedError>({
@@ -43,16 +44,7 @@ const ChatPage = () => {
       const contacts = await res.json() as Contact[];
       return contacts;
     }
-  })
-
-  const messagesQuery = useQuery<Message[], SerializedError>({
-    queryKey: ['messages', selectedChat],
-    queryFn: async () => {
-      const res = await ky.post("/api/messages/search", { json: { phone_id: selectedChat } as MessageRepositoryFilter});
-      const messages = await res.json() as Message[];
-      return messages;
-    },
-  })
+  });
 
   const handleSelectionChange = (val: Set<Key> | "all") => {
     if (val === "all") return;
@@ -61,11 +53,31 @@ const ChatPage = () => {
     setSelectedChat(myValueString);
   };
 
+  useEffect(() => {
+    socket.on('new_message', (message) => {
+      setMessages((prevMessages) => {
+        const newMessages = _.cloneDeep(prevMessages);
+        if (!newMessages[message.phone_id]) {
+          newMessages[message.phone_id] = [];
+        }
+        newMessages[message.phone_id].push(message);
+        return newMessages;
+      });
+    });
+
+    return () => {
+      socket.off('new_message');
+    };
+  }, []);
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="flex h-full gap-4">
         <Contacts selectedChat={selectedChat} handleSelectionChange={handleSelectionChange} contactsQuery={contactsQuery} />
-        <Chat selectedChat={selectedChat} messagesQuery={messagesQuery} />
+        <Chat
+          selectedChat={selectedChat}
+          messages={messages[selectedChat]}
+        />
       </div>
     </HydrationBoundary>
   );

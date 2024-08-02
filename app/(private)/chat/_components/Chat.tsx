@@ -1,18 +1,25 @@
 import ChatInput from "@/components/chat/input";
 import { UseQueryResult } from "@tanstack/react-query";
 import moment from "moment";
-import { useEffect, useRef } from "react";
-import { Message, SerializedError } from "../page";
+import { useEffect, useRef, useState } from "react";
+import { Message, SerializedError, socket } from "../page";
 import { CircularProgress, Switch } from "@nextui-org/react";
 
 type Props = {
   selectedChat: string;
-  messagesQuery: UseQueryResult<Message[], SerializedError>;
+  messages: Message[];
 };
 
 const Chat = (props: Props) => {
-  const { selectedChat, messagesQuery } = props;
+  const { selectedChat, messages= [] } = props;
+  const [switchValue, setSwitchValue] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
+
+  const handleSwitchChange = (value: boolean) => {
+    console.log(selectedChat, 'selectedChat');
+    socket.emit('update_contact', { phone_id: selectedChat, aiEnabled: value });
+    setSwitchValue(value);
+  }
 
   const scrollToBottom = () => {
     if (chatRef.current) {
@@ -22,22 +29,14 @@ const Chat = (props: Props) => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [selectedChat, messagesQuery.data]);
-
-  if (messagesQuery.isLoading) {
-    return (
-      <div className="flex items-center justify-center w-full h-full flex items-center justify-end border-small border-divider p-2 rounded-medium">
-        <CircularProgress />
-      </div>
-    )
-  }
+  }, [selectedChat, messages.length]);
 
   return (
     <div className="flex flex-col flex-1 gap-4">
       {
         selectedChat && (
           <div className="flex items-center justify-end p-2 rounded-medium">
-            <Switch defaultSelected size="sm">
+            <Switch isSelected={switchValue} size="sm" onValueChange={handleSwitchChange}>
               Usa IA para responder
             </Switch>
           </div>
@@ -52,7 +51,7 @@ const Chat = (props: Props) => {
           ) : (
             <>
               {
-                messagesQuery.data?.map((message) => (
+                messages.map((message) => (
                   <div
                     key={message._id}
                     className={`

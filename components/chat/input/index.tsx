@@ -7,49 +7,20 @@ import {Icon} from "@iconify/react";
 import {cn} from "@/utils/cn";
 
 import PromptInput from "./prompt-input";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { MessageInput } from "@/types/RepositoryTypes/Message";
-import ky from "ky";
-import { toast } from "react-toastify";
+import { socket } from "@/app/(private)/chat/page";
 
 type Props = {
   selectedChat: string;
 };
 
 export default function ChatInput(props: Props) {
-  const queryClient = useQueryClient();
   const {selectedChat} = props;
   const [prompt, setPrompt] = React.useState<string>("");
-
-  const queryKey = ['messages', selectedChat];
-
-  const mutation = useMutation({
-    mutationFn: async (data: Partial<MessageInput>) => {
-      await ky.post("/api/messages", {json: {
-        ...data,
-        phone_id: selectedChat,
-      } as MessageInput});
-    },
-    onMutate: async () => {
-      await queryClient.cancelQueries({
-        queryKey,
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey });
-      queryClient.invalidateQueries({ queryKey: ['announcements'] });
-      toast.success("Message sent");
-    },
-    onError: (err) => {
-      console.error(err);
-      toast.error("Error sending message");
-    },
-  });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!prompt) return;
-    mutation.mutate({ message: prompt });
+    socket.emit('send_message', { phone_id: selectedChat, message: prompt, type: 'text' });
     setPrompt("");
   };
 

@@ -4,13 +4,11 @@ import { dehydrate, HydrationBoundary, QueryClient, useQuery } from "@tanstack/r
 import ky from "ky";
 import { Key, useEffect, useState } from "react";
 import _ from "lodash";
-import { MessageRepositoryFilter } from "@/types/RepositoryTypes/Message";
 import Contacts from "./_components/Contacts";
 import Chat from "./_components/Chat";
 import io from 'socket.io-client';
 
-// export const socket = io('https://filosbot.mausvil.dev');
-export const socket = io('http://localhost:3000');
+export const socket = io('https://filosbot.mausvil.dev');
 
 export type Contact = {
   id: string;

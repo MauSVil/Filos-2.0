@@ -1,16 +1,18 @@
 import ChatInput from "@/components/chat/input";
 import moment from "moment";
 import { useEffect, useRef, useState } from "react";
-import { Message, socket } from "../page";
+import { Contact, Message, socket } from "../page";
 import { Switch } from "@nextui-org/react";
+import { toast } from "react-toastify";
 
 type Props = {
   selectedChat: string;
-  messages: Message[];
+  contact: Contact;
 };
 
 const Chat = (props: Props) => {
-  const { selectedChat, messages= [] } = props;
+  const { selectedChat, contact } = props;
+  const [messages, setMessages] = useState<Message[]>([]);
   const [switchValue, setSwitchValue] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
 
@@ -26,17 +28,34 @@ const Chat = (props: Props) => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [selectedChat, messages.length]);
+  }, [selectedChat, messages]);
 
   useEffect(() => {
-    socket.on('contact_updated', (contact) => {
+    if (!selectedChat) return;
+    setSwitchValue(contact.aiEnabled);
+    socket.emit('join_chat', { phone_id: selectedChat});
+    socket.on('joined_chat', ({ messages, contact }: { messages: Message[], contact: Contact }) => {
+      setMessages([]);
+      setMessages(messages);
       setSwitchValue(contact.aiEnabled);
+    });
+    socket.on('updated_contact', ({ phone_id, aiEnabled }: { phone_id: string, aiEnabled: boolean }) => {
+      setSwitchValue(aiEnabled);
+    });
+    socket.on('sent_message', (message: Message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+    });
+
+    socket.on('error', (error: string) => {
+      toast.error(error);
     });
 
     return () => {
-      socket.off('contact_updated');
+      socket.off('joined_chat');
+      socket.off('updated_contact');
+      socket.off('sent_message');
     };
-  }, []);
+  }, [selectedChat]);
 
   return (
     <div className="flex flex-col flex-1 gap-4">

@@ -11,10 +11,11 @@ import { socket } from "@/app/(private)/chat/_socket";
 
 type Props = {
   selectedChat: string;
+  setFileManagerOpen: (value: boolean) => void;
 };
 
 export default function ChatInput(props: Props) {
-  const {selectedChat} = props;
+  const {selectedChat, setFileManagerOpen} = props;
   const [prompt, setPrompt] = React.useState<string>("");
   const fileRef = React.useRef<HTMLInputElement>(null);
 
@@ -27,7 +28,7 @@ export default function ChatInput(props: Props) {
   };
 
   const handleFileClick = () => {
-    fileRef.current?.click();
+    setFileManagerOpen(true);
   }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

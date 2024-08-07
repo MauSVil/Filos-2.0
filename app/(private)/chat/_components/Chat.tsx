@@ -5,6 +5,7 @@ import { Switch } from "@nextui-org/react";
 import { toast } from "react-toastify";
 import MessageComponent from "./Message";
 import { socket } from "../_socket";
+import FileManager from "@/components/chat/file-manager";
 
 type Props = {
   selectedChat: string;
@@ -16,6 +17,7 @@ const Chat = (props: Props) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [switchValue, setSwitchValue] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
+  const [fileManagerOpen, setFileManagerOpen] = useState(false);
 
   const handleSwitchChange = (value: boolean) => {
     socket.emit('update_contact', { phone_id: selectedChat, aiEnabled: value });
@@ -78,6 +80,11 @@ const Chat = (props: Props) => {
             </div>
           ) : (
             <>
+            <FileManager
+              fileManagerOpen={fileManagerOpen}
+              setFileManagerOpen={setFileManagerOpen}
+              selectedChat={selectedChat}
+            />
               {
                 messages.map((message) => (
                   <div
@@ -120,7 +127,10 @@ const Chat = (props: Props) => {
       {
         selectedChat && (
           <div>
-            <ChatInput selectedChat={selectedChat} />
+            <ChatInput
+              selectedChat={selectedChat}
+              setFileManagerOpen={setFileManagerOpen}
+            />
           </div>
         )
       }

@@ -1,15 +1,11 @@
 "use client";
 
 import { dehydrate, HydrationBoundary, QueryClient, useQuery } from "@tanstack/react-query";
-import ky from "ky";
 import { Key, useEffect, useMemo, useState } from "react";
 import _ from "lodash";
 import Contacts from "./_components/Contacts";
 import Chat from "./_components/Chat";
-import io from 'socket.io-client';
-
-// export const socket = io('https://filosbot.mausvil.dev');
-export const socket = io('http://localhost:3000');
+import { socket } from "./_socket";
 
 export type Contact = {
   _id: string;

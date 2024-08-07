@@ -1,9 +1,10 @@
 import ChatInput from "@/components/chat/input";
 import { useEffect, useRef, useState } from "react";
-import { Contact, Message, socket } from "../page";
+import { Contact, Message } from "../page";
 import { Switch } from "@nextui-org/react";
 import { toast } from "react-toastify";
 import MessageComponent from "./Message";
+import { socket } from "../_socket";
 
 type Props = {
   selectedChat: string;

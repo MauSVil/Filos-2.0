@@ -7,7 +7,7 @@ import {Icon} from "@iconify/react";
 import {cn} from "@/utils/cn";
 
 import PromptInput from "./prompt-input";
-import { socket } from "@/app/(private)/chat/page";
+import { socket } from "@/app/(private)/chat/_socket";
 
 type Props = {
   selectedChat: string;

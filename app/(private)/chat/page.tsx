@@ -8,7 +8,8 @@ import Contacts from "./_components/Contacts";
 import Chat from "./_components/Chat";
 import io from 'socket.io-client';
 
-export const socket = io('https://filosbot.mausvil.dev');
+// export const socket = io('https://filosbot.mausvil.dev');
+export const socket = io('http://localhost:3000');
 
 export type Contact = {
   _id: string;
@@ -26,6 +27,9 @@ export type Message = {
   role: string;
   phone_id: string;
   message: string;
+  metadata: {
+    url: string;
+  }
 };
 
 export type SerializedError = {

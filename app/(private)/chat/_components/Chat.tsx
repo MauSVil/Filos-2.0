@@ -1,9 +1,9 @@
 import ChatInput from "@/components/chat/input";
-import moment from "moment";
 import { useEffect, useRef, useState } from "react";
 import { Contact, Message, socket } from "../page";
 import { Switch } from "@nextui-org/react";
 import { toast } from "react-toastify";
+import MessageComponent from "./Message";
 
 type Props = {
   selectedChat: string;
@@ -28,7 +28,7 @@ const Chat = (props: Props) => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [selectedChat, messages]);
+  }, [selectedChat, messages.length]);
 
   useEffect(() => {
     if (!selectedChat) return;
@@ -43,6 +43,7 @@ const Chat = (props: Props) => {
       setSwitchValue(aiEnabled);
     });
     socket.on('sent_message', (message: Message) => {
+      console.log(message, 'message');
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 
@@ -92,7 +93,7 @@ const Chat = (props: Props) => {
                     <div
                       className={`
                         flex
-                        max-w-[70%]
+                        max-w-[60%]
                         min-w-[20%]
                         px-3
                         py-2
@@ -104,12 +105,8 @@ const Chat = (props: Props) => {
                         `
                       }
                     >
-                      {/* <Avatar alt={message.phone_id} className="flex-shrink-0" size="sm" src={} /> */}
                       <div className="flex flex-col w-full">
-                        <span className="text-small">{message.message}</span>
-                        <span className={`text-tiny text-white text-right`}>
-                          {moment(message.timestamp).format("HH:mm")}
-                        </span>
+                        <MessageComponent message={message} />
                       </div>
                     </div>
                   </div>

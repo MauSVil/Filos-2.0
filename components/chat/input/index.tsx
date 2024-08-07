@@ -16,6 +16,7 @@ type Props = {
 export default function ChatInput(props: Props) {
   const {selectedChat} = props;
   const [prompt, setPrompt] = React.useState<string>("");
+  const fileRef = React.useRef<HTMLInputElement>(null);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -25,11 +26,33 @@ export default function ChatInput(props: Props) {
     setPrompt("");
   };
 
+  const handleFileClick = () => {
+    fileRef.current?.click();
+  }
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result as string;
+      socket.emit('send_message', { phone_id: selectedChat, message: 'Imagen enviada', type: 'image', metadata: { url: base64, type: file.type }  });
+      socket.emit('update_contact', { phone_id: selectedChat, aiEnabled: false });
+    };
+    reader.readAsDataURL(file);
+  }
+
   return (
     <form className="flex w-full items-start gap-2" onSubmit={handleSubmit}>
-      <Tooltip showArrow content="Add file">
-        <Button isIconOnly radius="lg" variant="flat">
+      <Tooltip showArrow content="Agregar archivo">
+        <Button isIconOnly radius="lg" variant="flat" onClick={handleFileClick}>
           <Icon className="text-default-600" icon="solar:paperclip-linear" width={20} />
+          <input
+            type="file"
+            className="hidden"
+            ref={fileRef}
+            onChange={handleFileChange}
+          />
         </Button>
       </Tooltip>
       <PromptInput value={prompt} onValueChange={setPrompt} />

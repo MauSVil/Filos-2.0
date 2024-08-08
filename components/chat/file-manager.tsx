@@ -2,9 +2,8 @@ import { socket } from "@/app/(private)/chat/_socket";
 import { Product } from "@/types/MongoTypes/Product";
 import { Autocomplete, AutocompleteItem, Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
 import { useAsyncList } from "@react-stately/data";
-import { useQuery } from "@tanstack/react-query";
 import ky from "ky";
-import { Key, useMemo, useState } from "react";
+import { Key, useState } from "react";
 
 interface Props {
   fileManagerOpen: boolean;

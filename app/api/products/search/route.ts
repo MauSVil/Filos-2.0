@@ -2,13 +2,13 @@ import { ProductsRepository } from "@/repositories/products.repository"
 import { NextResponse } from "next/server"
 import MeiliSearch from "meilisearch";
 
-const client = new MeiliSearch({
-  host: 'http://meilisearch-kk08448.5.161.110.192.sslip.io/',
-  apiKey: 'dPjUkBDZT5tIK2OgL5zGVszPvVpz7AVA'
-})
-
 export const GET = async (req: Request) => {
   try {
+    const client = new MeiliSearch({
+      host: 'http://meilisearch-kk08448.5.161.110.192.sslip.io/',
+      apiKey: 'dPjUkBDZT5tIK2OgL5zGVszPvVpz7AVA'
+    })
+
     const { searchParams } = new URL(req.url);
     const query = searchParams.get('q') || '';
 

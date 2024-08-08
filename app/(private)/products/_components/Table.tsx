@@ -3,7 +3,6 @@
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Spinner} from "@nextui-org/react";
 import { useProducts } from "../_hooks/useProducts";
 import { useMemo, useState } from "react";
-import { Product } from "@/types/MongoTypes/Product";
 
 const ProductsTable = () => {
   const [page, setPage] = useState(1)
@@ -11,9 +10,11 @@ const ProductsTable = () => {
 
   const products = useMemo(() => {
     return productsQuery.data?.data || [];
-  }, [productsQuery.data]);
+  }, [productsQuery.data?.data]);
 
-  const total = productsQuery.data?.count || 0;
+  const total = useMemo(() => {
+    return productsQuery.data?.count || 0;
+  }, [productsQuery.data?.count]);
 
   return (
     <Table

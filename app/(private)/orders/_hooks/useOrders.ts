@@ -8,6 +8,6 @@ export const useOrders = ({ page }: { page: number }) => {
     queryFn: async () => {
       const resp = await ky.post('/api/orders/search', { json: { page } }).json() as { data: Order[], count: number }
       return resp
-    }
+    },
   })
 }

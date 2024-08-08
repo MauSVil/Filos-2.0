@@ -11,10 +11,11 @@ const OrdersTable = () => {
 
   const orders = useMemo(() => {
     return ordersQuery.data?.data || [];
-  }, [ordersQuery.data]);
+  }, [ordersQuery.data?.data]);
 
-  const total = ordersQuery.data?.count || 0;
-  console.log(total, 'total')
+  const total = useMemo(() => {
+    return ordersQuery.data?.count || 0;
+  }, [ordersQuery.data?.count]);
 
   return (
     <Table

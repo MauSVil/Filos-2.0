@@ -1,7 +1,7 @@
 "use client";
 
 import React, { ReactNode } from "react";
-import {Avatar, Button, ScrollShadow, Spacer, Tooltip} from "@nextui-org/react";
+import {Avatar, Badge, Button, Popover, PopoverContent, PopoverTrigger, ScrollShadow, Spacer, Tooltip} from "@nextui-org/react";
 import {Icon} from "@iconify/react";
 import {useMediaQuery} from "usehooks-ts";
 import {usePathname, useRouter} from "next/navigation";
@@ -12,6 +12,7 @@ import {cn} from "@/utils/cn";
 
 import Sidebar from "@/components/layout/sidebar";
 import Cookies from "js-cookie";
+import NotificationsCard from "@/components/notifications/notification-card";
 
 
 const PrivateLayout = ({ children }: { children: ReactNode }) => {
@@ -34,23 +35,43 @@ const PrivateLayout = ({ children }: { children: ReactNode }) => {
       >
         <div
           className={cn(
-            "flex items-center gap-3 px-3",
+            "flex items-center justify-between",
 
             {
-              "justify-center gap-0": isCompact,
+              "justify-center gap-3 flex-col": isCompact,
             },
           )}
         >
-          <div className="flex h-8 w-8 items-center justify-center rounded-full" style={{ background: '#2b2b83' }}>
-            <AcmeIcon className="text-background scale-150" />
+          <div className="flex items-center gap-3 px-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary">
+              <AcmeIcon className="text-background scale-150" />
+            </div>
+            <span
+              className={cn("text-small font-bold uppercase opacity-100", {
+                "w-0 opacity-0 hidden": isCompact,
+              })}
+            >
+              Filos
+            </span>
           </div>
-          <span
-            className={cn("text-small font-bold uppercase opacity-100", {
-              "w-0 opacity-0": isCompact,
-            })}
-          >
-            Filos
-          </span>
+          <Popover offset={12} placement="bottom-start">
+            <PopoverTrigger>
+              <Button
+                disableRipple
+                isIconOnly
+                className="overflow-visible"
+                radius="full"
+                variant="light"
+              >
+                <Badge color="danger" content={0} showOutline={false} size="md" isInvisible={true}>
+                  <Icon className="text-default-500" icon="solar:bell-linear" width={22} />
+                </Badge>
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="max-w-[90vw] p-0 sm:max-w-[380px]">
+              <NotificationsCard className="w-full shadow-none" />
+            </PopoverContent>
+          </Popover>
         </div>
         <Spacer y={8} />
         <div className="flex items-center gap-3 px-3">
@@ -58,11 +79,10 @@ const PrivateLayout = ({ children }: { children: ReactNode }) => {
             isBordered
             className="flex-none"
             size="sm"
-            src="https://i.pravatar.cc/150?u=a04258114e29026708c"
           />
           <div className={cn("flex max-w-full flex-col", {hidden: isCompact})}>
-            <p className="truncate text-small font-medium text-default-600">John Doe</p>
-            <p className="truncate text-tiny text-default-400">Product Designer</p>
+            <p className="truncate text-small font-medium text-default-600">Mauricio Sanchez</p>
+            <p className="truncate text-tiny text-default-400">Administrador</p>
           </div>
         </div>
         <ScrollShadow className="-mr-6 h-full max-h-full py-6 pr-6">

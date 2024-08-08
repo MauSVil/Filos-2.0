@@ -8,9 +8,21 @@ export const items: SidebarItem[] = [
     title: "Home",
   },
   {
+    key: "products",
+    href: "/products",
+    icon: "solar:list-check-linear",
+    title: "Productos",
+  },
+  {
+    key: "orders",
+    href: "/orders",
+    icon: "solar:bill-list-linear",
+    title: "Ordenes",
+  },
+  {
     key: "chat",
     href: "/chat",
-    icon: "solar:widget-2-outline",
+    icon: "solar:chat-line-linear",
     title: "Chat",
   },
 ]

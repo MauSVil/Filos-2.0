@@ -3,6 +3,7 @@ import { z } from "zod";
 export const ProductRepositoryFilterModel = z.object({
   id: z.string().optional(),
   phone_id: z.string().optional(),
+  page: z.number().optional(),
 });
 
 export type ProductRepositoryFilter = z.infer<typeof ProductRepositoryFilterModel>;

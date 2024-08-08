@@ -1,5 +1,6 @@
 import moment from "moment";
 import { Message } from "../page";
+import { Image } from "@nextui-org/react";
 
 const MessageComponent = ({ message }: { message: Message }) => {
   switch (message.type) {
@@ -14,7 +15,12 @@ const MessageComponent = ({ message }: { message: Message }) => {
       );
     case 'image':
       return (
-        <img className="rounded-medium" src={message.metadata.url} alt="image" />
+        <Image
+          width={150}
+          className="rounded-medium"
+          src={message.metadata.url}
+          alt="image"
+        />
       );
     default:
       return (

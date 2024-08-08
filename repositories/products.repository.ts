@@ -23,8 +23,17 @@ export class ProductsRepository {
   static async find(filter: ProductRepositoryFilter = {}): Promise<Product[]> {
     await init();
     const filters = await ProductRepositoryFilterModel.parse(filter);
-    const messages = await db.collection('products').find<Product>(filters).toArray();
+    const { page, ...rest } = filters;
+    const messages = await db.collection('products').find<Product>(rest).skip(((page || 1) - 1) * 10).limit(10).toArray();
     return messages;
+  }
+
+  static async count(filter: ProductRepositoryFilter = {}): Promise<number> {
+    await init();
+    const filters = await ProductRepositoryFilterModel.parse(filter);
+    const { page, ...rest } = filters;
+    const count = await db.collection('products').countDocuments(rest);
+    return count;
   }
 
   // static async insertOne(message: ProductInput) {

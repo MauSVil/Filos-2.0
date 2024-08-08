@@ -1,10 +1,13 @@
 import { ProductsRepository } from "@/repositories/products.repository"
 import { NextResponse } from "next/server"
 import MeiliSearch from "meilisearch";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const client = new MeiliSearch({
-  host: 'http://meilisearch-kk08448.5.161.110.192.sslip.io/',
-  apiKey: 'dPjUkBDZT5tIK2OgL5zGVszPvVpz7AVA'
+  host: process.env.MEILISEARCH_HOST!,
+  apiKey: process.env.MEILISEARCH_APIKEY!,
 })
 
 export const GET = async (req: Request) => {

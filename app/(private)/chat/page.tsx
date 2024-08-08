@@ -65,7 +65,7 @@ const ChatPage = () => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="flex h-full gap-4">
+      <div className="flex flex-col md:flex-row h-full gap-4">
         <Contacts
           selectedChat={selectedChat}
           handleSelectionChange={handleSelectionChange}

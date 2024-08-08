@@ -15,7 +15,7 @@ const Contacts = (props: ContactsProps) => {
   return (
     <div
       ref={contactsRef}
-      className="w-1/4 min-w-[200px] max-w-[200px] border-small px-1 py-2 rounded-small border-default-200 dark:border-default-100 overflow-y-auto"
+      className="max-w-full md:max-w-[200px] border-small px-1 py-2 rounded-small border-default-200 dark:border-default-100 overflow-y-auto"
     >
       {
         <Listbox
@@ -30,9 +30,9 @@ const Contacts = (props: ContactsProps) => {
         >
           {(item) => (
             <ListboxItem key={item.phone_id} textValue={item.phone_id}>
-              <div className="flex gap-2 items-center">
+              <div className="flex gap-2 items-center justify-center">
                 <Avatar alt={item.phone_id} className="flex-shrink-0" size="sm" />
-                <div className="flex flex-col">
+                <div className="flex-col hidden lg:flex">
                   <span className="text-small">{item.phone_id}</span>
                   <span className="text-tiny text-default-400">{item.phone_id}</span>
                 </div>

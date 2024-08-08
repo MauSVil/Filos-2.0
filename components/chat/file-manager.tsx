@@ -1,6 +1,7 @@
 import { socket } from "@/app/(private)/chat/_socket";
 import { Product } from "@/types/MongoTypes/Product";
 import { Autocomplete, AutocompleteItem, Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
+import { useAsyncList } from "@react-stately/data";
 import { useQuery } from "@tanstack/react-query";
 import ky from "ky";
 import { Key, useMemo, useState } from "react";
@@ -16,23 +17,14 @@ const FileManager = (props: Props) => {
   const [url, setUrl] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
 
-  const productsQuery = useQuery<Product[]>({
-    enabled: fileManagerOpen,
-    queryKey: ['products'],
-    queryFn: async () => {
-      const resp = await ky.post('/api/products/search', { json: {} }).json() as { data: Product[] };
-      return resp.data;
-    }
-  })
-
-  const productsParsed = useMemo(() => {
-    return (productsQuery.data || []).map((product) => {
+  let list = useAsyncList<Product>({
+    async load({signal, filterText}) {
+      const resp = await ky.get(`/api/products/search?q=${filterText}`, { signal }).json() as { data: { hits: Product[]} };
       return {
-        label: product.uniqId,
-        value: product.image
-      }
-    });
-  }, [productsQuery.data])
+        items: resp.data.hits,
+      };
+    },
+  });
 
   const handleSelectionChange = (value: Key | null) => {
     setUrl(value?.toString() || null);
@@ -67,19 +59,21 @@ const FileManager = (props: Props) => {
   return (
     <Modal isOpen={fileManagerOpen} onClose={() => setFileManagerOpen(false)}>
       <ModalContent>
-        <ModalHeader>File Manager</ModalHeader>
+        <ModalHeader>Buscador de archivos</ModalHeader>
         <ModalBody>
           <div className="flex gap-4 flex-col">
             <Autocomplete
+              isLoading={list.isLoading}
+              items={list.items}
               labelPlacement="outside"
               label="Producto"
               variant="bordered"
-              defaultItems={productsParsed}
               placeholder="Busca un producto..."
               selectedKey={url}
+              onInputChange={list.setFilterText}
               onSelectionChange={handleSelectionChange}
             >
-              {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
+              {(item) => <AutocompleteItem key={item.image}>{item.uniqId}</AutocompleteItem>}
             </Autocomplete>
             <Input
               type="file"

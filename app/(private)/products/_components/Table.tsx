@@ -13,6 +13,8 @@ const ProductsTable = () => {
     return productsQuery.data?.data || [];
   }, [productsQuery.data]);
 
+  const total = productsQuery.data?.count || 0;
+
   return (
     <Table
       aria-label="Example static collection table"
@@ -24,7 +26,7 @@ const ProductsTable = () => {
             showShadow
             color="primary"
             page={page}
-            total={10}
+            total={Math.ceil(total / 10)}
             onChange={(page) => setPage(page)}
           />
         </div>

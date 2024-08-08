@@ -20,7 +20,7 @@ export default function Component() {
     <div className="flex h-full w-full items-center justify-center">
       <div className="flex w-full max-w-sm flex-col gap-4 rounded-large">
         <div className="flex flex-col items-center pb-6">
-          <AcmeIcon size={60} />
+          <AcmeIcon size={45} />
           <p className="text-xl font-medium">Bienvenido</p>
           <p className="text-small text-default-500">Haz login para continuar</p>
         </div>
@@ -48,7 +48,7 @@ export default function Component() {
                   error: 'Error al iniciar sesión 😢'
                 }
               )
-              router.push("/chat");
+              router.push("/products");
               setSubmitting(false);
             } catch (error) {
               setSubmitting(false);

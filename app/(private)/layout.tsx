@@ -41,15 +41,15 @@ const PrivateLayout = ({ children }: { children: ReactNode }) => {
             },
           )}
         >
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-foreground">
-            <AcmeIcon className="text-background" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-full" style={{ background: '#2b2b83' }}>
+            <AcmeIcon className="text-background scale-150" />
           </div>
           <span
             className={cn("text-small font-bold uppercase opacity-100", {
               "w-0 opacity-0": isCompact,
             })}
           >
-            Acme
+            Filos
           </span>
         </div>
         <Spacer y={8} />

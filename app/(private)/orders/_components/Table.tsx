@@ -1,17 +1,17 @@
 'use client';
 
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Spinner} from "@nextui-org/react";
-import { useProducts } from "../_hooks/useProducts";
+import { useOrders } from "../_hooks/useOrders";
 import { useMemo, useState } from "react";
-import { Product } from "@/types/MongoTypes/Product";
+import moment from "moment";
 
-const ProductsTable = () => {
+const OrdersTable = () => {
   const [page, setPage] = useState(1)
-  const productsQuery = useProducts({ page });
+  const ordersQuery = useOrders({ page });
 
-  const products = useMemo(() => {
-    return productsQuery.data?.data || [];
-  }, [productsQuery.data]);
+  const orders = useMemo(() => {
+    return ordersQuery.data?.data || [];
+  }, [ordersQuery.data]);
 
   return (
     <Table
@@ -32,19 +32,19 @@ const ProductsTable = () => {
     >
       <TableHeader>
         <TableColumn>NOMBRE</TableColumn>
-        <TableColumn>MODELO</TableColumn>
-        <TableColumn>CANTIDAD</TableColumn>
+        <TableColumn>FECHA COMPROMISO</TableColumn>
+        <TableColumn>ESTATUS</TableColumn>
       </TableHeader>
       <TableBody
         emptyContent="No se encontraron productos"
         loadingContent={<Spinner />}
-        loadingState={productsQuery.isLoading ? "loading" : undefined}
+        loadingState={ordersQuery.isLoading ? "loading" : undefined}
       >
-        {products.map((product) => (
-          <TableRow key={product._id}>
-            <TableCell>{product.name}</TableCell>
-            <TableCell>{product.uniqId}</TableCell>
-            <TableCell>{product.quantity}</TableCell>
+        {orders.map((order) => (
+          <TableRow key={order._id}>
+            <TableCell>{order.name}</TableCell>
+            <TableCell>{moment(order.dueDate).format('YYYY-DD-MM')}</TableCell>
+            <TableCell>{order.status}</TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -52,4 +52,4 @@ const ProductsTable = () => {
   );
 };
 
-export default ProductsTable;
+export default OrdersTable;

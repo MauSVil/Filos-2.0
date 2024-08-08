@@ -8,7 +8,7 @@ const OrdersContent = () => {
       breadcrumbs={['Ordenes', 'Buscar']}
     >
       <div className='py-4'>
-        {/* <Table /> */}
+        <Table />
       </div>
     </Layout>
   )

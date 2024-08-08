@@ -2,7 +2,7 @@ import moment from "moment";
 import { Message } from "../page";
 import { Image } from "@nextui-org/react";
 
-const MessageComponent = ({ message }: { message: Message }) => {
+const MessageComponent = ({ message, scrollToBottom }: { message: Message, scrollToBottom: () => void }) => {
   switch (message.type) {
     case 'text':
       return (
@@ -20,6 +20,7 @@ const MessageComponent = ({ message }: { message: Message }) => {
           className="rounded-medium"
           src={message.metadata.url}
           alt="image"
+          onLoad={scrollToBottom}
         />
       );
     default:

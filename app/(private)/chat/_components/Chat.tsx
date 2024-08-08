@@ -30,7 +30,9 @@ const Chat = (props: Props) => {
   };
 
   useEffect(() => {
-    scrollToBottom();
+    setTimeout(() => {
+      scrollToBottom();
+    }, 100);
   }, [selectedChat, messages.length]);
 
   useEffect(() => {
@@ -114,7 +116,7 @@ const Chat = (props: Props) => {
                       }
                     >
                       <div className="flex flex-col w-full">
-                        <MessageComponent message={message} />
+                        <MessageComponent message={message} scrollToBottom={scrollToBottom} />
                       </div>
                     </div>
                   </div>

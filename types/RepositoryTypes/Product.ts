@@ -2,7 +2,8 @@ import { z } from "zod";
 
 export const ProductRepositoryFilterModel = z.object({
   id: z.string().optional(),
-  phone_id: z.string().optional(),
+  q: z.string().optional(),
+  disponibility: z.string().optional(),
   page: z.number().optional(),
 });
 

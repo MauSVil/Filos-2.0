@@ -24,7 +24,10 @@ export class OrdersRepository {
     await init();
     const filters = await OrderRepositoryFilterModel.parse(filter);
     const { page, ...rest } = filters;
-    const messages = await db.collection('orders').find<Product>(rest).skip(((page || 1) - 1) * 10).limit(10).toArray();
+    const messages = await db.collection('orders').find<Product>({
+      ...rest,
+      status: 'Pendiente'
+    }).skip(((page || 1) - 1) * 10).limit(10).toArray();
     return messages;
   }
 
@@ -32,7 +35,10 @@ export class OrdersRepository {
     await init();
     const filters = await OrderRepositoryFilterModel.parse(filter);
     const { page, ...rest } = filters;
-    const count = await db.collection('orders').countDocuments(rest);
+    const count = await db.collection('orders').countDocuments({
+      ...rest,
+      status: 'Pendiente'
+    });
     return count;
   }
 

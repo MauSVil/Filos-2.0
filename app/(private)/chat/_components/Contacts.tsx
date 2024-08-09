@@ -15,7 +15,7 @@ const Contacts = (props: ContactsProps) => {
   return (
     <div
       ref={contactsRef}
-      className="w-1/4 min-w-[200px] max-w-[200px] border-small px-1 py-2 rounded-small border-default-200 dark:border-default-100 overflow-y-auto"
+      className="w-1/4 max-w-[200px] border-small px-1 py-2 rounded-small border-default-200 dark:border-default-100 overflow-y-auto"
     >
       {
         <Listbox

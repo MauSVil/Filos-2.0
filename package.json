@@ -27,6 +27,7 @@
 		"@react-stately/data": "^3.11.6",
 		"@tanstack/react-query": "^5.51.15",
 		"@tanstack/react-query-devtools": "^5.51.15",
+		"@uidotdev/usehooks": "^2.4.1",
 		"clsx": "^2.1.1",
 		"dotenv": "^16.4.5",
 		"formik": "^2.4.6",

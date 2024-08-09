@@ -1,6 +1,6 @@
 'use client';
 
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Spinner, Select, SelectItem, Input} from "@nextui-org/react";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Spinner, Select, SelectItem, Input, Button, Switch} from "@nextui-org/react";
 import { useProducts } from "../_hooks/useProducts";
 import { useEffect, useMemo, useState } from "react";
 import { Icon } from "@iconify/react";
@@ -57,6 +57,18 @@ const ProductsTable = () => {
           <SelectItem key="3">Limitado</SelectItem>
           <SelectItem key="4">En stock</SelectItem>
         </Select> */}
+        <Switch
+          defaultSelected
+          size="lg"
+          color="primary"
+          thumbIcon={({ isSelected, className }) =>
+            isSelected ? (
+              <Icon icon="solar:list-linear" className={className} />
+            ) : (
+              <Icon icon="system-uicons:grid" className={className} />
+            )
+          }
+        />
       </div>
       <Table
         aria-label="Example static collection table"

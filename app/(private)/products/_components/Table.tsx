@@ -5,6 +5,11 @@ const ProductsTable = ({ loading, products}: { loading: boolean, products: Produ
   return (
     <Table
       aria-label="Example static collection table"
+      isHeaderSticky
+      classNames={{
+        base: "max-h-[500px] overflowy-scroll",
+        table: "min-h-[400px]",
+      }}
     >
       <TableHeader>
         <TableColumn>MODELO</TableColumn>

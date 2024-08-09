@@ -32,22 +32,6 @@ const GridListItem = React.forwardRef<HTMLDivElement, GridListItemProps>(
         )}
         {...props}
       >
-        <Button
-          isIconOnly
-          className="absolute right-3 top-3 z-20 bg-background/60 backdrop-blur-md backdrop-saturate-150 dark:bg-default-100/50"
-          radius="full"
-          size="sm"
-          variant="flat"
-          onPress={() => setIsLiked(!isLiked)}
-        >
-          <Icon
-            className={cn("text-default-900/50", {
-              "text-danger-400": isLiked,
-            })}
-            icon="solar:heart-bold"
-            width={16}
-          />
-        </Button>
         <Image
           isBlurred
           isZoomed

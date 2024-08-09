@@ -7,9 +7,15 @@ const ProductsTable = ({ loading, products}: { loading: boolean, products: Produ
       aria-label="Example static collection table"
     >
       <TableHeader>
-        <TableColumn>NOMBRE</TableColumn>
         <TableColumn>MODELO</TableColumn>
+        <TableColumn>NOMBRE</TableColumn>
+        <TableColumn>COLOR</TableColumn>
+        <TableColumn>TALLA</TableColumn>
         <TableColumn>CANTIDAD</TableColumn>
+        <TableColumn style={{ color: 'green' }}>PRECIO ESPECIAL</TableColumn>
+        <TableColumn style={{ color: 'magenta' }}>PRECIO MAYOREO</TableColumn>
+        <TableColumn style={{ color: 'yellow' }}>PRECIO SEMIMAYOREO</TableColumn>
+        <TableColumn style={{ color: 'red' }}>PRECIO WEB</TableColumn>
       </TableHeader>
       <TableBody
         emptyContent="No se encontraron productos"
@@ -18,9 +24,15 @@ const ProductsTable = ({ loading, products}: { loading: boolean, products: Produ
       >
         {products.map((product) => (
           <TableRow key={product._id}>
-            <TableCell>{product.name}</TableCell>
             <TableCell>{product.uniqId}</TableCell>
+            <TableCell>{product.name}</TableCell>
+            <TableCell>{product.color}</TableCell>
+            <TableCell>{product.size}</TableCell>
             <TableCell>{product.quantity}</TableCell>
+            <TableCell>${product.specialPrice}</TableCell>
+            <TableCell>${product.wholesalePrice}</TableCell>
+            <TableCell>${product.retailPrice}</TableCell>
+            <TableCell>${product.webPagePrice}</TableCell>
           </TableRow>
         ))}
       </TableBody>

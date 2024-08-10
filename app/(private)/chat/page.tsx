@@ -58,8 +58,13 @@ const ChatPage = () => {
       setContacts(contacts);
     });
 
+    socket.on('new_contact', (contact: Contact) => {
+      setContacts((prevContacts) => [...prevContacts, contact]);
+    });
+
     return () => {
       socket.off('contacts');
+      socket.off('new_contact');
     };
   }, []);
 

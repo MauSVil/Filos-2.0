@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
 import {Avatar, Badge, Button, Popover, PopoverContent, PopoverTrigger, ScrollShadow, Spacer, Tooltip} from "@nextui-org/react";
 import {Icon} from "@iconify/react";
 import {useMediaQuery} from "usehooks-ts";
@@ -13,6 +13,7 @@ import {cn} from "@/utils/cn";
 import Sidebar from "@/components/layout/sidebar";
 import Cookies from "js-cookie";
 import NotificationsCard from "@/components/notifications/notification-card";
+import { socket } from "./_socket";
 
 
 const PrivateLayout = ({ children }: { children: ReactNode }) => {
@@ -22,6 +23,16 @@ const PrivateLayout = ({ children }: { children: ReactNode }) => {
   const currentPath = pathname.split("/")?.[1]
 
   const router = useRouter();
+
+  useEffect(() => {
+    socket.on('new_notification', (notification: any) => {
+      console.log(notification, 'notification');
+    });
+
+    return () => {
+      socket.off('new_notification');
+    };
+  }, []);
 
   return (
     <div className="flex h-dvh w-full">

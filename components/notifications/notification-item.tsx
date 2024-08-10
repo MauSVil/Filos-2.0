@@ -1,12 +1,10 @@
 "use client";
 
-import React from "react";
-import {Avatar, Badge, Button} from "@nextui-org/react";
-import {Icon} from "@iconify/react";
+import React, { ReactNode } from "react";
 
 import {cn} from "@/utils/cn";
-
-export type NotificationType = "default" | "request" | "file";
+import { NotificationType } from "@/types/MongoTypes/Notification";
+import moment from "moment";
 
 export type NotificationItem = {
   id: string;
@@ -18,34 +16,12 @@ export type NotificationItem = {
   type?: NotificationType;
 };
 
-export type NotificationItemProps = React.HTMLAttributes<HTMLDivElement> & NotificationItem;
+export type NotificationItemProps = React.HTMLAttributes<HTMLDivElement> & NotificationType;
 
 const NotificationItem = React.forwardRef<HTMLDivElement, NotificationItemProps>(
-  ({children, avatar, name, description, type, time, isRead, className, ...props}, ref) => {
-    /**
-     * Defines the content for different types of notifications.
-     */
-    const contentByType: Record<NotificationType, React.ReactNode> = {
-      default: null,
-      request: (
-        <div className="flex gap-2 pt-2">
-          <Button color="primary" size="sm">
-            Accept
-          </Button>
-          <Button size="sm" variant="flat">
-            Decline
-          </Button>
-        </div>
-      ),
-      file: (
-        <div className="flex items-center gap-2">
-          <Icon className="text-secondary" icon="solar:figma-file-linear" width={30} />
-          <div className="flex flex-col">
-            <strong className="text-small font-medium">Brand_Logo_v1.2.fig</strong>
-            <p className="text-tiny text-default-400">3.4 MB</p>
-          </div>
-        </div>
-      ),
+  ({children, title, description, read, timestamp, metadata, className, ...props}, ref) => {
+    const contentByType: { [key: string]: ReactNode | null } = {
+      "simple notification": null,
     };
 
     return (
@@ -54,29 +30,19 @@ const NotificationItem = React.forwardRef<HTMLDivElement, NotificationItemProps>
         className={cn(
           "flex gap-3 border-b border-divider px-6 py-4",
           {
-            "bg-primary-50/50": !isRead,
+            "bg-primary-50/50": !read,
           },
           className,
         )}
         {...props}
       >
-        <div className="relative flex-none">
-          <Badge
-            color="primary"
-            content=""
-            isInvisible={isRead}
-            placement="bottom-right"
-            shape="circle"
-          >
-            <Avatar src={avatar} />
-          </Badge>
-        </div>
         <div className="flex flex-col gap-1">
           <p className="text-small text-foreground">
-            <strong className="font-medium">{name}</strong> {description || children}
+            <strong className="font-medium">{title}</strong>
           </p>
-          <time className="text-tiny text-default-400">{time}</time>
-          {type && contentByType[type]}
+          <p className="text-tiny text-default-400">{description}</p>
+          <time className="text-tiny text-default-300">{moment(timestamp).format('DD-MM-YYYY HH:mm')}</time>
+          {metadata?.type && contentByType[metadata.type]}
         </div>
       </div>
     );

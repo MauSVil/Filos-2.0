@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode, useEffect, useMemo } from "react";
 import {Avatar, Badge, Button, Popover, PopoverContent, PopoverTrigger, ScrollShadow, Spacer, Tooltip} from "@nextui-org/react";
 import {Icon} from "@iconify/react";
 import {useMediaQuery} from "usehooks-ts";
@@ -14,19 +14,47 @@ import Sidebar from "@/components/layout/sidebar";
 import Cookies from "js-cookie";
 import NotificationsCard from "@/components/notifications/notification-card";
 import { socket } from "./_socket";
+import { useNotifications } from "./_hooks/useNotifications";
+import { NotificationType } from "@/types/MongoTypes/Notification";
 
+export enum NotificationTabs {
+  All = "all",
+  Unread = "unread",
+  Archive = "archive",
+}
 
 const PrivateLayout = ({ children }: { children: ReactNode }) => {
   const isCompact = useMediaQuery("(max-width: 768px)");
+  const [notificationsState, setNotificationsState] = React.useState<{ [ key in NotificationTabs ]: NotificationType[] }>({ all: [], unread: [], archive: [] });
 
   const pathname = usePathname();
   const currentPath = pathname.split("/")?.[1]
 
   const router = useRouter();
 
+  const notifications = useNotifications();
+  const notificationsData = useMemo(() => notifications?.data || [], [notifications.data]);
+
+  React.useEffect(() => {
+    setNotificationsState((prevState) => {
+      return {
+        ...prevState,
+        all: notificationsData,
+        unread: notificationsData.filter((notification) => !notification.read),
+        archive: notificationsData.filter((notification) => notification.read),
+      };
+    });
+  }, [notificationsData.length]);
+
   useEffect(() => {
-    socket.on('new_notification', (notification: any) => {
-      console.log(notification, 'notification');
+    socket.on('new_notification', (notification: NotificationType) => {
+      setNotificationsState((prevState) => {
+        return {
+          ...prevState,
+          all: [notification, ...prevState.all],
+          unread: [notification, ...prevState.unread],
+        };
+      });
     });
 
     return () => {
@@ -74,13 +102,13 @@ const PrivateLayout = ({ children }: { children: ReactNode }) => {
                 radius="full"
                 variant="light"
               >
-                <Badge color="danger" content={0} showOutline={false} size="md" isInvisible={true}>
+                <Badge color="danger" content={notificationsState[NotificationTabs.Unread].length} showOutline={false} size="md" isInvisible={!notificationsState[NotificationTabs.Unread].length}>
                   <Icon className="text-default-500" icon="solar:bell-linear" width={22} />
                 </Badge>
               </Button>
             </PopoverTrigger>
             <PopoverContent className="max-w-[90vw] p-0 sm:max-w-[380px]">
-              <NotificationsCard className="w-full shadow-none" />
+              <NotificationsCard notifications={notificationsState} className="w-full shadow-none" />
             </PopoverContent>
           </Popover>
         </div>

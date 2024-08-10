@@ -12,113 +12,20 @@ import {
   Tabs,
   Tab,
   ScrollShadow,
-  CardFooter,
 } from "@nextui-org/react";
 import {Icon} from "@iconify/react";
 
 import NotificationItem from "./notification-item";
+import { NotificationType } from "@/types/MongoTypes/Notification";
+import { NotificationTabs } from "@/app/(private)/layout";
 
-type Notification = {
-  id: string;
-  isRead?: boolean;
-  avatar: string;
-  description: string;
-  name: string;
-  time: string;
-  type?: "default" | "request" | "file";
-};
-
-enum NotificationTabs {
-  All = "all",
-  Unread = "unread",
-  Archive = "archive",
+interface Props {
+  className?: string;
+  notifications: { [ key in NotificationTabs ]: NotificationType[] };
 }
 
-const notifications: Record<NotificationTabs, Notification[]> = {
-  all: [
-    {
-      id: "1",
-      isRead: false,
-      avatar: "https://i.pravatar.cc/150?u=a04258114e29026708c",
-      description: "requested to join your Acme organization.",
-      name: "Tony Reichert",
-      time: "2 hours ago",
-      type: "request",
-    },
-    {
-      id: "2",
-      isRead: false,
-      avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-      description: "modified the Brand logo file.",
-      name: "Ben Berman",
-      time: "7 hours ago",
-      type: "file",
-    },
-    {
-      id: "3",
-      isRead: false,
-      avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d",
-      description: "liked your post.",
-      name: "Jane Doe",
-      time: "Yesterday",
-    },
-    {
-      id: "4",
-      isRead: true,
-      avatar: "https://i.pravatar.cc/150?u=a04258a2462d826712d",
-      description: "started following you.",
-      name: "John Smith",
-      time: "Yesterday",
-    },
-    {
-      id: "5",
-      isRead: true,
-      avatar: "https://i.pravatar.cc/150?u=a04258a24a2d826712d",
-      description: "mentioned you in a post.",
-      name: "Jacob Jones",
-      time: "2 days ago",
-    },
-    {
-      id: "6",
-      isRead: true,
-      avatar: "https://i.pravatar.cc/150?u=a04458a24a2d826712d",
-      description: "commented on your post.",
-      name: "Amelie Dawson",
-      time: "4 days ago",
-    },
-  ],
-  unread: [
-    {
-      id: "1",
-      isRead: false,
-      avatar: "https://i.pravatar.cc/150?u=a04258114e29026708c",
-      description: "requested to join your Acme organization.",
-      name: "Tony Reichert",
-      time: "2 hours ago",
-      type: "request",
-    },
-    {
-      id: "2",
-      isRead: false,
-      avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-      description: "modified the Brand logo file.",
-      name: "Ben Berman",
-      time: "7 hours ago",
-      type: "file",
-    },
-    {
-      id: "3",
-      isRead: false,
-      avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d",
-      description: "liked your post.",
-      name: "Jane Doe",
-      time: "Yesterday",
-    },
-  ],
-  archive: [],
-};
-
-export default function Component(props: CardProps) {
+export default function Component(props: Props) {
+  const { notifications, ...rest } = props;
   const [activeTab, setActiveTab] = React.useState<NotificationTabs>(NotificationTabs.All);
 
   const activeNotifications = notifications[activeTab];
@@ -130,7 +37,7 @@ export default function Component(props: CardProps) {
           <div className="inline-flex items-center gap-1">
             <h4 className="inline-block align-middle text-large font-medium">Notificaciones</h4>
             <Chip size="sm" variant="flat">
-              0
+              {notifications[NotificationTabs.Unread].length}
             </Chip>
           </div>
           <Button className="h-8 px-3" color="primary" radius="full" variant="light">
@@ -156,7 +63,7 @@ export default function Component(props: CardProps) {
               <div className="flex items-center space-x-2">
                 <span>Todos</span>
                 <Chip size="sm" variant="flat">
-                  9
+                  {notifications[NotificationTabs.All].length}
                 </Chip>
               </div>
             }
@@ -167,7 +74,7 @@ export default function Component(props: CardProps) {
               <div className="flex items-center space-x-2">
                 <span>Sin leer</span>
                 <Chip size="sm" variant="flat">
-                  3
+                  {notifications[NotificationTabs.Unread].length}
                 </Chip>
               </div>
             }
@@ -177,8 +84,8 @@ export default function Component(props: CardProps) {
       <CardBody className="w-full gap-0 p-0">
         <ScrollShadow className="h-[350px] w-full">
           {activeNotifications?.length > 0 ? (
-            activeNotifications.map((notification) => (
-              <NotificationItem key={notification.id} {...notification} />
+            activeNotifications.map((notification, idx) => (
+              <NotificationItem key={idx} {...notification} />
             ))
           ) : (
             <div className="flex h-full w-full flex-col items-center justify-center gap-2">

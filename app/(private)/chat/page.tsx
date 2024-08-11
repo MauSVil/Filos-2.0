@@ -14,6 +14,7 @@ export type Contact = {
   email: string;
   aiEnabled: boolean;
   address: string;
+  newMessage: boolean;
 };
 
 export type Message = {

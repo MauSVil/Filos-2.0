@@ -1,6 +1,7 @@
-import { Avatar, Listbox, ListboxItem } from "@nextui-org/react";
+import { Avatar, Badge, Chip, Listbox, ListboxItem } from "@nextui-org/react";
 import { Key, useRef } from "react";
 import { Contact } from "../page";
+import { Icon } from "@iconify/react";
 
 interface ContactsProps {
   selectedChat: string;
@@ -31,10 +32,19 @@ const Contacts = (props: ContactsProps) => {
           {(item) => (
             <ListboxItem key={item.phone_id} textValue={item.phone_id}>
               <div className="flex gap-2 items-center">
-                <Avatar alt={item.phone_id} className="flex-shrink-0" size="sm" />
                 <div className="flex flex-col">
-                  <span className="text-small">{item.phone_id}</span>
-                  <span className="text-tiny text-default-400">{item.phone_id}</span>
+                  <div className="px-2 flex flex-col">
+                    <span className="text-small">{item.fullName || item.phone_id}</span>
+                    <span className="text-tiny text-default-400">{item.phone_id}</span>
+                  </div>
+                  <div className="flex gap-2">
+                    {item.newMessage && (
+                      <Chip size="sm" color="success" variant="light">Nuevo</Chip>
+                    )}
+                    {item.aiEnabled && (
+                      <Chip size="sm" color="warning" variant="light">IA</Chip>
+                    )}
+                  </div>
                 </div>
               </div>
             </ListboxItem>

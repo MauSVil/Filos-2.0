@@ -48,6 +48,9 @@ const PrivateLayout = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     socket.on('new_notification', (notification: NotificationType) => {
+      const audio = new Audio('/sounds/Notification.mp3');
+      audio.volume = 0.8;
+      audio.play();
       setNotificationsState((prevState) => {
         return {
           ...prevState,

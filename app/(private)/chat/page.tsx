@@ -37,7 +37,7 @@ export type SerializedError = {
 
 const ChatPage = () => {
   const [selectedChat, setSelectedChat] = useState<string>('');
-  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [contacts, setContacts] = useState<{ [key: string]: Contact }>({});
   const queryClient = new QueryClient();
 
   const handleSelectionChange = (val: Set<Key> | "all") => {
@@ -55,17 +55,26 @@ const ChatPage = () => {
   }, [contacts]);
 
   useEffect(() => {
-    socket.on('contacts', (contacts) => {
-      setContacts(contacts);
+    socket.on('contacts', (contacts: Contact[]) => {
+      setContacts(_.keyBy(contacts, 'phone_id'));
     });
 
     socket.on('new_contact', (contact: Contact) => {
-      setContacts((prevContacts) => [...prevContacts, contact]);
+      setContacts((prevState) => {
+        return { ...prevState, [contact.phone_id]: contact };
+      });
+    });
+
+    socket.on('list_contact_update', (contact: Contact) => {
+      setContacts((prevState) => {
+        return { ...prevState, [contact.phone_id]: contact };
+      });
     });
 
     return () => {
       socket.off('contacts');
       socket.off('new_contact');
+      socket.off('list_contact_update');
     };
   }, []);
 
@@ -75,7 +84,7 @@ const ChatPage = () => {
         <Contacts
           selectedChat={selectedChat}
           handleSelectionChange={handleSelectionChange}
-          contacts={contacts}
+          contacts={keyedContacts}
         />
         <Chat
           selectedChat={selectedChat}

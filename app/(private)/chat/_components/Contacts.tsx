@@ -6,7 +6,7 @@ import { Icon } from "@iconify/react";
 interface ContactsProps {
   selectedChat: string;
   handleSelectionChange: (val: Set<Key> | "all") => void;
-  contacts: Contact[];
+  contacts: { [key: string]: Contact };
 }
 
 const Contacts = (props: ContactsProps) => {
@@ -20,7 +20,7 @@ const Contacts = (props: ContactsProps) => {
     >
       {
         <Listbox
-          items={contacts}
+          items={Object.keys(contacts)[0] ? Object.values(contacts) : []}
           label="Assigned to"
           selectionMode="single"
           selectedKeys={[selectedChat]}

@@ -48,7 +48,6 @@ const Chat = (props: Props) => {
       setSwitchValue(aiEnabled);
     });
     socket.on('sent_message', (message: Message) => {
-      console.log(message, 'message');
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 

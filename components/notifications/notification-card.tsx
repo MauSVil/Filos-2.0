@@ -18,17 +18,37 @@ import {Icon} from "@iconify/react";
 import NotificationItem from "./notification-item";
 import { NotificationType } from "@/types/MongoTypes/Notification";
 import { NotificationTabs } from "@/app/(private)/layout";
+import { toast } from "react-toastify";
+import ky from "ky";
 
 interface Props {
   className?: string;
   notifications: { [ key in NotificationTabs ]: NotificationType[] };
+  onNotificationClick: (notification: NotificationType) => void;
 }
 
 export default function Component(props: Props) {
-  const { notifications, ...rest } = props;
+  const { notifications, onNotificationClick, ...rest } = props;
   const [activeTab, setActiveTab] = React.useState<NotificationTabs>(NotificationTabs.All);
 
   const activeNotifications = notifications[activeTab];
+
+  const handleNotificationClick = async (notification: NotificationType) => {
+    try {
+      await ky.put(`/api/notifications/${notification._id}`, {
+        json: { read: true },
+      }).json();
+
+      onNotificationClick(notification);
+
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+        return;
+      }
+      toast.error("Error al intentar abrir la notificación");
+    }
+  };
 
   return (
     <Card className="w-full max-w-[420px]" {...props}>
@@ -85,12 +105,16 @@ export default function Component(props: Props) {
         <ScrollShadow className="h-[350px] w-full">
           {activeNotifications?.length > 0 ? (
             activeNotifications.map((notification, idx) => (
-              <NotificationItem key={idx} {...notification} />
+              <NotificationItem
+                key={idx}
+                onClick={() => handleNotificationClick(notification)}
+                {...notification}
+              />
             ))
           ) : (
             <div className="flex h-full w-full flex-col items-center justify-center gap-2">
               <Icon className="text-default-400" icon="solar:bell-off-linear" width={40} />
-              <p className="text-small text-default-400">No notifications yet.</p>
+              <p className="text-small text-default-400">No hay notificaciones</p>
             </div>
           )}
         </ScrollShadow>

@@ -44,7 +44,7 @@ const PrivateLayout = ({ children }: { children: ReactNode }) => {
         archive: notificationsData.filter((notification) => notification.read),
       };
     });
-  }, [notificationsData.length]);
+  }, [notificationsData.length, notifications.isFetching]);
 
   useEffect(() => {
     socket.on('new_notification', (notification: NotificationType) => {
@@ -111,7 +111,13 @@ const PrivateLayout = ({ children }: { children: ReactNode }) => {
               </Button>
             </PopoverTrigger>
             <PopoverContent className="max-w-[90vw] p-0 sm:max-w-[380px]">
-              <NotificationsCard notifications={notificationsState} className="w-full shadow-none" />
+              <NotificationsCard
+                onNotificationClick={(notification) => {
+                  notifications.refetch();
+                }}
+                notifications={notificationsState}
+                className="w-full shadow-none"
+              />
             </PopoverContent>
           </Popover>
         </div>

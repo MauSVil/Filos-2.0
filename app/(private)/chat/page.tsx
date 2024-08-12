@@ -87,8 +87,6 @@ const ChatPage = () => {
     };
   }, []);
 
-  console.log(loading, 'loading');
-
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="flex h-full gap-4">

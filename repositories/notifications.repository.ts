@@ -2,7 +2,7 @@ import clientPromise from "@/mongodb";
 import { NotificationType } from "@/types/MongoTypes/Notification";
 import { NotificationRepositoryFilter, NotificationRepositoryFilterModel } from "@/types/RepositoryTypes/Notification";
 import _ from "lodash";
-import { Db } from "mongodb";
+import { Db, ObjectId } from "mongodb";
 
 let client;
 let db: Db;
@@ -47,8 +47,11 @@ export class NotificationsRepository {
   //   return 'Message inserted';
   // }
 
-  // static async updateOne() {
-  // }
+  static async updateOne(id: string, update: Partial<NotificationType>) {
+    await init();
+    await db.collection('notifications').updateOne({ _id: new ObjectId(id) }, { $set: update });
+    return 'Notification updated';
+  }
 
   // static async deleteOne() {
   // }

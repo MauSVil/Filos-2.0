@@ -1,7 +1,6 @@
 import { Avatar, Badge, Chip, Listbox, ListboxItem, ScrollShadow } from "@nextui-org/react";
 import { Key, useMemo, useRef } from "react";
 import { Contact } from "../page";
-import { Icon } from "@iconify/react";
 
 interface ContactsProps {
   selectedChat: string;
@@ -12,14 +11,14 @@ interface ContactsProps {
 const Contacts = (props: ContactsProps) => {
   const { selectedChat, handleSelectionChange, contacts } = props;
 
-  const parsedContacts = useMemo(() => {
-    return Object.values(contacts);
-  }, [contacts]);
-
   return (
     <ScrollShadow className="w-1/4 max-w-[200px] border-small px-1 py-2 rounded-small border-default-200 dark:border-default-100">
       <Listbox
-        items={parsedContacts}
+        items={Object.values(contacts).sort((a, b) => {
+          if (a.newMessage && !b.newMessage) return -1;
+          if (!a.newMessage && b.newMessage) return 1;
+          return 0;
+        })}
         label="Assigned to"
         selectionMode="single"
         selectedKeys={[selectedChat]}

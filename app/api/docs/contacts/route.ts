@@ -1,5 +1,5 @@
+import * as XLSX from 'xlsx';
 import clientPromise from '@/mongodb';
-import * as ExcelJS from 'exceljs';
 import { Db } from 'mongodb';
 import { NextResponse } from "next/server";
 
@@ -12,11 +12,17 @@ const init = async () => {
 };
 
 const excelTitles: { [key: string]: string } = {
-  'Nombre': 'fullName',
-  'Telefono': 'phone_id',
-  // 'Correo': 'email',
-  'Direccion': 'address',
+  'Nombre ': 'fullName',
+  'Teléfono': 'phone_id',
+  'Correo': 'email',
+  'ESTADO': 'address',
   // 'Etiqueta': 'tag',
+}
+
+function toProperCase(str: string) {
+  return str.toLowerCase().split(' ').map(function(word) {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }).join(' ');
 }
 
 export const POST = async (req: Request) => {
@@ -25,35 +31,42 @@ export const POST = async (req: Request) => {
     const formData = await req.formData();
     const file = formData.get('file') as File | undefined;
     if (!file) return NextResponse.json({ message: 'File is required' }, { status: 400 });
-    const workbook = new ExcelJS.Workbook();
     const buffer = await file.arrayBuffer();
-    await workbook.xlsx.load(buffer);
 
-    const worksheet = workbook.getWorksheet(1);
-    if (!worksheet) throw new Error('Worksheet not found');
-    const contacts: { [key: string]: any } = [];
+    const workbook = XLSX.read(buffer, { type: 'array' });
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const data = XLSX.utils.sheet_to_json(sheet);
 
-    worksheet.eachRow((row, rowNumber) => {
-      if (rowNumber === 1) return;
-      const employee: { [key: string]: any } = {};
-      row.eachCell((cell, cellNumber) => {
-        const title = worksheet.getCell(1, cellNumber).value as string;
-        const key = excelTitles[title];
-        if (key) {
-          employee[key] = cell.text.trim();
+    const contacts = data.map((contact: any) => {
+      const newContact: any = {
+        aiEnabled: true,
+        lastMessageSent: new Date(),
+      };
+      for (const key in contact) {
+        const title = excelTitles[key];
+        switch (title) {
+          case 'fullName':
+            newContact[title] = toProperCase(contact[key]);
+            break;
+          case 'phone_id':
+            newContact[title] = (contact[key] || '').toString().replace(/\D/g, '');
+            break;
+          case 'email':
+            newContact[title] = contact[key];
+            break;
+          case 'address':
+            newContact[title] = contact[key];
+            break;
+          default:
+            break;
         }
-      });
+      }
+      return newContact;
+    }).filter((contact) => contact.phone_id);
 
-      employee.aiEnabled = true;
-      employee.newMessage = false;
-
-      contacts.push(employee);
-    });
-
-    const parsedContacts = contacts as any[];
-
-    await db.collection('whatsapp-contacts').insertMany(parsedContacts);
-
+    await db.collection('whatsapp-contacts').deleteMany({});
+    await db.collection('whatsapp-contacts').insertMany(contacts);
+    
     return NextResponse.json({ message: 'File uploaded successfully' });
   } catch (error) {
     if (error instanceof Error) {

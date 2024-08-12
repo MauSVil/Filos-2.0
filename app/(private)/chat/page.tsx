@@ -61,7 +61,7 @@ const ChatPage = () => {
 
     socket.on('new_contact', (contact: Contact) => {
       setContacts((prevState) => {
-        return { ...prevState, [contact.phone_id]: contact };
+        return { [contact.phone_id]: contact, ...prevState, };
       });
     });
 

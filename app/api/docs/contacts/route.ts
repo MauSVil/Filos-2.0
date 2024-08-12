@@ -1,10 +1,27 @@
-import { NextResponse } from "next/server"
-import * as ExcelJS from "exceljs";
-import Contacts from "@/app/(private)/chat/_components/Contacts";
-import { Contact } from "@/app/(private)/chat/page";
+import clientPromise from '@/mongodb';
+import * as ExcelJS from 'exceljs';
+import { Db } from 'mongodb';
+import { NextResponse } from "next/server";
+
+let client;
+let db: Db;
+
+const init = async () => {
+  client = await clientPromise;
+  db = client.db('test') as Db;
+};
+
+const excelTitles: { [key: string]: string } = {
+  'Nombre': 'fullName',
+  'Telefono': 'phone_id',
+  // 'Correo': 'email',
+  'Direccion': 'address',
+  // 'Etiqueta': 'tag',
+}
 
 export const POST = async (req: Request) => {
   try {
+    await init();
     const formData = await req.formData();
     const file = formData.get('file') as File | undefined;
     if (!file) return NextResponse.json({ message: 'File is required' }, { status: 400 });
@@ -13,27 +30,35 @@ export const POST = async (req: Request) => {
     await workbook.xlsx.load(buffer);
 
     const worksheet = workbook.getWorksheet(1);
-    if (!worksheet) return NextResponse.json({ message: 'Worksheet not found' }, { status: 400 });
+    if (!worksheet) throw new Error('Worksheet not found');
+    const contacts: { [key: string]: any } = [];
 
-    console.log('worksheet', worksheet);
+    worksheet.eachRow((row, rowNumber) => {
+      if (rowNumber === 1) return;
+      const employee: { [key: string]: any } = {};
+      row.eachCell((cell, cellNumber) => {
+        const title = worksheet.getCell(1, cellNumber).value as string;
+        const key = excelTitles[title];
+        if (key) {
+          employee[key] = cell.text.trim();
+        }
+      });
 
-    // const worksheet = workbook.worksheets[0];
-    // const rows: any[] = []
+      employee.aiEnabled = true;
+      employee.newMessage = false;
 
-    // worksheet.eachRow((row, rowNumber) => {
-    //   const rowValues: any[] = [];
-    //   console.log(row, rowNumber, '***********************');
-    //   // row.eachCell((cell) => {
-    //   //   rowValues.push(cell.value);
-    //   // });
-    //   rows.push(rowValues);
-    // });
+      contacts.push(employee);
+    });
 
-    return NextResponse.json({ message: "File uploaded" });
+    const parsedContacts = contacts as any[];
+
+    await db.collection('whatsapp-contacts').insertMany(parsedContacts);
+
+    return NextResponse.json({ message: 'File uploaded successfully' });
   } catch (error) {
     if (error instanceof Error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ message: error.message }, { status: 400 });
     }
-    return NextResponse.json({ error: "An error occurred" }, { status: 500 });
+    return NextResponse.json({ message: 'Something went wrong' }, { status: 500 });
   }
 }

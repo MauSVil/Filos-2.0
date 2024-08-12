@@ -6,6 +6,7 @@ import _ from "lodash";
 import Contacts from "./_components/Contacts";
 import Chat from "./_components/Chat";
 import { socket } from "./_socket";
+import { Input } from "@nextui-org/input";
 
 export type Contact = {
   _id: string;
@@ -37,6 +38,7 @@ export type SerializedError = {
 };
 
 const ChatPage = () => {
+  const [value, setValue] = useState<string>('');
   const [selectedChat, setSelectedChat] = useState<string>('');
   const [contacts, setContacts] = useState<{ [key: string]: Contact }>({});
   const queryClient = new QueryClient();
@@ -52,8 +54,12 @@ const ChatPage = () => {
   };
 
   const keyedContacts = useMemo(() => {
-    return _.keyBy(contacts, 'phone_id');
-  }, [contacts]);
+    const contactsFiltered = Object.values(contacts).filter((contact) => {
+      return (contact?.fullName?.toLowerCase() || '').includes(value.toLowerCase()) || (contact?.phone_id?.toLowerCase() || '').includes(value.toLowerCase());
+    });
+
+    return _.keyBy(contactsFiltered, 'phone_id');
+  }, [contacts, value]);
 
   useEffect(() => {
     socket.on('contacts', (contacts: Contact[]) => {
@@ -82,11 +88,20 @@ const ChatPage = () => {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="flex h-full gap-4">
-        <Contacts
-          selectedChat={selectedChat}
-          handleSelectionChange={handleSelectionChange}
-          contacts={keyedContacts}
-        />
+        <div className="flex flex-col gap-2 w-1/4 max-w-[200px]">
+          <Input
+            placeholder="Busca un contacto..."
+            size="sm"
+            variant="bordered"
+            value={value}
+            onValueChange={setValue}
+          />
+          <Contacts
+            selectedChat={selectedChat}
+            handleSelectionChange={handleSelectionChange}
+            contacts={keyedContacts}
+          />
+        </div>
         <Chat
           selectedChat={selectedChat}
           contact={keyedContacts[selectedChat]}

@@ -12,7 +12,7 @@ const Contacts = (props: ContactsProps) => {
   const { selectedChat, handleSelectionChange, contacts } = props;
 
   return (
-    <ScrollShadow className="w-1/4 max-w-[200px] border-small px-1 py-2 rounded-small border-default-200 dark:border-default-100">
+    <ScrollShadow className="w-full border-small px-1 py-2 rounded-small border-default-200 dark:border-default-100">
       <Listbox
         items={Object.values(contacts).sort((a, b) => {
           const dateA = new Date(a.lastMessageSent || 0).getTime();

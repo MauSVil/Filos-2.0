@@ -13,7 +13,7 @@ export interface Order {
   description: string;
   finalAmount: number;
   totalAmount: number;
-  documents: { order: string }[];
+  documents: { order: string };
   pdfStatus: string;
   paid: boolean;
 }

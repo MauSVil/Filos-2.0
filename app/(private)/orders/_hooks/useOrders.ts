@@ -1,13 +1,20 @@
 import { Order } from "@/types/MongoTypes/Order"
 import { useQuery } from "@tanstack/react-query"
 import ky from "ky"
+import { toast } from "react-toastify"
 
-export const useOrders = ({ page }: { page: number }) => {
+export const useOrders = ({ page, status }: { page: number, status: string }) => {
   return useQuery<{ data: Order[], count: number }>({
-    queryKey: ['orders', { page }],
+    queryKey: ['orders', { page, status }],
+    retry: 0,
     queryFn: async () => {
-      const resp = await ky.post('/api/orders/search', { json: { page } }).json() as { data: Order[], count: number }
-      return resp
+      try {
+        const resp = await ky.post('/api/orders/search', { json: { page, status } }).json() as { data: Order[], count: number }
+        return resp
+      } catch (error) {
+        toast.error('An error occurred')
+        throw new Error('An error occurred')
+      }
     },
   })
 }

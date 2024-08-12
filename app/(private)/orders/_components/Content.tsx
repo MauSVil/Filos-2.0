@@ -7,9 +7,10 @@ import { useOrders } from '../_hooks/useOrders';
 import { Pagination, Select, SelectItem } from '@nextui-org/react';
 
 const OrdersContent = () => {
+  const [status, setStatus] = useState('Pendiente')
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
-  const ordersQuery = useOrders({ page });
+  const ordersQuery = useOrders({ page, status });
 
   const orders = useMemo(() => {
     return ordersQuery.data?.data || [];
@@ -32,9 +33,15 @@ const OrdersContent = () => {
       <div className='py-4'>
         <div className='flex flex-col gap-3'>
           <div className="flex flex-col items-center gap-3 md:flex-row w-full justify-end">
-            <Select className='max-w-xs' placeholder='Filtrar por'>
-              <SelectItem key={0}>Pendiente</SelectItem>
-              <SelectItem key={1}>Completada</SelectItem>
+            <Select
+              className='max-w-xs'
+              placeholder='Filtrar por'
+              selectedKeys={[status]}
+              onChange={(e) => setStatus(e.target.value)}
+            >
+              <SelectItem key="Pendiente">Pendiente</SelectItem>
+              <SelectItem key="Completado">Completado</SelectItem>
+              <SelectItem key="Cancelado">Cancelado</SelectItem>
             </Select>
           </div>
           <Table orders={orders} isLoading={ordersQuery.isLoading} />

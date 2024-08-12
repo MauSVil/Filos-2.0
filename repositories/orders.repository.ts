@@ -26,8 +26,7 @@ export class OrdersRepository {
     const { page, ...rest } = filters;
     const messages = await db.collection('orders').find<Product>({
       ...rest,
-      status: 'Pendiente'
-    }).skip(((page || 1) - 1) * 10).limit(10).toArray();
+    }).skip(((page || 1) - 1) * 10).limit(10).sort({ dueDate: -1 }).toArray();
     return messages;
   }
 
@@ -37,7 +36,6 @@ export class OrdersRepository {
     const { page, ...rest } = filters;
     const count = await db.collection('orders').countDocuments({
       ...rest,
-      status: 'Pendiente'
     });
     return count;
   }

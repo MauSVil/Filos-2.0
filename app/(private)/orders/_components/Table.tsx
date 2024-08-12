@@ -1,8 +1,9 @@
 
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Spinner, Chip, ChipProps} from "@nextui-org/react";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Spinner, Chip, ChipProps, Button} from "@nextui-org/react";
 import { Key, useCallback, useMemo } from "react";
 import moment from "moment";
 import { Order } from "@/types/MongoTypes/Order";
+import { Icon } from "@iconify/react";
 
 const statusColorMap: Record<string, ChipProps["color"]>  = {
   Completado: "success",
@@ -16,6 +17,11 @@ const OrdersTable = ({ isLoading, orders }: { isLoading: boolean, orders: Order[
       { uid: "name", name: "NOMBRE" },
       { uid: "dueDate", name: "FECHA COMPROMISO" },
       { uid: "status", name: "ESTATUS" },
+      { uid: "paid", name: "PAGADO" },
+      { uid: "products", name: "PRODUCTOS" },
+      { uid: "freightPrice", name: "FLETE" },
+      { uid: "totalPrice", name: "TOTAL" },
+      { uid: "actions", name: "ACCIONES" },
     ];
   }, []);
 
@@ -31,6 +37,24 @@ const OrdersTable = ({ isLoading, orders }: { isLoading: boolean, orders: Order[
             {item.status}
           </Chip>
         );
+      case "paid":
+        return (
+          <Chip className="capitalize" color={item.paid ? "success" : "danger"} size="sm" variant="flat">
+            {item.paid ? "Si" : "No"}
+          </Chip>
+        )
+      case "products":
+        return item.products.length;
+      case "freightPrice":
+        return `$${item.freightPrice}`;
+      case "totalPrice":
+        return `$${item.totalAmount}`;
+      case "actions":
+        return (
+          <Button isIconOnly color="primary" onClick={() => window.open(item.documents.order, '_blank') }>
+            <Icon icon="solar:download-outline" />
+          </Button>
+        )
       default:
         return null
     }

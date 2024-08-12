@@ -15,6 +15,7 @@ export type Contact = {
   aiEnabled: boolean;
   address: string;
   newMessage: boolean;
+  lastMessageSent: Date;
 };
 
 export type Message = {

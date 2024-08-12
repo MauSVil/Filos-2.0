@@ -15,9 +15,9 @@ const Contacts = (props: ContactsProps) => {
     <ScrollShadow className="w-1/4 max-w-[200px] border-small px-1 py-2 rounded-small border-default-200 dark:border-default-100">
       <Listbox
         items={Object.values(contacts).sort((a, b) => {
-          if (a.newMessage && !b.newMessage) return -1;
-          if (!a.newMessage && b.newMessage) return 1;
-          return 0;
+          const dateA = new Date(a.lastMessageSent || 0).getTime();
+          const dateB = new Date(b.lastMessageSent || 0).getTime();
+          return dateB - dateA;
         })}
         label="Assigned to"
         selectionMode="single"

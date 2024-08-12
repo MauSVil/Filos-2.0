@@ -38,6 +38,7 @@ export type SerializedError = {
 };
 
 const ChatPage = () => {
+  const [loading, setLoading] = useState<boolean>(true);
   const [value, setValue] = useState<string>('');
   const [selectedChat, setSelectedChat] = useState<string>('');
   const [contacts, setContacts] = useState<{ [key: string]: Contact }>({});
@@ -64,6 +65,7 @@ const ChatPage = () => {
   useEffect(() => {
     socket.on('contacts', (contacts: Contact[]) => {
       setContacts(_.keyBy(contacts, 'phone_id'));
+      setLoading(false);
     });
 
     socket.on('new_contact', (contact: Contact) => {
@@ -85,6 +87,8 @@ const ChatPage = () => {
     };
   }, []);
 
+  console.log(loading, 'loading');
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="flex h-full gap-4">
@@ -97,6 +101,7 @@ const ChatPage = () => {
             onValueChange={setValue}
           />
           <Contacts
+            loading={loading}
             selectedChat={selectedChat}
             handleSelectionChange={handleSelectionChange}
             contacts={keyedContacts}

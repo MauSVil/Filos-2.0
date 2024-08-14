@@ -35,7 +35,7 @@ const PrivateLayout = ({ children }: { children: ReactNode }) => {
   const notifications = useNotifications();
   const notificationsData = useMemo(() => notifications?.data || [], [notifications.data]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setNotificationsState((prevState) => {
       return {
         ...prevState,

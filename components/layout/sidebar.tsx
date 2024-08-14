@@ -12,6 +12,7 @@ import {Listbox, Tooltip, ListboxItem, ListboxSection} from "@nextui-org/react";
 import {Icon} from "@iconify/react";
 
 import {cn} from "@/utils/cn";
+import { useRouter } from "next/navigation";
 
 export enum SidebarItemType {
   Nest = "nest",
@@ -58,6 +59,7 @@ const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
     ref,
   ) => {
     const [selected, setSelected] = React.useState<React.Key>(defaultSelectedKey);
+    const router = useRouter();
 
     const sectionClasses = {
       ...sectionClassesProp,
@@ -193,6 +195,8 @@ const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
 
     const renderItem = React.useCallback(
       (item: SidebarItem) => {
+        const { href, ...rest } = item;
+
         const isNestType =
           item.items && item.items?.length > 0 && item?.type === SidebarItemType.Nest;
 
@@ -202,7 +206,8 @@ const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
 
         return (
           <ListboxItem
-            {...item}
+            {...rest}
+            onClick={() => router.push(href as string)}
             key={item.key}
             endContent={isCompact || hideEndContent ? null : item.endContent ?? null}
             startContent={

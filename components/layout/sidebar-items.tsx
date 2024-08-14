@@ -14,6 +14,12 @@ export const items: SidebarItem[] = [
     title: "Productos",
   },
   {
+    key: "buyers",
+    href: "/buyers",
+    icon: "healthicons:people-outline",
+    title: "Compradores",
+  },
+  {
     key: "orders",
     href: "/orders",
     icon: "solar:bill-list-linear",

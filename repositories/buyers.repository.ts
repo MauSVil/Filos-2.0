@@ -1,6 +1,6 @@
 import clientPromise from "@/mongodb";
 import { Buyer } from "@/types/MongoTypes/Buyer";
-import { BuyerRepositoryFilter, BuyerRepositoryFilterModel } from "@/types/RepositoryTypes/Buyer";
+import { BuyerInput, BuyerRepositoryFilter, BuyerRepositoryFilterModel } from "@/types/RepositoryTypes/Buyer";
 import _ from "lodash";
 import { Db } from "mongodb";
 
@@ -40,14 +40,14 @@ export class BuyersRepository {
     return count;
   }
 
-  // static async insertOne(message: ProductInput) {
-  //   await init();
-  //   message.timestamp = new Date();
-  //   message.role = 'assistant';
-  //   const messageParsed = await ProductInputModel.parse(message);
-  //   await db.collection('products').insertOne(messageParsed);
-  //   return 'Message inserted';
-  // }
+  static async insertOne(input: BuyerInput) {
+    await init();
+    input.createdAt = new Date();
+    input.updatedAt = new Date();
+    input.deletedAt = undefined;
+    await db.collection('products').insertOne(input);
+    return 'Buyer inserted';
+  }
 
   // static async updateOne() {
   // }

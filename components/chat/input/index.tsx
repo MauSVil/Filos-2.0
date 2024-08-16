@@ -43,6 +43,16 @@ export default function ChatInput(props: Props) {
     reader.readAsDataURL(file);
   }
 
+  const sendMessage = (event: React.KeyboardEvent<HTMLInputElement> | KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (!prompt) return;
+      socket.emit('send_message', { phone_id: selectedChat, message: prompt, type: 'text' });
+      socket.emit('update_contact', { phone_id: selectedChat, aiEnabled: false });
+      setPrompt("");
+    }
+  } 
+
   return (
     <form className="flex w-full items-start gap-2" onSubmit={handleSubmit}>
       <Tooltip showArrow content="Agregar archivo">
@@ -56,7 +66,7 @@ export default function ChatInput(props: Props) {
           />
         </Button>
       </Tooltip>
-      <PromptInput value={prompt} onValueChange={setPrompt} />
+      <PromptInput value={prompt} onValueChange={setPrompt} sendMessage={sendMessage} />
       {!prompt && (
         <Tooltip showArrow content="Speak">
           <Button isIconOnly variant="flat">

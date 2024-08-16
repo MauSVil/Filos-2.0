@@ -7,11 +7,16 @@ import {Textarea} from "@nextui-org/react";
 
 import {cn} from "@/utils/cn";
 
-const PromptInput = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  ({classNames = {}, ...props}, ref) => {
+interface PromptInputProps extends TextAreaProps {
+  sendMessage: (event: React.KeyboardEvent<HTMLInputElement> | KeyboardEvent) => void;
+}
+
+const PromptInput = React.forwardRef<HTMLTextAreaElement, PromptInputProps>(
+  ({classNames = {}, sendMessage, ...props}, ref) => {
     return (
       <Textarea
         ref={ref}
+        onKeyDown={sendMessage}
         aria-label="Prompt"
         className="min-h-[40px]"
         classNames={{

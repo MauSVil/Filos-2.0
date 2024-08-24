@@ -6,7 +6,6 @@ import { Button } from "@nextui-org/button";
 import { Control, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateFormValues } from "../_schemas/CreateFormValues";
-import { Input } from "@nextui-org/input";
 import { InputFormField } from "@/components/form/InputFormField";
 import { useCreateBuyer } from "../../_hooks/useCreateBuyer";
 

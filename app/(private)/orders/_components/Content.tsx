@@ -4,13 +4,16 @@ import Layout from '@/components/layout/layout';
 import Table from './Table'
 import { useEffect, useMemo, useState } from 'react';
 import { useOrders } from '../_hooks/useOrders';
-import { Pagination, Select, SelectItem } from '@nextui-org/react';
+import { Button, Pagination, Select, SelectItem } from '@nextui-org/react';
+import { useRouter } from 'next/navigation';
 
 const OrdersContent = () => {
   const [status, setStatus] = useState('Pendiente')
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
   const ordersQuery = useOrders({ page, status });
+
+  const router = useRouter();
 
   const orders = useMemo(() => {
     return ordersQuery.data?.data || [];
@@ -24,11 +27,26 @@ const OrdersContent = () => {
       return prev;
     })
   }, [ordersQuery.data?.count])
+  
+  const handleNewOrder = () => {
+    router.push("/orders/new")
+  }
 
   return (
     <Layout
       title='Ordenes'
       breadcrumbs={['Ordenes', 'Buscar']}
+      actions={
+        <div className="flex gap-3">
+          <Button
+            size="sm"
+            color="primary"
+            onClick={handleNewOrder}
+          >
+              Nuevo
+          </Button>
+        </div>
+      }
     >
       <div className='py-4'>
         <div className='flex flex-col gap-3'>

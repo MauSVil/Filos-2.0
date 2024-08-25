@@ -76,7 +76,7 @@ const Chat = (props: Props) => {
       }
       <Card className="flex-1">
         <CardContent className="flex">
-          <div ref={chatRef} className="flex-1 rounded-medium border-small border-divider p-6 overflow-y-auto flex flex-col gap-4">
+          <div ref={chatRef} className="flex-1 h-[450px] rounded-medium border-small border-divider p-6 overflow-y-auto flex flex-col gap-4">
             {
               !selectedChat ? (
                 <div className="flex items-center justify-center h-full">
@@ -96,7 +96,7 @@ const Chat = (props: Props) => {
                         className={`flex items-center ${message.role === 'assistant' ? "justify-end" : "justify-start"}`}
                       >
                         <div
-                          className={`flex max-w-[60%] rounded-md min-w-[20%] px-3 py-2 gap-2 rounded-medium ${message.role === 'assistant' ? "flex-row-reverse text-right bg-green-500" : "text-left bg-emerald-900"}`
+                          className={`flex max-w-[60%] rounded-md min-w-[20%] px-3 py-2 gap-2 rounded-medium ${message.role === 'assistant' ? "flex-row-reverse bg-emerald-900" : "bg-zinc-800"}`
                           }
                         >
                           <div className="flex flex-col w-full">

@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { Providers } from "./providers";
 
 import { siteConfig } from "@/config/site";
-import { fontSans } from "@/config/fonts";
+import { Inter as FontSans } from "next/font/google"
 
 export const metadata: Metadata = {
   title: {
@@ -24,6 +24,11 @@ export const viewport: Viewport = {
     { media: "(prefers-color-scheme: dark)", color: "black" },
   ],
 };
+
+const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+})
 
 export default function RootLayout({
   children,

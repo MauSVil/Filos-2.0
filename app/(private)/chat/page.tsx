@@ -6,7 +6,7 @@ import _ from "lodash";
 import Contacts from "./_components/Contacts";
 import Chat from "./_components/Chat";
 import { socket } from "./_socket";
-import { Input } from "@nextui-org/input";
+import { Input } from "@/components/ui/input";
 
 export type Contact = {
   _id: string;
@@ -89,14 +89,11 @@ const ChatPage = () => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="flex h-full gap-4">
-        <div className="flex flex-col gap-2 w-1/4 max-w-[200px]">
+      <div className="grid h-full items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 grid-cols-1 lg:grid-cols-2 xl:grid-cols-2">
+        <div className="flex h-full flex-col gap-2">
           <Input
             placeholder="Busca un contacto..."
-            size="sm"
-            variant="bordered"
             value={value}
-            onValueChange={setValue}
           />
           <Contacts
             loading={loading}

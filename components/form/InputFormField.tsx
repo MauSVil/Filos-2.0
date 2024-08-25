@@ -1,25 +1,18 @@
-import { Input } from "@nextui-org/input";
-import { FormControl, FormDescription, FormField, FormItem, FormMessage } from ".";
-import { FieldValues, FormState, UseControllerProps } from "react-hook-form";
+import { FieldValues, UseControllerProps } from "react-hook-form";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { Input } from "../ui/input";
 
 export interface NextUIInputFormFieldProps<T extends FieldValues> extends React.InputHTMLAttributes<HTMLInputElement> {
   controllerProps: UseControllerProps<T>;
-  label: string;
-  description?: string;
-  hidden?: boolean;
-  valueModifierOnChange?: (item: string) => any;
-  error?: string;
+  placeholder?: string;
 }
 
 export const InputFormField = <T extends FieldValues>(props: NextUIInputFormFieldProps<T>) => {
   const {
     controllerProps,
-    label,
-    description,
     hidden,
-    valueModifierOnChange,
-    error,
-    ...rest
+    placeholder,
+    type = "text",
   } = props;
   return (
     <FormField
@@ -28,20 +21,12 @@ export const InputFormField = <T extends FieldValues>(props: NextUIInputFormFiel
         <FormItem hidden={hidden}>
           <FormControl>
             <Input
-              isInvalid={!!error}
-              errorMessage={error}
-              value={field.value}
-              label={label}
-              description={description}
-              onValueChange={(value) => {
-                if (valueModifierOnChange) {
-                  field.onChange(valueModifierOnChange(value));
-                } else {
-                  field.onChange(value);
-                }
-              }}
+              {...field}
+              placeholder={placeholder}
+              type={type}
             />
           </FormControl>
+          <FormMessage className="text-xs text-red-500" />
         </FormItem>
       )}
     />

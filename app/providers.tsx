@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -24,20 +25,22 @@ export function Providers({ children, themeProps }: ProvidersProps) {
   return (
     <NextUIProvider navigate={router.push}>
       <NextThemesProvider {...themeProps}>
-        <ToastContainer
-          position="bottom-right"
-          autoClose={5000}
-          hideProgressBar
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          theme="dark"
-        />
-        <QueryClientProvider client={queryClient}>
-          <ReactQueryDevtools initialIsOpen={false} />
-          {children}
-        </QueryClientProvider>
+        <TooltipProvider>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            theme="dark"
+          />
+          <QueryClientProvider client={queryClient}>
+            <ReactQueryDevtools initialIsOpen={false} />
+            {children}
+          </QueryClientProvider>
+        </TooltipProvider>
       </NextThemesProvider>
     </NextUIProvider>
   );

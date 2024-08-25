@@ -1,6 +1,7 @@
-import { Avatar, Badge, Chip, Listbox, ListboxItem, ScrollShadow, Skeleton } from "@nextui-org/react";
 import { Key, useMemo, useRef } from "react";
 import { Contact } from "../page";
+import { Card, CardContent } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ContactsProps {
   selectedChat: string;
@@ -13,55 +14,26 @@ const Contacts = (props: ContactsProps) => {
   const { selectedChat, handleSelectionChange, contacts, loading } = props;
 
   return (
-    <ScrollShadow className="w-full border-small px-1 py-2 rounded-small border-default-200 dark:border-default-100">
-      {
-        loading ? (
-          <div className="w-full flex flex-col gap-3">
-            {[...Array(10)].map((_, index) => (
-              <Skeleton className="w-full rounded-lg">
-                <div className="h-10 w-full rounded-lg bg-default-200"></div>
-              </Skeleton>
-            ))}
-          </div>
-        ) : (
-          <Listbox
-            items={Object.values(contacts).sort((a, b) => {
-              const dateA = new Date(a.lastMessageSent || 0).getTime();
-              const dateB = new Date(b.lastMessageSent || 0).getTime();
-              return dateB - dateA;
-            })}
-            label="Assigned to"
-            selectionMode="single"
-            selectedKeys={[selectedChat]}
-            onSelectionChange={handleSelectionChange}
-            variant="flat"
-            disallowEmptySelection
-            emptyContent="No hay contactos"
-          >
-            {(item) => (
-              <ListboxItem key={item?.phone_id} textValue={item.phone_id}>
-                <div className="flex gap-2 items-center">
-                  <div className="flex flex-col w-full">
-                    <div className="px-2 flex flex-col">
-                      <span className="text-small truncate">{item.fullName || item.phone_id}</span>
-                      <span className="text-tiny text-default-400">{item.phone_id}</span>
-                    </div>
-                    <div className="flex gap-2">
-                      {item.newMessage && (
-                        <Chip size="sm" color="success" variant="light">Nuevo</Chip>
-                      )}
-                      {item.aiEnabled && (
-                        <Chip size="sm" color="warning" variant="light">IA</Chip>
-                      )}
-                    </div>
-                  </div>
+    <Card x-chunk="dashboard-01-chunk-5">
+      <CardContent className="flex gap-5 py-4">
+        <ScrollArea className="w-full h-[550px]">
+          {Object.keys(contacts).map((key) => {
+            const contact = contacts[key];
+            return (
+              <div
+                key={key}
+                className="flex items-center gap-4 pb-2 cursor-pointer border-b-2 border-primary-foreground mb-2"
+              >
+                <div className="grid gap-1">
+                  <p className="text-sm font-medium leading-none">{contact.fullName}</p>
+                  <p className="text-sm text-muted-foreground">{contact.phone_id}</p>
                 </div>
-              </ListboxItem>
-            )}
-          </Listbox>
-        )
-      }
-    </ScrollShadow>
+              </div>
+            );
+          })}
+        </ScrollArea>
+      </CardContent>
+    </Card>
   )
 }
 

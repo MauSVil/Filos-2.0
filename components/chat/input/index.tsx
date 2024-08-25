@@ -1,13 +1,15 @@
 "use client";
 
 import React from "react";
-import {Button, Tooltip} from "@nextui-org/react";
 import {Icon} from "@iconify/react";
 
 import {cn} from "@/utils/cn";
 
 import PromptInput from "./prompt-input";
 import { socket } from "@/app/(private)/chat/_socket";
+import { Tooltip } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
+import { TooltipContent, TooltipTrigger } from "@radix-ui/react-tooltip";
 
 type Props = {
   selectedChat: string;
@@ -54,44 +56,42 @@ export default function ChatInput(props: Props) {
   } 
 
   return (
-    <form className="flex w-full items-start gap-2" onSubmit={handleSubmit}>
-      <Tooltip showArrow content="Agregar archivo">
-        <Button isIconOnly radius="lg" variant="flat" onClick={handleFileClick}>
-          <Icon className="text-default-600" icon="solar:paperclip-linear" width={20} />
-          <input
-            type="file"
-            className="hidden"
-            ref={fileRef}
-            onChange={handleFileChange}
-          />
-        </Button>
+    <form className="flex gap-6 w-full items-start gap-2" onSubmit={handleSubmit}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button onClick={handleFileClick}>
+            <Icon className="text-default-600" icon="solar:paperclip-linear" width={20} />
+            <input
+              type="file"
+              className="hidden"
+              ref={fileRef}
+              onChange={handleFileChange}
+            />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          Adjuntar archivo
+        </TooltipContent>
       </Tooltip>
       <PromptInput value={prompt} onValueChange={setPrompt} sendMessage={sendMessage} />
-      {!prompt && (
-        <Tooltip showArrow content="Speak">
-          <Button isIconOnly variant="flat">
-            <Icon className="text-default-600" icon="solar:microphone-3-linear" width={20} />
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            type="submit"
+          >
+            <Icon
+              className={cn(
+                "[&>path]:stroke-[2px]",
+                !prompt ? "text-default-600" : "text-primary-foreground",
+              )}
+              icon="solar:arrow-up-linear"
+              width={20}
+            />
           </Button>
-        </Tooltip>
-      )}
-      <Tooltip showArrow content="Send message">
-        <Button
-          isIconOnly
-          color={!prompt ? "default" : "primary"}
-          isDisabled={!prompt}
-          radius="lg"
-          variant={!prompt ? "flat" : "solid"}
-          type="submit"
-        >
-          <Icon
-            className={cn(
-              "[&>path]:stroke-[2px]",
-              !prompt ? "text-default-600" : "text-primary-foreground",
-            )}
-            icon="solar:arrow-up-linear"
-            width={20}
-          />
-        </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          Enviar mensaje
+        </TooltipContent>
       </Tooltip>
     </form>
   );

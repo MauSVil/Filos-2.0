@@ -7,8 +7,8 @@ const MessageComponent = ({ message, scrollToBottom }: { message: Message, scrol
     case 'text':
       return (
         <>
-          <span className="text-small">{message.message}</span>
-          <span className={`text-tiny text-white text-right`}>
+          <span className="text-small ">{message.message}</span>
+          <span className={`text-xs text-white text-right`}>
             {moment(message.timestamp).format("HH:mm")}
           </span>
         </>

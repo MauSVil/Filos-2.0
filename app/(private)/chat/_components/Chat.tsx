@@ -21,6 +21,10 @@ const Chat = (props: Props) => {
   const chatRef = useRef<HTMLDivElement>(null);
   const [fileManagerOpen, setFileManagerOpen] = useState(false);
 
+  const handleSwitchChange = (value: boolean) => {
+    socket.emit('update_contact', { phone_id: selectedChat, aiEnabled: value });
+  }
+
   const scrollToBottom = () => {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
@@ -65,13 +69,13 @@ const Chat = (props: Props) => {
       {
         selectedChat && (
           <Card className="flex items-center justify-end gap-2 p-2 rounded-medium">
-            <Switch checked={switchValue} onCheckedChange={setSwitchValue} />
+            <Switch checked={switchValue} onCheckedChange={handleSwitchChange} />
             <Label htmlFor="airplane-mode">Usar AI</Label>
           </Card>
         )
       }
       <Card className="flex-1">
-        <CardContent>
+        <CardContent className="flex">
           <div ref={chatRef} className="flex-1 rounded-medium border-small border-divider p-6 overflow-y-auto flex flex-col gap-4">
             {
               !selectedChat ? (

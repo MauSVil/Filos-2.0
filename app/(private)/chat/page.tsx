@@ -89,7 +89,7 @@ const ChatPage = () => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="grid h-full items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 grid-cols-1 lg:grid-cols-2 xl:grid-cols-2">
+      <div className="grid h-full items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 grid-cols-1 lg:grid-cols-[1fr_2fr] xl:grid-cols-[1fr_2fr]">
         <div className="flex h-full flex-col gap-2">
           <Input
             placeholder="Busca un contacto..."

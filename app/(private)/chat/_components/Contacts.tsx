@@ -3,6 +3,7 @@ import { Contact } from "../page";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Check } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface ContactsProps {
   selectedChat: string;
@@ -30,12 +31,24 @@ const Contacts = (props: ContactsProps) => {
             return (
               <div
                 key={contact.phone_id}
-                className="flex items-center justify-between gap-4 pb-2 cursor-pointer border-b-2 border-primary-foreground mb-2 pr-4"
+                className="flex items-center justify-between gap-4 p-2 cursor-pointer border-b-2 border-primary-foreground mb-2 pr-4 hover:bg-primary/10 rounded-medium"
                 onClick={() => handleSelectionChange(new Set([contact.phone_id]))}
               >
                 <div className="grid gap-1">
                   <p className="text-sm font-medium leading-none">{contact.fullName || contact.phone_id }</p>
-                  <p className="text-xs text-muted-foreground">{contact.phone_id}</p>
+                  <p className="text-xs text-muted-foreground mb-2">{contact.phone_id}</p>
+                  <div className="flex items-center gap-1 mb-2">
+                    {
+                      contact.newMessage && (
+                        <Badge variant={"new"}>Nuevo</Badge>
+                      )
+                    }
+                    {
+                      contact.aiEnabled && (
+                        <Badge variant={"IA"}>IA</Badge>
+                      )
+                    }
+                  </div>
                 </div>
                 {
                   selectedChat === contact.phone_id && (

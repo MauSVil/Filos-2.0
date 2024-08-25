@@ -94,6 +94,7 @@ const ChatPage = () => {
           <Input
             placeholder="Busca un contacto..."
             value={value}
+            onChange={(e) => setValue(e.target.value)}
           />
           <Contacts
             loading={loading}

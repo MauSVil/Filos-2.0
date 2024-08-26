@@ -76,7 +76,7 @@ const Chat = (props: Props) => {
       }
       <Card className="flex-1">
         <CardContent className="flex">
-          <div ref={chatRef} className="flex-1 h-[450px] rounded-medium border-small border-divider p-6 overflow-y-auto flex flex-col gap-4">
+          <div ref={chatRef} className="flex-1 h-[450px] rounded-medium border-small border-divider p-6 overflow-y-auto flex flex-col gap-4 lg:h-[650px]">
             {
               !selectedChat ? (
                 <div className="flex items-center justify-center h-full">

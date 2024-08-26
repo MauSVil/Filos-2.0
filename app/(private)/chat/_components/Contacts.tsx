@@ -26,7 +26,7 @@ const Contacts = (props: ContactsProps) => {
   return (
     <Card x-chunk="dashboard-01-chunk-5">
       <CardContent className="flex gap-5 py-4">
-        <ScrollArea className="w-full h-[500px]">
+        <ScrollArea className="w-full h-[500px] lg:h-[650px]">
           {orderedContacts.map((contact) => {
             return (
               <div

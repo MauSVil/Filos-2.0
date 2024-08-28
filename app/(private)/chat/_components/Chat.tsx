@@ -4,7 +4,6 @@ import { Contact, Message } from "../page";
 import { toast } from "react-toastify";
 import MessageComponent from "./Message";
 import { socket } from "../_socket";
-import FileManager from "@/components/chat/file-manager";
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -84,11 +83,11 @@ const Chat = (props: Props) => {
                 </div>
               ) : (
                 <>
-                <FileManager
+                {/* <FileManager
                   fileManagerOpen={fileManagerOpen}
                   setFileManagerOpen={setFileManagerOpen}
                   selectedChat={selectedChat}
-                />
+                /> */}
                   {
                     messages.map((message) => (
                       <div

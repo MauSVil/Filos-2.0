@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import ModalContainer from 'react-modal-promise';
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -38,6 +39,7 @@ export function Providers({ children, themeProps }: ProvidersProps) {
           />
           <QueryClientProvider client={queryClient}>
             <ReactQueryDevtools initialIsOpen={false} />
+            <ModalContainer />
             {children}
           </QueryClientProvider>
         </TooltipProvider>

@@ -1,18 +1,22 @@
+import { InstanceProps, create, createModal } from 'react-modal-promise';
+
 import { socket } from "@/app/(private)/chat/_socket";
 import { Product } from "@/types/MongoTypes/Product";
 import { Autocomplete, AutocompleteItem, Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
 import { useAsyncList } from "@react-stately/data";
 import ky from "ky";
 import { Key, useState } from "react";
+import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogFooter, AlertDialogTitle } from "../ui/alert-dialog";
+import { Separator } from "../ui/separator";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
 
-interface Props {
-  fileManagerOpen: boolean;
-  setFileManagerOpen: (value: boolean) => void;
+export interface Props extends InstanceProps<any, any> {
   selectedChat: string;
 }
 
-const FileManager = (props: Props) => {
-  const { fileManagerOpen, setFileManagerOpen, selectedChat } = props;
+const FileManagerDialog = (props: Props) => {
+  const { isOpen, onReject, onResolve, selectedChat } = props;
+
   const [url, setUrl] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
 
@@ -52,47 +56,28 @@ const FileManager = (props: Props) => {
       socket.emit('send_message', { phone_id: selectedChat, message: 'Imagen enviada', type: 'image', metadata: { url }  });
       socket.emit('update_contact', { phone_id: selectedChat, aiEnabled: false });
     }
-    setFileManagerOpen(false);
+    onResolve();
+  }
+
+  const handleCloseClick = () => {
+    onResolve();
   }
 
   return (
-    <Modal isOpen={fileManagerOpen} onClose={() => setFileManagerOpen(false)}>
-      <ModalContent>
-        <ModalHeader>Buscador de archivos</ModalHeader>
-        <ModalBody>
-          <div className="flex gap-4 flex-col">
-            <Autocomplete
-              isLoading={list.isLoading}
-              items={list.items}
-              labelPlacement="outside"
-              label="Producto"
-              variant="bordered"
-              placeholder="Busca un producto..."
-              selectedKey={url}
-              onInputChange={list.setFilterText}
-              onSelectionChange={handleSelectionChange}
-            >
-              {(item) => <AutocompleteItem key={item.image}>{item.uniqId}</AutocompleteItem>}
-            </Autocomplete>
-            <Input
-              type="file"
-              onChange={handleInputChange}
-              label="Escoge un archivo externo"
-            />
-          </div>
-        </ModalBody>
-        <ModalFooter>
-          <Button
-            onClick={handleSendFile}
-            color="primary"
-            isDisabled={!url && !file}
-          >
-            Mandar
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+    <AlertDialog open={isOpen} onOpenChange={(open) => !open}>
+      <AlertDialogContent className='w-[1000px] max-w-none'>
+        <AlertDialogTitle>
+          {'Resumen de modificacion de salarios de empleados'}
+          <Separator className='my-3' />
+        </AlertDialogTitle>
+        <AlertDialogFooter>
+          <AlertDialogAction onClick={handleCloseClick}>
+            {'Cerrar'}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog >
   )
 }
 
-export default FileManager;
+export const FileManager = create(FileManagerDialog);

@@ -10,6 +10,7 @@ import { socket } from "@/app/(private)/chat/_socket";
 import { Tooltip } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { TooltipContent, TooltipTrigger } from "@radix-ui/react-tooltip";
+import { FileManager } from "../file-manager";
 
 type Props = {
   selectedChat: string;
@@ -29,8 +30,12 @@ export default function ChatInput(props: Props) {
     setPrompt("");
   };
 
-  const handleFileClick = () => {
-    setFileManagerOpen(true);
+  const handleFileClick = async () => {
+    try {
+      await FileManager({ selectedChat });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

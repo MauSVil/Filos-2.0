@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import {
+  Bell,
   Home,
   LineChart,
   MessageCircle,
@@ -30,6 +31,10 @@ import {
 } from "@/components/ui/tooltip"
 import { usePathname } from "next/navigation"
 import { cn } from "@/utils/cn"
+import { NotificationType } from "@/types/MongoTypes/Notification"
+import { useNotifications } from "./_hooks/useNotifications"
+import { useEffect, useMemo, useState } from "react"
+import { socket } from "./_socket"
 
 interface Props {
   children: React.ReactNode
@@ -37,9 +42,35 @@ interface Props {
 
 const PrivateLayout = (props: Props) => {
   const { children } = props;
+  const [notificationsState, setNotificationsState] = useState<NotificationType[]>([])
 
   const pathname = usePathname();
   const currentPath = pathname.split("/")?.[1]
+
+
+  const notifications = useNotifications();
+  const notificationsData = useMemo(() => notifications?.data || [], [notifications.data]);
+
+  useEffect(() => {
+    setNotificationsState(notificationsData);
+  }, [notificationsData.length, notifications.isFetching]);
+
+  useEffect(() => {
+    socket.on('new_notification', (notification: NotificationType) => {
+      const audio = new Audio('/sounds/Notification.mp3');
+      audio.volume = 0.8;
+      audio.play();
+      setNotificationsState((prevState) => {
+        return [notification, ...prevState];
+      });
+    });
+
+    return () => {
+      socket.off('new_notification');
+    };
+  }, []);
+
+  console.log(notificationsState, 'notificationsState');
 
   return (
     <div className="flex flex-1 h-screen w-full flex-col bg-muted/40">
@@ -117,6 +148,20 @@ const PrivateLayout = (props: Props) => {
           </Tooltip>
         </nav>
         <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                href="#"
+                className={cn("flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8", {
+                  "bg-accent": currentPath === "settings"
+                })}
+              >
+                <Bell className="h-5 w-5" />
+                <span className="sr-only">Notificaciones</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right">Notificaciones</TooltipContent>
+          </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
               <Link

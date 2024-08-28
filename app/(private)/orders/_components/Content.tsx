@@ -18,6 +18,7 @@ import { useBuyers } from "../../buyers/_hooks/useBuyers";
 import _ from "lodash";
 import { toast } from "react-toastify";
 import { Order } from "@/types/MongoTypes/Order";
+import { cn } from "@/utils/cn";
 
 const statusTranslations: { [key: string]: string } = {
   retailPrice: 'Mayoreo',
@@ -94,7 +95,10 @@ const OrdersContent = () => {
 
   return (
     <div className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
-      <div className={`grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-${selectedOrder?._id ? 2 : 3}`}>
+      <div className={cn("grid auto-rows-max items-start gap-4 md:gap-8", {
+        'col-span-3': !selectedOrder._id,
+        'col-span-2': selectedOrder._id
+      })}>
         <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
           <Card
             className="sm:col-span-2" x-chunk="dashboard-05-chunk-0"

@@ -3,7 +3,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { useMemo } from "react";
 import { ScrollArea } from "../ui/scroll-area";
 import moment from "moment";
-import { MessageCircle, MessageSquare } from "lucide-react";
 
 interface Props {
   notifications: NotificationType[];

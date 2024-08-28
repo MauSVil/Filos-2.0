@@ -44,7 +44,7 @@ const FileManagerDialog = (props: Props) => {
 
   let list = useAsyncList<Product>({
     async load({signal, filterText}) {
-      const resp = await ky.get(`/api/products/search?q=${filterText}`, { signal }).json() as { data: { hits: Product[]} };
+      const resp = await ky.get(`/api/products/search?q=${filterText}&limit=5000`, { signal }).json() as { data: { hits: Product[]} };
       return {
         items: resp.data.hits,
       };
@@ -78,6 +78,7 @@ const FileManagerDialog = (props: Props) => {
                 placeholder='Selecciona un modelo...'
                 emptyLabel='No hay archivos'
                 searchLabel='Buscar un archivo...'
+                onInputChange={(text) => console.log('input', text)}
               />
               <InputFormField
                 controllerProps={{

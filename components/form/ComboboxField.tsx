@@ -13,6 +13,7 @@ export interface ComboboxFormFieldProps<T extends FieldValues> {
   items: { label: string, value: string}[];
   emptyLabel: string;
   searchLabel: string;
+  onInputChange: (text: string) => void;
 }
 
 export function ComboboxFormField<T extends FieldValues>({
@@ -22,6 +23,7 @@ export function ComboboxFormField<T extends FieldValues>({
   placeholder,
   emptyLabel,
   searchLabel,
+  onInputChange,
 }: ComboboxFormFieldProps<T>) {
   return (
     <FormField
@@ -54,7 +56,9 @@ export function ComboboxFormField<T extends FieldValues>({
                 <CommandInput
                   placeholder={searchLabel}
                   onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    console.log(e.target.value);
+                    if (onInputChange) {
+                      onInputChange(e.target.value);
+                    }
                   }}
                 />
                 <CommandList>

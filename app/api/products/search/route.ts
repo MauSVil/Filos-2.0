@@ -14,10 +14,11 @@ export const GET = async (req: Request) => {
   try {
     const { searchParams } = new URL(req.url);
     const query = searchParams.get('q') || '';
+    const limit = parseInt(searchParams.get('limit') || '10');
 
     const index = client.index('products');
     await index.updateSearchableAttributes(['baseId', 'uniqId', 'name'])
-    const products = await index.search(query, { matchingStrategy: 'all' });
+    const products = await index.search(query, { matchingStrategy: 'all', limit });
     return NextResponse.json({ data: products });
   } catch (error) {
     if (error instanceof Error) {

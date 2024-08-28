@@ -18,7 +18,6 @@ const Chat = (props: Props) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [switchValue, setSwitchValue] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
-  const [fileManagerOpen, setFileManagerOpen] = useState(false);
 
   const handleSwitchChange = (value: boolean) => {
     socket.emit('update_contact', { phone_id: selectedChat, aiEnabled: value });
@@ -83,11 +82,6 @@ const Chat = (props: Props) => {
                 </div>
               ) : (
                 <>
-                {/* <FileManager
-                  fileManagerOpen={fileManagerOpen}
-                  setFileManagerOpen={setFileManagerOpen}
-                  selectedChat={selectedChat}
-                /> */}
                   {
                     messages.map((message) => (
                       <div
@@ -116,7 +110,6 @@ const Chat = (props: Props) => {
           <Card className="flex align-center justify-center w-full">
             <ChatInput
               selectedChat={selectedChat}
-              setFileManagerOpen={setFileManagerOpen}
             />
           </Card>
         )

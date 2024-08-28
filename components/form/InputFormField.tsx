@@ -1,6 +1,7 @@
 import { FieldValues, UseControllerProps } from "react-hook-form";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
+import { rest } from "lodash";
 
 export interface NextUIInputFormFieldProps<T extends FieldValues> extends React.InputHTMLAttributes<HTMLInputElement> {
   controllerProps: UseControllerProps<T>;
@@ -15,6 +16,7 @@ export const InputFormField = <T extends FieldValues>(props: NextUIInputFormFiel
     placeholder,
     label,
     type = "text",
+    ...rest
   } = props;
   return (
     <FormField
@@ -27,6 +29,7 @@ export const InputFormField = <T extends FieldValues>(props: NextUIInputFormFiel
               {...field}
               placeholder={placeholder}
               type={type}
+              {...rest}
             />
           </FormControl>
           <FormMessage className="text-xs text-red-500" />

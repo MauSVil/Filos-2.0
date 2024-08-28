@@ -2,41 +2,24 @@ import { InstanceProps, create, createModal } from 'react-modal-promise';
 
 import { socket } from "@/app/(private)/chat/_socket";
 import { Product } from "@/types/MongoTypes/Product";
-import { Autocomplete, AutocompleteItem, Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import { useAsyncList } from "@react-stately/data";
 import ky from "ky";
-import { Key, useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogFooter, AlertDialogTitle } from "../ui/alert-dialog";
 import { Separator } from "../ui/separator";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
 import { Form } from '../form';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { fileFormSchema } from '@/zodSchemas/FileForm';
 import { z } from 'zod';
 import { ComboboxFormField } from '../form/ComboboxField';
-import { FormControl, FormField, FormItem, FormLabel } from '../ui/form';
-import { Popover, PopoverTrigger } from '../ui/popover';
 import { InputFormField } from '../form/InputFormField';
 
-export interface Props extends InstanceProps<any, any> {
-  selectedChat: string;
-}
-
-const languages = [
-  { label: "English", value: "en" },
-  { label: "French", value: "fr" },
-  { label: "German", value: "de" },
-  { label: "Spanish", value: "es" },
-  { label: "Portuguese", value: "pt" },
-  { label: "Russian", value: "ru" },
-  { label: "Japanese", value: "ja" },
-  { label: "Korean", value: "ko" },
-  { label: "Chinese", value: "zh" },
-]
+export interface Props extends InstanceProps<any, any> {}
 
 const FileManagerDialog = (props: Props) => {
-  const { isOpen, onReject, onResolve, selectedChat } = props;
+  const { isOpen, onResolve } = props;
 
   const form = useForm<z.infer<typeof fileFormSchema>>({
     resolver: zodResolver(fileFormSchema),
@@ -46,21 +29,19 @@ const FileManagerDialog = (props: Props) => {
     }
   })
 
-  const { awsFile, file } = form.watch();
-
-  console.log(typeof file);
+  const { awsFile, fileFile } = form.watch();
 
   useEffect(() => {
     if (awsFile) {
-      form.setValue('file', undefined);
+      form.setValue('fileFile', undefined);
     }
   }, [awsFile])
 
   useEffect(() => {
-    if (file) {
+    if (fileFile) {
       form.setValue('awsFile', undefined);
     }
-  }, [file])
+  }, [fileFile])
 
   let list = useAsyncList<Product>({
     async load({signal, filterText}) {
@@ -71,29 +52,12 @@ const FileManagerDialog = (props: Props) => {
     },
   });
 
-  // const handleSendFile = () => {
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onload = () => {
-  //       const base64 = reader.result as string;
-  //       socket.emit('send_message', { phone_id: selectedChat, message: 'Imagen enviada', type: 'image', metadata: { base64, type: file.type, name: file.name }  });
-  //       socket.emit('update_contact', { phone_id: selectedChat, aiEnabled: false });
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  //   if (url) {
-  //     socket.emit('send_message', { phone_id: selectedChat, message: 'Imagen enviada', type: 'image', metadata: { url }  });
-  //     socket.emit('update_contact', { phone_id: selectedChat, aiEnabled: false });
-  //   }
-  //   onResolve();
-  // }
-
   const handleCloseClick = () => {
-    onResolve();
+    onResolve(undefined);
   }
 
   const onSubmit = form.handleSubmit(async (values: z.infer<typeof fileFormSchema>) => {
-    console.log(values);
+    onResolve(values);
   });
 
   return (
@@ -123,6 +87,10 @@ const FileManagerDialog = (props: Props) => {
                 }}
                 type='file'
                 label='Selecciona un archivo de tu dispositivo'
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  form.setValue('fileFile', file);
+                }}
               />
             </form>
           </Form>

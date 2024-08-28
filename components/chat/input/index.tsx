@@ -14,11 +14,10 @@ import { FileManager } from "../file-manager";
 
 type Props = {
   selectedChat: string;
-  setFileManagerOpen: (value: boolean) => void;
 };
 
 export default function ChatInput(props: Props) {
-  const {selectedChat, setFileManagerOpen} = props;
+  const {selectedChat} = props;
   const [prompt, setPrompt] = React.useState<string>("");
   const fileRef = React.useRef<HTMLInputElement>(null);
 
@@ -32,7 +31,24 @@ export default function ChatInput(props: Props) {
 
   const handleFileClick = async () => {
     try {
-      await FileManager({ selectedChat });
+      const resp = await FileManager();
+      if (!resp) return;
+      const { awsFile, fileFile } = resp;
+
+      if (fileFile) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const base64 = reader.result as string;
+          socket.emit('send_message', { phone_id: selectedChat, message: 'Imagen enviada', type: 'image', metadata: { base64, type: fileFile.type, name: fileFile.name }  });
+          socket.emit('update_contact', { phone_id: selectedChat, aiEnabled: false });
+        };
+        reader.readAsDataURL(fileFile);
+      }
+      if (awsFile) {
+        socket.emit('send_message', { phone_id: selectedChat, message: 'Imagen enviada', type: 'image', metadata: { url: awsFile }  });
+        socket.emit('update_contact', { phone_id: selectedChat, aiEnabled: false });
+      }
+
     } catch (error) {
       console.error(error);
     }

@@ -1,6 +1,6 @@
 import moment from "moment";
 import { Message } from "../page";
-import { Image } from "@nextui-org/react";
+import Image from "next/image";
 
 const MessageComponent = ({ message, scrollToBottom }: { message: Message, scrollToBottom: () => void }) => {
   switch (message.type) {
@@ -17,6 +17,7 @@ const MessageComponent = ({ message, scrollToBottom }: { message: Message, scrol
       return (
         <Image
           width={150}
+          height={150}
           className="rounded-medium"
           src={message.metadata.url}
           alt="image"

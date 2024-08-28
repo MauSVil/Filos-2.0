@@ -63,7 +63,7 @@ const Chat = (props: Props) => {
   }, [selectedChat]);
 
   return (
-    <div className="flex flex-col flex-1 gap-4 h-full">
+    <div className="flex flex-col flex-1 gap-2 h-full">
       {
         selectedChat && (
           <Card className="flex items-center justify-end gap-2 p-2 rounded-medium">

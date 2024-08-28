@@ -9,6 +9,8 @@ import { Textarea } from "@/components/ui/textarea";
 
 interface PromptInputProps extends TextAreaProps {
   sendMessage: (event: React.KeyboardEvent<HTMLInputElement> | KeyboardEvent) => void;
+  onValueChange?: (value: string) => void;
+  value?: string;
 }
 
 const PromptInput = React.forwardRef<HTMLTextAreaElement, PromptInputProps>(
@@ -21,6 +23,8 @@ const PromptInput = React.forwardRef<HTMLTextAreaElement, PromptInputProps>(
         aria-label="Prompt"
         placeholder="Escriba un mensaje..."
         className="border-none bg-transparent w-full"
+        onChange={(e) => props.onValueChange?.(e.target.value)}
+        value={props.value}
       />
     );
   },

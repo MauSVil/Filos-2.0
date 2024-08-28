@@ -19,9 +19,8 @@ type Props = {
 export default function ChatInput(props: Props) {
   const {selectedChat} = props;
   const [prompt, setPrompt] = React.useState<string>("");
-  const fileRef = React.useRef<HTMLInputElement>(null);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     if (!prompt) return;
     socket.emit('send_message', { phone_id: selectedChat, message: prompt, type: 'text' });
@@ -54,18 +53,6 @@ export default function ChatInput(props: Props) {
     }
   }
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const base64 = reader.result as string;
-      socket.emit('send_message', { phone_id: selectedChat, message: 'Imagen enviada', type: 'image', metadata: { url: base64, type: file.type }  });
-      socket.emit('update_contact', { phone_id: selectedChat, aiEnabled: false });
-    };
-    reader.readAsDataURL(file);
-  }
-
   const sendMessage = (event: React.KeyboardEvent<HTMLInputElement> | KeyboardEvent) => {
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -77,28 +64,21 @@ export default function ChatInput(props: Props) {
   } 
 
   return (
-    <form className="flex gap-6 w-full items-start gap-2" onSubmit={handleSubmit}>
+    <div className="flex gap-3 flex-1">
       <Tooltip>
         <TooltipTrigger asChild>
           <Button onClick={handleFileClick}>
             <Icon className="text-default-600" icon="solar:paperclip-linear" width={20} />
-            <input
-              type="file"
-              className="hidden"
-              ref={fileRef}
-              onChange={handleFileChange}
-            />
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          Adjuntar archivo
+          <p>Adjuntar archivo</p>
         </TooltipContent>
       </Tooltip>
       <PromptInput value={prompt} onValueChange={setPrompt} sendMessage={sendMessage} />
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
-            type="submit"
+          <Button onClick={handleSubmit} disabled={!prompt}
           >
             <Icon
               className={cn(
@@ -114,6 +94,6 @@ export default function ChatInput(props: Props) {
           Enviar mensaje
         </TooltipContent>
       </Tooltip>
-    </form>
+    </div>
   );
 }

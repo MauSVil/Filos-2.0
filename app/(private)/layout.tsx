@@ -40,7 +40,6 @@ const PrivateLayout = (props: Props) => {
 
   const pathname = usePathname();
   const currentPath = pathname.split("/")?.[1]
-  console.log(currentPath, 'currentPath')
 
   return (
     <div className="flex flex-1 h-screen w-full flex-col bg-muted/40">

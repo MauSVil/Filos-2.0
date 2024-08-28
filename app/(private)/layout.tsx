@@ -35,6 +35,8 @@ import { NotificationType } from "@/types/MongoTypes/Notification"
 import { useNotifications } from "./_hooks/useNotifications"
 import { useEffect, useMemo, useState } from "react"
 import { socket } from "./_socket"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import Notifications from "@/components/layout/notifications"
 
 interface Props {
   children: React.ReactNode
@@ -148,20 +150,24 @@ const PrivateLayout = (props: Props) => {
           </Tooltip>
         </nav>
         <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="#"
-                className={cn("flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8", {
-                  "bg-accent": currentPath === "settings"
-                })}
-              >
+          <Popover>
+            <PopoverTrigger>
+              <div className="relative flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
                 <Bell className="h-5 w-5" />
+                {
+                  notificationsState.length > 0 && (
+                    <div className="absolute top-0 right-0 flex items-center justify-center h-4 w-4 text-xs font-semibold bg-blue-500 rounded-full text-primary">
+                      {notificationsState.length}
+                    </div>
+                  )
+                }
                 <span className="sr-only">Notificaciones</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Notificaciones</TooltipContent>
-          </Tooltip>
+              </div>
+            </PopoverTrigger>
+            <PopoverContent side="right" className="w-[400px]" collisionPadding={50}>
+              <Notifications notifications={notificationsState} />
+            </PopoverContent>
+          </Popover>
           <Tooltip>
             <TooltipTrigger asChild>
               <Link

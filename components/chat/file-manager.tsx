@@ -1,6 +1,5 @@
-import { InstanceProps, create, createModal } from 'react-modal-promise';
+import { InstanceProps, create } from 'react-modal-promise';
 
-import { socket } from "@/app/(private)/chat/_socket";
 import { Product } from "@/types/MongoTypes/Product";
 import { Button } from "@nextui-org/react";
 import { useAsyncList } from "@react-stately/data";

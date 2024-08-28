@@ -1,5 +1,5 @@
 import clientPromise from "@/mongodb";
-import { Product } from "@/types/MongoTypes/Product";
+import { Order } from "@/types/MongoTypes/Order";
 import { OrderRepositoryFilter, OrderRepositoryFilterModel } from "@/types/RepositoryTypes/Order";
 import _ from "lodash";
 import { Db } from "mongodb";
@@ -13,21 +13,21 @@ const init = async () => {
 };
 
 export class OrdersRepository {
-  static async findOne(filter: OrderRepositoryFilter = {}): Promise<Product | null> {
+  static async findOne(filter: OrderRepositoryFilter = {}): Promise<Order | null> {
     await init();
     const filters = await OrderRepositoryFilterModel.parse(filter);
-    const chat = await db.collection('orders').findOne<Product>(filters);
-    return chat;
+    const order = await db.collection('orders').findOne<Order>(filters);
+    return order;
   }
 
-  static async find(filter: OrderRepositoryFilter = {}): Promise<Product[]> {
+  static async find(filter: OrderRepositoryFilter = {}): Promise<Order[]> {
     await init();
     const filters = await OrderRepositoryFilterModel.parse(filter);
     const { page, ...rest } = filters;
-    const messages = await db.collection('orders').find<Product>({
+    const orders = await db.collection('orders').find<Order>({
       ...rest,
     }).skip(((page || 1) - 1) * 10).limit(10).sort({ dueDate: -1 }).toArray();
-    return messages;
+    return orders;
   }
 
   static async count(filter: OrderRepositoryFilter = {}): Promise<number> {

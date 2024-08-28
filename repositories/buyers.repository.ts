@@ -2,7 +2,7 @@ import clientPromise from "@/mongodb";
 import { Buyer } from "@/types/MongoTypes/Buyer";
 import { BuyerInput, BuyerRepositoryFilter, BuyerRepositoryFilterModel } from "@/types/RepositoryTypes/Buyer";
 import _ from "lodash";
-import { Db } from "mongodb";
+import { Db, ObjectId } from "mongodb";
 
 let client;
 let db: Db;
@@ -23,8 +23,12 @@ export class BuyersRepository {
   static async find(filter: BuyerRepositoryFilter = {}): Promise<Buyer[]> {
     await init();
     const filters = await BuyerRepositoryFilterModel.parse(filter);
-    const { page, ...rest } = filters;
+    const { page, buyers: buyersIds, ...rest } = filters;
+
+    const buyersObjectIds = buyersIds?.map((id) => new ObjectId(id));
+
     const buyers = await db.collection('buyers').find<Buyer>({
+      ...(buyersIds && { _id: { $in: buyersObjectIds } }),
       ...rest,
     }).skip(((page || 1) - 1) * 10).limit(10).toArray();
     return buyers;

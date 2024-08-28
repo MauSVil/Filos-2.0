@@ -5,6 +5,7 @@ import { Input } from "../ui/input";
 export interface NextUIInputFormFieldProps<T extends FieldValues> extends React.InputHTMLAttributes<HTMLInputElement> {
   controllerProps: UseControllerProps<T>;
   placeholder?: string;
+  label?: string;
 }
 
 export const InputFormField = <T extends FieldValues>(props: NextUIInputFormFieldProps<T>) => {
@@ -12,6 +13,7 @@ export const InputFormField = <T extends FieldValues>(props: NextUIInputFormFiel
     controllerProps,
     hidden,
     placeholder,
+    label,
     type = "text",
   } = props;
   return (
@@ -19,6 +21,7 @@ export const InputFormField = <T extends FieldValues>(props: NextUIInputFormFiel
       {...controllerProps}
       render={({ field }) => (
         <FormItem hidden={hidden}>
+          <FormLabel>{label}</FormLabel>
           <FormControl>
             <Input
               {...field}

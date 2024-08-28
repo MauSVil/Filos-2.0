@@ -9,7 +9,7 @@ export interface Order {
   status: string;
   orderType: string;
   freightPrice: number;
-  advancePayment: number;
+  advancedPayment: number;
   description: string;
   finalAmount: number;
   totalAmount: number;

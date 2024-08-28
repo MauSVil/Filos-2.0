@@ -72,7 +72,9 @@ const PrivateLayout = (props: Props) => {
     };
   }, []);
 
-  console.log(notificationsState, 'notificationsState');
+  const onNotificationClick = (notification: NotificationType) => {
+    notifications.refetch();
+  }
 
   return (
     <div className="flex flex-1 h-screen w-full flex-col bg-muted/40">
@@ -165,7 +167,7 @@ const PrivateLayout = (props: Props) => {
               </div>
             </PopoverTrigger>
             <PopoverContent side="right" className="w-[400px]" collisionPadding={50}>
-              <Notifications notifications={notificationsState} />
+              <Notifications notifications={notificationsState} onNotificationClick={onNotificationClick} />
             </PopoverContent>
           </Popover>
           <Tooltip>

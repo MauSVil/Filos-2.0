@@ -6,10 +6,11 @@ import moment from "moment";
 
 interface Props {
   notifications: NotificationType[];
+  onNotificationClick: (notification: NotificationType) => void;
 }
 
 const Notifications = (props: Props) => {
-  const { notifications } = props;
+  const { notifications, onNotificationClick } = props;
 
   const unreadNotifications = useMemo(() => {
     return notifications.filter((notification) => !notification.read);
@@ -35,7 +36,7 @@ const Notifications = (props: Props) => {
                   <div
                   key={idx}
                   className="flex items-center justify-between gap-4 p-2 cursor-pointer border-b-2 border-primary-foreground mb-2 pr-4 hover:bg-primary/10 rounded-medium"
-                  // onClick={() => handleSelectionChange(new Set([contact.phone_id]))}
+                  onClick={() => onNotificationClick(notification)}
                 >
                   <div className="grid gap-2">
                     <p className="text-md font-medium leading-none">{notification.title}</p>
@@ -56,7 +57,7 @@ const Notifications = (props: Props) => {
                 <div
                 key={idx}
                 className="flex items-center justify-between gap-4 p-2 cursor-pointer border-b-2 border-primary-foreground mb-2 pr-4 hover:bg-primary/10 rounded-medium"
-                // onClick={() => handleSelectionChange(new Set([contact.phone_id]))}
+                onClick={() => onNotificationClick(notification)}
               >
                 <div className="grid gap-2">
                   <p className="text-md font-medium leading-none">{notification.title}</p>

@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import {
   Home,
@@ -26,6 +28,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { usePathname } from "next/navigation"
+import { cn } from "@/utils/cn"
 
 interface Props {
   children: React.ReactNode
@@ -33,7 +37,11 @@ interface Props {
 
 const PrivateLayout = (props: Props) => {
   const { children } = props;
-  
+
+  const pathname = usePathname();
+  const currentPath = pathname.split("/")?.[1]
+  console.log(currentPath, 'currentPath')
+
   return (
     <div className="flex flex-1 h-screen w-full flex-col bg-muted/40">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
@@ -42,7 +50,9 @@ const PrivateLayout = (props: Props) => {
             <TooltipTrigger asChild>
               <Link
                 href="/"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                className={cn("flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8", {
+                  "bg-accent": currentPath === ""
+                })}
               >
                 <Home className="h-5 w-5" />
                 <span className="sr-only">Dashboard</span>
@@ -54,43 +64,51 @@ const PrivateLayout = (props: Props) => {
             <TooltipTrigger asChild>
               <Link
                 href="/orders"
-                className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                className={cn("flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8", {
+                  "bg-accent": currentPath === "orders"
+                })}
               >
                 <ShoppingCart className="h-5 w-5" />
-                <span className="sr-only">Orders</span>
+                <span className="sr-only">Ordenes</span>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="right">Orders</TooltipContent>
+            <TooltipContent side="right">Ordenes</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
                 href="/products"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                className={cn("flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8", {
+                  "bg-accent": currentPath === "products"
+                })}
               >
                 <Package className="h-5 w-5" />
-                <span className="sr-only">Products</span>
+                <span className="sr-only">Productos</span>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="right">Products</TooltipContent>
+            <TooltipContent side="right">Productos</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
                 href="/buyers"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                className={cn("flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8", {
+                  "bg-accent": currentPath === "buyers"
+                })}
               >
                 <Users2 className="h-5 w-5" />
-                <span className="sr-only">Customers</span>
+                <span className="sr-only">Compradores</span>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="right">Customers</TooltipContent>
+            <TooltipContent side="right">Compradores</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
                 href="/chat"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                className={cn("flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8", {
+                  "bg-accent": currentPath === "chat"
+                })}
               >
                 <MessageCircle className="h-5 w-5" />
                 <span className="sr-only">Chat</span>
@@ -104,7 +122,9 @@ const PrivateLayout = (props: Props) => {
             <TooltipTrigger asChild>
               <Link
                 href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                className={cn("flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8", {
+                  "bg-accent": currentPath === "settings"
+                })}
               >
                 <Settings className="h-5 w-5" />
                 <span className="sr-only">Settings</span>

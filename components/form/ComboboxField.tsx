@@ -14,6 +14,7 @@ export interface ComboboxFormFieldProps<T extends FieldValues> {
   emptyLabel: string;
   searchLabel: string;
   onInputChange: (text: string) => void;
+  isLoading?: boolean;
 }
 
 export function ComboboxFormField<T extends FieldValues>({
@@ -24,6 +25,7 @@ export function ComboboxFormField<T extends FieldValues>({
   emptyLabel,
   searchLabel,
   onInputChange,
+  isLoading = false
 }: ComboboxFormFieldProps<T>) {
   return (
     <FormField
@@ -62,28 +64,36 @@ export function ComboboxFormField<T extends FieldValues>({
                   }}
                 />
                 <CommandList>
-                  <CommandEmpty>{emptyLabel}</CommandEmpty>
-                  <CommandGroup>
-                    {items.map((item) => (
-                      <CommandItem
-                        value={item.label}
-                        key={item.value}
-                        onSelect={() => {
-                          field.onChange(item.value === 'none' ? undefined : item.value);
-                        }}
-                      >
-                        <Check
-                          className={cn(
-                            "mr-2 h-4 w-4",
-                            item.value === field.value
-                              ? "opacity-100"
-                              : "opacity-0"
-                          )}
-                        />
-                        {item.label}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
+                  {
+                    isLoading ? (
+                      <CommandEmpty>Cargando...</CommandEmpty>
+                    ) : (
+                      <>
+                        <CommandEmpty>{emptyLabel}</CommandEmpty>
+                        <CommandGroup>
+                          {items.map((item) => (
+                            <CommandItem
+                              value={item.label}
+                              key={item.value}
+                              onSelect={() => {
+                                field.onChange(item.value === 'none' ? undefined : item.value);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  item.value === field.value
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                              {item.label}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </>
+                    )
+                  }
                 </CommandList>
               </Command>
             </PopoverContent>

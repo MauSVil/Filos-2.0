@@ -90,7 +90,6 @@ const Notifications = (props: Props) => {
                 <div
                 key={idx}
                 className="flex items-center justify-between gap-4 p-2 cursor-pointer border-b-2 border-primary-foreground mb-2 pr-4 hover:bg-primary/10 rounded-medium"
-                onClick={() => handleNotificationClick(notification)}
               >
                 <div className="grid gap-2">
                   <p className="text-md font-medium leading-none">{notification.title}</p>

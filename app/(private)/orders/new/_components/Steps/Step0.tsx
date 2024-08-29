@@ -9,14 +9,12 @@ const Step0 = () => {
     <div className="flex flex-col gap-2">
       <InputFormField
         key="name"
-        error={formState.errors.name?.message}
         controllerProps={{
           control,
           name: "name",
         }}
         label="Nombre"
         name="name"
-        description="Nombre del comprador"
       />
       <SelectFormField
         key="buyer"

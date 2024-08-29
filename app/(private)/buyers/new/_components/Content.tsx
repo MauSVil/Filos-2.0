@@ -63,40 +63,32 @@ const NewBuyersContent = () => {
                   control,
                   name: "name",
                 }}
-                error={form.formState.errors.name?.message}
                 label="Nombre"
                 name="name"
-                description="Nombre del comprador"
               />
               <InputFormField
                 controllerProps={{
                   control,
                   name: "email",
                 }}
-                error={form.formState.errors.email?.message}
                 label="Correo Electrónico"
                 name="email"
-                description="Correo electrónico del comprador"
               />
               <InputFormField
                 controllerProps={{
                   control,
                   name: "phone",
                 }}
-                error={form.formState.errors.phone?.message}
                 label="Teléfono"
                 name="phone"
-                description="Teléfono del comprador"
               />
               <InputFormField
                 controllerProps={{
                   control,
                   name: "address",
                 }}
-                error={form.formState.errors.address?.message}
                 label="Dirección"
                 name="address"
-                description="Dirección del comprador"
               />
             </div>
           </form>

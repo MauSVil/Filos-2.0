@@ -44,7 +44,7 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+        <Providers>
           <div className="min-h-screen w-full flex align-center items-center">
             {children}
           </div>

@@ -2,12 +2,12 @@
 
 import { Form } from "@/components/form";
 import Layout from "@/components/layout/layout";
-import { Button } from "@nextui-org/button";
 import { Control, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateFormValues } from "../_schemas/CreateFormValues";
 import { InputFormField } from "@/components/form/InputFormField";
 import { useCreateBuyer } from "../../_hooks/useCreateBuyer";
+import { Button } from "@/components/ui/button";
 
 const defaultValues: CreateFormValues = {
   name: "",
@@ -42,8 +42,6 @@ const NewBuyersContent = () => {
       actions={
         <div className="flex gap-3">
           <Button
-            size="sm"
-            color="primary"
             onClick={handleSubmit(onSubmit as any)}
           >
               Guardar

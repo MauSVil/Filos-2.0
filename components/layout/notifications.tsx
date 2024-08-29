@@ -57,7 +57,7 @@ const Notifications = (props: Props) => {
             }
             {
                 unreadNotifications
-                .sort((a, b) => moment(a.timestamp).toDate().getTime() - moment(b.timestamp).toDate().getTime())
+                .sort((a, b) => moment(b.timestamp).toDate().getTime() - moment(a.timestamp).toDate().getTime())
                 .map((notification, idx) => (
                   <div
                   key={idx}
@@ -85,7 +85,7 @@ const Notifications = (props: Props) => {
             }
             {
               readNotifications
-              .sort((a, b) => moment(a.timestamp).toDate().getTime() - moment(b.timestamp).toDate().getTime())
+              .sort((a, b) => moment(b.timestamp).toDate().getTime() - moment(a.timestamp).toDate().getTime())
               .map((notification, idx) => (
                 <div
                 key={idx}

@@ -49,7 +49,8 @@ export class BuyersRepository {
     input.createdAt = new Date();
     input.updatedAt = new Date();
     input.deletedAt = undefined;
-    await db.collection('products').insertOne(input);
+    input.version = 2;
+    await db.collection('buyers').insertOne(input);
     return 'Buyer inserted';
   }
 

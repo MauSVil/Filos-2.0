@@ -47,8 +47,10 @@ const PrivateLayout = (props: Props) => {
   const [notificationsState, setNotificationsState] = useState<NotificationType[]>([])
 
   const pathname = usePathname();
-  const currentPath = pathname.split("/")?.[1]
+  const currentPaths = pathname.split("/")
+  const currentPath = currentPaths?.[1]
 
+  console.log(currentPaths, 'currentPaths')
 
   const notifications = useNotifications();
   const notificationsData = useMemo(() => notifications?.data || [], [notifications.data]);
@@ -159,7 +161,7 @@ const PrivateLayout = (props: Props) => {
                 {
                   notificationsState.filter((notification) => !notification.read).length > 0 && (
                     <div className="absolute top-0 right-0 flex items-center justify-center h-4 w-4 text-xs font-semibold bg-blue-500 rounded-full text-primary">
-                      {notificationsState.length}
+                      {notificationsState.filter((notification) => !notification.read).length}
                     </div>
                   )
                 }
@@ -244,21 +246,22 @@ const PrivateLayout = (props: Props) => {
           </Sheet>
           <Breadcrumb className="hidden md:flex">
             <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="#">Dashboard</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="#">Orders</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Recent Orders</BreadcrumbPage>
-              </BreadcrumbItem>
+              {
+                currentPaths?.length > 0 && currentPaths.slice(1).map((path, index) => (
+                  <>
+                    <BreadcrumbItem key={index}>
+                      <BreadcrumbLink key={index} asChild>
+                        <Link href="#">{path}</Link>
+                      </BreadcrumbLink>
+                    </BreadcrumbItem>
+                    {
+                      index + 1 < currentPaths.length - 1 && (
+                        <BreadcrumbSeparator />
+                      )
+                    }
+                  </>
+                ))
+              }
             </BreadcrumbList>
           </Breadcrumb>
         </header>

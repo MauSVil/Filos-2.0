@@ -16,6 +16,7 @@ export const BuyerInputModel = z.object({
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
   deletedAt: z.date().optional(),
+  version: z.number().optional(),
 });
 
 export type BuyerInput = z.infer<typeof BuyerInputModel>;

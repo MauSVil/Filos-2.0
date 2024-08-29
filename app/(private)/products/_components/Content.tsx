@@ -1,100 +1,188 @@
 'use client';
 
-import Layout from '@/components/layout/layout';
-import Table from './Table'
-import Grid from './Grid'
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useProducts } from '../_hooks/useProducts';
-import { Input } from '@nextui-org/input';
-import { Icon } from '@iconify/react';
-import { Switch } from '@nextui-org/switch';
-import { Pagination } from '@nextui-org/react';
+import { DataTable } from '@/components/DataTable';
+import { ColumnDef, ColumnFiltersState, getCoreRowModel, getFilteredRowModel, getSortedRowModel, SortingState, useReactTable, VisibilityState } from '@tanstack/react-table';
+import { Product } from '@/types/MongoTypes/Product';
+import DataTableColumnHeader from '@/components/DataTableHeader';
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 
 const ProductsContent = () => {
-  const [list, setList] = useState(true)
-  const [total, setTotal] = useState(0)
-  const [tempQ, setTempQ] = useState("");
-  const [q, setQ] = useState("");
+  const [sorting, setSorting] = useState<SortingState>([{ id: 'uniqId', desc: false }]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [globalFilter, setGlobalFilter] = useState('')
+
   const [page, setPage] = useState(1)
-  const productsQuery = useProducts({ page, q });
+  const productsQuery = useProducts({ page });
 
   const products = useMemo(() => {
     return productsQuery.data?.data || [];
   }, [productsQuery.data?.data]);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      setPage(1);
-      setQ(tempQ);
-    }
-  }
+  const columns: ColumnDef<Product>[] = useMemo(
+    () =>
+      [
+        {
+          id: 'Modelo',
+          header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Modelo" />
+          ),
+          accessorKey: 'uniqId',
+          enableGlobalFilter: true,
+          enableSorting: true,
+          filterFn: "auto",
+          enableColumnFilter: true,
+          sortingFn: "textCaseSensitive",
+        },
+        {
+          id: 'Nombre',
+          header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Nombre" />
+          ),
+          accessorKey: 'name',
+          enableGlobalFilter: true,
+          enableSorting: true,
+          filterFn: "auto",
+          enableColumnFilter: true,
+          sortingFn: "textCaseSensitive",
+        },
+        {
+          id: 'Color',
+          header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Color" />
+          ),
+          accessorKey: 'color',
+          enableGlobalFilter: true,
+          enableSorting: true,
+          filterFn: "auto",
+          enableColumnFilter: true,
+          sortingFn: "textCaseSensitive",
+        },
+        {
+          id: 'Talla',
+          header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Talla" />
+          ),
+          accessorKey: 'size',
+          enableGlobalFilter: true,
+          enableSorting: true,
+          filterFn: "auto",
+          enableColumnFilter: true,
+          sortingFn: "textCaseSensitive",
+        },
+        {
+          id: 'Precio especial',
+          header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Precio especial" />
+          ),
+          accessorKey: 'specialPrice',
+          accessorFn: ({ specialPrice }) => `$${specialPrice}`,
+          enableGlobalFilter: true,
+          enableSorting: true,
+          filterFn: "auto",
+          enableColumnFilter: true,
+          sortingFn: "textCaseSensitive",
+        },
+        {
+          id: 'Precio mayoreo',
+          header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Precio mayoreo" />
+          ),
+          accessorKey: 'wholesalePrice',
+          accessorFn: ({ wholesalePrice }) => `$${wholesalePrice}`,
+          enableGlobalFilter: true,
+          enableSorting: true,
+          filterFn: "auto",
+          enableColumnFilter: true,
+          sortingFn: "textCaseSensitive",
+        },
+        {
+          id: 'Precio semi-mayoreo',
+          header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Precio semi-mayoreo" />
+          ),
+          accessorKey: 'retailPrice',
+          accessorFn: ({ retailPrice }) => `$${retailPrice}`,
+          enableGlobalFilter: true,
+          enableSorting: true,
+          filterFn: "auto",
+          enableColumnFilter: true,
+          sortingFn: "textCaseSensitive",
+        },
+        {
+          id: 'Precio pagina web',
+          header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Precio pagina web" />
+          ),
+          accessorKey: 'webPagePrice',
+          accessorFn: ({ webPagePrice }) => `$${webPagePrice}`,
+          enableGlobalFilter: true,
+          enableSorting: true,
+          filterFn: "auto",
+          enableColumnFilter: true,
+          sortingFn: "textCaseSensitive",
+        },
+      ] satisfies ColumnDef<Product>[],
+    []
+  );
 
-  useEffect(() => {
-    setTotal((prev) => {
-      if (productsQuery.data?.count) {
-        return productsQuery.data.count;
-      }
-      return prev;
-    })
-  }, [productsQuery.data?.count])
+  const table = useReactTable({
+    data: products,
+    columns,
+    getRowId(originalRow) {
+      return originalRow._id;
+    },
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
+    onSortingChange: setSorting,
+    globalFilterFn: "auto",
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      globalFilter
+    },
+  })
 
   return (
-    <Layout
-      title='Productos'
-      breadcrumbs={['Productos', 'Buscar']}
-    >
-      <div className='py-4'>
-        <div className='flex flex-col gap-3'>
-          <div className="flex flex-col items-center gap-3 md:flex-row w-full justify-end">
-            <Input
-              placeholder="Buscar producto"
-              className="max-w-xs"
-              classNames={{
-                inputWrapper: "h-full"
-              }}
-              onKeyDown={handleKeyDown}
-              endContent={<Icon icon="carbon:search" />}
-              value={tempQ}
-              onChange={(e) => setTempQ(e.currentTarget.value)}
-            />
-            <Switch
-              isSelected={list}
-              onChange={() => setList((prev) => !prev)}
-              defaultSelected
-              size="lg"
-              color="primary"
-              thumbIcon={({ isSelected, className }) =>
-                isSelected ? (
-                  <Icon icon="solar:list-linear" className={className} />
-                ) : (
-                  <Icon icon="system-uicons:grid" className={className} />
-                )
-              }
-            />
-          </div>
-          <div className='flex items-center justify-center'>
-            {
-              list ? (
-                <Table loading={productsQuery.isLoading} products={products} />
-              ) : (
-                <Grid isLoading={productsQuery.isLoading} products={products} />
-              )
-            }
-          </div>
-          <div className="flex w-full justify-center">
-            <Pagination
-              isCompact
-              showControls
-              showShadow
-              color="primary"
-              page={page}
-              total={Math.ceil(total / 10)}
-              onChange={(page) => setPage(page)}
-            />
-          </div>
-        </div>
-      </div>
-    </Layout>
+    <>
+      <DataTable
+        table={table}
+        isLoading={productsQuery.isLoading}
+        columns={columns}
+        className='mb-4'
+      />
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious href="#" />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink href="#">1</PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink href="#" isActive>
+              2
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink href="#">3</PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationNext href="#" />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+    </>
   )
 }
 

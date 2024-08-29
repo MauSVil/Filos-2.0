@@ -5,8 +5,8 @@ import { Key, useEffect, useMemo, useState } from "react";
 import _ from "lodash";
 import Contacts from "./_components/Contacts";
 import Chat from "./_components/Chat";
-import { socket } from "./_socket";
 import { Input } from "@/components/ui/input";
+import { useSocket } from "@/contexts/socketContext";
 
 export type Contact = {
   _id: string;
@@ -44,6 +44,8 @@ const ChatPage = () => {
   const [contacts, setContacts] = useState<{ [key: string]: Contact }>({});
   const queryClient = new QueryClient();
 
+  const { socket, connected } = useSocket();
+
   const handleSelectionChange = (val: Set<Key> | "all") => {
     if (val === "all") return;
     const myValue = [...val][0];
@@ -63,6 +65,10 @@ const ChatPage = () => {
   }, [contacts, value]);
 
   useEffect(() => {
+    if (!connected) return;
+
+    socket.emit('contacts');
+
     socket.on('contacts', (contacts: Contact[]) => {
       setContacts(_.keyBy(contacts, 'phone_id'));
       setLoading(false);
@@ -85,7 +91,7 @@ const ChatPage = () => {
       socket.off('new_contact');
       socket.off('list_contact_update');
     };
-  }, []);
+  }, [socket, connected]);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

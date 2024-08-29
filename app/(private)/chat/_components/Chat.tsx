@@ -2,11 +2,11 @@ import ChatInput from "@/components/chat/input";
 import { useEffect, useRef, useState } from "react";
 import { Contact, Message } from "../page";
 import MessageComponent from "./Message";
-import { socket } from "../_socket";
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { useSocket } from "@/contexts/socketContext";
 
 type Props = {
   selectedChat: string;
@@ -14,6 +14,7 @@ type Props = {
 };
 
 const Chat = (props: Props) => {
+  const { socket, connected } = useSocket();
   const { selectedChat, contact } = props;
   const [messages, setMessages] = useState<Message[]>([]);
   const [switchValue, setSwitchValue] = useState(false);
@@ -36,7 +37,7 @@ const Chat = (props: Props) => {
   }, [selectedChat, messages.length]);
 
   useEffect(() => {
-    if (!selectedChat) return;
+    if (!selectedChat || !connected) return;
     setSwitchValue(contact.aiEnabled);
     socket.emit('join_chat', { phone_id: selectedChat});
     socket.on('joined_chat', ({ messages, contact }: { messages: Message[], contact: Contact }) => {
@@ -61,7 +62,7 @@ const Chat = (props: Props) => {
       socket.off('updated_contact');
       socket.off('sent_message');
     };
-  }, [selectedChat]);
+  }, [selectedChat, socket, connected]);
 
   return (
     <div className="flex flex-col flex-1 gap-2 h-full">

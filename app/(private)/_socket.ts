@@ -1,3 +1,9 @@
 import io from 'socket.io-client';
 
-export const socket = io('https://filosbot.mausvil.dev');
+let socketVar;
+
+if (!socketVar) {
+  socketVar = io('https://filosbot.mausvil.dev');
+}
+
+export const socket = socketVar;

@@ -10,6 +10,7 @@ import ModalContainer from 'react-modal-promise';
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme-provider";
+import { SocketProvider } from "@/contexts/socketContext";
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -27,14 +28,16 @@ export function Providers({ children }: ProvidersProps) {
       enableSystem
       disableTransitionOnChange
     >
-      <TooltipProvider>
-        <Toaster richColors />
-        <QueryClientProvider client={queryClient}>
-          <ReactQueryDevtools initialIsOpen={false} />
-          <ModalContainer />
-          {children}
-        </QueryClientProvider>
-      </TooltipProvider>
+      <SocketProvider>
+        <TooltipProvider>
+          <Toaster richColors />
+          <QueryClientProvider client={queryClient}>
+            <ReactQueryDevtools initialIsOpen={false} />
+            <ModalContainer />
+            {children}
+          </QueryClientProvider>
+        </TooltipProvider>
+      </SocketProvider>
     </ThemeProvider>
   );
 }

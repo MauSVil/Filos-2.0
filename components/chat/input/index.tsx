@@ -6,17 +6,18 @@ import {Icon} from "@iconify/react";
 import {cn} from "@/utils/cn";
 
 import PromptInput from "./prompt-input";
-import { socket } from "@/app/(private)/chat/_socket";
 import { Tooltip } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { TooltipContent, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { FileManager } from "../file-manager";
+import { useSocket } from "@/contexts/socketContext";
 
 type Props = {
   selectedChat: string;
 };
 
 export default function ChatInput(props: Props) {
+  const { socket, connected } = useSocket();
   const {selectedChat} = props;
   const [prompt, setPrompt] = React.useState<string>("");
 

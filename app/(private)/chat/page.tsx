@@ -1,6 +1,6 @@
 "use client";
 
-import { dehydrate, HydrationBoundary, QueryClient, useQuery } from "@tanstack/react-query";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import { Key, useEffect, useMemo, useState } from "react";
 import _ from "lodash";
 import Contacts from "./_components/Contacts";

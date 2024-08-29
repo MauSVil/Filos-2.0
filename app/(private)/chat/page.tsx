@@ -88,29 +88,27 @@ const ChatPage = () => {
   }, []);
 
   return (
-    <>
-    </>
-    // <HydrationBoundary state={dehydrate(queryClient)}>
-    //   <div className="grid h-full items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 grid-cols-1 lg:grid-cols-[1fr_2fr] xl:grid-cols-[1fr_2fr]">
-    //     <div className="flex h-full flex-col gap-2">
-    //       <Input
-    //         placeholder="Busca un contacto..."
-    //         value={value}
-    //         onChange={(e) => setValue(e.target.value)}
-    //       />
-    //       <Contacts
-    //         loading={loading}
-    //         selectedChat={selectedChat}
-    //         handleSelectionChange={handleSelectionChange}
-    //         contacts={keyedContacts}
-    //       />
-    //     </div>
-    //     <Chat
-    //       selectedChat={selectedChat}
-    //       contact={keyedContacts[selectedChat]}
-    //     />
-    //   </div>
-    // </HydrationBoundary>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <div className="grid h-full items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 grid-cols-1 lg:grid-cols-[1fr_2fr] xl:grid-cols-[1fr_2fr]">
+        <div className="flex h-full flex-col gap-2">
+          <Input
+            placeholder="Busca un contacto..."
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
+          <Contacts
+            loading={loading}
+            selectedChat={selectedChat}
+            handleSelectionChange={handleSelectionChange}
+            contacts={keyedContacts}
+          />
+        </div>
+        {/* <Chat
+          selectedChat={selectedChat}
+          contact={keyedContacts[selectedChat]}
+        /> */}
+      </div>
+    </HydrationBoundary>
   );
 }
 

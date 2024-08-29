@@ -103,10 +103,10 @@ const ChatPage = () => {
             contacts={keyedContacts}
           />
         </div>
-        {/* <Chat
+        <Chat
           selectedChat={selectedChat}
           contact={keyedContacts[selectedChat]}
-        /> */}
+        />
       </div>
     </HydrationBoundary>
   );

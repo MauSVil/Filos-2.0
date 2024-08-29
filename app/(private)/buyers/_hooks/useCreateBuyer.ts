@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 import { SerializedError } from "../../chat/page";
 import ky from "ky";
-import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export const useCreateBuyer = () => {
   const router = useRouter();

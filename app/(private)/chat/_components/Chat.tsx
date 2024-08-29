@@ -1,12 +1,12 @@
 import ChatInput from "@/components/chat/input";
 import { useEffect, useRef, useState } from "react";
 import { Contact, Message } from "../page";
-import { toast } from "react-toastify";
 import MessageComponent from "./Message";
 import { socket } from "../_socket";
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 
 type Props = {
   selectedChat: string;
@@ -52,6 +52,7 @@ const Chat = (props: Props) => {
     });
 
     socket.on('error', (error: string) => {
+      console.log(error, 'error');
       toast.error(error);
     });
 

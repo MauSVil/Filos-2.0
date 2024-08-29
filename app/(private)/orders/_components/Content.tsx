@@ -16,9 +16,9 @@ import { useRouter } from "next/navigation";
 import moment from "moment";
 import { useBuyers } from "../../buyers/_hooks/useBuyers";
 import _ from "lodash";
-import { toast } from "react-toastify";
 import { Order } from "@/types/MongoTypes/Order";
 import { cn } from "@/utils/cn";
+import { toast } from "sonner";
 
 const statusTranslations: { [key: string]: string } = {
   retailPrice: 'Mayoreo',

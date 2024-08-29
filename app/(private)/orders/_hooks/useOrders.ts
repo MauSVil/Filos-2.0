@@ -1,7 +1,7 @@
 import { Order } from "@/types/MongoTypes/Order"
 import { useQuery } from "@tanstack/react-query"
 import ky from "ky"
-import { toast } from "react-toastify"
+import { toast } from "sonner"
 
 export const useOrders = ({ page, status }: { page: number, status: string }) => {
   return useQuery<{ data: Order[], count: number }>({

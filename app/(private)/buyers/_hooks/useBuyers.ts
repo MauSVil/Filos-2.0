@@ -1,7 +1,7 @@
 import { Buyer } from "@/types/MongoTypes/Buyer"
 import { useQuery } from "@tanstack/react-query"
 import ky from "ky"
-import { toast } from "react-toastify"
+import { toast } from "sonner"
 
 export const useBuyers = ({ page, buyers }: { page?: number, buyers?: string[] }) => {
   return useQuery<{ data: Buyer[], count: number }>({

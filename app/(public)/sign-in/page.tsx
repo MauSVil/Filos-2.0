@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import ky from "ky";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
@@ -13,6 +12,7 @@ import { Form } from "@/components/ui/form";
 import { z } from "zod";
 import { InputFormField } from "@/components/form/InputFormField";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 const defaultValues = {
   email: "",
@@ -30,14 +30,11 @@ export default function Component() {
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
     try {
       setLoading(true);
-      await toast.promise(
-        ky.post("/api/sign-in", { json: values }),
-        {
-          pending: 'Iniciando sesion...',
-          success: 'Sesión iniciada correctamente 🎉',
-          error: 'Error al iniciar sesión 😢'
-        }
-      )
+      toast.promise(ky.post("/api/sign-in", { json: values }), {
+        loading: 'Iniciado sesion...',
+        success: 'Sesion iniciada correctamente',
+        error: 'Error al iniciar sesion'
+      });
       router.push("/products");
     } catch (error) {
       console.error(error);

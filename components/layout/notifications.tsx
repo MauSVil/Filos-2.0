@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { ScrollArea } from "../ui/scroll-area";
 import moment from "moment";
 import ky from "ky";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 interface Props {
   notifications: NotificationType[];

@@ -1,3 +1,5 @@
+"use client";
+
 import { InstanceProps, create } from 'react-modal-promise';
 
 import { Product } from "@/types/MongoTypes/Product";

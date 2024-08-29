@@ -94,7 +94,7 @@ const Chat = (props: Props) => {
                           }
                         >
                           <div className="flex flex-col w-full">
-                            <MessageComponent message={message} scrollToBottom={scrollToBottom} />
+                            {/* <MessageComponent message={message} scrollToBottom={scrollToBottom} /> */}
                           </div>
                         </div>
                       </div>

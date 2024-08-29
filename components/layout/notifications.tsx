@@ -3,6 +3,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { useMemo } from "react";
 import { ScrollArea } from "../ui/scroll-area";
 import moment from "moment";
+import ky from "ky";
+import { toast } from "react-toastify";
 
 interface Props {
   notifications: NotificationType[];
@@ -20,6 +22,23 @@ const Notifications = (props: Props) => {
     return notifications.filter((notification) => notification.read);
   }, [notifications]);
 
+  const handleNotificationClick = async (notification: NotificationType) => {
+    try {
+      await ky.put(`/api/notifications/${notification._id}`, {
+        json: { read: true },
+      }).json();
+
+      onNotificationClick(notification);
+
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+        return;
+      }
+      toast.error("Error al intentar abrir la notificación");
+    }
+  };
+
   return (
     <div>
       <Tabs defaultValue="unread">
@@ -30,13 +49,20 @@ const Notifications = (props: Props) => {
         <TabsContent value="unread">
           <ScrollArea className="h-[400px]">
             {
+              unreadNotifications.length === 0 && (
+                <div className="flex items-center justify-center h-full">
+                  <p className="text-lg text-muted-foreground">No hay notificaciones sin leer</p>
+                </div>
+              )
+            }
+            {
                 unreadNotifications
                 .sort((a, b) => moment(a.timestamp).toDate().getTime() - moment(b.timestamp).toDate().getTime())
                 .map((notification, idx) => (
                   <div
                   key={idx}
                   className="flex items-center justify-between gap-4 p-2 cursor-pointer border-b-2 border-primary-foreground mb-2 pr-4 hover:bg-primary/10 rounded-medium"
-                  onClick={() => onNotificationClick(notification)}
+                  onClick={() => handleNotificationClick(notification)}
                 >
                   <div className="grid gap-2">
                     <p className="text-md font-medium leading-none">{notification.title}</p>
@@ -51,13 +77,20 @@ const Notifications = (props: Props) => {
         <TabsContent value="read">
           <ScrollArea className="h-[400px]">
             {
+              readNotifications.length === 0 && (
+                <div className="flex items-center justify-center h-full">
+                  <p className="text-lg text-muted-foreground">No hay notificaciones leidas</p>
+                </div>
+              )
+            }
+            {
               readNotifications
               .sort((a, b) => moment(a.timestamp).toDate().getTime() - moment(b.timestamp).toDate().getTime())
               .map((notification, idx) => (
                 <div
                 key={idx}
                 className="flex items-center justify-between gap-4 p-2 cursor-pointer border-b-2 border-primary-foreground mb-2 pr-4 hover:bg-primary/10 rounded-medium"
-                onClick={() => onNotificationClick(notification)}
+                onClick={() => handleNotificationClick(notification)}
               >
                 <div className="grid gap-2">
                   <p className="text-md font-medium leading-none">{notification.title}</p>

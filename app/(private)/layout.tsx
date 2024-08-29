@@ -157,7 +157,7 @@ const PrivateLayout = (props: Props) => {
               <div className="relative flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
                 <Bell className="h-5 w-5" />
                 {
-                  notificationsState.length > 0 && (
+                  notificationsState.filter((notification) => !notification.read).length > 0 && (
                     <div className="absolute top-0 right-0 flex items-center justify-center h-4 w-4 text-xs font-semibold bg-blue-500 rounded-full text-primary">
                       {notificationsState.length}
                     </div>

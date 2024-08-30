@@ -3,19 +3,21 @@
 import { useMemo, useState } from 'react';
 import { useProducts } from '../_hooks/useProducts';
 import { DataTable } from '@/components/DataTable';
-import { ColumnDef, ColumnFiltersState, getCoreRowModel, getFilteredRowModel, getSortedRowModel, SortingState, useReactTable, VisibilityState } from '@tanstack/react-table';
+import { ColumnDef, ColumnFiltersState, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, VisibilityState } from '@tanstack/react-table';
 import { Product } from '@/types/MongoTypes/Product';
 import DataTableColumnHeader from '@/components/DataTableHeader';
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 
 const ProductsContent = () => {
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
   const [sorting, setSorting] = useState<SortingState>([{ id: 'uniqId', desc: false }]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [globalFilter, setGlobalFilter] = useState('')
 
-  const [page, setPage] = useState(1)
-  const productsQuery = useProducts({ page });
+  const productsQuery = useProducts();
 
   const products = useMemo(() => {
     return productsQuery.data?.data || [];
@@ -137,6 +139,8 @@ const ProductsContent = () => {
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination,
     onColumnVisibilityChange: setColumnVisibility,
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
@@ -146,7 +150,8 @@ const ProductsContent = () => {
       sorting,
       columnFilters,
       columnVisibility,
-      globalFilter
+      globalFilter,
+      pagination,
     },
   })
 
@@ -158,30 +163,6 @@ const ProductsContent = () => {
         columns={columns}
         className='mb-4'
       />
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious href="#" />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#">1</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#" isActive>
-              2
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#">3</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext href="#" />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
     </>
   )
 }

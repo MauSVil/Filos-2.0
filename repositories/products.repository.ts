@@ -23,15 +23,17 @@ export class ProductsRepository {
   static async find(filter: ProductRepositoryFilter = {}): Promise<Product[]> {
     await init();
     const filters = await ProductRepositoryFilterModel.parse(filter);
-    const { page, q, disponibility, ...rest } = filters;
+    const { q, disponibility, ...rest } = filters;
 
     const messages = await db.collection('products').find<Product>({
       ...rest,
-      ...(q ? { $or: [
-        { uniqId: { $regex: q, $options: 'i' } },
-        { name: { $regex: q, $options: 'i' } }
-      ] } : {}),
-    }).skip(((page || 1) - 1) * 10).limit(10).toArray();
+      ...(q ? {
+        $or: [
+          { uniqId: { $regex: q, $options: 'i' } },
+          { name: { $regex: q, $options: 'i' } }
+        ]
+      } : {}),
+    }).toArray();
     return messages;
   }
 
@@ -41,10 +43,12 @@ export class ProductsRepository {
     const { page, q, disponibility, ...rest } = filters;
     const count = await db.collection('products').countDocuments({
       ...rest,
-      ...(q ? { $or: [
-        { uniqId: { $regex: q, $options: 'i' } },
-        { name: { $regex: q, $options: 'i' } }
-      ] } : {}),
+      ...(q ? {
+        $or: [
+          { uniqId: { $regex: q, $options: 'i' } },
+          { name: { $regex: q, $options: 'i' } }
+        ]
+      } : {}),
     });
     return count;
   }

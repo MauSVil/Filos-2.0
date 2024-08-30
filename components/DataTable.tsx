@@ -8,6 +8,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from './ui/button';
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { cn } from '@/utils/cn';
+import { Input } from './ui/input';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface DataTableProps<TData> {
   table: TableType<TData>;
@@ -33,7 +35,36 @@ export function DataTable<TData>({
 
   return (
     <div className={cn("", className)}>
-      <div className="flex items-center pb-2 gap-2">
+      <div className="flex items-between pb-2">
+        <div className='flex items-center gap-2 mb-4'>
+          <Button
+            size={'sm'}
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            <ChevronLeft size={14} />
+          </Button>
+          <span className="text-sm">
+            {`${table.getState().pagination.pageIndex + 1 } / ${table.getPageCount()}`}
+          </span>
+          <Button
+            size={'sm'}
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            <ChevronRight size={14} />
+          </Button>
+          <Input
+            className='w-12'
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                if (Number(e.currentTarget.value) > 0) {
+                  table.setPageIndex(Number(e.currentTarget.value) - 1);
+                }
+              }
+            }}
+          />
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button className="ml-auto">

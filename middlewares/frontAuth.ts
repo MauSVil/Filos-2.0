@@ -10,7 +10,7 @@ export const frontAuth: MiddlewareFactory = (next) => {
   return async (request: NextRequest, _next: NextFetchEvent) => {
     const pathname = request.nextUrl.pathname;
 
-    if (["/chat"]?.some((path) => pathname.startsWith(path)) || pathname === "/") {
+    if (["/chat", "/orders", "/products", "/buyers"]?.some((path) => pathname.startsWith(path)) || pathname === "/") {
       const token = cookies().get("token")?.value;
       if (!token) {
         const url = new URL(`/sign-in`, request.url);
@@ -21,7 +21,7 @@ export const frontAuth: MiddlewareFactory = (next) => {
     if (["/sign-in"]?.some((path) => pathname.startsWith(path))) {
       const token = cookies().get("token")?.value;
       if (token) {
-        const url = new URL(`/chat`, request.url);
+        const url = new URL(`/`, request.url);
         return NextResponse.redirect(url);
       }
     }

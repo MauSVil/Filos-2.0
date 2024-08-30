@@ -8,9 +8,11 @@ export const POST = async (req: NextRequest) => {
     const resp = await ky.post("https://api-filos.mausvil.dev/auth/login", { json: body });
     const json: { data: { token: string }, error: string } = await resp.json();
     if (json.error) throw new Error(json.error);
-    cookies().set("token", json?.data?.token);
+    await cookies().set("token", json?.data?.token);
+
     return NextResponse.json({ message: "Se inicio sesion correctamente" });
   } catch (error) {
+    console.log(error, 'error');
     return NextResponse.json({ message: "Error al iniciar sesion" }, { status: 400 });
   }
 }

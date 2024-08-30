@@ -30,12 +30,14 @@ export default function Component() {
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
     try {
       setLoading(true);
-      toast.promise(ky.post("/api/sign-in", { json: values }), {
+      const asd = await toast.promise(ky.post("/api/sign-in", { json: values }), {
         loading: 'Iniciado sesion...',
         success: 'Sesion iniciada correctamente',
         error: 'Error al iniciar sesion'
       });
-      router.push("/products");
+      setTimeout(() => {
+        router.push("/");
+      }, 2000);
     } catch (error) {
       console.error(error);
     } finally {

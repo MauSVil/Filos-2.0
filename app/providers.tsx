@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
 
 import 'react-toastify/dist/ReactToastify.css';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -19,13 +18,11 @@ export interface ProvidersProps {
 const queryClient = new QueryClient()
 
 export function Providers({ children }: ProvidersProps) {
-  const router = useRouter();
 
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="system"
-      enableSystem
+      defaultTheme="dark"
       disableTransitionOnChange
     >
       <SocketProvider>

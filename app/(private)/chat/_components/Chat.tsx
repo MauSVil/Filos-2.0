@@ -61,6 +61,7 @@ const Chat = (props: Props) => {
       socket.off('joined_chat');
       socket.off('updated_contact');
       socket.off('sent_message');
+      socket.off('error');
     };
   }, [selectedChat, socket, connected]);
 

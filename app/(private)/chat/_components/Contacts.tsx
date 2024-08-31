@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Check } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import moment from "moment";
 
 interface ContactsProps {
   selectedChat: string;
@@ -36,7 +37,9 @@ const Contacts = (props: ContactsProps) => {
               >
                 <div className="grid gap-1">
                   <p className="text-sm font-medium leading-none">{contact.fullName || contact.phone_id }</p>
-                  <p className="text-xs text-muted-foreground mb-2">{contact.phone_id}</p>
+                  <p className="text-xs text-muted-foreground mb-2">
+                    {moment(contact.lastMessageSent).fromNow()}
+                  </p>
                   <div className="flex items-center gap-1 mb-2">
                     {
                       contact.newMessage && (

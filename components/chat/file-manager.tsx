@@ -28,19 +28,28 @@ const FileManagerDialog = (props: Props) => {
     }
   })
 
-  const { awsFile, fileFile } = form.watch();
+  const { awsFile, fileFile, catalogueFile } = form.watch();
 
   useEffect(() => {
     if (awsFile) {
       form.setValue('fileFile', undefined);
+      form.setValue('catalogueFile', undefined);
     }
   }, [awsFile])
 
   useEffect(() => {
     if (fileFile) {
       form.setValue('awsFile', undefined);
+      form.setValue('catalogueFile', undefined);
     }
   }, [fileFile])
+
+  useEffect(() => {
+    if (catalogueFile) {
+      form.setValue('awsFile', undefined);
+      form.setValue('fileFile', undefined);
+    }
+  }, [catalogueFile])
 
   let list = useAsyncList<Product>({
     async load({signal, filterText}) {
@@ -79,6 +88,22 @@ const FileManagerDialog = (props: Props) => {
                 emptyLabel='No hay archivos'
                 searchLabel='Buscar un archivo...'
                 onInputChange={(text) => list.setFilterText(text)}
+                isLoading={list.isLoading}
+              />
+              <ComboboxFormField
+                items={[
+                  { label: 'Mayoreo', value: 'https://filos-develop.s3.us-west-1.amazonaws.com/catalogos/mayoreo.pdf' },
+                  { label: 'Menudeo', value: 'https://filos-develop.s3.us-west-1.amazonaws.com/catalogos/menudeo.pdf' },
+                  { label: 'Sin precios', value: 'https://filos-develop.s3.us-west-1.amazonaws.com/catalogos/sp.pdf' },
+                ]}
+                controllerProps={{
+                  control: form.control,
+                  name: 'catalogueFile'
+                }}
+                label='Selecciona un catalogo'
+                placeholder='Selecciona un catalogo...'
+                emptyLabel='No hay archivos'
+                searchLabel='Buscar un catalogo...'
                 isLoading={list.isLoading}
               />
               <InputFormField

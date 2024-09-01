@@ -33,7 +33,7 @@ export default function ChatInput(props: Props) {
     try {
       const resp = await FileManager();
       if (!resp) return;
-      const { awsFile, fileFile } = resp;
+      const { catalogueFile, awsFile, fileFile } = resp;
 
       if (fileFile) {
         const reader = new FileReader();
@@ -44,8 +44,8 @@ export default function ChatInput(props: Props) {
         };
         reader.readAsDataURL(fileFile);
       }
-      if (awsFile) {
-        socket.emit('send_message', { phone_id: selectedChat, message: 'Imagen enviada', type: 'image', metadata: { url: awsFile }  });
+      if (awsFile || catalogueFile) {
+        socket.emit('send_message', { phone_id: selectedChat, message: 'Imagen enviada', type: 'image', metadata: { url: awsFile || catalogueFile }  });
         socket.emit('update_contact', { phone_id: selectedChat, aiEnabled: false });
       }
 

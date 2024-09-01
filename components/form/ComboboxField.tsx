@@ -13,7 +13,7 @@ export interface ComboboxFormFieldProps<T extends FieldValues> {
   items: { label: string, value: string}[];
   emptyLabel: string;
   searchLabel: string;
-  onInputChange: (text: string) => void;
+  onInputChange?: (text: string) => void;
   isLoading?: boolean;
 }
 

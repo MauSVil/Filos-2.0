@@ -50,8 +50,6 @@ const PrivateLayout = (props: Props) => {
   const currentPaths = pathname.split("/")
   const currentPath = currentPaths?.[1]
 
-  console.log(currentPaths, 'currentPaths')
-
   const notifications = useNotifications();
   const notificationsData = useMemo(() => notifications?.data || [], [notifications.data]);
 

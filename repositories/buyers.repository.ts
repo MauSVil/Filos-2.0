@@ -30,7 +30,7 @@ export class BuyersRepository {
     const buyers = await db.collection('buyers').find<Buyer>({
       ...(buyersIds && { _id: { $in: buyersObjectIds } }),
       ...rest,
-    }).skip(((page || 1) - 1) * 10).limit(10).toArray();
+    }).toArray();
     return buyers;
   }
 

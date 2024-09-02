@@ -26,7 +26,7 @@ export class OrdersRepository {
     const { page, ...rest } = filters;
     const orders = await db.collection('orders').find<Order>({
       ...rest,
-    }).skip(((page || 1) - 1) * 10).limit(10).sort({ dueDate: -1 }).toArray();
+    }).sort({ dueDate: -1 }).toArray();
     return orders;
   }
 

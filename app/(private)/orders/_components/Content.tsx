@@ -4,11 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChevronLeft, ChevronRight, Copy, CreditCard, DownloadIcon, File, FileIcon, ListFilter, MoreVertical, Truck } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useOrders } from "../_hooks/useOrders";
@@ -19,6 +16,9 @@ import _ from "lodash";
 import { Order } from "@/types/MongoTypes/Order";
 import { cn } from "@/utils/cn";
 import { toast } from "sonner";
+import { DataTable } from "@/components/DataTable";
+import { ColumnDef, ColumnFiltersState, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, VisibilityState } from "@tanstack/react-table";
+import DataTableColumnHeader from "@/components/DataTableHeader";
 
 const statusTranslations: { [key: string]: string } = {
   retailPrice: 'Mayoreo',
@@ -33,11 +33,18 @@ const orderStatuses = [
 ]
 
 const OrdersContent = () => {
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const [sorting, setSorting] = useState<SortingState>([{ id: 'uniqId', desc: false }]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [globalFilter, setGlobalFilter] = useState('')
+
   const [selectedOrder, setSelectedOrder] = useState<Order>({} as Order);
   const [status, setStatus] = useState(orderStatuses[0])
-  const [total, setTotal] = useState(0)
-  const [page, setPage] = useState(1)
-  const ordersQuery = useOrders({ page, status });
+  const ordersQuery = useOrders({ status });
 
   const buyersArray = useMemo(() => {
     return ordersQuery.data?.data?.map((order) => order.buyer) || [];
@@ -59,15 +66,6 @@ const OrdersContent = () => {
   const mappedOrders = useMemo(() => {
     return _.keyBy(orders, '_id');
   }, [orders]);
-
-  useEffect(() => {
-    setTotal((prev) => {
-      if (ordersQuery.data?.count) {
-        return ordersQuery.data.count;
-      }
-      return prev;
-    })
-  }, [ordersQuery.data?.count])
   
   const handleNewOrder = () => {
     router.push("/orders/new")
@@ -77,21 +75,143 @@ const OrdersContent = () => {
     window.open(url, '_blank');
   }
 
-  const handlePrevious = () => {
-    if (page === 1) {
-      toast.error('No puedes ir a una página menor a 1');
-      return;
-    }
-    setPage((prev) => prev - 1);
-  }
+  const columns: ColumnDef<Order>[] = useMemo(
+    () =>
+      [
+        {
+          id: 'Comprador',
+          header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Comprador" />
+          ),
+          accessorKey: 'buyer',
+          cell: (cellData) => {
+            return (
+              <div className="flex flex-col gap-1">
+                <span>{cellData.row.original.buyer}</span>
+                <span className="text-xs text-muted-foreground">
+                  {`Fecha compromiso: ${moment(cellData.row.original.dueDate).format('DD/MM/YYYY')}`}
+                </span>
+              </div>
+            )
+          },
+          enableGlobalFilter: true,
+          enableSorting: true,
+          filterFn: "auto",
+          enableColumnFilter: true,
+          sortingFn: "textCaseSensitive",
+        },
+        {
+          id: 'Tipo de orden',
+          accessorKey: 'orderType',
+          header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Tipo de orden" />
+          ),
+          accessorFn: ({ orderType }) => statusTranslations[orderType],
+          enableGlobalFilter: true,
+          enableSorting: true,
+          filterFn: "auto",
+          enableColumnFilter: true,
+          sortingFn: "textCaseSensitive",
+        },
+        {
+          id: 'Pagado',
+          header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Pagado" />
+          ),
+          accessorKey: 'paid',
+          cell: (cellData) => {
+            return cellData.row.original.paid ? (
+              <Badge variant="default">Si</Badge>
+            ) : (
+              <Badge variant="destructive">No</Badge>
+            )
+          },
+          enableGlobalFilter: true,
+          enableSorting: true,
+          filterFn: "auto",
+          enableColumnFilter: true,
+          sortingFn: "textCaseSensitive",
+        },
+        {
+          id: 'Productos',
+          header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Productos" />
+          ),
+          accessorFn: ({ products }) => products.length,
+          enableGlobalFilter: true,
+          enableSorting: true,
+          filterFn: "auto",
+          enableColumnFilter: true,
+          sortingFn: "textCaseSensitive",
+        },
+        {
+          id: 'Total',
+          header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Total" />
+          ),
+          accessorFn: ({ finalAmount }) => `$${finalAmount}`,
+          enableGlobalFilter: true,
+          enableSorting: true,
+          filterFn: "auto",
+          enableColumnFilter: true,
+          sortingFn: "textCaseSensitive",
+        },
+        {
+          id: 'Acciones',
+          header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Acciones" />
+          ),
+          cell: (cellData) => (
+            <div className="flex items-center gap-2">
+              <Button
+                size="icon"
+                variant="outline"
+                className="h-6 w-6"
+                onClick={() => setDownloadClick(cellData.row.original.documents.order)}
+              >
+                <DownloadIcon className="h-3.5 w-3.5" />
+                <span className="sr-only">Download</span>
+              </Button>
+              <Button
+                size="icon"
+                variant="outline"
+                className="h-6 w-6"
+                onClick={() => setSelectedOrder(mappedOrders[cellData.row.original._id])}
+              >
+                <ChevronRight className="h-3.5 w-3.5" />
+                <span className="sr-only">More</span>
+              </Button>
+            </div>
+          ),
+        },
+      ] satisfies ColumnDef<Order>[],
+    []
+  );
 
-  const handleNext = () => {
-    if (page === Math.ceil(total / 10)) {
-      toast.error('No puedes ir a una página mayor a la última');
-      return;
-    }
-    setPage((prev) => prev + 1);
-  }
+  const table = useReactTable({
+    data: orders,
+    columns,
+    getRowId(originalRow) {
+      return originalRow._id;
+    },
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination,
+    onColumnVisibilityChange: setColumnVisibility,
+    onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
+    onSortingChange: setSorting,
+    globalFilterFn: "auto",
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      globalFilter,
+      pagination,
+    },
+  })
 
   return (
     <div className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
@@ -191,123 +311,14 @@ const OrdersContent = () => {
                   Las ordenes mas recientes
                 </CardDescription>
               </div>
-              <Pagination className="m-0 w-fit">
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious
-                      className="cursor-pointer" 
-                      onClick={handlePrevious}
-                      isDisabled={page === 1}
-                    />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <span className="text-xs text-muted-foreground">
-                      {`${page} de ${Math.ceil(total / 10)}`}
-                    </span>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationNext
-                      className="cursor-pointer"
-                      onClick={handleNext}
-                      isDisabled={page === Math.ceil(total / 10)}
-                    />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Comprador</TableHead>
-                    <TableHead className="hidden sm:table-cell">
-                      Tipo de orden
-                    </TableHead>
-                    <TableHead className="hidden sm:table-cell">
-                      Pagado
-                    </TableHead>
-                    <TableHead className="hidden md:table-cell">
-                      Productos
-                    </TableHead>
-                    <TableHead className="text-right">
-                      Total
-                    </TableHead>
-                    <TableHead className="text-right">
-                      Acciones
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {
-                    ordersQuery.isLoading || buyersQuery.isLoading ? (
-                      <TableRow>
-                        <TableCell colSpan={6}>
-                          <div className="flex items-center justify-center gap-2">
-                            <span>Cargando...</span>
-                            <Progress
-                              value={
-                                ordersQuery.isLoading && buyersQuery.isLoading
-                                  ? 50
-                                  : ordersQuery.isLoading
-                                  ? 75
-                                  : 100
-                              }
-                            />
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ) : (
-                      <>
-                        {
-                          orders.map((order) => {
-                            return (
-                              <TableRow className="bg-accent">
-                                <TableCell>
-                                  <div className="font-medium">
-                                    {order.buyer}
-                                  </div>
-                                  <div className="hidden text-sm text-muted-foreground md:inline">
-                                    {`Fecha compromiso: ${moment(order.dueDate).format('DD/MM/YYYY')}`}
-                                  </div>
-                                </TableCell>
-                                <TableCell className="hidden sm:table-cell">
-                                  {statusTranslations[order.orderType] || order.orderType}
-                                </TableCell>
-                                <TableCell className="hidden sm:table-cell">
-                                  <Badge className="text-xs" variant={order.paid ? 'default' : 'secondary'}>
-                                    {order.paid ? 'Pagado' : 'Pendiente'}
-                                  </Badge>
-                                </TableCell>
-                                <TableCell className="hidden md:table-cell">
-                                  {order.products.length}
-                                </TableCell>
-                                <TableCell className="text-right">
-                                  {`$${order.totalAmount}`}
-                                </TableCell>
-                                <TableCell className="text-right">
-                                  <div className="flex items-center justify-end gap-2">
-                                    <Button size={"icon"} variant={"outline"} className="h-6 w-6" onClick={() => setDownloadClick(order.documents.order)}>
-                                      <DownloadIcon className="h-3.5 w-3.5" />
-                                    </Button>
-                                    <Button
-                                      size={"icon"}
-                                      variant={"outline"}
-                                      className="h-6 w-6"
-                                      onClick={() => setSelectedOrder(mappedOrders[order._id])}
-                                    >
-                                      <ChevronRight className="h-3.5 w-3.5" />
-                                    </Button>
-                                  </div>
-                                </TableCell>
-                              </TableRow>
-                            )
-                          })
-                        }
-                      </>
-                    )
-                  }
-                </TableBody>
-              </Table>
+              <DataTable
+                table={table}
+                isLoading={ordersQuery.isLoading || buyersQuery.isLoading}
+                columns={columns}
+                className='mb-4'
+              />
             </CardContent>
           </Card>
         </div>

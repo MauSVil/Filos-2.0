@@ -32,8 +32,7 @@ const EditContact = (props: Props) => {
   }
 
   const onSubmit = form.handleSubmit(async (values: EditContactFormSchema) => {
-    console.log(values);
-    // onResolve(values);
+    onResolve(values);
   });
 
   return (

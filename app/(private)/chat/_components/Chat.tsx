@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { useSocket } from "@/contexts/socketContext";
 import { Button } from "@/components/ui/button";
 import { EditContactModal } from "./EditContactModal";
+import { EditContactFormSchema } from "@/zodSchemas/editContactForm";
 
 type Props = {
   selectedChat: string;
@@ -68,7 +69,20 @@ const Chat = (props: Props) => {
   }, [selectedChat, socket, connected]);
 
   const handleEditContact = async () => {
-    await EditContactModal({ contact })
+    try {
+      const formValues = await EditContactModal({ contact }) as EditContactFormSchema | undefined;
+      if (!formValues) return;
+      const { fullName, address, type } = formValues;
+      const updatedContact: Partial<Contact> = {
+        phone_id: selectedChat,
+        ...(fullName && { fullName }),
+        ...(address && { address }),
+        ...(type && { type }),
+      };
+      socket.emit('update_contact', updatedContact);
+    } catch (error) {
+      console.log(error, 'error');
+    }
   }
 
   return (

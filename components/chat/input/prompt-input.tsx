@@ -4,7 +4,6 @@ import type {TextAreaProps} from "@nextui-org/react";
 
 import React from "react";
 
-import {cn} from "@/utils/cn";
 import { Textarea } from "@/components/ui/textarea";
 
 interface PromptInputProps extends TextAreaProps {
@@ -14,7 +13,17 @@ interface PromptInputProps extends TextAreaProps {
 }
 
 const PromptInput = React.forwardRef<HTMLTextAreaElement, PromptInputProps>(
-  ({classNames = {}, sendMessage, ...props}, ref) => {
+  ({classNames = {}, sendMessage, onValueChange, ...props}, ref) => {
+    // const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    //   if (event.key === "Enter") {
+    //     sendMessage();
+    //   }
+    // };
+
+    const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+      onValueChange?.(event.target.value)
+    }
+
     return (
       <Textarea
         cols={1}
@@ -23,8 +32,9 @@ const PromptInput = React.forwardRef<HTMLTextAreaElement, PromptInputProps>(
         aria-label="Prompt"
         placeholder="Escriba un mensaje..."
         className="border-none bg-transparent w-full"
-        onChange={(e) => props.onValueChange?.(e.target.value)}
+        onChange={handleChange}
         value={props.value}
+        // onKeyDown={handleKeyDown}
       />
     );
   },

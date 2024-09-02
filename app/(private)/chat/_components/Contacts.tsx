@@ -30,9 +30,6 @@ const Contacts = (props: ContactsProps) => {
       <CardContent className="flex gap-5 py-4">
         <ScrollArea className="w-full h-[500px] lg:h-[650px]">
           {orderedContacts.map((contact) => {
-            if (contact.phone_id === "5535209307") {
-              console.log(contact, "contactttttt");
-            }
             return (
               <div
                 key={contact.phone_id}
@@ -45,7 +42,6 @@ const Contacts = (props: ContactsProps) => {
                     "bg-blue-400": contact.type === "retail",
                   })} />
                 </div>
-                {/* <div className="absolute h-3 w-3 bottom-0 right-0 rotate-45 transform origin-bottom-left bg-red-400" /> */}
                 <div className="grid gap-1">
                   <p className="text-sm font-medium leading-none">{contact.fullName || contact.phone_id }</p>
                   <p className="text-xs text-muted-foreground mb-2">

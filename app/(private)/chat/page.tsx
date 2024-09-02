@@ -7,6 +7,11 @@ import Contacts from "./_components/Contacts";
 import Chat from "./_components/Chat";
 import { Input } from "@/components/ui/input";
 import { useSocket } from "@/contexts/socketContext";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { ListFilter } from "lucide-react";
 
 export type Contact = {
   _id: string;
@@ -39,6 +44,7 @@ export type SerializedError = {
 };
 
 const ChatPage = () => {
+  const [filterOption, setFilterOption] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const [value, setValue] = useState<string>('');
   const [selectedChat, setSelectedChat] = useState<string>('');
@@ -60,10 +66,18 @@ const ChatPage = () => {
   const keyedContacts = useMemo(() => {
     const contactsFiltered = Object.values(contacts).filter((contact) => {
       return (contact?.fullName?.toLowerCase() || '').includes(value.toLowerCase()) || (contact?.phone_id?.toLowerCase() || '').includes(value.toLowerCase());
+    }).filter((contact) => {
+      if (filterOption === 'IA') {
+        return contact.aiEnabled;
+      } else if (filterOption === 'noIA') {
+        return !contact.aiEnabled;
+      } else {
+        return true;
+      }
     });
 
     return _.keyBy(contactsFiltered, 'phone_id');
-  }, [contacts, value]);
+  }, [contacts, value, filterOption]);
 
   useEffect(() => {
     if (!connected) return;
@@ -98,11 +112,47 @@ const ChatPage = () => {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="grid h-full items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 grid-cols-1 lg:grid-cols-[1fr_2fr] xl:grid-cols-[1fr_2fr]">
         <div className="flex h-full flex-col gap-2">
-          <Input
-            placeholder="Busca un contacto..."
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-          />
+          <div className="flex items-center gap-2">
+            <Input
+              placeholder="Busca un contacto..."
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+            />
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-7 gap-1 text-sm"
+                  >
+                    <ListFilter className="h-3.5 w-3.5" />
+                    <span className="sr-only sm:not-sr-only">Filtrar</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>Filrar por:</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                    <DropdownMenuCheckboxItem
+                        checked={'' === filterOption}
+                        onCheckedChange={() => setFilterOption('')}
+                    >
+                      Todos
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem
+                      checked={'IA' === filterOption}
+                      onCheckedChange={() => setFilterOption('IA')}
+                    >
+                      Con IA
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem
+                      checked={'noIA' === filterOption}
+                      onCheckedChange={() => setFilterOption('noIA')}
+                    >
+                      Sin IA
+                    </DropdownMenuCheckboxItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+          </div>
           <Contacts
             loading={loading}
             selectedChat={selectedChat}

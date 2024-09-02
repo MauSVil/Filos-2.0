@@ -8,6 +8,11 @@ import Chat from "./_components/Chat";
 import { Input } from "@/components/ui/input";
 import { useSocket } from "@/contexts/socketContext";
 
+enum ContactType {
+  wholesale = 'wholesale',
+  retail = 'retail',
+}
+
 export type Contact = {
   _id: string;
   phone_id: string;
@@ -17,6 +22,7 @@ export type Contact = {
   address: string;
   newMessage: boolean;
   lastMessageSent: Date;
+  type: ContactType;
 };
 
 export type Message = {

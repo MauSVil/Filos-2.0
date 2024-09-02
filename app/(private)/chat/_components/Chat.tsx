@@ -7,6 +7,8 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { useSocket } from "@/contexts/socketContext";
+import { Button } from "@/components/ui/button";
+import { EditContactModal } from "./EditContactModal";
 
 type Props = {
   selectedChat: string;
@@ -65,13 +67,22 @@ const Chat = (props: Props) => {
     };
   }, [selectedChat, socket, connected]);
 
+  const handleEditContact = async () => {
+    await EditContactModal({ contact })
+  }
+
   return (
     <div className="flex flex-col flex-1 gap-2 h-full">
       {
         selectedChat && (
-          <Card className="flex items-center justify-end gap-2 p-2 rounded-medium">
-            <Switch checked={switchValue} onCheckedChange={handleSwitchChange} />
-            <Label htmlFor="airplane-mode">Usar AI</Label>
+          <Card className="flex items-center justify-between p-2 rounded-medium">
+            <Button size="sm" onClick={handleEditContact}>
+              Editar contacto
+            </Button>
+            <div className="flex justify-between gap-2 items-center">
+              <Switch checked={switchValue} onCheckedChange={handleSwitchChange} />
+              <Label htmlFor="airplane-mode">Usar AI</Label>
+            </div>
           </Card>
         )
       }

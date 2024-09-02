@@ -46,9 +46,6 @@ export default function ChatInput(props: Props) {
         reader.readAsDataURL(fileFile);
       }
       if (awsFile) {
-        const segments = catalogueFile.split('/');
-        const fileName = segments.pop();
-        const word = fileName.replace('.pdf', '');
         socket.emit('send_message', { phone_id: selectedChat, message: 'Imagen enviada', type: 'image', metadata: { url: awsFile, mimeType: 'png', name: `Modelo Sueter ${uuidv4()}` }  });
         socket.emit('update_contact', { phone_id: selectedChat, aiEnabled: false });
       }

@@ -2,15 +2,17 @@ import { FieldValues, UseControllerProps } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Label } from "../ui/label";
+import { cn } from "@/utils/cn";
 
 export interface RadioGroupFormFieldProps<T extends FieldValues> {
   controllerProps: UseControllerProps<T>;
   label: string;
   items: { label: string, value: string}[];
+  direction?: 'row' | 'column';
 }
 
 const RadioGroupFormField = <T extends FieldValues>(props: RadioGroupFormFieldProps<T>) => {
-  const { items, label, controllerProps } = props;
+  const { items, label, controllerProps, direction = 'column' } = props;
   return (
     <FormField
       {...controllerProps}
@@ -21,16 +23,19 @@ const RadioGroupFormField = <T extends FieldValues>(props: RadioGroupFormFieldPr
             <RadioGroup
               onValueChange={field.onChange}
               defaultValue={field.value}
-              className="flex flex-col space-y-1"
+              className={cn("flex flex-row space-x-1", {
+                "flex-col": direction === "column",
+                "flex-row": direction === "row",
+              })}
             >
               {items.map((item) => (
                 <FormItem className="flex items-center space-x-3 space-y-0">
                   <FormControl>
                     <RadioGroupItem value={item.value} />
                   </FormControl>
-                  <FormLabel className="font-normal">
+                  <Label className="font-normal">
                     {item.label}
-                  </FormLabel>
+                  </Label>
                 </FormItem>
               ))}
             </RadioGroup>

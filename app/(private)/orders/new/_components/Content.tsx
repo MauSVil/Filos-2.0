@@ -1,26 +1,22 @@
 "use client";
 
-import Layout from "@/components/layout/layout";
-import HorizontalSteps from "@/components/nextuipro/Stepper";
-import { Icon } from "@iconify/react";
-import { Button } from "@nextui-org/button";
 import { useMemo, useState } from "react";
 import Step0 from "./Steps/Step0";
 import Step1 from "./Steps/Step1";
 import Step2 from "./Steps/Step2";
-import { Control, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateFormValues } from "../schemas/CreateFormValues";
-import { InputFormField } from "@/components/form/InputFormField";
 import { Progress } from "@/components/ui/progress";
 import { Form } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 
 const defaultValues = {
 }
 
 const NewOrdersContent = () => {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(1);
 
   const handleBackStep = () => {
     if (currentStep === 0) return;
@@ -29,7 +25,11 @@ const NewOrdersContent = () => {
 
   const handleNextStep = () => {
     if (currentStep === 2) return;
-    setCurrentStep((prev) => prev + 1);
+    form.trigger().then((isValid) => {
+      if (isValid) {
+        setCurrentStep((prev) => prev + 1);
+      }
+    });
   }
 
   const form = useForm<CreateFormValues>({
@@ -40,22 +40,22 @@ const NewOrdersContent = () => {
 
   const { handleSubmit } = form;
 
+  const onSubmit = handleSubmit((data) => {
+    console.log("Form Data:", data);
+  });
+
   const ContentComponent = useMemo(() => {
     switch (currentStep) {
       case 0:
         return <Step0 />;
       case 1:
-        return <Step1 />;
+        return <Step1 onSubmit={onSubmit} />;
       case 2:
         return <Step2 />;
       default:
         return <div>No hay informacion</div>;
     }
   }, [currentStep]);
-
-  const onSubmit = handleSubmit((data) => {
-    console.log("Form Data:", data);
-  });
 
   return (
     <div className="w-full h-full flex flex-col items-center">
@@ -64,23 +64,31 @@ const NewOrdersContent = () => {
           <p>Inicio</p>
           <p>Final</p>
         </div>
-        <Progress value={33} />
+        <Progress value={(currentStep + 1) * 100 / 3} />
       </div>
       <Separator className="mb-5" />
-      <div className="w-full flex-1 bg-blue">
+      <div className="mb-5 w-full flex-1 bg-blue">
         <Form {...form}>
           <form noValidate className="w-full mt-3 flex flex-col gap-8">
             {ContentComponent}
-            <Button
-                size="sm"
-                color="primary"
-                type="submit"
-                onClick={onSubmit}
-              >
-                Guardar
-              </Button>
           </form>
         </Form>
+      </div>
+      <div className="w-full flex justify-between items-center gap-4 mt-5">
+        <Button
+          className="w-1/2"
+          onClick={handleBackStep}
+          color="secondary"
+        >
+          Atras
+        </Button>
+        <Button
+          className="w-1/2"
+          onClick={handleNextStep}
+          color="default"
+        >
+          Siguiente
+        </Button>
       </div>
     </div>
   )

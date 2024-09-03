@@ -17,7 +17,7 @@ const Step0 = () => {
   })), [buyers]);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       <h3 className="text-lg font-semibold">Informacion de la orden</h3>
       <InputFormField
         key="name"
@@ -46,9 +46,9 @@ const Step0 = () => {
         }}
         direction="row"
         items={[
-          { label: 'Mayoreo', value: 'wholesale' },
-          { label: 'Menudeo', value: 'retail' },
-          { label: 'Pagina web', value: 'web' },
+          { label: 'Mayoreo', value: 'wholesalePrice' },
+          { label: 'Menudeo', value: 'retailPrice' },
+          { label: 'Pagina web', value: 'webPagePrice' },
           { label: 'Especial', value: 'special' },
         ]}
         label='Tipo de orden'

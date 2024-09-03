@@ -38,6 +38,7 @@ export function DataTable<TData>({
       <div className="flex items-between pb-2">
         <div className='flex items-center gap-2 mb-4'>
           <Button
+            form=''
             size={'sm'}
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
@@ -48,6 +49,7 @@ export function DataTable<TData>({
             {`${table.getState().pagination.pageIndex + 1 } / ${table.getPageCount()}`}
           </span>
           <Button
+            form=''
             size={'sm'}
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}

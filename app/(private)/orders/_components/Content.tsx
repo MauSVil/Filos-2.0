@@ -20,7 +20,7 @@ import { DataTable } from "@/components/DataTable";
 import { ColumnDef, ColumnFiltersState, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, VisibilityState } from "@tanstack/react-table";
 import DataTableColumnHeader from "@/components/DataTableHeader";
 
-const statusTranslations: { [key: string]: string } = {
+export const statusTranslations: { [key: string]: string } = {
   retailPrice: 'Mayoreo',
   wholesalePrice: 'Menudeo',
   webPagePrice: 'Pagina web',

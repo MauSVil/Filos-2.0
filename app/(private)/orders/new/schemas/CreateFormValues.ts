@@ -7,6 +7,10 @@ export const CreateFormValues = z.object({
   freightPrice: z.coerce.number({ required_error: 'El precio de flete es requerido' }).optional(),
   advancedPayment: z.coerce.number({ required_error: 'El anticipo es requerido' }).optional(),
   description: z.string({ required_error: 'La descripcion es requerida' }).optional(),
+  products: z.record(z.object({
+    quantity: z.coerce.number({ required_error: 'La cantidad es requerida' }),
+    image: z.string()
+  })).optional(),
 });
 
 export type CreateFormValues = z.input<typeof CreateFormValues>;

@@ -11,8 +11,10 @@ import Step2 from "./Steps/Step2";
 import { Control, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateFormValues } from "../schemas/CreateFormValues";
-import { Form } from "@/components/form";
 import { InputFormField } from "@/components/form/InputFormField";
+import { Progress } from "@/components/ui/progress";
+import { Form } from "@/components/ui/form";
+import { Separator } from "@/components/ui/separator";
 
 const defaultValues = {
 }
@@ -56,65 +58,31 @@ const NewOrdersContent = () => {
   });
 
   return (
-    <Layout
-      title="Nueva Orden"
-      breadcrumbs={["Ordenes", "Nuevo"]}
-      actions={
-        <div className="flex gap-2">
-          <Button
-            color="primary"
-            isIconOnly
-            onClick={handleBackStep}
-            isDisabled={currentStep === 0}
-          >
-            <Icon icon="icon-park-outline:left" />
-          </Button>
-          <Button
-            color="primary"
-            isIconOnly
-            onClick={handleNextStep}
-            isDisabled={currentStep === 2}
-          >
-            <Icon icon="icon-park-outline:right" />
-          </Button>
+    <div className="w-full h-full flex flex-col items-center">
+      <div className="flex flex-col w-full mb-5 gap-4">
+        <div className="w-full flex justify-between items-center gap-2">
+          <p>Inicio</p>
+          <p>Final</p>
         </div>
-      }
-    >
-      <div className="w-full h-full flex flex-col items-center">
-        <HorizontalSteps
-          defaultStep={0}
-          hideProgressBars
-          currentStep={currentStep}
-          onStepChange={setCurrentStep}
-          steps={[
-            {
-              title: "Información",
-            },
-            {
-              title: "Productos",
-            },
-            {
-              title: "Resumen",
-            },
-          ]}
-        />
-        <div className="w-full flex-1 bg-blue">
-          <Form {...form}>
-            <form noValidate className="w-full mt-3 flex flex-col gap-8">
-              {ContentComponent}
-              <Button
-                  size="sm"
-                  color="primary"
-                  type="submit"
-                  onClick={onSubmit}
-                >
-                  Guardar
-                </Button>
-            </form>
-          </Form>
-        </div>
+        <Progress value={33} />
       </div>
-    </Layout>
+      <Separator className="mb-5" />
+      <div className="w-full flex-1 bg-blue">
+        <Form {...form}>
+          <form noValidate className="w-full mt-3 flex flex-col gap-8">
+            {ContentComponent}
+            <Button
+                size="sm"
+                color="primary"
+                type="submit"
+                onClick={onSubmit}
+              >
+                Guardar
+              </Button>
+          </form>
+        </Form>
+      </div>
+    </div>
   )
 }
 

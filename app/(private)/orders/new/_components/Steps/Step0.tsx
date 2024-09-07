@@ -46,10 +46,10 @@ const Step0 = () => {
         }}
         direction="row"
         items={[
-          { label: 'Mayoreo', value: 'wholesalePrice' },
-          { label: 'Menudeo', value: 'retailPrice' },
-          { label: 'Pagina web', value: 'webPagePrice' },
-          { label: 'Especial', value: 'special' },
+          { label: 'Especial', value: 'special', className: 'text-green-400' },
+          { label: 'Mayoreo', value: 'wholesalePrice', className: 'text-purple-400' },
+          { label: 'Menudeo', value: 'retailPrice', className: 'text-yellow-400' },
+          { label: 'Pagina web', value: 'webPagePrice', className: 'text-red-400' },
         ]}
         label='Tipo de orden'
       />

@@ -6,6 +6,7 @@ import { DataTable } from '@/components/DataTable';
 import { ColumnDef, ColumnFiltersState, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, VisibilityState } from '@tanstack/react-table';
 import { Product } from '@/types/MongoTypes/Product';
 import DataTableColumnHeader from '@/components/DataTableHeader';
+import numeral from 'numeral';
 
 const ProductsContent = () => {
   const [pagination, setPagination] = useState({
@@ -77,10 +78,10 @@ const ProductsContent = () => {
         {
           id: 'Precio especial',
           header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Precio especial" />
+            <DataTableColumnHeader column={column} title="Precio especial" className='text-green-400' />
           ),
           accessorKey: 'specialPrice',
-          accessorFn: ({ specialPrice }) => `$${specialPrice}`,
+          accessorFn: ({ specialPrice }) => numeral(specialPrice).format('$0,0.00'),
           enableGlobalFilter: true,
           enableSorting: true,
           filterFn: "auto",
@@ -90,10 +91,10 @@ const ProductsContent = () => {
         {
           id: 'Precio mayoreo',
           header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Precio mayoreo" />
+            <DataTableColumnHeader column={column} title="Precio mayoreo" className='text-purple-400' />
           ),
           accessorKey: 'wholesalePrice',
-          accessorFn: ({ wholesalePrice }) => `$${wholesalePrice}`,
+          accessorFn: ({ wholesalePrice }) => numeral(wholesalePrice).format('$0,0.00'),
           enableGlobalFilter: true,
           enableSorting: true,
           filterFn: "auto",
@@ -103,10 +104,10 @@ const ProductsContent = () => {
         {
           id: 'Precio semi-mayoreo',
           header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Precio semi-mayoreo" />
+            <DataTableColumnHeader column={column} title="Precio semi-mayoreo" className='text-yellow-400' />
           ),
           accessorKey: 'retailPrice',
-          accessorFn: ({ retailPrice }) => `$${retailPrice}`,
+          accessorFn: ({ retailPrice }) => numeral(retailPrice).format('$0,0.00'),
           enableGlobalFilter: true,
           enableSorting: true,
           filterFn: "auto",
@@ -116,10 +117,10 @@ const ProductsContent = () => {
         {
           id: 'Precio pagina web',
           header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Precio pagina web" />
+            <DataTableColumnHeader column={column} title="Precio pagina web" className='text-red-400' />
           ),
           accessorKey: 'webPagePrice',
-          accessorFn: ({ webPagePrice }) => `$${webPagePrice}`,
+          accessorFn: ({ webPagePrice }) => numeral(webPagePrice).format('$0,0.00'),
           enableGlobalFilter: true,
           enableSorting: true,
           filterFn: "auto",

@@ -7,7 +7,7 @@ import { cn } from "@/utils/cn";
 export interface RadioGroupFormFieldProps<T extends FieldValues> {
   controllerProps: UseControllerProps<T>;
   label: string;
-  items: { label: string, value: string}[];
+  items: { label: string, value: string, className: string }[];
   direction?: 'row' | 'column';
 }
 
@@ -33,7 +33,7 @@ const RadioGroupFormField = <T extends FieldValues>(props: RadioGroupFormFieldPr
                   <FormControl>
                     <RadioGroupItem value={item.value} />
                   </FormControl>
-                  <Label className="font-normal">
+                  <Label className={cn("font-normal", item.className)}>
                     {item.label}
                   </Label>
                 </FormItem>

@@ -19,6 +19,8 @@ import { toast } from "sonner";
 import { DataTable } from "@/components/DataTable";
 import { ColumnDef, ColumnFiltersState, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, VisibilityState } from "@tanstack/react-table";
 import DataTableColumnHeader from "@/components/DataTableHeader";
+import { useSocket } from "@/contexts/socketContext";
+import { useContact } from "../_hooks/useContact";
 
 export const statusTranslations: { [key: string]: string } = {
   retailPrice: 'Mayoreo',
@@ -33,6 +35,7 @@ const orderStatuses = [
 ]
 
 const OrdersContent = () => {
+  const { socket } = useSocket();
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
@@ -53,19 +56,17 @@ const OrdersContent = () => {
   const buyersQuery = useBuyers({ buyers: buyersArray });
 
   const router = useRouter();
-  const orders = useMemo(() => {
-    return (ordersQuery.data?.data || []).map((order) => {
-      const mappedBuyers = _.keyBy(buyersQuery?.data?.data || [], '_id');
-      return {
-        ...order,
-        buyer: mappedBuyers[order.buyer]?.name,
-      }
-    })
-  }, [ordersQuery.data?.data, buyersQuery.data?.data]);
+  const orders = useMemo(() => ordersQuery.data?.data || [], [ordersQuery.data?.data]);
 
   const mappedOrders = useMemo(() => {
     return _.keyBy(orders, '_id');
   }, [orders]);
+
+  const mappedBuyers = useMemo(() => {
+    return _.keyBy(buyersQuery.data?.data, '_id');
+  }, [buyersQuery.data?.data]);
+
+  const contactQuery = useContact({ phone_id: mappedBuyers?.[selectedOrder?.buyer]?.phone });
   
   const handleNewOrder = () => {
     router.push("/orders/new")
@@ -87,7 +88,7 @@ const OrdersContent = () => {
           cell: (cellData) => {
             return (
               <div className="flex flex-col gap-1">
-                <span>{cellData.row.original.buyer}</span>
+                <span>{mappedBuyers[cellData.row.original.buyer]?.name}</span>
                 <span className="text-xs text-muted-foreground">
                   {`Fecha compromiso: ${moment(cellData.row.original.dueDate).format('DD/MM/YYYY')}`}
                 </span>
@@ -185,7 +186,7 @@ const OrdersContent = () => {
           ),
         },
       ] satisfies ColumnDef<Order>[],
-    [mappedOrders]
+    [mappedOrders, mappedBuyers]
   );
 
   const table = useReactTable({
@@ -212,6 +213,36 @@ const OrdersContent = () => {
       pagination,
     },
   })
+
+  const handleSendOrder = async (orderInput: Order) => {
+    try {
+      const resp = await contactQuery.refetch();
+      if (resp.isSuccess) {
+        const contactData = resp.data;
+        const selectedChat = mappedBuyers[orderInput.buyer]?.phone;
+
+        if (Number(selectedChat) !== Number(contactData?.phone_id)) {
+          throw new Error('No se encontro el contacto del comprador');
+        }
+
+        const lastMessageSent = moment(contactData?.lastMessageSent);
+        const now = moment();
+        const diff = now.diff(lastMessageSent, 'hours');
+        if (diff > 24) {
+          throw new Error('No puedes enviar mensajes despues de 24 horas');
+        }
+
+        socket.emit('send_message', { phone_id: selectedChat, message: 'Imagen enviada', type: 'pdf', metadata: { url: orderInput?.documents?.order, mimeType: 'pdf', name: 'Orden de compra'  }  });
+        socket.emit('update_contact', { phone_id: selectedChat, aiEnabled: false });
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+        return;
+      }
+      toast.error('An error occurred');
+    }
+  }
 
   return (
     <div className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
@@ -356,10 +387,10 @@ const OrdersContent = () => {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem>Edit</DropdownMenuItem>
-                      <DropdownMenuItem>Export</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleSendOrder(selectedOrder)}>Mandar orden al contacto</DropdownMenuItem>
+                      {/* <DropdownMenuItem>Export</DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem>Trash</DropdownMenuItem>
+                      <DropdownMenuItem>Trash</DropdownMenuItem> */}
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>

@@ -452,7 +452,7 @@ const OrdersContent = () => {
                   <dl className="grid gap-3">
                     <div className="flex items-center justify-between">
                       <dt className="text-muted-foreground">Nombre</dt>
-                      <dd>{selectedOrder?.buyer}</dd>
+                      <dd>{mappedBuyers[selectedOrder?.buyer]?.name}</dd>
                     </div>
                   </dl>
                 </div>

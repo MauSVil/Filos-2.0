@@ -2,7 +2,7 @@ import clientPromise from "@/mongodb";
 import { Product } from "@/types/MongoTypes/Product";
 import { ProductInput, ProductInputModel, ProductRepositoryFilter, ProductRepositoryFilterModel } from "@/types/RepositoryTypes/Product";
 import _ from "lodash";
-import { Db } from "mongodb";
+import { Db, ObjectId } from "mongodb";
 
 let client;
 let db: Db;
@@ -23,7 +23,9 @@ export class ProductsRepository {
   static async find(filter: ProductRepositoryFilter = {}): Promise<Product[]> {
     await init();
     const filters = await ProductRepositoryFilterModel.parse(filter);
-    const { q, disponibility, ...rest } = filters;
+    const { q, disponibility, ids, ...rest } = filters;
+
+    const productsIds = ids?.map((id) => new ObjectId(id));
 
     const messages = await db.collection('products').find<Product>({
       ...rest,
@@ -33,6 +35,7 @@ export class ProductsRepository {
           { name: { $regex: q, $options: 'i' } }
         ]
       } : {}),
+      ...(productsIds && { _id: { $in: productsIds } }),
     }).toArray();
     return messages;
   }

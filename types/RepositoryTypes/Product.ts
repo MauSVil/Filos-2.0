@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const ProductRepositoryFilterModel = z.object({
+  ids: z.array(z.string()).optional(),
   id: z.string().optional(),
   q: z.string().optional(),
   disponibility: z.string().optional(),

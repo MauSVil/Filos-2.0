@@ -21,6 +21,8 @@ import { ColumnDef, ColumnFiltersState, getCoreRowModel, getFilteredRowModel, ge
 import DataTableColumnHeader from "@/components/DataTableHeader";
 import { useSocket } from "@/contexts/socketContext";
 import { useContact } from "../_hooks/useContact";
+import numeral from "numeral";
+import { useProducts } from "../_hooks/useProducts";
 
 export const statusTranslations: { [key: string]: string } = {
   retailPrice: 'Mayoreo',
@@ -67,7 +69,12 @@ const OrdersContent = () => {
   }, [buyersQuery.data?.data]);
 
   const contactQuery = useContact({ phone_id: mappedBuyers?.[selectedOrder?.buyer]?.phone });
-  
+  const productsQuery = useProducts({ products: (selectedOrder?.products || []).map((product) => product.product) });
+
+  const mappedProducts = useMemo(() => {
+    return _.keyBy(productsQuery.data || [], '_id');
+  }, [productsQuery.data]);
+
   const handleNewOrder = () => {
     router.push("/orders/new")
   }
@@ -150,7 +157,7 @@ const OrdersContent = () => {
           header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Total" />
           ),
-          accessorFn: ({ finalAmount }) => `$${finalAmount}`,
+          accessorFn: ({ finalAmount }) => numeral(finalAmount).format('$0,0.00'),
           enableGlobalFilter: true,
           enableSorting: true,
           filterFn: "auto",
@@ -404,7 +411,7 @@ const OrdersContent = () => {
                         return (
                           <li className="flex items-center justify-between">
                             <span className="text-muted-foreground">
-                              {product.product} x <span>{product.quantity}</span>
+                              {`${mappedProducts[product.product]?.name} (${mappedProducts[product.product]?.uniqId})` || product.product} x <span>{product.quantity}</span>
                             </span>
                             <span>{`$${product.total}`}</span>
                           </li>

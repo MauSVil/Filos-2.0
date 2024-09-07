@@ -14,3 +14,10 @@ export const CreateFormValues = z.object({
 });
 
 export type CreateFormValues = z.input<typeof CreateFormValues>;
+
+export const validateProductsStep = CreateFormValues.extend({
+  products: z.record(z.object({
+    quantity: z.coerce.number({ required_error: 'La cantidad es requerida' }),
+    image: z.string()
+  })),
+});

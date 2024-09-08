@@ -356,6 +356,7 @@ const OrdersContent = () => {
                 isLoading={ordersQuery.isLoading || buyersQuery.isLoading}
                 columns={columns}
                 className='mb-4'
+                enableInput={false}
               />
             </CardContent>
           </Card>

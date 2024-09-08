@@ -16,7 +16,8 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { OrderInput, OrderInputModel } from "@/types/RepositoryTypes/Order";
 
-const defaultValues = {
+const defaultValues: Partial<OrderInput> = {
+  dueDate: new Date(),
 }
 
 const NewOrdersContent = () => {
@@ -106,7 +107,7 @@ const NewOrdersContent = () => {
     <div className="w-full h-full flex flex-col items-center">
       <div className="flex flex-col w-full mb-5 gap-4">
         {
-          currentStep === 0 || currentStep === 1 && (
+          (currentStep === 0 || currentStep === 1) && (
             <Progress value={(currentStep + 1) * 100 / 4} />
           )
         }

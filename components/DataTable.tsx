@@ -24,18 +24,20 @@ interface DataTableProps<TData> {
   to?: (row: any) => void;
   idIncludeTo?: string[];
   columns: any[];
+  enableInput?: boolean;
 }
 
 export function DataTable<TData>({
   table,
   isLoading,
   columns,
-  className
+  className,
+  enableInput = true
 }: DataTableProps<TData>) {
 
   return (
     <div className={cn("", className)}>
-      <div className="flex items-between pb-2">
+      <div className="flex items-between pb-2 gap-4">
         <div className='flex items-center gap-2 mb-4'>
           <Button
             form=''
@@ -67,6 +69,16 @@ export function DataTable<TData>({
             }}
           />
         </div>
+        {
+          enableInput && (
+            <Input
+              className="flex-1"
+              placeholder="Buscar..."
+              value={table.getState().globalFilter}
+              onChange={(e) => table.setGlobalFilter(e.target.value)}
+            />
+          )
+        }
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button className="ml-auto">

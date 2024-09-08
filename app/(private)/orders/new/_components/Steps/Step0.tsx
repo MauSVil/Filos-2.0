@@ -1,13 +1,14 @@
 import { useFormContext } from "react-hook-form";
-import { CreateFormValues } from "../../schemas/CreateFormValues";
 import { InputFormField } from "@/components/form/InputFormField";
 import { ComboboxFormField } from "@/components/form/ComboboxField";
 import { useBuyers } from "@/app/(private)/buyers/_hooks/useBuyers";
 import { useMemo } from "react";
 import { RadioGroupFormField } from "@/components/form/RadioGroupFormField";
+import { DateFormField } from "@/components/form/DateFormField";
+import { OrderInput } from "@/types/RepositoryTypes/Order";
 
 const Step0 = () => {
-  const { control } = useFormContext<CreateFormValues>();
+  const { control } = useFormContext<OrderInput>();
 
   const buyersQuery = useBuyers({});
   const buyers = useMemo(() => buyersQuery.data?.data || [], [buyersQuery.data]);
@@ -39,6 +40,15 @@ const Step0 = () => {
         searchLabel='Buscar un comprador...'
         emptyLabel="No hay compradores"
       />
+
+      <DateFormField
+        controllerProps={{
+          control,
+          name: 'dueDate'
+        }}
+        label='Fecha de entrega'
+      />
+
       <RadioGroupFormField
         controllerProps={{
           control,

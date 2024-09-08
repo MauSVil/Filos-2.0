@@ -6,7 +6,7 @@ import Step1 from "./Steps/Step1";
 import Step2 from "./Steps/Step2";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CreateFormValues, validateProductsStep } from "../schemas/CreateFormValues";
+import { validateProductsStep } from "../schemas/CreateFormValues";
 import { Progress } from "@/components/ui/progress";
 import { Form } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
@@ -14,11 +14,10 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { OrderInput, OrderInputModel } from "@/types/RepositoryTypes/Order";
 
 const defaultValues = {
 }
-
-
 
 const NewOrdersContent = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -32,10 +31,10 @@ const NewOrdersContent = () => {
     setCurrentStep((prev) => prev - 1);
   }
 
-  const form = useForm<CreateFormValues>({
+  const form = useForm<OrderInput>({
     defaultValues,
     mode: "onChange",
-    resolver: zodResolver(CreateFormValues),
+    resolver: zodResolver(OrderInputModel),
   });
 
   const { handleSubmit } = form;

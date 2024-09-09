@@ -23,6 +23,7 @@ import { useSocket } from "@/contexts/socketContext";
 import { useContact } from "../_hooks/useContact";
 import numeral from "numeral";
 import { useProducts } from "../_hooks/useProducts";
+import { calculateChangePorcentage } from "@/lib/utils";
 
 export const statusTranslations: { [key: string]: string } = {
   retailPrice: 'Mayoreo',
@@ -261,7 +262,7 @@ const OrdersContent = () => {
       const orderDate = moment(order?.dueDate).toDate();
       return orderDate >= startOfWeek && orderDate <= endOfWeek;
     })
-    .filter((order) => order.paid && order.status === 'Completado')
+    .filter((order) => order.paid)
     .reduce((acc, order) => {
       return acc + (order?.finalAmount || 0);
     }, 0);
@@ -275,7 +276,7 @@ const OrdersContent = () => {
       const orderDate = moment(order?.dueDate).toDate();
       return orderDate >= startOfWeek && orderDate <= endOfWeek;
     })
-    .filter((order) => order.paid && order.status === 'Completado')
+    .filter((order) => order.paid)
     .reduce((acc, order) => {
       return acc + (order?.finalAmount || 0);
     }, 0);
@@ -289,7 +290,7 @@ const OrdersContent = () => {
       const orderDate = moment(order?.dueDate).toDate();
       return orderDate >= startOfMonth && orderDate <= endOfMonth;
     })
-    .filter((order) => order.paid && order.status === 'Completado')
+    .filter((order) => order.paid)
     .reduce((acc, order) => {
       return acc + (order?.finalAmount || 0);
     }, 0);
@@ -303,7 +304,7 @@ const OrdersContent = () => {
       const orderDate = moment(order?.dueDate).toDate();
       return orderDate >= startOfMonth && orderDate <= endOfMonth;
     })
-    .filter((order) => order.paid && order.status === 'Completado')
+    .filter((order) => order.paid)
     .reduce((acc, order) => {
       return acc + (order?.finalAmount || 0);
     }, 0);
@@ -326,7 +327,7 @@ const OrdersContent = () => {
               </CardDescription>
             </CardHeader>
             <CardFooter>
-              <Button onClick={handleNewOrder}>Create nueva orden</Button>
+              <Button onClick={handleNewOrder}>Crear nueva orden</Button>
             </CardFooter>
           </Card>
           <Card x-chunk="dashboard-05-chunk-1">
@@ -338,7 +339,7 @@ const OrdersContent = () => {
             </CardHeader>
             <CardContent>
               <div className="text-xs text-muted-foreground">
-                {`+${numeral(salesThisWeek - salesLastWeek).format('$0,0.00')} from last week`}
+                {`${calculateChangePorcentage(salesLastWeek, salesThisWeek)}% desde la semana pasada`}
               </div>
             </CardContent>
             <CardFooter>
@@ -354,7 +355,7 @@ const OrdersContent = () => {
             </CardHeader>
             <CardContent>
               <div className="text-xs text-muted-foreground">
-                {`+${numeral(salesThisMonth - salesLastMonth).format('$0,0.00')} from last month`}
+                {`${calculateChangePorcentage(salesLastMonth, salesThisMonth)}% desde el mes pasado`}                
               </div>
             </CardContent>
             <CardFooter>

@@ -261,6 +261,7 @@ const OrdersContent = () => {
       const orderDate = moment(order?.dueDate).toDate();
       return orderDate >= startOfWeek && orderDate <= endOfWeek;
     })
+    .filter((order) => order.paid && order.status === 'Completado')
     .reduce((acc, order) => {
       return acc + (order?.finalAmount || 0);
     }, 0);
@@ -274,6 +275,7 @@ const OrdersContent = () => {
       const orderDate = moment(order?.dueDate).toDate();
       return orderDate >= startOfWeek && orderDate <= endOfWeek;
     })
+    .filter((order) => order.paid && order.status === 'Completado')
     .reduce((acc, order) => {
       return acc + (order?.finalAmount || 0);
     }, 0);
@@ -287,6 +289,7 @@ const OrdersContent = () => {
       const orderDate = moment(order?.dueDate).toDate();
       return orderDate >= startOfMonth && orderDate <= endOfMonth;
     })
+    .filter((order) => order.paid && order.status === 'Completado')
     .reduce((acc, order) => {
       return acc + (order?.finalAmount || 0);
     }, 0);
@@ -300,6 +303,7 @@ const OrdersContent = () => {
       const orderDate = moment(order?.dueDate).toDate();
       return orderDate >= startOfMonth && orderDate <= endOfMonth;
     })
+    .filter((order) => order.paid && order.status === 'Completado')
     .reduce((acc, order) => {
       return acc + (order?.finalAmount || 0);
     }, 0);

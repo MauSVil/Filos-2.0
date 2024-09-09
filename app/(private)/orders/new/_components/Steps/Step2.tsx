@@ -34,10 +34,7 @@ const Step2 = (props: Props) => {
     switch (orderGenerationStep) {
       case 0:
         return (
-          <div className="flex flex-col gap-4 items-center justify-center">
-            <span className="text-xl text-gray-200">
-              Modificando inventario...
-            </span>
+          <div className="flex gap-4 items-center justify-center">
             <Lottie
               options={defaultOptions}
               height={250}
@@ -47,10 +44,7 @@ const Step2 = (props: Props) => {
         );
       case 1:
         return (
-          <div className="flex flex-col gap-4 items-center justify-center">
-            <span className="text-xl text-gray-200">
-              Generando orden...
-            </span>
+          <div className="flex gap-4 items-center justify-center">
             <Lottie
               options={defaultOptions}
               height={250}
@@ -60,10 +54,7 @@ const Step2 = (props: Props) => {
         );
       case 2:
         return (
-          <div className="flex flex-col gap-4 items-center justify-center">
-            <span className="text-xl text-gray-200">
-              Orden generada exitosamente
-            </span>
+          <div className="flex gap-4 items-center justify-center">
             <Lottie
               options={defaultOptions1}
               height={250}

@@ -55,7 +55,7 @@ const Step1 = () => {
                     ...productsForm,
                     [cellData.row.original._id]: {
                       ...productsForm[cellData.row.original._id],
-                      image: cellData.row.original.image,
+                      product: cellData.row.original._id,
                       quantity: (productsForm[cellData.row.original._id]?.quantity || 0) - 1,
                     },
                   })
@@ -78,7 +78,7 @@ const Step1 = () => {
                     ...productsForm,
                     [cellData.row.original._id]: {
                       ...productsForm[cellData.row.original._id],
-                      image: cellData.row.original.image,
+                      product: cellData.row.original._id,
                       quantity: (productsForm[cellData.row.original._id]?.quantity || 0) + 1,
                     },
                   })

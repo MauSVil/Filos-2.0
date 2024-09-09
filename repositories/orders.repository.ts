@@ -1,6 +1,6 @@
 import clientPromise from "@/mongodb";
 import { Order } from "@/types/MongoTypes/Order";
-import { OrderRepositoryFilter, OrderRepositoryFilterModel } from "@/types/RepositoryTypes/Order";
+import { OrderInput, OrderInputModel, OrderRepositoryFilter, OrderRepositoryFilterModel } from "@/types/RepositoryTypes/Order";
 import _ from "lodash";
 import { Db } from "mongodb";
 
@@ -40,14 +40,12 @@ export class OrdersRepository {
     return count;
   }
 
-  // static async insertOne(message: ProductInput) {
-  //   await init();
-  //   message.timestamp = new Date();
-  //   message.role = 'assistant';
-  //   const messageParsed = await ProductInputModel.parse(message);
-  //   await db.collection('products').insertOne(messageParsed);
-  //   return 'Message inserted';
-  // }
+  static async insertOne(order: OrderInput) {
+    await init();
+    const orderParsed = await OrderInputModel.parse(order);
+    await db.collection('orders').insertOne(orderParsed);
+    return 'Order inserted';
+  }
 
   // static async updateOne() {
   // }

@@ -28,6 +28,7 @@ export const statusTranslations: { [key: string]: string } = {
   retailPrice: 'Mayoreo',
   wholesalePrice: 'Menudeo',
   webPagePrice: 'Pagina web',
+  specialPrice: 'Especial',
 }
 
 const orderStatuses = [
@@ -145,7 +146,7 @@ const OrdersContent = () => {
           header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Productos" />
           ),
-          accessorFn: ({ products }) => products.length,
+          accessorFn: ({ products }) => _.sumBy(products, 'quantity'),
           enableGlobalFilter: true,
           enableSorting: true,
           filterFn: "auto",
@@ -430,16 +431,16 @@ const OrdersContent = () => {
                   <Separator className="my-2" />
                   <ul className="grid gap-3">
                     <li className="flex items-center justify-between">
-                      <span className="text-muted-foreground">Adelanto</span>
-                      <span>{`$${selectedOrder?.advancedPayment || 0}`}</span>
+                      <span className="text-muted-foreground">Total Productos</span>
+                      <span>{`$${selectedOrder?.totalAmount || 0}`}</span>
                     </li>
                     <li className="flex items-center justify-between">
                       <span className="text-muted-foreground">Flete</span>
                       <span>{`$${selectedOrder?.freightPrice || 0}`}</span>
                     </li>
                     <li className="flex items-center justify-between">
-                      <span className="text-muted-foreground">Total</span>
-                      <span>{`$${selectedOrder?.totalAmount || 0}`}</span>
+                      <span className="text-muted-foreground">Adelanto</span>
+                      <span>{`$${selectedOrder?.advancedPayment || 0}`}</span>
                     </li>
                     <li className="flex items-center justify-between font-semibold">
                       <span className="text-muted-foreground">Final</span>

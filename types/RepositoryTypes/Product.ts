@@ -11,10 +11,8 @@ export const ProductRepositoryFilterModel = z.object({
 export type ProductRepositoryFilter = z.infer<typeof ProductRepositoryFilterModel>;
 
 export const ProductInputModel = z.object({
-  phone_id: z.string(),
-  message: z.string(),
-  role: z.enum(['user', 'assistant']),
-  timestamp: z.date(),
+  _id: z.string().optional(),
+  quantity: z.number(),
 });
 
 export type ProductInput = z.infer<typeof ProductInputModel>;

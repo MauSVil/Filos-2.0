@@ -6,7 +6,7 @@ import Step1 from "./Steps/Step1";
 import Step2 from "./Steps/Step2";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { validateProductsStep } from "../schemas/CreateFormValues";
+import { TempOrder, TempOrderInput } from "../schemas/CreateFormValues";
 import { Progress } from "@/components/ui/progress";
 import { Form } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
@@ -14,11 +14,11 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { OrderInput, OrderInputModel } from "@/types/RepositoryTypes/Order";
+import ky from "ky";
 
-const defaultValues: Partial<OrderInput> = {
+const defaultValues: Partial<TempOrder> = {
   dueDate: new Date(),
-}
+};
 
 const NewOrdersContent = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -32,44 +32,43 @@ const NewOrdersContent = () => {
     setCurrentStep((prev) => prev - 1);
   }
 
-  const form = useForm<OrderInput>({
+  const form = useForm<TempOrder>({
     defaultValues,
     mode: "onChange",
-    resolver: zodResolver(OrderInputModel),
+    resolver: zodResolver(TempOrderInput),
   });
 
   const { handleSubmit } = form;
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await validateProductsStep.parse(data);
+      await TempOrderInput.parse(data);
       setLoading(true);
-      setCurrentStep((prev) => prev + 1);
-  
-      await new Promise((resolve) => {
-        setTimeout(() => {
-          setOrderGenerationStep((prev) => prev + 1);
-          resolve('');
-        }, 2000);
-      });
-  
-      await new Promise((resolve) => {
-        setTimeout(() => {
-          setOrderGenerationStep((prev) => prev + 1);
-          resolve('');
-        }, 2000);
-      });
-  
-      await new Promise((resolve) => {
-        setTimeout(() => {
-          // setOrderGenerationStep((prev) => prev + 1);
-          resolve('');
-        }, 2000);
-  
-        setLoading(false);
-      });
     } catch (err) {
+      console.error(err);
       toast.error("Faltan productos por agregar");
+      return;
+    }
+
+    try {
+      setCurrentStep((prev) => prev + 1);
+
+      await ky.post("/api/orders/new/edit-inventory", { json: {
+        products: Object.keys(data.products || {}).map((key) => ({
+          id: key,
+          quantity: data?.products?.[key]?.quantity,
+        })),
+      } }).json();
+      setOrderGenerationStep((prev) => prev + 1);
+
+      await ky.post("/api/orders/new", { json: data }).json();
+      setOrderGenerationStep((prev) => prev + 1);
+  
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+      toast.error("Hubo un error al crear la orden");
     }
   });
 
@@ -87,7 +86,7 @@ const NewOrdersContent = () => {
       if (isValid) {
         setCurrentStep((prev) => prev + 1);
       }
-    });
+    })
   }
 
   const ContentComponent = useMemo(() => {

@@ -1,9 +1,13 @@
 import { OrderInputModel } from '@/types/RepositoryTypes/Order';
 import { z } from 'zod';
 
-export const validateProductsStep = OrderInputModel.extend({
+export const TempOrderInput = OrderInputModel.omit(
+  { created_at: true, updated_at: true, status: true, requestDate: true, totalAmount: true, finalAmount: true, paid: true },
+).extend({
   products: z.record(z.object({
-    quantity: z.coerce.number({ required_error: 'La cantidad es requerida' }),
-    image: z.string()
-  })),
+    quantity: z.number(),
+    product: z.string(),
+  })).optional(),
 });
+
+export type TempOrder = z.infer<typeof TempOrderInput>;

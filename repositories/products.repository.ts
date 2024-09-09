@@ -65,8 +65,14 @@ export class ProductsRepository {
   //   return 'Message inserted';
   // }
 
-  // static async updateOne() {
-  // }
+  static async updateOne(product: Partial<ProductInput>) {
+    await init();
+    const { _id, ...rest } = await ProductInputModel.parse(product);
+    const id = new ObjectId(_id);
+
+    await db.collection('products').updateOne({ _id: id }, { $set: rest });
+    return 'Product updated';
+  }
 
   // static async deleteOne() {
   // }

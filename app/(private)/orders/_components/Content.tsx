@@ -176,6 +176,7 @@ const OrdersContent = () => {
                 size="icon"
                 variant="outline"
                 className="h-6 w-6"
+                disabled={!cellData.row.original.documents?.order}
                 onClick={() => setDownloadClick(cellData.row.original.documents.order)}
               >
                 <DownloadIcon className="h-3.5 w-3.5" />
@@ -252,6 +253,58 @@ const OrdersContent = () => {
     }
   }
 
+  const salesThisWeek = useMemo(() => {
+    return orders
+    .filter((order) => {
+      const startOfWeek = moment().startOf('week').toDate();
+      const endOfWeek = moment().endOf('week').toDate();
+      const orderDate = moment(order?.dueDate).toDate();
+      return orderDate >= startOfWeek && orderDate <= endOfWeek;
+    })
+    .reduce((acc, order) => {
+      return acc + (order?.finalAmount || 0);
+    }, 0);
+  }, [orders]);
+
+  const salesLastWeek = useMemo(() => {
+    return orders
+    .filter((order) => {
+      const startOfWeek = moment().subtract(1, 'week').startOf('week').toDate();
+      const endOfWeek = moment().subtract(1, 'week').endOf('week').toDate();
+      const orderDate = moment(order?.dueDate).toDate();
+      return orderDate >= startOfWeek && orderDate <= endOfWeek;
+    })
+    .reduce((acc, order) => {
+      return acc + (order?.finalAmount || 0);
+    }, 0);
+  }, [orders]);
+
+  const salesThisMonth = useMemo(() => {
+    return orders
+    .filter((order) => {
+      const startOfMonth = moment().startOf('month').toDate();
+      const endOfMonth = moment().endOf('month').toDate();
+      const orderDate = moment(order?.dueDate).toDate();
+      return orderDate >= startOfMonth && orderDate <= endOfMonth;
+    })
+    .reduce((acc, order) => {
+      return acc + (order?.finalAmount || 0);
+    }, 0);
+  }, [orders]);
+
+  const salesLastMonth = useMemo(() => {
+    return orders
+    .filter((order) => {
+      const startOfMonth = moment().subtract(1, 'month').startOf('month').toDate();
+      const endOfMonth = moment().subtract(1, 'month').endOf('month').toDate();
+      const orderDate = moment(order?.dueDate).toDate();
+      return orderDate >= startOfMonth && orderDate <= endOfMonth;
+    })
+    .reduce((acc, order) => {
+      return acc + (order?.finalAmount || 0);
+    }, 0);
+  }, [orders]);
+
   return (
     <div className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
       <div className={cn("grid auto-rows-max items-start gap-4 md:gap-8", {
@@ -275,11 +328,13 @@ const OrdersContent = () => {
           <Card x-chunk="dashboard-05-chunk-1">
             <CardHeader className="pb-2">
               <CardDescription>Esta semana</CardDescription>
-              <CardTitle className="text-4xl">$1,329</CardTitle>
+              <CardTitle className="text-4xl">
+                {numeral(salesThisWeek).format('$0,0.00')}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-xs text-muted-foreground">
-                +25% from last week
+                {`+${numeral(salesThisWeek - salesLastWeek).format('$0,0.00')} from last week`}
               </div>
             </CardContent>
             <CardFooter>
@@ -289,11 +344,13 @@ const OrdersContent = () => {
           <Card x-chunk="dashboard-05-chunk-2">
             <CardHeader className="pb-2">
               <CardDescription>Este mes</CardDescription>
-              <CardTitle className="text-4xl">$5,329</CardTitle>
+              <CardTitle className="text-4xl">
+                {numeral(salesThisMonth).format('$0,0.00')}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-xs text-muted-foreground">
-                +10% from last month
+                {`+${numeral(salesThisMonth - salesLastMonth).format('$0,0.00')} from last month`}
               </div>
             </CardContent>
             <CardFooter>

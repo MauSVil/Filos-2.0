@@ -7,6 +7,8 @@ import { ColumnDef, ColumnFiltersState, getCoreRowModel, getFilteredRowModel, ge
 import { Product } from '@/types/MongoTypes/Product';
 import DataTableColumnHeader from '@/components/DataTableHeader';
 import numeral from 'numeral';
+import { Badge } from '@/components/ui/badge';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 const ProductsContent = () => {
   const [pagination, setPagination] = useState({
@@ -69,6 +71,56 @@ const ProductsContent = () => {
             <DataTableColumnHeader column={column} title="Talla" />
           ),
           accessorKey: 'size',
+          enableGlobalFilter: true,
+          enableSorting: true,
+          filterFn: "auto",
+          enableColumnFilter: true,
+          sortingFn: "textCaseSensitive",
+        },
+        {
+          id: 'Disponibilidad',
+          header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Disponibilidad" />
+          ),
+          accessorKey: 'quantity',
+          cell: ({ row: { original: { quantity }} }) => {
+            if (quantity <= 0) {
+              return (
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Badge variant="destructive">No disponible</Badge>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{quantity}</p>
+                  </TooltipContent>
+                </Tooltip>
+              );
+            }
+
+            if (quantity <= 5) {
+              return (
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Badge variant="warning">Pocas unidades</Badge>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{quantity}</p>
+                  </TooltipContent>
+                </Tooltip>
+              );
+            }
+
+            return (
+              <Tooltip>
+                <TooltipTrigger>
+                  <Badge variant="default">Disponible</Badge>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{quantity}</p>
+                </TooltipContent>
+              </Tooltip>
+            );
+          },
           enableGlobalFilter: true,
           enableSorting: true,
           filterFn: "auto",

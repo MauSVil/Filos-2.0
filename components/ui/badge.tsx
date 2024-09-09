@@ -17,6 +17,7 @@ const badgeVariants = cva(
         outline: "text-foreground",
         IA: "px-2 py-0.5 text-xs bg-blue-500",
         new: "px-2 py-0.5 text-xs bg-emerald-900",
+        warning: "px-2 py-0.5 text-xs bg-yellow-700",
       },
     },
     defaultVariants: {

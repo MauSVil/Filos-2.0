@@ -27,6 +27,8 @@ export const POST = async (req: NextRequest) => {
       await ProductsRepository.updateOne({ _id: id, quantity: quantityProductFound - quantity });
     }
 
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     return NextResponse.json({ message: 'El inventario se edito correctamente' });
   } catch (error) {
     if (error instanceof Error) {

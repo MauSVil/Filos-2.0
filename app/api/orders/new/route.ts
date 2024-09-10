@@ -42,6 +42,9 @@ export const POST = async (req: NextRequest) => {
     newBodyParsed.finalAmount = _.sumBy(productsParsed, 'total') + newBodyParsed.freightPrice - newBodyParsed.advancedPayment;
 
     await OrdersRepository.insertOne(newBodyParsed);
+
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     return NextResponse.json({ message: 'Orden creada exitosamente' });
   } catch (error) {
     if (error instanceof Error) {

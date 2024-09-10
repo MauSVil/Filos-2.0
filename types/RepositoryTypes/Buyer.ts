@@ -4,6 +4,7 @@ export const BuyerRepositoryFilterModel = z.object({
   id: z.string().optional(),
   page: z.number().optional(),
   buyers: z.array(z.string()).optional(),
+  phone: z.string().optional(),
 });
 
 export type BuyerRepositoryFilter = z.infer<typeof BuyerRepositoryFilterModel>;

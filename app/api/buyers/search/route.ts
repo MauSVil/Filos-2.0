@@ -5,8 +5,7 @@ export const POST = async (req: Request) => {
   try {
     const body = await req.json()
     const buyers = await BuyersRepository.find(body);
-    const count = await BuyersRepository.count(body);
-    return NextResponse.json({ data: buyers, count });
+    return NextResponse.json(buyers);
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 500 });

@@ -67,8 +67,8 @@ const OrdersContent = () => {
   }, [orders]);
 
   const mappedBuyers = useMemo(() => {
-    return _.keyBy(buyersQuery.data?.data, '_id');
-  }, [buyersQuery.data?.data]);
+    return _.keyBy(buyersQuery.data, '_id');
+  }, [buyersQuery.data]);
 
   const contactQuery = useContact({ phone_id: mappedBuyers?.[selectedOrder?.buyer]?.phone });
   const productsQuery = useProducts({ products: (selectedOrder?.products || []).map((product) => product.product) });

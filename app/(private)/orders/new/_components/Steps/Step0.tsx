@@ -11,7 +11,7 @@ const Step0 = () => {
   const { control } = useFormContext<OrderInput>();
 
   const buyersQuery = useBuyers({});
-  const buyers = useMemo(() => buyersQuery.data?.data || [], [buyersQuery.data]);
+  const buyers = useMemo(() => buyersQuery.data || [], [buyersQuery.data]);
   const buyersOptions = useMemo(() => buyers.map((buyer) => ({
     label: buyer.name,
     value: buyer._id,

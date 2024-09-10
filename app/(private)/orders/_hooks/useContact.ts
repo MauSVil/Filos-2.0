@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query"
 import ky from "ky"
 import { toast } from "sonner"
 
-export const useContact = ({ phone_id }: { phone_id?: string }) => {
+export const useContact = ({ phone_id, enabled = false }: { phone_id?: string, enabled?: boolean }) => {
   return useQuery<Contact>({
     queryKey: ['contacts', { phone_id }],
     retry: 0,
@@ -16,6 +16,6 @@ export const useContact = ({ phone_id }: { phone_id?: string }) => {
         throw new Error('An error occurred')
       }
     },
-    enabled: false
+    enabled
   })
 }

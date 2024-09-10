@@ -24,6 +24,7 @@ const NewOrdersContent = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [orderGenerationStep, setOrderGenerationStep] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -47,6 +48,7 @@ const NewOrdersContent = () => {
     } catch (err) {
       console.error(err);
       toast.error("Faltan productos por agregar");
+      setError("Faltan productos por agregar");
       return;
     }
 
@@ -69,6 +71,7 @@ const NewOrdersContent = () => {
       console.error(error);
       setLoading(false);
       toast.error("Hubo un error al crear la orden");
+      setError("Hubo un error al crear la orden");
     }
   });
 
@@ -124,7 +127,7 @@ const NewOrdersContent = () => {
           className="w-1/2"
           onClick={handleBackStep}
           color="secondary"
-          disabled={loading || currentStep === 0 || currentStep === 2}
+          disabled={loading || currentStep === 0 || currentStep === 2 || !!error}
         >
           Atras
         </Button>
@@ -132,7 +135,7 @@ const NewOrdersContent = () => {
           className={cn("w-1/2")}
           onClick={handleNextStep}
           variant={currentStep === 1 ? "success" : "default" }
-          disabled={loading}
+          disabled={loading || !!error}
         >
           {currentStep === 0 && "Siguiente"}
           {currentStep === 1 && "Generar orden"}

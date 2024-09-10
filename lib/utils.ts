@@ -13,3 +13,8 @@ export const calculateChangePorcentage = (oldValue: number, newValue: number) =>
   const porcentajeCambio = (diferencia / oldValue) * 100;
   return porcentajeCambio.toFixed(2);
 }
+
+export const isMobileDevice = (userAgent: string) => {
+  const mobileRegex = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+  return mobileRegex.test(userAgent);
+};

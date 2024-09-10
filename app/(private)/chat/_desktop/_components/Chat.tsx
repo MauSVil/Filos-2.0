@@ -1,6 +1,5 @@
 import ChatInput from "@/components/chat/input";
 import { useEffect, useRef, useState } from "react";
-import { Contact, Message } from "../page";
 import MessageComponent from "./Message";
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
@@ -10,15 +9,17 @@ import { useSocket } from "@/contexts/socketContext";
 import { Button } from "@/components/ui/button";
 import { EditContactModal } from "./EditContactModal";
 import { EditContactFormSchema } from "@/zodSchemas/editContactForm";
+import { Contact, Message } from "@/types/Chat";
 
 type Props = {
   selectedChat: string;
   contact: Contact;
+  loading?: boolean;
 };
 
 const Chat = (props: Props) => {
   const { socket, connected } = useSocket();
-  const { selectedChat, contact } = props;
+  const { selectedChat, contact, loading } = props;
   const [messages, setMessages] = useState<Message[]>([]);
   const [switchValue, setSwitchValue] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
@@ -84,6 +85,8 @@ const Chat = (props: Props) => {
       console.log(error, 'error');
     }
   }
+
+  if (loading) return <div>Cargando...</div>;
 
   return (
     <div className="flex flex-col flex-1 gap-2 h-full">

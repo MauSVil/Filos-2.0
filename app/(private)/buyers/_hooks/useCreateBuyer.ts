@@ -1,5 +1,5 @@
+import { SerializedError } from "@/types/Chat";
 import { useMutation } from "@tanstack/react-query";
-import { SerializedError } from "../../chat/page";
 import ky from "ky";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";

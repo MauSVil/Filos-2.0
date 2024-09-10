@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
 import { es } from "date-fns/locale";
+import moment from "moment";
 
 export interface NextUIInputFormFieldProps<T extends FieldValues> extends React.InputHTMLAttributes<HTMLInputElement> {
   controllerProps: UseControllerProps<T>;
@@ -39,7 +40,7 @@ export const DateFormField = <T extends FieldValues>(props: NextUIInputFormField
                   )}
                 >
                   {field.value ? (
-                    <span>{field.value.toLocaleDateString()}</span>
+                    <span>{moment(field.value).format('DD/MM/YYYY')}</span>
                   ) : (
                     <span>{emptyLabel}</span>
                   )}

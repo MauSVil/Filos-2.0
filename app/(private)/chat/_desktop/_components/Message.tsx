@@ -1,7 +1,7 @@
 import moment from "moment";
-import { Message } from "../page";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { Message } from "@/types/Chat";
 
 const MessageComponent = ({ message, scrollToBottom }: { message: Message, scrollToBottom: () => void }) => {
   switch (message.type) {

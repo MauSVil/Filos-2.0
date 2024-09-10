@@ -1,11 +1,11 @@
 import { Key, useMemo, useRef } from "react";
-import { Contact } from "../page";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Check } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import moment from "moment";
 import { cn } from "@/utils/cn";
+import { Contact } from "@/types/Chat";
 
 interface ContactsProps {
   selectedChat: string;

@@ -5,10 +5,10 @@ import { editContactFormSchema, EditContactFormSchema } from "@/zodSchemas/editC
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { create, InstanceProps } from "react-modal-promise";
-import { Contact } from "../page";
 import { Form } from "@/components/ui/form";
 import { InputFormField } from "@/components/form/InputFormField";
 import { ComboboxFormField } from "@/components/form/ComboboxField";
+import { Contact } from "@/types/Chat";
 
 export interface Props extends InstanceProps<any, any> {
   contact: Contact;

@@ -1,9 +1,11 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { useMemo } from "react";
+'use client';
+
+import { useEffect, useMemo, useState } from "react";
 import Lottie from 'react-lottie';
 import animationData from '@/lib/animations/boxes.json';
 import animationData1 from '@/lib/animations/finish.json';
 import animationData2 from '@/lib/animations/order.json';
+import LottieAnimation from "@/components/LottieAnimation";
 
 interface Props {
   orderGenerationStep: number;
@@ -44,31 +46,28 @@ const Step2 = (props: Props) => {
       case 0:
         return (
           <div className="flex gap-4 items-center justify-center">
-            <Lottie
-              options={defaultOptions}
-              height={250}
-              width={300}
-            />
+            <p className="text-lg">Modificando inventario...</p>
+            {/* <LottieAnimation
+              defaultOptions={defaultOptions}
+            /> */}
           </div>
         );
       case 1:
         return (
           <div className="flex gap-4 items-center justify-center">
-            <Lottie
-              options={defaultOptions2}
-              height={250}
-              width={300}
-            />
+            <p className="text-lg">Creando orden...</p>
+            {/* <LottieAnimation
+              defaultOptions={defaultOptions2}
+            /> */}
           </div>
         );
       case 2:
         return (
           <div className="flex gap-4 items-center justify-center">
-            <Lottie
-              options={defaultOptions1}
-              height={150}
-              width={150}
-            />
+            <p className="text-lg">Orden creada</p>
+            {/* <LottieAnimation
+              defaultOptions={defaultOptions1}
+            /> */}
           </div>
         );
       default:

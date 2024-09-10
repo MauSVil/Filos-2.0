@@ -1,15 +1,17 @@
 'use client';
 
 import { useBuyers } from "../_hooks/useBuyers";
-import { useEffect, useMemo, useState } from "react";
-import { Button, Listbox, ListboxItem, Pagination, Skeleton } from "@nextui-org/react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DataTable } from "@/components/DataTable";
 import { ColumnDef, ColumnFiltersState, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, VisibilityState } from "@tanstack/react-table";
 import { Buyer } from "@/types/MongoTypes/Buyer";
 import DataTableColumnHeader from "@/components/DataTableHeader";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 
 const BuyersContent = () => {
+  const router = useRouter();
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
@@ -92,6 +94,17 @@ const BuyersContent = () => {
 
   return (
     <div className="flex flex-col w-full items-center py-4 gap-3">
+      <div className="flex w-full justify-end items-center">
+        <Button
+          onClick={() => {
+            router.push('/buyers/new')
+          }}
+          color="default"
+        >
+          Nuevo Comprador
+        </Button>
+      </div>
+      <Separator />
       <DataTable
         className="w-full"
         table={table}

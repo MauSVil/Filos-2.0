@@ -53,7 +53,7 @@ export default function ChatInput(props: Props) {
         const segments = catalogueFile.split('/');
         const fileName = segments.pop();
         const word = fileName.replace('.pdf', '');
-        socket.emit('send_message', { phone_id: selectedChat, message: 'Imagen enviada', type: 'image', metadata: { url: catalogueFile, mimeType: 'pdf', name: `Catalogo ${word}`  }  });
+        socket.emit('send_message', { phone_id: selectedChat, message: 'Imagen enviada', type: 'pdf', metadata: { url: catalogueFile, mimeType: 'pdf', name: `Catalogo ${word}`  }  });
         socket.emit('update_contact', { phone_id: selectedChat, aiEnabled: false });
       }
 

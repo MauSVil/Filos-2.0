@@ -92,9 +92,12 @@ const FileManagerDialog = (props: Props) => {
               />
               <ComboboxFormField
                 items={[
-                  { label: 'Mayoreo', value: 'https://filos-develop.s3.us-west-1.amazonaws.com/catalogos/mayoreo.pdf' },
-                  { label: 'Menudeo', value: 'https://filos-develop.s3.us-west-1.amazonaws.com/catalogos/menudeo.pdf' },
-                  { label: 'Sin precios', value: 'https://filos-develop.s3.us-west-1.amazonaws.com/catalogos/sp.pdf' },
+                  { label: 'Mayoreo Invierno', value: 'https://filos-develop.s3.us-west-1.amazonaws.com/catalogos/mayoreo.pdf' },
+                  { label: 'Menudeo Invierno', value: 'https://filos-develop.s3.us-west-1.amazonaws.com/catalogos/menudeo.pdf' },
+                  { label: 'Sin precios Invierno', value: 'https://filos-develop.s3.us-west-1.amazonaws.com/catalogos/sp.pdf' },
+                  { label: 'Mayoreo Otoño-Invierno', value: 'https://filos-develop.s3.us-west-1.amazonaws.com/catalogos/mayoreo1.pdf' },
+                  { label: 'Menudeo Otoño-Invierno', value: 'https://filos-develop.s3.us-west-1.amazonaws.com/catalogos/menudeo1.pdf' },
+                  { label: 'Sin precios Otoño-Invierno', value: 'https://filos-develop.s3.us-west-1.amazonaws.com/catalogos/sp1.pdf' },
                 ]}
                 controllerProps={{
                   control: form.control,

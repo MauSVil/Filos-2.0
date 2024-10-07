@@ -24,6 +24,7 @@ import { useContact } from "../_hooks/useContact";
 import numeral from "numeral";
 import { useProducts } from "../_hooks/useProducts";
 import { calculateChangePorcentage } from "@/lib/utils";
+import ky from "ky";
 
 export const statusTranslations: { [key: string]: string } = {
   retailPrice: 'Mayoreo',
@@ -254,6 +255,28 @@ const OrdersContent = () => {
     }
   }
 
+  const handleGeneratePDF = async (orderId: string) => {
+    try {
+      toast.info('Generando PDF...');
+      const res = await ky.post(`/api/orders/generatePDF`, { json: { id: orderId } });
+      const buffer = await res.arrayBuffer();
+      const blob = new Blob([buffer], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `orden.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+        return;
+      }
+      toast.error('An error occurred');
+    } 
+  }
+
   const salesThisWeek = useMemo(() => {
     return orders
     .filter((order) => {
@@ -459,6 +482,7 @@ const OrdersContent = () => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem onClick={() => handleSendOrder(selectedOrder)}>Mandar orden al contacto</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleGeneratePDF(selectedOrder?._id)}>Generar PDF</DropdownMenuItem>
                       {/* <DropdownMenuItem>Export</DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem>Trash</DropdownMenuItem> */}

@@ -1,7 +1,8 @@
+import { ObjectId } from "mongodb";
 import { z } from "zod";
 
 export const BuyerRepositoryFilterModel = z.object({
-  id: z.string().optional(),
+  _id: z.instanceof(ObjectId).optional(),
   page: z.number().optional(),
   buyers: z.array(z.string()).optional(),
   phone: z.string().optional(),

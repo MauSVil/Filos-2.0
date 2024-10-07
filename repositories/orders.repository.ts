@@ -26,7 +26,7 @@ export class OrdersRepository {
     const { page, ...rest } = filters;
     const orders = await db.collection('orders').find<Order>({
       ...rest,
-    }).sort({ dueDate: -1 }).toArray();
+    }).sort({ created_at: -1 }).toArray();
     return orders;
   }
 

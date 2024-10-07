@@ -24,7 +24,7 @@ export const OrderInputModel = z.object({
   })),
   created_at: z.coerce.date(),
   updated_at: z.coerce.date(),
-  deleted_at: z.coerce.date().optional(),
+  deleted_at: z.coerce.date().nullable().optional(),
   status: z.enum(['Pendiente', 'Completado', 'Cancelado']),
   totalAmount: z.coerce.number({ required_error: 'El total es requerido' }),
   finalAmount: z.coerce.number({ required_error: 'El total final es requerido' }),

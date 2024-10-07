@@ -29,7 +29,7 @@ import { useUpdateOrder } from "../_hooks/useUpdateOrder";
 
 export const statusTranslations: { [key: string]: string } = {
   retailPrice: 'Mayoreo',
-  wholesalePrice: 'Menudeo',
+  wholesalePrice: 'Semi-mayoreo',
   webPagePrice: 'Pagina web',
   specialPrice: 'Especial',
 }

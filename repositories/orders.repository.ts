@@ -20,6 +20,7 @@ export class OrdersRepository {
     const order = await db.collection('orders').findOne<Order>({
       ...rest,
       ...(id ? { _id: new ObjectId(id) } : {}),
+      deleted_at: null,
     });
     return order;
   }
@@ -30,6 +31,7 @@ export class OrdersRepository {
     const { page, ...rest } = filters;
     const orders = await db.collection('orders').find<Order>({
       ...rest,
+      deleted_at: null,
     }).sort({ created_at: -1 }).toArray();
     return orders;
   }
@@ -40,6 +42,7 @@ export class OrdersRepository {
     const { page, ...rest } = filters;
     const count = await db.collection('orders').countDocuments({
       ...rest,
+      deleted_at: null,
     });
     return count;
   }

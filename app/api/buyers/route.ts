@@ -5,7 +5,7 @@ import { NextResponse } from "next/server"
 export const POST = async (req: Request) => {
   try {
     const formData = await req.formData()
-    const data = BuyerInputModel.parse(JSON.parse(formData.get('data')?.toString() || '{}'))
+    const data = await BuyerInputModel.parse(JSON.parse(formData.get('data')?.toString() || '{}'))
 
     const buyer = await BuyersRepository.findOne({ phone: data.phone })
     if (buyer) {

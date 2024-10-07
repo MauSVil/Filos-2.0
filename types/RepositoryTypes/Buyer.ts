@@ -1,4 +1,3 @@
-import { ObjectId } from "mongodb";
 import { z } from "zod";
 
 export const BuyerRepositoryFilterModel = z.object({
@@ -12,7 +11,7 @@ export type BuyerRepositoryFilter = z.infer<typeof BuyerRepositoryFilterModel>;
 
 export const BuyerInputModel = z.object({
   name: z.string(),
-  email: z.string(),
+  email: z.string().optional(),
   phone: z.string(),
   address: z.string(),
   createdAt: z.date().optional(),

@@ -92,6 +92,8 @@ export const POST = async (req: NextRequest) => {
 
     const pdfBuffer = await pdfResponse.arrayBuffer();
 
+    
+
     return new NextResponse(pdfBuffer, {
       status: 200,
       headers: {

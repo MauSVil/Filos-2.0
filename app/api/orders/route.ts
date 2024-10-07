@@ -1,10 +1,21 @@
+import { Order } from "@/types/MongoTypes/Order";
+import { OrderUpdateInputModel } from "@/types/RepositoryTypes/Order";
 import { NextRequest, NextResponse } from "next/server";
 
-export const POST = async (req: NextRequest) => {
+export const PUT = async (req: NextRequest) => {
   try {
-    return NextResponse.json({ message: 'NewOrder' });
+    const body = await req.json() as Order;
+    const { _id, ...rest } = body;
+
+    if (!_id) {
+      return NextResponse.json({ error: 'No se encontro la orden' }, { status: 404 });
+    }
+
+    const bodyParsed = await OrderUpdateInputModel.parseAsync(rest);
+    console.log(bodyParsed, 'bodyParsed');
+
+    return NextResponse.json({ message: 'Order updated successfully' });
   } catch (error) {
-    console.error(error);
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }

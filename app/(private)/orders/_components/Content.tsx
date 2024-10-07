@@ -25,6 +25,7 @@ import numeral from "numeral";
 import { useProducts } from "../_hooks/useProducts";
 import { calculateChangePorcentage } from "@/lib/utils";
 import ky from "ky";
+import { useUpdateOrder } from "../_hooks/useUpdateOrder";
 
 export const statusTranslations: { [key: string]: string } = {
   retailPrice: 'Mayoreo',
@@ -53,6 +54,8 @@ const OrdersContent = () => {
   const [selectedOrder, setSelectedOrder] = useState<Order>({} as Order);
   const [status, setStatus] = useState(orderStatuses[0])
   const ordersQuery = useOrders({ status });
+
+  const updateOrder = useUpdateOrder();
 
   const buyersArray = useMemo(() => {
     return ordersQuery.data?.data?.map((order) => order.buyer) || [];
@@ -488,11 +491,44 @@ const OrdersContent = () => {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
+                      <DropdownMenuItem
+                        disabled={selectedOrder?.status !== 'Pendiente'}
+                        onClick={() => {
+                          updateOrder.mutate({ _id: selectedOrder?._id, status: 'Completado' })
+                          ordersQuery.refetch()
+                        }}
+                      >
+                        Marcar como completado
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        disabled={selectedOrder?.status !== 'Pendiente'}
+                        onClick={() => {
+                          updateOrder.mutate({ _id: selectedOrder?._id, paid: true })
+                          ordersQuery.refetch()
+                        }}
+                      >
+                        Marcar como pagado
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        disabled={selectedOrder?.status !== 'Pendiente'}
+                        onClick={() => {
+                          updateOrder.mutate({ _id: selectedOrder?._id, status: 'Cancelado' })
+                          ordersQuery.refetch()
+                        }}
+                      >
+                        Marcar como cancelado
+                      </DropdownMenuItem>
+
                       <DropdownMenuItem onClick={() => handleSendOrder(selectedOrder)}>Mandar orden al contacto</DropdownMenuItem>
                       <DropdownMenuItem onClick={() => handleGeneratePDF(selectedOrder?._id)}>Generar PDF</DropdownMenuItem>
-                      {/* <DropdownMenuItem>Export</DropdownMenuItem>
+                      {/* <DropdownMenuItem>Export</DropdownMenuItem> */}
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem>Trash</DropdownMenuItem> */}
+                      <DropdownMenuItem
+                        disabled
+                        onClick={() => console.log(selectedOrder?._id)}
+                      >
+                        Eliminar
+                      </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>

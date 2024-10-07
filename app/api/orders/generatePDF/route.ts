@@ -12,7 +12,7 @@ import _ from "lodash";
 export const POST = async (req: NextRequest) => {
   try {
     const body = await req.json()
-    const order = await OrdersRepository.findOne({ _id: new ObjectId(body.id) });
+    const order = await OrdersRepository.findOne({ id: body.id });
 
     if (!order) {
       return NextResponse.json({ error: 'No se encontro la orden' }, { status: 404 });
@@ -32,7 +32,7 @@ export const POST = async (req: NextRequest) => {
 
     const totalQuantity = products.reduce((acc, product) => acc + product.quantity, 0);
 
-    const buyerDocument = await BuyersRepository.findOne({ _id: new ObjectId(buyer) });
+    const buyerDocument = await BuyersRepository.findOne({ id: buyer });
     if (!buyerDocument) {
       return NextResponse.json({ error: 'No se encontro el comprador' }, { status: 404 });
     }

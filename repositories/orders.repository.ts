@@ -2,7 +2,7 @@ import clientPromise from "@/mongodb";
 import { Order } from "@/types/MongoTypes/Order";
 import { OrderInput, OrderInputModel, OrderRepositoryFilter, OrderRepositoryFilterModel } from "@/types/RepositoryTypes/Order";
 import _ from "lodash";
-import { Db } from "mongodb";
+import { Db, ObjectId } from "mongodb";
 
 let client;
 let db: Db;
@@ -16,7 +16,11 @@ export class OrdersRepository {
   static async findOne(filter: OrderRepositoryFilter = {}): Promise<Order | null> {
     await init();
     const filters = await OrderRepositoryFilterModel.parse(filter);
-    const order = await db.collection('orders').findOne<Order>(filters);
+    const { id, ...rest } = filters;
+    const order = await db.collection('orders').findOne<Order>({
+      ...rest,
+      ...(id ? { _id: new ObjectId(id) } : {}),
+    });
     return order;
   }
 

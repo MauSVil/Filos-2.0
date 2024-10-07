@@ -16,7 +16,11 @@ export class BuyersRepository {
   static async findOne(filter: BuyerRepositoryFilter = {}): Promise<Buyer | null> {
     await init();
     const filters = await BuyerRepositoryFilterModel.parse(filter);
-    const buyer = await db.collection('buyers').findOne<Buyer>(filters);
+    const { id, ...rest } = filters;
+    const buyer = await db.collection('buyers').findOne<Buyer>({
+      ...rest,
+      ...(id ? { _id: new ObjectId(id) } : {}),
+    });
     return buyer;
   }
 

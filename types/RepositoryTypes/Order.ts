@@ -1,8 +1,7 @@
-import { ObjectId } from "mongodb";
 import { z } from "zod";
 
 export const OrderRepositoryFilterModel = z.object({
-  _id: z.instanceof(ObjectId).optional(),
+  id: z.string().optional(),
   page: z.number().optional(),
   status: z.enum(['Pendiente', 'Completado', 'Cancelado']).optional(),
 });

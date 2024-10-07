@@ -258,7 +258,7 @@ const OrdersContent = () => {
   const handleGeneratePDF = async (orderId: string) => {
     try {
       toast.info('Generando PDF...');
-      const res = await ky.post(`/api/orders/generatePDF`, { json: { id: orderId } });
+      const res = await ky.post(`/api/orders/generatePDF`, { json: { id: orderId }, timeout: false });
       const buffer = await res.arrayBuffer();
       const blob = new Blob([buffer], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);

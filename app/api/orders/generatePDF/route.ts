@@ -4,10 +4,10 @@ import path from "path";
 import fs from "fs/promises";
 import moment from "moment";
 import { OrdersRepository } from "@/repositories/orders.repository";
-import { ObjectId } from "mongodb";
 import { BuyersRepository } from "@/repositories/buyers.repository";
 import { ProductsRepository } from "@/repositories/products.repository";
 import _ from "lodash";
+import { uploadImage } from "@/utils/aws/uploadImage";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -91,8 +91,15 @@ export const POST = async (req: NextRequest) => {
     });
 
     const pdfBuffer = await pdfResponse.arrayBuffer();
+    const buffer = Buffer.from(pdfBuffer);
 
+    const url = await uploadImage(`orderDocs/${body.id}.pdf`, buffer);
     
+    await OrdersRepository.updateOne(body.id, {
+      documents: {
+        order: url
+      }
+    });
 
     return new NextResponse(pdfBuffer, {
       status: 200,

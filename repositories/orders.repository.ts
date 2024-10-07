@@ -1,6 +1,6 @@
 import clientPromise from "@/mongodb";
 import { Order } from "@/types/MongoTypes/Order";
-import { OrderInput, OrderInputModel, OrderRepositoryFilter, OrderRepositoryFilterModel } from "@/types/RepositoryTypes/Order";
+import { OrderInput, OrderInputModel, OrderRepositoryFilter, OrderRepositoryFilterModel, OrderUpdateInputModel } from "@/types/RepositoryTypes/Order";
 import _ from "lodash";
 import { Db, ObjectId } from "mongodb";
 
@@ -51,8 +51,12 @@ export class OrdersRepository {
     return 'Order inserted';
   }
 
-  // static async updateOne() {
-  // }
+  static async updateOne(id: string, order: Partial<OrderInput>) {
+    await init();
+    const orderParsed = await OrderUpdateInputModel.parse(order);
+    await db.collection('orders').updateOne({ _id: new ObjectId(id) }, { $set: orderParsed });
+    return 'Order updated';
+  }
 
   // static async deleteOne() {
   // }

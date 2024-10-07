@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { ChevronLeft, ChevronRight, Copy, CreditCard, DownloadIcon, File, FileIcon, ListFilter, MoreVertical, Truck } from "lucide-react";
+import { ChevronLeft, ChevronRight, Copy, CreditCard, DownloadIcon, File, ListFilter, MoreVertical, Truck } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useOrders } from "../_hooks/useOrders";
 import { useRouter } from "next/navigation";
@@ -257,17 +257,24 @@ const OrdersContent = () => {
 
   const handleGeneratePDF = async (orderId: string) => {
     try {
-      toast.info('Generando PDF...');
-      const res = await ky.post(`/api/orders/generatePDF`, { json: { id: orderId }, timeout: false });
-      const buffer = await res.arrayBuffer();
-      const blob = new Blob([buffer], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `orden.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+
+      await toast.promise(ky.post(`/api/orders/generatePDF`, { json: { id: orderId }, timeout: false }), {
+        loading: 'Generando PDF...',
+        success: async (res) => {
+          const buffer = await res.arrayBuffer();
+          const blob = new Blob([buffer], { type: 'application/pdf' });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `orden.pdf`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          ordersQuery.refetch();
+          return 'PDF generado';
+        },
+        error: 'Ha ocurrido un error al generar el PDF'
+      })
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);

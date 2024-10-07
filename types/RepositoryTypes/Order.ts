@@ -34,5 +34,7 @@ export const OrderInputModel = z.object({
   }).optional(),
 });
 
+export const OrderUpdateInputModel = OrderInputModel.partial();
+
 export type OrderInput = z.infer<typeof OrderInputModel>;
 

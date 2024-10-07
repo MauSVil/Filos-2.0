@@ -9,6 +9,8 @@
 		"lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix"
 	},
 	"dependencies": {
+		"@aws-sdk/client-s3": "^3.665.0",
+		"@aws-sdk/lib-storage": "^3.665.0",
 		"@hookform/resolvers": "^3.9.0",
 		"@nextui-org/button": "2.0.37",
 		"@nextui-org/code": "2.0.32",

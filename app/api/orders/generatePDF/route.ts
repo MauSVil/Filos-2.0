@@ -87,6 +87,7 @@ export const POST = async (req: NextRequest) => {
 
     const pdfResponse = await ky.post('https://utils.mausvil.dev/generate_pdf', {
       body: formData,
+      timeout: 10 * 60 * 1000,
     });
 
     const pdfBuffer = await pdfResponse.arrayBuffer();

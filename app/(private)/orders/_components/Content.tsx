@@ -516,13 +516,13 @@ const OrdersContent = () => {
                         Marcar como completado
                       </DropdownMenuItem>
                       <DropdownMenuItem
-                        disabled={selectedOrder?.status !== 'Pendiente'}
+                        disabled={selectedOrder?.status !== 'Pendiente' || selectedOrder?.paid}
                         onClick={() => handlePaidStatus(selectedOrder?._id)}
                       >
                         Marcar como pagado
                       </DropdownMenuItem>
                       <DropdownMenuItem
-                        disabled={selectedOrder?.status !== 'Pendiente'}
+                        disabled={selectedOrder?.status !== 'Pendiente' || selectedOrder?.paid}
                         onClick={() => {
                           updateOrder.mutate({ _id: selectedOrder?._id, status: 'Cancelado' })
                           ordersQuery.refetch()

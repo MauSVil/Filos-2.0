@@ -61,6 +61,7 @@ const NewOrdersContent = () => {
       //     quantity: data?.products?.[key]?.quantity,
       //   })),
       // } }).json();
+
       setOrderGenerationStep((prev) => prev + 1);
 
       await ky.post("/api/orders/new", { json: data }).json();

@@ -343,6 +343,21 @@ const OrdersContent = () => {
     }, 0);
   }, [orders]);
 
+  const handlePaidStatus = async (id: string) => {
+    updateOrder.mutate({ _id: id, paid: true })
+
+    const products = mappedOrders[id]?.products || [];
+
+    await ky.post("/api/orders/new/edit-inventory", { json: {
+      products: products.map((product) => ({
+        id: product.product,
+        quantity: product.quantity,
+      })),
+    } }).json();
+
+    ordersQuery.refetch()
+  }
+
   return (
     <div className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
       <div className={cn("grid auto-rows-max items-start gap-4 md:gap-8", {
@@ -502,10 +517,7 @@ const OrdersContent = () => {
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         disabled={selectedOrder?.status !== 'Pendiente'}
-                        onClick={() => {
-                          updateOrder.mutate({ _id: selectedOrder?._id, paid: true })
-                          ordersQuery.refetch()
-                        }}
+                        onClick={() => handlePaidStatus(selectedOrder?._id)}
                       >
                         Marcar como pagado
                       </DropdownMenuItem>

@@ -55,12 +55,12 @@ const NewOrdersContent = () => {
     try {
       setCurrentStep((prev) => prev + 1);
 
-      await ky.post("/api/orders/new/edit-inventory", { json: {
-        products: Object.keys(data.products || {}).map((key) => ({
-          id: key,
-          quantity: data?.products?.[key]?.quantity,
-        })),
-      } }).json();
+      // await ky.post("/api/orders/new/edit-inventory", { json: {
+      //   products: Object.keys(data.products || {}).map((key) => ({
+      //     id: key,
+      //     quantity: data?.products?.[key]?.quantity,
+      //   })),
+      // } }).json();
       setOrderGenerationStep((prev) => prev + 1);
 
       await ky.post("/api/orders/new", { json: data }).json();

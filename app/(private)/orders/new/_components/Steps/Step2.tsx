@@ -46,7 +46,7 @@ const Step2 = (props: Props) => {
       case 0:
         return (
           <div className="flex gap-4 items-center justify-center">
-            <p className="text-lg">Modificando inventario...</p>
+            <p className="text-lg">Creando orden...</p>
             {/* <LottieAnimation
               defaultOptions={defaultOptions}
             /> */}

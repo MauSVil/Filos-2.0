@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Product } from "@/types/MongoTypes/Product";
 import { ColumnDef, ColumnFiltersState, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, VisibilityState } from "@tanstack/react-table";
 import { MinusIcon, PlusIcon } from "lucide-react";
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
@@ -25,6 +26,24 @@ const Step1 = () => {
     () =>
       [
         {
+          id: 'Imagen',
+          header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Imagen" />
+          ),
+          accessorKey: 'image',
+          cell: (cellData) => {
+            return (
+              <Image
+                width={50}
+                height={50}
+                className="rounded-medium"
+                src={cellData.row.original.image}
+                alt="image"
+              />
+            );
+          },
+        },
+        {
           id: 'Modelo',
           header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Modelo" />
@@ -36,6 +55,18 @@ const Step1 = () => {
           enableColumnFilter: true,
           sortingFn: "textCaseSensitive",
           maxSize: 10
+        },
+        {
+          id: 'Color',
+          header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Color" />
+          ),
+          accessorKey: 'color',
+          enableGlobalFilter: true,
+          enableSorting: true,
+          filterFn: "auto",
+          enableColumnFilter: true,
+          sortingFn: "textCaseSensitive",
         },
         {
           id: 'Acciones',

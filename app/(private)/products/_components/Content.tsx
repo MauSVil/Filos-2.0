@@ -9,6 +9,7 @@ import DataTableColumnHeader from '@/components/DataTableHeader';
 import numeral from 'numeral';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import Image from 'next/image';
 
 const ProductsContent = () => {
   const [pagination, setPagination] = useState({
@@ -29,6 +30,24 @@ const ProductsContent = () => {
   const columns: ColumnDef<Product>[] = useMemo(
     () =>
       [
+        {
+          id: 'Imagen',
+          header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Imagen" />
+          ),
+          accessorKey: 'image',
+          cell: (cellData) => {
+            return (
+              <Image
+                width={50}
+                height={50}
+                className="rounded-medium"
+                src={cellData.row.original.image}
+                alt="image"
+              />
+            );
+          },
+        },
         {
           id: 'Modelo',
           header: ({ column }) => (

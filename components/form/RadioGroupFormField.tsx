@@ -22,6 +22,7 @@ const RadioGroupFormField = <T extends FieldValues>(props: RadioGroupFormFieldPr
           <FormControl>
             <RadioGroup
               onValueChange={field.onChange}
+              value={field.value}
               defaultValue={field.value}
               className={cn("flex flex-row space-x-1", {
                 "flex-col": direction === "column",

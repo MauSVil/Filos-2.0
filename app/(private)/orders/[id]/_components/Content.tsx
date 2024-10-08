@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useOrder } from "../_hooks/useOrder";
 import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
@@ -16,7 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import ky from "ky";
 import { Order } from "@/types/MongoTypes/Order";
-import { OrderUpdateInputModel } from "@/types/RepositoryTypes/Order";
+import _ from "lodash";
 
 const Content = ({ id }: { id: string }) => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -32,7 +32,7 @@ const Content = ({ id }: { id: string }) => {
       case 0:
         return <Step0 />;
       case 1:
-        return <Step1 />;
+        return <Step1 order={order} />;
       case 2:
         return <Step2 orderGenerationStep={orderGenerationStep} />;
       default:
@@ -45,17 +45,10 @@ const Content = ({ id }: { id: string }) => {
     setCurrentStep((prev) => prev - 1);
   }
 
-  const defaultValues = useMemo(() => {
-    const { products, _id, ...rest } = order;
-
-    return {
-      name: order.name,
-    };
-  }, [orderQuery.isPending]);
-
   const form = useForm<TempOrder>({
-    defaultValues,
-    resolver: zodResolver(OrderUpdateInputModel),
+    defaultValues: {},
+    mode: "onChange",
+    resolver: zodResolver(TempOrderInput),
   });
 
   const { handleSubmit } = form;
@@ -105,12 +98,35 @@ const Content = ({ id }: { id: string }) => {
       // router.push("/orders");
       return;
     }
+  
     form.trigger().then((isValid) => {
       if (isValid) {
         setCurrentStep((prev) => prev + 1);
       }
     })
   }
+
+  useEffect(() => {
+    if (orderQuery.isPending) return;
+    const {
+      name,
+      buyer,
+      dueDate,
+      orderType,
+      freightPrice,
+      advancedPayment,
+      description,
+    } = order;
+
+    form.setValue('name', name);
+    form.setValue('buyer', buyer);
+    form.setValue('dueDate', dueDate);
+    form.setValue('orderType', orderType);
+    form.setValue('freightPrice', freightPrice);
+    form.setValue('advancedPayment', advancedPayment);
+    form.setValue('description', description);
+
+  }, [orderQuery.isPending]);
 
   return (
     <div className="w-full h-full flex flex-col items-center">
@@ -145,7 +161,7 @@ const Content = ({ id }: { id: string }) => {
           disabled={loading || !!error}
         >
           {currentStep === 0 && "Siguiente"}
-          {currentStep === 1 && "Generar orden"}
+          {currentStep === 1 && "Actualizar"}
           {currentStep === 2 && "Finalizar"}
         </Button>
       </div>

@@ -2,14 +2,16 @@ import { useProducts } from "@/app/(private)/products/_hooks/useProducts";
 import { DataTable } from "@/components/DataTable";
 import DataTableColumnHeader from "@/components/DataTableHeader";
 import { Button } from "@/components/ui/button";
+import { Order } from "@/types/MongoTypes/Order";
 import { Product } from "@/types/MongoTypes/Product";
 import { ColumnDef, ColumnFiltersState, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, VisibilityState } from "@tanstack/react-table";
+import _ from "lodash";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
-const Step1 = () => {
+const Step1 = ({ order }: { order?: Order }) => {
   const form = useFormContext();
   const [sorting, setSorting] = useState<SortingState>([{ id: 'uniqId', desc: false }]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -20,7 +22,7 @@ const Step1 = () => {
   const products = useMemo(() => productsQuery.data?.data || [], [productsQuery.data]);
 
   const { watch } = form
-  const productsForm = watch('products', {});
+  const productsForm = watch('products');
 
   const columns: ColumnDef<Product>[] = useMemo(
     () =>
@@ -147,6 +149,13 @@ const Step1 = () => {
       globalFilter,
     },
   })
+
+  useEffect(() => {
+    if (!order) return;
+    const { products } = order;
+    const productsMapped = _.keyBy(products, 'product');
+    form.setValue('products', productsMapped);
+  }, [order]);
 
   return (
     <div className="flex flex-col">

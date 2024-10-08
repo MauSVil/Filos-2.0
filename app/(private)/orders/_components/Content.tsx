@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { ChevronLeft, ChevronRight, Copy, CreditCard, DownloadIcon, File, ListFilter, MoreVertical, Truck } from "lucide-react";
+import { ChevronLeft, ChevronRight, Copy, CreditCard, DownloadIcon, Edit, File, ListFilter, MoreVertical, Truck } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useOrders } from "../_hooks/useOrders";
 import { useRouter } from "next/navigation";
@@ -186,6 +186,15 @@ const OrdersContent = () => {
               >
                 <DownloadIcon className="h-3.5 w-3.5" />
                 <span className="sr-only">Download</span>
+              </Button>
+              <Button
+                size="icon"
+                variant="outline"
+                className="h-6 w-6"
+                onClick={() => router.push(`/orders/${cellData.row.original._id}`)}
+              >
+                <Edit className="h-3.5 w-3.5" />
+                <span className="sr-only">Editar</span>
               </Button>
               <Button
                 size="icon"

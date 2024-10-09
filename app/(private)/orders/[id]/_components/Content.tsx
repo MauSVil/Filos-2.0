@@ -9,20 +9,22 @@ import { cn } from "@/lib/utils";
 import Step0 from "../../new/_components/Steps/Step0";
 import Step1 from "../../new/_components/Steps/Step1";
 import Step2 from "../../new/_components/Steps/Step2";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { TempOrder, TempOrderInput } from "../../new/schemas/CreateFormValues";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import ky, { HTTPError } from "ky";
 import { Order } from "@/types/MongoTypes/Order";
-import _, { set } from "lodash";
+import _ from "lodash";
 
 const Content = ({ id }: { id: string }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState(false);
+
+  const router = useRouter();
 
   const orderQuery = useOrder({ id });
   const order = useMemo(() => orderQuery?.data || {}, [orderQuery.data]) as Order;
@@ -100,7 +102,7 @@ const Content = ({ id }: { id: string }) => {
     };
 
     if (currentStep === 2) {
-      // router.push("/orders");
+      router.push("/orders");
       return;
     }
   

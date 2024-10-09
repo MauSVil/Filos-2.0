@@ -78,7 +78,7 @@ export const PUT = async (req: NextRequest) => {
       status: 'Pendiente',
       updated_at: new Date(),
       documents: {
-        order: undefined,
+        order: '',
       }
     }
 

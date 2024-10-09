@@ -22,7 +22,7 @@ const Step1 = ({ order }: { order?: Order }) => {
   const products = useMemo(() => productsQuery.data?.data || [], [productsQuery.data]);
 
   const { watch } = form
-  const productsForm = watch('products', _.keyBy(order?.products, 'product'));
+  const productsForm = watch('products', {});
 
   const columns: ColumnDef<Product>[] = useMemo(
     () =>
@@ -151,7 +151,7 @@ const Step1 = ({ order }: { order?: Order }) => {
   })
 
   useEffect(() => {
-    if (!order || productsForm) return;
+    if (!order || Object.keys(productsForm || {}).length > 0) return;
     const { products } = order;
     const productsMapped = _.keyBy(products, 'product');
     form.setValue('products', productsMapped);

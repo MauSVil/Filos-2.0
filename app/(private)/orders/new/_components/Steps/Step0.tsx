@@ -7,7 +7,7 @@ import { RadioGroupFormField } from "@/components/form/RadioGroupFormField";
 import { DateFormField } from "@/components/form/DateFormField";
 import { OrderInput } from "@/types/RepositoryTypes/Order";
 
-const Step0 = () => {
+const Step0 = ({ loading = false }: { loading?: boolean }) => {
   const { control } = useFormContext<OrderInput>();
 
   const buyersQuery = useBuyers({});
@@ -28,6 +28,7 @@ const Step0 = () => {
         }}
         label="Nombre"
         name="name"
+        disabled={loading}
       />
       <ComboboxFormField
         items={buyersOptions}
@@ -39,6 +40,7 @@ const Step0 = () => {
         placeholder='Selecciona un comprador...'
         searchLabel='Buscar un comprador...'
         emptyLabel="No hay compradores"
+        isLoading={loading}
       />
 
       <DateFormField
@@ -47,6 +49,7 @@ const Step0 = () => {
           name: 'dueDate'
         }}
         label='Fecha de entrega'
+        disabled={loading}
       />
 
       <RadioGroupFormField
@@ -75,6 +78,7 @@ const Step0 = () => {
           name="freightPrice"
           type="number"
           placeholder="Escribe el precio del flete..."
+          disabled={loading}
         />
         <InputFormField
           className="w-full"
@@ -87,6 +91,7 @@ const Step0 = () => {
           type="number"
           name="advancedPayment"
           placeholder="Escribe el anticipo..."
+          disabled={loading}
         />
       </div>
       <InputFormField
@@ -98,6 +103,7 @@ const Step0 = () => {
         label="Descripcion"
         name="description"
         placeholder="Escribe una descripcion..."
+        disabled={loading}
       />
     </div>
   )

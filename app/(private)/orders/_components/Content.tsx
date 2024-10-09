@@ -191,6 +191,7 @@ const OrdersContent = () => {
                 size="icon"
                 variant="outline"
                 className="h-6 w-6"
+                disabled={cellData.row.original.status !== 'Pendiente' || cellData.row.original.paid}
                 onClick={() => router.push(`/orders/${cellData.row.original._id}`)}
               >
                 <Edit className="h-3.5 w-3.5" />

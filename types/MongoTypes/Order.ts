@@ -6,8 +6,8 @@ export interface Order {
   products: { product: string, quantity: number, total: number }[];
   buyer: string;
   active: boolean;
-  status: string;
-  orderType: string;
+  status: 'Pendiente' | 'Completado' | 'Cancelado';
+  orderType: 'retailPrice' | 'wholesalePrice' | 'specialPrice' | 'webPagePrice';
   freightPrice: number;
   advancedPayment: number;
   description: string;

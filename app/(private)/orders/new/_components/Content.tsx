@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import ky from "ky";
+import ky, { HTTPError } from "ky";
 
 const defaultValues: Partial<TempOrder> = {
   dueDate: new Date(),
@@ -22,15 +22,16 @@ const defaultValues: Partial<TempOrder> = {
 
 const NewOrdersContent = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [orderGenerationStep, setOrderGenerationStep] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | undefined>(undefined);
+  const [success, setSuccess] = useState(false);
 
   const router = useRouter();
 
   const handleBackStep = () => {
     if (currentStep === 0) return;
     setCurrentStep((prev) => prev - 1);
+    setError(undefined);
   }
 
   const form = useForm<TempOrder>({
@@ -54,25 +55,24 @@ const NewOrdersContent = () => {
 
     try {
       setCurrentStep((prev) => prev + 1);
-
-      // await ky.post("/api/orders/new/edit-inventory", { json: {
-      //   products: Object.keys(data.products || {}).map((key) => ({
-      //     id: key,
-      //     quantity: data?.products?.[key]?.quantity,
-      //   })),
-      // } }).json();
-
-      setOrderGenerationStep((prev) => prev + 1);
-
       await ky.post("/api/orders/new", { json: data }).json();
-      setOrderGenerationStep((prev) => prev + 1);
-  
       setLoading(false);
+      setSuccess(true);
     } catch (error) {
       console.error(error);
       setLoading(false);
-      toast.error("Hubo un error al crear la orden");
-      setError("Hubo un error al crear la orden");
+  
+      if (error instanceof HTTPError) {
+        const errorData = await error.response.json() as { error: string };
+        toast.error(errorData.error || "Hubo un error al editar la orden");
+        setError("Hubo un error al editar la orden");
+      } else if (error instanceof Error) {
+        toast.error(error.message || "Hubo un error al editar la orden");
+        setError("Hubo un error al editar la orden");
+      } else {
+        toast.error("Hubo un error desconocido al editar la orden");
+        setError("Hubo un error desconocido al editar la orden");
+      }
     }
   });
 
@@ -100,11 +100,11 @@ const NewOrdersContent = () => {
       case 1:
         return <Step1 />;
       case 2:
-        return <Step2 orderGenerationStep={orderGenerationStep} />;
+        return <Step2 label="Generando orden..." success={success} successLabel="Orden generada correctamente" error={error} />;
       default:
         return <div>No hay informacion</div>;
     }
-  }, [currentStep, orderGenerationStep]);
+  }, [currentStep, success, error]);
 
   return (
     <div className="w-full h-full flex flex-col items-center">
@@ -128,7 +128,7 @@ const NewOrdersContent = () => {
           className="w-1/2"
           onClick={handleBackStep}
           color="secondary"
-          disabled={loading || currentStep === 0 || currentStep === 2 || !!error}
+          disabled={loading || currentStep === 0 || success}
         >
           Atras
         </Button>

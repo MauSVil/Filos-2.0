@@ -11,7 +11,7 @@ export type OrderRepositoryFilter = z.infer<typeof OrderRepositoryFilterModel>;
 export const OrderInputModel = z.object({
   name: z.string({ required_error: 'El nombre es requerido' }).min(3, 'El nombre debe tener al menos 3 caracteres'),
   buyer: z.string({ required_error: 'El comprador es requerido' }),
-  orderType: z.string({ required_error: 'El tipo de orden es requerido' }),
+  orderType: z.enum(['retailPrice', 'wholesalePrice', 'specialPrice', 'webPagePrice'], { required_error: 'El tipo de orden es requerido' }),
   requestDate: z.coerce.date({ required_error: 'La fecha de solicitud es requerida', invalid_type_error: 'La fecha de solicitud es invalida' }),
   dueDate: z.coerce.date({ required_error: 'La fecha de entrega es requerida', invalid_type_error: 'La fecha de entrega es invalida' }),
   freightPrice: z.coerce.number({ required_error: 'El precio de flete es requerido' }).optional().default(0),
@@ -22,7 +22,7 @@ export const OrderInputModel = z.object({
     quantity: z.coerce.number({ required_error: 'La cantidad es requerida' }),
     total: z.coerce.number({ required_error: 'El total es requerido' }),
   })),
-  created_at: z.coerce.date(),
+  created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date(),
   deleted_at: z.coerce.date().nullable().optional(),
   status: z.enum(['Pendiente', 'Completado', 'Cancelado']),
@@ -35,6 +35,7 @@ export const OrderInputModel = z.object({
 });
 
 export const OrderUpdateInputModel = OrderInputModel.partial();
+export type OrderUpdateInput = z.infer<typeof OrderUpdateInputModel>;
 
 export type OrderInput = z.infer<typeof OrderInputModel>;
 

@@ -102,6 +102,7 @@ const Content = ({ id }: { id: string }) => {
     };
 
     if (currentStep === 2) {
+      orderQuery.refetch();
       router.push("/orders");
       return;
     }

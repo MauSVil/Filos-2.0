@@ -67,7 +67,7 @@ export const PUT = async (req: NextRequest) => {
     const productsIds = Object.keys(body.products);
     const products = await ProductsRepository.find({ ids: productsIds });
     const productsMapped: { [key: string]: Product } = _.keyBy(products, '_id') as { [key: string]: Product };
-    const productsParsed = Object.keys(body.products).map((key) => {
+    const productsParsed = Object.keys(body.products).filter((key) => body.products[key].quantity > 0).map((key) => {
       const product = productsMapped[key];
       return {
         product: key,

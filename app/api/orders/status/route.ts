@@ -1,5 +1,6 @@
 import { OrdersRepository } from "@/repositories/orders.repository";
 import { Order } from "@/types/MongoTypes/Order";
+import ky from "ky";
 import { NextRequest, NextResponse } from "next/server";
 
 export const PUT = async (req: NextRequest) => {
@@ -22,6 +23,16 @@ export const PUT = async (req: NextRequest) => {
       ...(status && { status }),
       ...(paid && { paid }),
     });
+
+    if (paid && !prevOrder.advancedPayment) {
+      const productsToSend = (prevOrder.products || []).map((key) => {
+        return {
+          id: key.product,
+          quantity: key.quantity,
+        }
+      });
+      await ky.post(`${process.env.NEXT_PUBLIC_URL}/api/orders/new/edit-inventory`, { json: { products: productsToSend }})
+    }
 
     return NextResponse.json({ message: 'Order updated successfully' });
   } catch (error) {

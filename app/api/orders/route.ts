@@ -3,6 +3,7 @@ import { ProductsRepository } from "@/repositories/products.repository";
 import { Order } from "@/types/MongoTypes/Order";
 import { Product } from "@/types/MongoTypes/Product";
 import { OrderInput, OrderUpdateInputModel } from "@/types/RepositoryTypes/Order";
+import ky from "ky";
 import _ from "lodash";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -52,6 +53,16 @@ export const PUT = async (req: NextRequest) => {
       advancedPayment,
       description,
     } = rest as Order;
+
+    if (advancedPayment > 0 && !prevOrder.paid) {
+      const parsedProducts = Object.keys(body.products).map((key) => {
+        return {
+          id: key,
+          quantity: body.products[key].quantity,
+        }
+      });
+      await ky.post(`${process.env.NEXT_PUBLIC_URL}/api/orders/new/edit-inventory`, { json: { products: parsedProducts }})
+    }
 
     const productsIds = Object.keys(body.products);
     const products = await ProductsRepository.find({ ids: productsIds });

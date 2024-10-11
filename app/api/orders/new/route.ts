@@ -2,6 +2,7 @@ import { OrdersRepository } from "@/repositories/orders.repository";
 import { ProductsRepository } from "@/repositories/products.repository";
 import { Product } from "@/types/MongoTypes/Product";
 import { OrderInput, OrderInputModel } from "@/types/RepositoryTypes/Order";
+import ky from "ky";
 import _ from "lodash";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -42,6 +43,16 @@ export const POST = async (req: NextRequest) => {
     newBodyParsed.finalAmount = _.sumBy(productsParsed, 'total') + newBodyParsed.freightPrice - newBodyParsed.advancedPayment;
 
     await OrdersRepository.insertOne(newBodyParsed);
+
+    if (newBody.advancedPayment > 0) {
+      const productsToSend = Object.keys(body.products).map((key) => {
+        return {
+          id: key,
+          quantity: body.products[key].quantity,
+        }
+      });
+      await ky.post(`${process.env.NEXT_PUBLIC_URL}/api/orders/new/edit-inventory`, { json: { products: productsToSend }})
+    }
 
     await new Promise((resolve) => setTimeout(resolve, 3000));
 

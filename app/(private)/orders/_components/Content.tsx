@@ -354,17 +354,7 @@ const OrdersContent = () => {
   }, [orders]);
 
   const handlePaidStatus = async (id: string) => {
-    updateOrder.mutate({ _id: id, paid: true })
-
-    const products = mappedOrders[id]?.products || [];
-
-    await ky.post("/api/orders/new/edit-inventory", { json: {
-      products: products.map((product) => ({
-        id: product.product,
-        quantity: product.quantity,
-      })),
-    } }).json();
-
+    await updateOrder.mutateAsync({ _id: id, paid: true })
     ordersQuery.refetch()
   }
 
@@ -518,8 +508,8 @@ const OrdersContent = () => {
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem
                         disabled={selectedOrder?.status !== 'Pendiente'}
-                        onClick={() => {
-                          updateOrder.mutate({ _id: selectedOrder?._id, status: 'Completado' })
+                        onClick={async () => {
+                          await updateOrder.mutateAsync({ _id: selectedOrder?._id, status: 'Completado' })
                           ordersQuery.refetch()
                         }}
                       >
@@ -533,8 +523,8 @@ const OrdersContent = () => {
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         disabled={selectedOrder?.status !== 'Pendiente' || selectedOrder?.paid}
-                        onClick={() => {
-                          updateOrder.mutate({ _id: selectedOrder?._id, status: 'Cancelado' })
+                        onClick={async () => {
+                          await updateOrder.mutateAsync({ _id: selectedOrder?._id, status: 'Cancelado' })
                           ordersQuery.refetch()
                         }}
                       >

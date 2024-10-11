@@ -105,39 +105,48 @@ const ProductsContent = () => {
           cell: ({ row: { original: { quantity }} }) => {
             if (quantity <= 0) {
               return (
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Badge variant="destructive">No disponible</Badge>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{quantity}</p>
-                  </TooltipContent>
-                </Tooltip>
+                <div className="flex items-center gap-2">
+                  <p>{quantity}</p>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Badge variant="destructive">No disponible</Badge>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{quantity}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
               );
             }
 
             if (quantity <= 5) {
               return (
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Badge variant="warning">Pocas unidades</Badge>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{quantity}</p>
-                  </TooltipContent>
-                </Tooltip>
+                <div className="flex items-center gap-2">
+                  <p>{quantity}</p>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Badge variant="warning">Pocas unidades</Badge>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{quantity}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
               );
             }
 
             return (
-              <Tooltip>
-                <TooltipTrigger>
-                  <Badge variant="default">Disponible</Badge>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{quantity}</p>
-                </TooltipContent>
-              </Tooltip>
+              <div className="flex items-center gap-2">
+                <p>{quantity}</p>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Badge variant="default">Disponible</Badge>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{quantity}</p>
+                  </TooltipContent>
+                </Tooltip>              
+              </div>
             );
           },
           enableGlobalFilter: true,

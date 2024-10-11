@@ -105,8 +105,8 @@ const ProductsContent = () => {
           cell: ({ row: { original: { quantity }} }) => {
             if (quantity <= 0) {
               return (
-                <div className="flex items-center gap-2">
-                  <p>{quantity}</p>
+                <div className="flex items-center gap-4">
+                  <p>{quantity} -</p>
                   <Tooltip>
                     <TooltipTrigger>
                       <Badge variant="destructive">No disponible</Badge>
@@ -121,8 +121,8 @@ const ProductsContent = () => {
 
             if (quantity <= 5) {
               return (
-                <div className="flex items-center gap-2">
-                  <p>{quantity}</p>
+                <div className="flex items-center gap-4">
+                  <p>{quantity} -</p>
                   <Tooltip>
                     <TooltipTrigger>
                       <Badge variant="warning">Pocas unidades</Badge>
@@ -136,8 +136,8 @@ const ProductsContent = () => {
             }
 
             return (
-              <div className="flex items-center gap-2">
-                <p>{quantity}</p>
+              <div className="flex items-center gap-4">
+                <p>{quantity} -</p>
                 <Tooltip>
                   <TooltipTrigger>
                     <Badge variant="default">Disponible</Badge>

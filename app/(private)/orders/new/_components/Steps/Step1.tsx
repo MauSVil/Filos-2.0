@@ -1,3 +1,4 @@
+import { ImageModal } from "@/app/(private)/products/_components/ImageModal";
 import { useProducts } from "@/app/(private)/products/_hooks/useProducts";
 import { DataTable } from "@/components/DataTable";
 import DataTableColumnHeader from "@/components/DataTableHeader";
@@ -11,6 +12,7 @@ import { ListFilter, MinusIcon, PlusIcon } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
+import { toast } from "sonner";
 
 const productOrderStatuses = [
   'Todos',
@@ -46,6 +48,18 @@ const Step1 = ({ order, type }: { order?: Order, type: 'new' | 'edit' }) => {
   const { watch } = form
   const productsForm = watch('products', {});
 
+  const handleImageClick = async (image: string) => {
+    try {
+      await ImageModal({ image });
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+        return;
+      }
+      toast.error('An error occurred');
+    }
+  };
+
   const columns: ColumnDef<Product>[] = useMemo(
     () =>
       [
@@ -60,9 +74,10 @@ const Step1 = ({ order, type }: { order?: Order, type: 'new' | 'edit' }) => {
               <Image
                 width={50}
                 height={50}
-                className="rounded-medium"
+                className="rounded-medium cursor-pointer"
                 src={cellData.row.original.image}
                 alt="image"
+                onClick={() => handleImageClick(cellData.row.original.image)}
               />
             );
           },

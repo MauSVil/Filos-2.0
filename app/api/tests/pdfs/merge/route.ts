@@ -18,6 +18,14 @@ const convertImageToPdf = async (imageBytes: Uint8Array) => {
     width: image.width,
     height: image.height,
   });
+
+  page.drawText('Imagen de producto', {
+    x: 20,  // Ajusta la posición horizontal del texto
+    y: image.height - 30,  // Colocar el texto cerca de la parte superior de la imagen
+    size: 24,  // Tamaño del texto reducido
+    color: rgb(0, 0, 0),  // Texto en negro
+  });
+
   return pdfDoc.save();
 }
 

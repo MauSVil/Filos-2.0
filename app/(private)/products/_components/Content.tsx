@@ -10,6 +10,8 @@ import numeral from 'numeral';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import Image from 'next/image';
+import { toast } from 'sonner';
+import { ImageModal } from './ImageModal';
 
 const ProductsContent = () => {
   const [pagination, setPagination] = useState({
@@ -27,6 +29,18 @@ const ProductsContent = () => {
     return productsQuery.data?.data || [];
   }, [productsQuery.data?.data]);
 
+  const handleImageClick = async (image: string) => {
+    try {
+      await ImageModal({ image });
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+        return;
+      }
+      toast.error('An error occurred');
+    }
+  };
+
   const columns: ColumnDef<Product>[] = useMemo(
     () =>
       [
@@ -41,9 +55,10 @@ const ProductsContent = () => {
               <Image
                 width={50}
                 height={50}
-                className="rounded-medium"
+                className="rounded-medium cursor-pointer"
                 src={cellData.row.original.image}
                 alt="image"
+                onClick={() => handleImageClick(cellData.row.original.image)}
               />
             );
           },

@@ -1,7 +1,7 @@
 import { ProductsRepository } from "@/repositories/products.repository";
 import ky from "ky";
 import { NextRequest, NextResponse } from "next/server";
-import { PDFDocument, rgb } from 'pdf-lib';
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
 const fetchImage = async (url: string) => {
   const response = await ky.get(url);
@@ -11,7 +11,10 @@ const fetchImage = async (url: string) => {
 const convertImageToPdf = async (imageBytes: Uint8Array) => {
   const pdfDoc = await PDFDocument.create();
   const image = await pdfDoc.embedPng(imageBytes);
+  const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  
   const page = pdfDoc.addPage([image.width, image.height]);
+  
   page.drawImage(image, {
     x: 0,
     y: 0,
@@ -19,15 +22,32 @@ const convertImageToPdf = async (imageBytes: Uint8Array) => {
     height: image.height,
   });
 
-  page.drawText('Imagen de producto', {
-    x: 20,  // Ajusta la posición horizontal del texto
-    y: image.height - 30,  // Colocar el texto cerca de la parte superior de la imagen
-    size: 24,  // Tamaño del texto reducido
-    color: rgb(0, 0, 0),  // Texto en negro
+  const text = 'M-3031-U-GB';
+  const textSize = 24;
+  const textX = image.width - helveticaFont.widthOfTextAtSize(text, textSize) - 20;
+  const textY = 30;
+
+  const textWidth = helveticaFont.widthOfTextAtSize(text, textSize);
+  const textHeight = textSize + 10;
+
+  page.drawRectangle({
+    x: textX - 5,
+    y: textY - textHeight + 25,
+    width: textWidth + 10,
+    height: textHeight,
+    color: rgb(1, 1, 1)
+  });
+
+  page.drawText(text, {
+    x: textX,
+    y: textY,
+    size: textSize,
+    font: helveticaFont,
+    color: rgb(0, 0, 0),
   });
 
   return pdfDoc.save();
-}
+};
 
 const mergePdfs = async (pdfUrls: string[]): Promise<Uint8Array> => {
   const pdfDoc = await PDFDocument.create();

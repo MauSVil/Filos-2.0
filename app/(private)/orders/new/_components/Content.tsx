@@ -98,7 +98,7 @@ const NewOrdersContent = () => {
       case 0:
         return <Step0 />;
       case 1:
-        return <Step1 />;
+        return <Step1 type="new" />;
       case 2:
         return <Step2 label="Generando orden..." success={success} successLabel="Orden generada correctamente" error={error} />;
       default:

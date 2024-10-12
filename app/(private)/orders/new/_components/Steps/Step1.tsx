@@ -2,24 +2,46 @@ import { useProducts } from "@/app/(private)/products/_hooks/useProducts";
 import { DataTable } from "@/components/DataTable";
 import DataTableColumnHeader from "@/components/DataTableHeader";
 import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Order } from "@/types/MongoTypes/Order";
 import { Product } from "@/types/MongoTypes/Product";
 import { ColumnDef, ColumnFiltersState, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, VisibilityState } from "@tanstack/react-table";
 import _ from "lodash";
-import { MinusIcon, PlusIcon } from "lucide-react";
+import { ListFilter, MinusIcon, PlusIcon } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
-const Step1 = ({ order }: { order?: Order }) => {
+const productOrderStatuses = [
+  'Todos',
+  'Con cantidad',
+  'Sin cantidad',
+]
+
+const Step1 = ({ order, type }: { order?: Order, type: 'new' | 'edit' }) => {
   const form = useFormContext();
+  const [status, setStatus] = useState(productOrderStatuses[0])
   const [sorting, setSorting] = useState<SortingState>([{ id: 'uniqId', desc: false }]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [globalFilter, setGlobalFilter] = useState('')
 
   const productsQuery = useProducts();
-  const products = useMemo(() => productsQuery.data?.data || [], [productsQuery.data]);
+
+  const productsFromOrder = useMemo(() => {
+    if (!order) return [];
+    return order.products || [];
+  }, [order]);
+
+  const products = useMemo(() => {
+    const productsFromOrderMapped = _.keyBy(productsFromOrder, 'product');
+    return (productsQuery.data?.data || []).filter((product) => {
+      if (status === 'Todos') return true;
+      if (status === 'Con cantidad' && productsFromOrderMapped[product._id]?.quantity > 0) return true;
+      if (status === 'Sin cantidad' && (productsFromOrderMapped[product._id]?.quantity <= 0 || productsFromOrderMapped[product._id]?.quantity === undefined)) return true;
+      return false;
+    });
+  }, [productsQuery.data, status, productsFromOrder]);
 
   const { watch } = form
   const productsForm = watch('products', {});
@@ -158,8 +180,44 @@ const Step1 = ({ order }: { order?: Order }) => {
   }, [order, productsForm]);
 
   return (
-    <div className="flex flex-col">
-      <h3 className="text-lg font-semibold mb-4">Productos</h3>
+    <div className="flex flex-col gap-4">
+      <h3 className="text-lg font-semibold">Productos</h3>
+      {
+        type === 'edit' && (
+          <div className="flex items-center">
+            <div className="ml-auto flex items-center gap-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-7 gap-1 text-sm"
+                  >
+                    <ListFilter className="h-3.5 w-3.5" />
+                    <span className="sr-only sm:not-sr-only">Filtrar</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>Filrar por:</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {
+                    productOrderStatuses.map((statusLabel) => {
+                      return (
+                        <DropdownMenuCheckboxItem
+                          checked={status === statusLabel}
+                          onCheckedChange={() => setStatus(statusLabel)}
+                        >
+                          {statusLabel}
+                        </DropdownMenuCheckboxItem>
+                      )
+                    })
+                  }
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+        )
+      }
       <DataTable
         table={table}
         isLoading={productsQuery.isLoading}

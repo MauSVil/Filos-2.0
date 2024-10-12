@@ -34,7 +34,7 @@ const Content = ({ id }: { id: string }) => {
       case 0:
         return <Step0 />;
       case 1:
-        return <Step1 order={order} />;
+        return <Step1 order={order} type="edit" />;
       case 2:
         return <Step2 label="Actualizando orden..." success={success} successLabel="Orden actualizada correctamente" error={error} />;
       default:

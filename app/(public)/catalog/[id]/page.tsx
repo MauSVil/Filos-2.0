@@ -1,24 +1,9 @@
-"use client";
-import { useMemo } from "react";
-import { useCatalog } from "./_hooks/useCatalog";
+import PublicCataloguesContent from "./_components/Content";
 
-const PublicCataloguesPage = (params: { id: string }) => {
-  const catalogQuery = useCatalog({ id: params.id });
-  const catalogURL = useMemo(() => {
-    const googleViewerUrl = `https://docs.google.com/gview?url=${catalogQuery.data?.pdf}&embedded=true`;
-    return googleViewerUrl;
-  }, [catalogQuery.data]);
-
+const PublicCataloguesPage = (props: { params: { id: string } }) => {
+  const { params } = props;
   return (
-    <div className="w-full h-screen">
-      <iframe
-        src={catalogURL}
-        width="100%"
-        height="100%"
-        style={{ border: 'none' }}
-        title="PDF Viewer"
-      />
-    </div>
+    <PublicCataloguesContent id={params.id} />
   );
 };
 

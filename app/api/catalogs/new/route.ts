@@ -1,4 +1,6 @@
+import { CatalogsRepository } from "@/repositories/catalogs.repository";
 import { ProductsRepository } from "@/repositories/products.repository";
+import { uploadImage } from "@/utils/aws/uploadImage";
 import ky from "ky";
 import { NextRequest, NextResponse } from "next/server";
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
@@ -73,12 +75,21 @@ const mergePdfs = async (els: { image: string, uniqId: string }[]): Promise<Uint
 export const POST = async (req: NextRequest) => {
   try {
     const body = await req.json();
-    const { pdfIds } = body;
+    const { pdfIds = [], name } = body;
 
     const products = await ProductsRepository.find({ ids: pdfIds });
 
     if (!products.length) {
       return NextResponse.json({ error: 'No se encontraron productos' }, { status: 404 });
+    }
+
+    if (!name) {
+      return NextResponse.json({ error: 'El nombre del catalogo es requerido' }, { status: 400 });
+    }
+
+    const catalogFound = await CatalogsRepository.findOne({ name });
+    if (catalogFound) {
+      return NextResponse.json({ error: 'Ya existe un catalogo con ese nombre' }, { status: 400 });
     }
 
     const pdfs = products.map((product) => {
@@ -89,13 +100,16 @@ export const POST = async (req: NextRequest) => {
     });
 
     const mergedPdf = await mergePdfs(pdfs);
+    const mergedPdfBuffer = Buffer.from(mergedPdf);
 
-    return new NextResponse(mergedPdf, {
-      headers: {
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': 'attachment; filename="merged.pdf"',
-      },
+    const url =await uploadImage(`catalogs/${name}.pdf`, mergedPdfBuffer);
+
+    await CatalogsRepository.insertOne({
+      name,
+      pdf: url,
     });
+
+    return NextResponse.json({ message: 'Catalogo creado exitosamente', data: url });
   } catch (error) {
     console.error(error);
     if (error instanceof Error) {

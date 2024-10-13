@@ -12,6 +12,9 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import Image from 'next/image';
 import { toast } from 'sonner';
 import { ImageModal } from './ImageModal';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Button } from '@/components/ui/button';
+import { NewCatalogModal } from './NewCatalogueModal';
 
 const ProductsContent = () => {
   const [pagination, setPagination] = useState({
@@ -22,6 +25,7 @@ const ProductsContent = () => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [globalFilter, setGlobalFilter] = useState('')
+  const [rowSelection, setRowSelection] = useState({})
 
   const productsQuery = useProducts();
 
@@ -44,6 +48,28 @@ const ProductsContent = () => {
   const columns: ColumnDef<Product>[] = useMemo(
     () =>
       [
+        {
+          id: 'select',
+          header: ({ table }) => (
+            <Checkbox
+              {...{
+                checked: table.getIsSomeRowsSelected() ? 'indeterminate' : table.getIsAllRowsSelected(),
+                // onCheckedChange: table.getToggleAllRowsSelectedHandler(),
+              }}
+            />
+          ),
+          cell: ({ row }) => (
+            <div className="px-1">
+              <Checkbox
+                {...{
+                  checked: row.getIsSelected(),
+                  disabled: !row.getCanSelect(),
+                  onCheckedChange: row.getToggleSelectedHandler(),
+                }}
+              />
+            </div>
+          ),
+        },
         {
           id: 'Imagen',
           header: ({ column }) => (
@@ -241,6 +267,8 @@ const ProductsContent = () => {
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
     onSortingChange: setSorting,
+    enableRowSelection: true,
+    onRowSelectionChange: setRowSelection,
     globalFilterFn: "auto",
     state: {
       sorting,
@@ -248,11 +276,35 @@ const ProductsContent = () => {
       columnVisibility,
       globalFilter,
       pagination,
+      rowSelection
     },
   })
 
+  const handleNewCatalogClick = async () => {
+    try {
+      const productIds = Object.keys(rowSelection);
+      await NewCatalogModal({productIds});
+      setRowSelection({});
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+        return;
+      }
+      toast.error('An error occurred');
+    }
+  };
+
   return (
     <>
+      <div className="flex items-center justify-end mb-4">
+        <Button
+          className="ml-auto"
+          disabled={!table.getSelectedRowModel().rows.length}
+          onClick={handleNewCatalogClick}
+        >
+          Crear catalogo
+        </Button>
+      </div>
       <DataTable
         table={table}
         isLoading={productsQuery.isLoading}

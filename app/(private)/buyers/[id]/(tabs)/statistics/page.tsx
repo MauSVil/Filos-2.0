@@ -15,8 +15,15 @@ import {
 } from "@/components/ui/chart"
 import { useBuyerStatistic } from "../../../_hooks/useBuyerStatistic"
 import { useParams } from "next/navigation"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import _ from "lodash"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+import { CalendarIcon } from "lucide-react"
+import { Calendar } from "@/components/ui/calendar"
+import moment from "moment"
+import { es } from "date-fns/locale"
 
 const monthsParsed: { [key: number]: string } = {
   1: "Enero",
@@ -55,9 +62,10 @@ const chartConfig3 = {
 }
 
 const BuyerStatisticsPage = () => {
+  const [date, setDate] = useState<string>(new Date().toISOString());
   const { id } = useParams() as { id: string }
-  const buyerStatisticQuery = useBuyerStatistic({ id })
-  const buyerStatistics = useMemo(() => buyerStatisticQuery.data || {}, [buyerStatisticQuery.data]) as { finalAmountPerMonth: { [key: number]: number }, productsPerMonth: { [key: number]: number }, mostPopularProducts: { [key: string]: number } }
+  const buyerStatisticQuery = useBuyerStatistic({ id, date })
+  const buyerStatistics = useMemo(() => buyerStatisticQuery.data || {}, [buyerStatisticQuery.data]) as { finalAmountPerMonth: { [key: number]: number }, productsPerMonth: { [key: number]: number }, mostPopularProducts: { [key: string]: number }, samples: number }
 
   const chartData1 = useMemo(() => {
     const orderPerMonth = buyerStatistics.finalAmountPerMonth || {};
@@ -94,107 +102,139 @@ const BuyerStatisticsPage = () => {
   }, [buyerStatistics])
 
   return (
-    <div className="grid grid-cols-1 gap-4 p-4 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
-      <Card>
-        <CardHeader>
-          <CardTitle>Ventas totales ($)</CardTitle>
-          <CardDescription>Enero - Diciembre 2024</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ChartContainer config={chartConfig}>
-            <LineChart
-              accessibilityLayer
-              data={chartData1}
+    <div className="flex flex-col gap-4 p-4">
+      <div className="flex items-center justify-between">
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn(
+                "w-[280px] justify-start text-left font-normal",
+                !date && "text-muted-foreground"
+              )}
             >
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey="month"
-                tickLine={false}
-                axisLine={false}
-                tickMargin={8}
-                tickFormatter={(value) => monthsParsed[value].slice(0, 3)}
-              />
-              <ChartTooltip
-                content={<ChartTooltipContent hideLabel />}
-              />
-              <YAxis  />
-              <Line
-                dataKey="sales"
-                type="linear"
-                stroke="var(--color-sales)"
-                strokeWidth={2}
-              />
-            </LineChart>
-          </ChartContainer>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Productos vendidos</CardTitle>
-          <CardDescription>Enero - Diciembre 2024</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ChartContainer config={chartConfig2}>
-            <LineChart
-              accessibilityLayer
-              data={chartData2}
-            >
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey="month"
-                tickLine={false}
-                axisLine={false}
-                tickMargin={8}
-                tickFormatter={(value) => monthsParsed[value].slice(0, 3)}
-              />
-              <ChartTooltip
-                content={<ChartTooltipContent hideLabel />}
-              />
-              <YAxis  />
-              <Line
-                dataKey="products"
-                type="linear"
-                stroke="var(--color-products)"
-                strokeWidth={2}
-              />
-            </LineChart>
-          </ChartContainer>
-        </CardContent>
-      </Card>
-      <Card>
-      <CardHeader>
-        <CardTitle>Productos populares</CardTitle>
-        <CardDescription>Enero - Diciembre 2024</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig3}>
-          <BarChart
-            accessibilityLayer
-            data={chartData3}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="model"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {date ? moment(date).format('DD/MM/YYYY') : <span>Selecciona una fecha</span>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0">
+            <Calendar
+              mode="single"
+              selected={new Date(date)}
+              onSelect={(date) => {
+                if (date) {
+                  setDate(date.toISOString());
+                }
+              }}
+              initialFocus
+              locale={es}
             />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <Bar dataKey="models" fill="var(--color-models)" radius={8}>
-              <LabelList
-                position="top"
-                offset={12}
-                className="fill-foreground"
-                fontSize={12}
-              />
-            </Bar>
-          </BarChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
+          </PopoverContent>
+        </Popover>
+        <p>El tamaño de la muestra es de {buyerStatistics.samples} ordenes</p>
+      </div>
+      <div className="grid grid-cols-1 gap-4 md:gap-8 md:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>Ventas totales ($)</CardTitle>
+            <CardDescription>Enero - Diciembre 2024</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer config={chartConfig}>
+              <LineChart
+                accessibilityLayer
+                data={chartData1}
+              >
+                <CartesianGrid vertical={false} />
+                <XAxis
+                  dataKey="month"
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                  tickFormatter={(value) => monthsParsed[value].slice(0, 3)}
+                />
+                <ChartTooltip
+                  content={<ChartTooltipContent hideLabel />}
+                />
+                <YAxis  />
+                <Line
+                  dataKey="sales"
+                  type="linear"
+                  stroke="var(--color-sales)"
+                  strokeWidth={2}
+                />
+              </LineChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Productos vendidos</CardTitle>
+            <CardDescription>Enero - Diciembre 2024</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer config={chartConfig2}>
+              <LineChart
+                accessibilityLayer
+                data={chartData2}
+              >
+                <CartesianGrid vertical={false} />
+                <XAxis
+                  dataKey="month"
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                  tickFormatter={(value) => monthsParsed[value].slice(0, 3)}
+                />
+                <ChartTooltip
+                  content={<ChartTooltipContent hideLabel />}
+                />
+                <YAxis  />
+                <Line
+                  dataKey="products"
+                  type="linear"
+                  stroke="var(--color-products)"
+                  strokeWidth={2}
+                />
+              </LineChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+        <Card className="md:col-span-2">
+          <CardHeader>
+            <CardTitle>Productos populares</CardTitle>
+            <CardDescription>Enero - Diciembre 2024</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer config={chartConfig3}>
+              <BarChart
+                accessibilityLayer
+                data={chartData3}
+              >
+                <CartesianGrid vertical={false} />
+                <XAxis
+                  dataKey="model"
+                  tickLine={false}
+                  tickMargin={10}
+                  axisLine={false}
+                />
+                <ChartTooltip
+                  cursor={false}
+                  content={<ChartTooltipContent hideLabel />}
+                />
+                <Bar dataKey="models" fill="var(--color-models)" radius={8}>
+                  <LabelList
+                    position="top"
+                    offset={12}
+                    className="fill-foreground"
+                    fontSize={12}
+                  />
+                </Bar>
+              </BarChart>
+            </ChartContainer>
+          </CardContent>
+      </Card>
+      </div>
     </div>
   ); 
 }

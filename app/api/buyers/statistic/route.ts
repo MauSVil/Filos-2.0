@@ -6,12 +6,15 @@ import { NextRequest, NextResponse } from "next/server";
 export const POST = async (req: NextRequest) => {
   try {
     const body = await req.json();
-    const { buyerId } = body;
+    const { buyerId, date } = body;
 
     if (!buyerId) {
-      return NextResponse.json({ error: 'No se encontro el comprador' }, { status: 404 });
+      return NextResponse.json({ error: 'No se pasaron los argumentos correctos' }, { status: 404 });
     }
-    const orders = await OrdersRepository.find({ buyer: buyerId, paid: true, dateRange: { from: new Date("01/01/2023"), to: new Date("12/31/2024") } });
+
+    const year = new Date(date).getFullYear();
+
+    const orders = await OrdersRepository.find({ buyer: buyerId, paid: true, dateRange: { from: new Date(`01/01/${year}`), to: new Date(`12/31/${year}`) } });
 
     const finalAmountPerMonth = orders.reduce((acc, order) => {
       const month = order.requestDate.getMonth() + 1;
@@ -81,6 +84,7 @@ export const POST = async (req: NextRequest) => {
       finalAmountPerMonth,
       productsPerMonth,
       mostPopularProducts: mostPopularProductsModels,
+      samples: orders.length
     });
   } catch (error) {
     if (error instanceof Error) {

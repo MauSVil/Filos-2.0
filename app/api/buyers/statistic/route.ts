@@ -10,7 +10,7 @@ export const POST = async (req: NextRequest) => {
     if (!buyerId) {
       return NextResponse.json({ error: 'No se encontro el comprador' }, { status: 404 });
     }
-    const orders = await OrdersRepository.find({ buyer: buyerId, paid: true, dateRange: { from: new Date("01/01/2023"), to: new Date("12/31/2024") } });
+    const orders = await OrdersRepository.find({ buyer: buyerId, paid: true, dateRange: { from: new Date("01/01/2024"), to: new Date("12/31/2024") } });
 
     const finalAmountPerMonth = orders.reduce((acc, order) => {
       const month = order.requestDate.getMonth() + 1;

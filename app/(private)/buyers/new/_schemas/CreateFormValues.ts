@@ -8,6 +8,7 @@ export const CreateFormValues = z.object({
   ),
   phone: z.string({ required_error: 'El teléfono es requerido' }).min(10, { message: 'El teléfono debe tener al menos 10 caracteres' }),
   address: z.string({ required_error: 'La dirección es requerida' }).optional(),
+  isChain: z.boolean().default(false),
 });;
 
 export type CreateFormValues = z.input<typeof CreateFormValues>;

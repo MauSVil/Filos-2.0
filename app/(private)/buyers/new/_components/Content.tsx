@@ -7,12 +7,14 @@ import { CreateFormValues } from "../_schemas/CreateFormValues";
 import { InputFormField } from "@/components/form/InputFormField";
 import { useCreateBuyer } from "../../_hooks/useCreateBuyer";
 import { Button } from "@/components/ui/button";
+import { SwitchFormField } from "@/components/form/SwitchFormField";
 
 const defaultValues: CreateFormValues = {
   name: "",
   email: "",
   phone: "",
   address: "",
+  isChain: false,
 };
 
 const NewBuyersContent = () => {
@@ -82,6 +84,15 @@ const NewBuyersContent = () => {
               }}
               label="Dirección"
               name="address"
+            />
+            <SwitchFormField
+              controllerProps={{
+                control,
+                name: "isChain",
+              }}
+              label="Es un cliente de cadena?"
+              name="isChain"
+              className="flex flex-col gap-2"
             />
           </div>
         </form>

@@ -5,6 +5,7 @@ export const BuyerRepositoryFilterModel = z.object({
   page: z.number().optional(),
   buyers: z.array(z.string()).optional(),
   phone: z.string().optional(),
+  isChain: z.boolean().optional(),
 });
 
 export type BuyerRepositoryFilter = z.infer<typeof BuyerRepositoryFilterModel>;
@@ -18,6 +19,7 @@ export const BuyerInputModel = z.object({
   updatedAt: z.date().optional(),
   deletedAt: z.date().optional(),
   version: z.number().optional(),
+  isChain: z.boolean().default(false),
 });
 
 export type BuyerInput = z.infer<typeof BuyerInputModel>;

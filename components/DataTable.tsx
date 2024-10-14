@@ -25,6 +25,7 @@ interface DataTableProps<TData> {
   idIncludeTo?: string[];
   columns: any[];
   enableInput?: boolean;
+  onRowClick?: (row: any) => void;
 }
 
 export function DataTable<TData>({
@@ -32,7 +33,8 @@ export function DataTable<TData>({
   isLoading,
   columns,
   className,
-  enableInput = true
+  enableInput = true,
+  onRowClick,
 }: DataTableProps<TData>) {
 
   return (
@@ -139,6 +141,11 @@ export function DataTable<TData>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
+                  onClick={() => {
+                    if (onRowClick) {
+                      onRowClick(row.original);
+                    }
+                  }}
                   // data-state={row.getIsSelected() && messages.app.pages.accounts.tables.main.helpers.selected}
                 >
                   {row.getVisibleCells().map((cell) => (

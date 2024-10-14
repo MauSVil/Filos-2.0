@@ -286,7 +286,7 @@ const PrivateLayout = (props: Props) => {
             </BreadcrumbList>
           </Breadcrumb>
         </header>
-        <main className="overflow-hidden flex-1 px-4 sm:px-6 py-4 sm:py-6">
+        <main className="overflow-hidden flex-1 px-4 sm:px-6 py-4 sm:py-6 flex flex-col">
           {children}
         </main>
       </div>

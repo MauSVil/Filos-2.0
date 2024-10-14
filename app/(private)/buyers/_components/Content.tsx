@@ -92,6 +92,10 @@ const BuyersContent = () => {
     },
   })
 
+  const handleRowClick = async (row: any) => {
+    router.push(`/buyers/${row._id}/statistics`);
+  }
+
   return (
     <div className="flex flex-col w-full items-center py-4 gap-3">
       <div className="flex w-full justify-end items-center">
@@ -110,6 +114,7 @@ const BuyersContent = () => {
         table={table}
         isLoading={buyersQuery.isLoading}
         columns={columns}
+        onRowClick={handleRowClick}
       />
     </div>
   );

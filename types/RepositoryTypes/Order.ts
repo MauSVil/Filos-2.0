@@ -8,6 +8,8 @@ export const OrderRepositoryFilterModel = z.object({
     from: z.coerce.date().optional(),
     to: z.coerce.date().optional(),
   }).optional(),
+  buyer: z.string().optional(),
+  paid: z.boolean().optional(),
 });
 
 export type OrderRepositoryFilter = z.infer<typeof OrderRepositoryFilterModel>;

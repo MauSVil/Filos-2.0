@@ -4,9 +4,15 @@ import _ from "lodash";
 import moment from "moment";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   try {
-    const orders = await OrdersRepository.find({ dateRange: { from: moment('01/01/2024').toDate(), to: moment('12/31/2024').toDate() } });
+    const body = await req.json();
+    const { buyerId } = body;
+
+    const orders = await OrdersRepository.find({
+      dateRange: { from: new Date("01/01/2024"), to: new Date("12/31/2024") },
+      ...(buyerId && { buyer: buyerId }),
+    });
     if (!orders.length) {
       return NextResponse.json({ error: 'No se encontraron ordenes' }, { status: 404 });
     }

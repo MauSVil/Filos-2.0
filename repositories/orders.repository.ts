@@ -16,11 +16,12 @@ export class OrdersRepository {
   static async findOne(filter: OrderRepositoryFilter = {}): Promise<Order | null> {
     await init();
     const filters = await OrderRepositoryFilterModel.parse(filter);
-    const { id, ...rest } = filters;
+    const { id, dateRange, ...rest } = filters;
     const order = await db.collection('orders').findOne<Order>({
       ...rest,
-      ...(id ? { _id: new ObjectId(id) } : {}),
       deleted_at: null,
+      ...(id ? { _id: new ObjectId(id) } : {}),
+      ...(dateRange ? { requestDate: { $gte: dateRange.from, $lte: dateRange.to } } : {}),
     });
     return order;
   }
@@ -28,10 +29,11 @@ export class OrdersRepository {
   static async find(filter: OrderRepositoryFilter = {}): Promise<Order[]> {
     await init();
     const filters = await OrderRepositoryFilterModel.parse(filter);
-    const { page, ...rest } = filters;
+    const { page, dateRange, ...rest } = filters;
     const orders = await db.collection('orders').find<Order>({
       ...rest,
       deleted_at: null,
+      ...(dateRange ? { requestDate: { $gte: dateRange.from, $lte: dateRange.to } } : {}),
     }).sort({ created_at: -1 }).toArray();
     return orders;
   }
@@ -39,10 +41,11 @@ export class OrdersRepository {
   static async count(filter: OrderRepositoryFilter = {}): Promise<number> {
     await init();
     const filters = await OrderRepositoryFilterModel.parse(filter);
-    const { page, ...rest } = filters;
+    const { page, dateRange, ...rest } = filters;
     const count = await db.collection('orders').countDocuments({
       ...rest,
       deleted_at: null,
+      ...(dateRange ? { requestDate: { $gte: dateRange.from, $lte: dateRange.to } } : {}),
     });
     return count;
   }

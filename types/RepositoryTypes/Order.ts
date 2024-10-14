@@ -4,6 +4,10 @@ export const OrderRepositoryFilterModel = z.object({
   id: z.string().optional(),
   page: z.number().optional(),
   status: z.enum(['Pendiente', 'Completado', 'Cancelado']).optional(),
+  dateRange: z.object({
+    from: z.coerce.date().optional(),
+    to: z.coerce.date().optional(),
+  }).optional(),
 });
 
 export type OrderRepositoryFilter = z.infer<typeof OrderRepositoryFilterModel>;

@@ -32,8 +32,8 @@ export class BuyersRepository {
     const buyersObjectIds = buyersIds?.map((id) => new ObjectId(id));
 
     const buyers = await db.collection('buyers').find<Buyer>({
-      ...(buyersIds && { _id: { $in: buyersObjectIds } }),
       ...rest,
+      ...(buyersIds && { _id: { $in: buyersObjectIds } }),
     }).toArray();
     return buyers;
   }

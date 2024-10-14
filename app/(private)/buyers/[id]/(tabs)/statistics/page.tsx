@@ -34,8 +34,6 @@ const monthsParsed: { [key: number]: string } = {
   12: "Diciembre",
 }
 
-export const description = "A line chart"
-
 const chartConfig = {
   sales: {
     label: "Ventas",

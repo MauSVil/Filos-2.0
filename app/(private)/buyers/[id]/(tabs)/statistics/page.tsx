@@ -1,11 +1,9 @@
 "use client"
-import { TrendingUp } from "lucide-react"
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, LabelList, Line, LineChart, XAxis, YAxis } from "recharts"
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -18,6 +16,7 @@ import {
 import { useBuyerStatistic } from "../../../_hooks/useBuyerStatistic"
 import { useParams } from "next/navigation"
 import { useMemo } from "react"
+import _ from "lodash"
 
 const monthsParsed: { [key: number]: string } = {
   1: "Enero",
@@ -48,10 +47,17 @@ const chartConfig2 = {
   },
 }
 
+const chartConfig3 = {
+  models: {
+    label: "Modelo",
+    color: "hsl(var(--chart-1))",
+  },
+}
+
 const BuyerStatisticsPage = () => {
   const { id } = useParams() as { id: string }
   const buyerStatisticQuery = useBuyerStatistic({ id })
-  const buyerStatistics = useMemo(() => buyerStatisticQuery.data || {}, [buyerStatisticQuery.data]) as { finalAmountPerMonth: { [key: number]: number }, productsPerMonth: { [key: number]: number } }
+  const buyerStatistics = useMemo(() => buyerStatisticQuery.data || {}, [buyerStatisticQuery.data]) as { finalAmountPerMonth: { [key: number]: number }, productsPerMonth: { [key: number]: number }, mostPopularProducts: { [key: string]: number } }
 
   const chartData1 = useMemo(() => {
     const orderPerMonth = buyerStatistics.finalAmountPerMonth || {};
@@ -71,6 +77,18 @@ const BuyerStatisticsPage = () => {
       return {
         month,
         products: buyerStatistics.productsPerMonth[monthNumber],
+      }
+    })
+  }, [buyerStatistics])
+
+  const chartData3 = useMemo(() => {
+    const popularProducts = buyerStatistics.mostPopularProducts || {};
+    const sorted = _.sortBy(_.toPairs(popularProducts), ([key, value]) => value).reverse();
+    const sortedObj = _.fromPairs(sorted);
+    return Object.keys(sortedObj).slice(0, 5).map((key) => {
+      return {
+        model: key,
+        models: buyerStatistics.mostPopularProducts[key],
       }
     })
   }, [buyerStatistics])
@@ -143,6 +161,40 @@ const BuyerStatisticsPage = () => {
           </ChartContainer>
         </CardContent>
       </Card>
+      <Card>
+      <CardHeader>
+        <CardTitle>Productos populares</CardTitle>
+        <CardDescription>Enero - Diciembre 2024</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <ChartContainer config={chartConfig3}>
+          <BarChart
+            accessibilityLayer
+            data={chartData3}
+          >
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="model"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+            />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
+            <Bar dataKey="models" fill="var(--color-models)" radius={8}>
+              <LabelList
+                position="top"
+                offset={12}
+                className="fill-foreground"
+                fontSize={12}
+              />
+            </Bar>
+          </BarChart>
+        </ChartContainer>
+      </CardContent>
+    </Card>
     </div>
   ); 
 }

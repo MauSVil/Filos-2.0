@@ -29,7 +29,9 @@ export const GET = async (req: NextRequest) => {
       };
     }
 
-    return NextResponse.json(output);
+    const orderByTotalAmount = _.orderBy(output, 'totalAmount', 'desc');
+
+    return NextResponse.json(orderByTotalAmount);
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 500 });

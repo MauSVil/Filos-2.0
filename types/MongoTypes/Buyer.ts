@@ -4,4 +4,5 @@ export interface Buyer {
   phone: string;
   address: string;
   email: string;
+  isChain: boolean;
 }

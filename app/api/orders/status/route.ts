@@ -1,3 +1,4 @@
+import { BuyersRepository } from "@/repositories/buyers.repository";
 import { OrdersRepository } from "@/repositories/orders.repository";
 import { Order } from "@/types/MongoTypes/Order";
 import ky from "ky";
@@ -5,6 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const PUT = async (req: NextRequest) => {
   try {
+    let debug: string = '';
     const body = await req.json();
     const { _id, ...rest } = body as Order;
     
@@ -24,7 +26,14 @@ export const PUT = async (req: NextRequest) => {
       ...(paid && { paid }),
     });
 
-    if (paid && !prevOrder.advancedPayment) {
+    const buyerFound = await BuyersRepository.findOne({ id: prevOrder.buyer });
+    if (!buyerFound) {
+      return NextResponse.json({ error: 'No se encontro el comprador' }, { status: 404 });
+    }
+
+    debug = 'No se edito el inventario';
+
+    if (paid && !prevOrder.advancedPayment && !buyerFound.isChain) {
       const productsToSend = (prevOrder.products || []).map((key) => {
         return {
           id: key.product,
@@ -32,9 +41,10 @@ export const PUT = async (req: NextRequest) => {
         }
       });
       await ky.post(`${process.env.NEXT_PUBLIC_URL}/api/orders/new/edit-inventory`, { json: { products: productsToSend }})
+      debug = 'Se edito el inventario';
     }
 
-    return NextResponse.json({ message: 'Order updated successfully' });
+    return NextResponse.json({ message: 'Order updated successfully', debug });
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 500 });

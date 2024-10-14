@@ -1,3 +1,4 @@
+import { BuyersRepository } from "@/repositories/buyers.repository";
 import { OrdersRepository } from "@/repositories/orders.repository";
 import { ProductsRepository } from "@/repositories/products.repository";
 import { Order } from "@/types/MongoTypes/Order";
@@ -27,6 +28,7 @@ export const POST = async (req: NextRequest) => {
 
 export const PUT = async (req: NextRequest) => {
   try {
+    let debug: string = '';
     const body = await req.json();
     const { _id, ...rest } = body as Order;
     
@@ -54,7 +56,14 @@ export const PUT = async (req: NextRequest) => {
       description,
     } = rest as Order;
 
-    if (advancedPayment > 0 && !prevOrder.paid) {
+    const buyerFound = await BuyersRepository.findOne({ id: buyer });
+    if (!buyerFound) {
+      return NextResponse.json({ error: 'No se encontro el comprador' }, { status: 404 });
+    }
+
+    debug = 'No se edito el inventario';
+
+    if (advancedPayment > 0 && !prevOrder.paid && !buyerFound.isChain) {
       const parsedProducts = Object.keys(body.products).map((key) => {
         return {
           id: key,
@@ -62,6 +71,7 @@ export const PUT = async (req: NextRequest) => {
         }
       });
       await ky.post(`${process.env.NEXT_PUBLIC_URL}/api/orders/new/edit-inventory`, { json: { products: parsedProducts }})
+      debug = 'Se edito el inventario';
     }
 
     const productsIds = Object.keys(body.products);
@@ -99,7 +109,7 @@ export const PUT = async (req: NextRequest) => {
 
     await OrdersRepository.updateOne(_id, newOrder);
 
-    return NextResponse.json({ message: 'Order updated successfully' });
+    return NextResponse.json({ message: 'Order updated successfully', debug });
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 500 });

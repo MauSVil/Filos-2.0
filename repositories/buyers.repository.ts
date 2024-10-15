@@ -27,13 +27,14 @@ export class BuyersRepository {
   static async find(filter: BuyerRepositoryFilter = {}): Promise<Buyer[]> {
     await init();
     const filters = await BuyerRepositoryFilterModel.parse(filter);
-    const { page, buyers: buyersIds, ...rest } = filters;
+    const { page, buyers: buyersIds, id, ...rest } = filters;
 
     const buyersObjectIds = buyersIds?.map((id) => new ObjectId(id));
 
     const buyers = await db.collection('buyers').find<Buyer>({
       ...rest,
       ...(buyersIds && { _id: { $in: buyersObjectIds } }),
+      ...(id && { _id: new ObjectId(id) }),
     }).toArray();
     return buyers;
   }
@@ -41,9 +42,10 @@ export class BuyersRepository {
   static async count(filter: BuyerRepositoryFilter = {}): Promise<number> {
     await init();
     const filters = await BuyerRepositoryFilterModel.parse(filter);
-    const { page, ...rest } = filters;
+    const { page, id, ...rest } = filters;
     const count = await db.collection('buyers').countDocuments({
       ...rest,
+      ...(id && { _id: new ObjectId(id) }),
     });
     return count;
   }

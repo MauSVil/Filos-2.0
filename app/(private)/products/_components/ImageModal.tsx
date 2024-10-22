@@ -22,13 +22,15 @@ const ImageComponent = (props: Props) => {
           {'Imagen de producto'}
           <Separator className='my-3' />
         </AlertDialogTitle>
-        <Image
-          width={500}
-          height={500}
-          className="rounded-medium"
-          src={props.image}
-          alt="image"
-        />
+        <div className="h-72 relative">
+          <Image
+            fill
+            className="rounded-medium"
+            src={props.image}
+            alt="image"
+            style={{ objectFit: 'contain' }}
+          />
+        </div>
         <AlertDialogFooter className="gap-2">
           <AlertDialogAction asChild>
             <Button onClick={handleCloseClick}>Cerrar</Button>

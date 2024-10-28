@@ -7,14 +7,15 @@ import { ColumnDef, ColumnFiltersState, getCoreRowModel, getFilteredRowModel, ge
 import { Product } from '@/types/MongoTypes/Product';
 import DataTableColumnHeader from '@/components/DataTableHeader';
 import numeral from 'numeral';
-import { Badge } from '@/components/ui/badge';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import Image from 'next/image';
 import { toast } from 'sonner';
 import { ImageModal } from './ImageModal';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { NewCatalogModal } from './NewCatalogueModal';
+import { MinusIcon, PlusIcon } from 'lucide-react';
+import _ from 'lodash';
+import { EditProductModal } from './EditProductModal';
 
 const ProductsContent = () => {
   const [pagination, setPagination] = useState({
@@ -26,6 +27,8 @@ const ProductsContent = () => {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [globalFilter, setGlobalFilter] = useState('')
   const [rowSelection, setRowSelection] = useState({})
+
+  const [productsToUpdate, setProductsToUpdate] = useState<{[key: string]: Product}>({});
 
   const productsQuery = useProducts();
 
@@ -143,52 +146,56 @@ const ProductsContent = () => {
             <DataTableColumnHeader column={column} title="Disponibilidad" />
           ),
           accessorKey: 'quantity',
-          cell: ({ row: { original: { quantity }} }) => {
-            if (quantity <= 0) {
-              return (
-                <div className="flex items-center gap-4">
-                  <p>{quantity} -</p>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <Badge variant="destructive">No disponible</Badge>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{quantity}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
-              );
-            }
-
-            if (quantity <= 5) {
-              return (
-                <div className="flex items-center gap-4">
-                  <p>{quantity} -</p>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <Badge variant="warning">Pocas unidades</Badge>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{quantity}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
-              );
-            }
-
+          cell: (cellData) => {
             return (
-              <div className="flex items-center gap-4">
-                <p>{quantity} -</p>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Badge variant="default">Disponible</Badge>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{quantity}</p>
-                  </TooltipContent>
-                </Tooltip>              
+              <div className="flex items-center gap-2">
+                <Button
+                  size="icon"
+                  variant="outline"
+                  className="h-6 w-6"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    setProductsToUpdate((prevState) => {
+                      return {
+                        ...prevState,
+                        [cellData.row.original._id]: {
+                          ...cellData.row.original,
+                          quantity: (productsToUpdate[cellData.row.original._id]?.quantity || cellData.row.original.quantity || 0) - 1,
+                        },
+                      }
+                    })
+                  }}
+                >
+                  <MinusIcon className="h-3.5 w-3.5" />
+                </Button>
+                <p className="text-base text-gray-500">
+                  {productsToUpdate[cellData.row.original._id]?.quantity || cellData.row.original.quantity || 0}
+                </p>
+                <Button
+                  size="icon"
+                  variant="outline"
+                  className="h-6 w-6"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    setProductsToUpdate((prevState) => {
+                      return {
+                        ...prevState,
+                        [cellData.row.original._id]: {
+                          ...cellData.row.original,
+                          quantity: (productsToUpdate[cellData.row.original._id]?.quantity || cellData.row.original.quantity || 0) + 1,
+                        },
+                      }
+                    })
+                  }}
+                >
+                  <PlusIcon className="h-3.5 w-3.5" />
+                  <span className="sr-only">More</span>
+                </Button>
               </div>
-            );
+            )
           },
           enableGlobalFilter: true,
           enableSorting: true,
@@ -249,7 +256,7 @@ const ProductsContent = () => {
           sortingFn: "textCaseSensitive",
         },
       ] satisfies ColumnDef<Product>[],
-    []
+    [productsToUpdate]
   );
 
   const table = useReactTable({
@@ -294,16 +301,40 @@ const ProductsContent = () => {
     }
   };
 
+  const handleUpdateProductsClick = async () => {
+    try {
+      const resp = await EditProductModal({ products, productsToUpdate });
+      productsQuery.refetch();
+      if (resp === 'ok') {
+        setProductsToUpdate({});
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+        return;
+      }
+      toast.error('An error occurred');
+    }
+  }
+
   return (
     <>
       <div className="flex items-center justify-end mb-4">
-        <Button
-          className="ml-auto"
-          disabled={!table.getSelectedRowModel().rows.length}
-          onClick={handleNewCatalogClick}
-        >
-          Crear catalogo
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            className="ml-auto"
+            disabled={!table.getSelectedRowModel().rows.length}
+            onClick={handleNewCatalogClick}
+          >
+            Crear catalogo
+          </Button>
+          <Button
+            disabled={!Object.keys(productsToUpdate).length}
+            onClick={handleUpdateProductsClick}
+          >
+            Actualizar
+          </Button>
+        </div>
       </div>
       <DataTable
         table={table}

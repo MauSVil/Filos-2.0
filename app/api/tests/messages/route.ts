@@ -1,5 +1,5 @@
 import clientPromise from "@/mongodb";
-import { Db } from "mongodb";
+import { Db, ObjectId } from "mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import _ from "lodash";
 
@@ -21,14 +21,11 @@ export const GET = async (req: NextRequest) => {
       const messages = groupedMessages[phoneId];
       if (messages.length === 2) {
         for (const message of messages) {
-          messagesToDelete.push(message._id);
+          messagesToDelete.push(new ObjectId(message._id));
         }
         contactsToDelete.push(phoneId);
       }
     }
-
-    console.log(contactsToDelete);
-    console.log(messagesToDelete);
 
     // await whatsappContactsCollection.deleteMany({
     //   phone_id: {

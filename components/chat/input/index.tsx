@@ -40,7 +40,7 @@ export default function ChatInput(props: Props) {
         const reader = new FileReader();
         reader.onload = () => {
           const base64 = reader.result as string;
-          socket.emit('send_message', { phone_id: selectedChat, message: 'Imagen enviada', type: 'image', metadata: { base64, type: fileFile.type, name: fileFile.name }  });
+          socket.emit('send_message', { phone_id: selectedChat, message: 'Imagen enviada', type: 'image', metadata: { base64, mimeType: fileFile.type.split('/')[1], name: fileFile.name }  });
           socket.emit('update_contact', { phone_id: selectedChat, aiEnabled: false });
         };
         reader.readAsDataURL(fileFile);

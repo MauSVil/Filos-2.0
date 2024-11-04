@@ -20,7 +20,7 @@ export const OrderInputModel = z.object({
   orderType: z.enum(['retailPrice', 'wholesalePrice', 'specialPrice', 'webPagePrice'], { required_error: 'El tipo de orden es requerido' }),
   requestDate: z.coerce.date({ required_error: 'La fecha de solicitud es requerida', invalid_type_error: 'La fecha de solicitud es invalida' }),
   dueDate: z.coerce.date({ required_error: 'La fecha de entrega es requerida', invalid_type_error: 'La fecha de entrega es invalida' }),
-  freightPrice: z.coerce.number({ required_error: 'El precio de flete es requerido' }).optional().default(0),
+  freightPrice: z.coerce.number({ required_error: 'El precio de flete es requerido' }).nonnegative({ message: 'El precio de flete debe ser mayor o igual a 0' }).optional().default(0),
   advancedPayment: z.coerce.number({ required_error: 'El anticipo es requerido' }).optional().default(0),
   description: z.string({ required_error: 'La descripcion es requerida' }).optional().default(''),
   products: z.array(z.object({

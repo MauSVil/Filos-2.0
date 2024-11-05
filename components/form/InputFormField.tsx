@@ -29,6 +29,7 @@ export const InputFormField = <T extends FieldValues>(props: NextUIInputFormFiel
               {...field}
               placeholder={placeholder}
               type={type}
+              className={className}
               {...rest}
             />
           </FormControl>

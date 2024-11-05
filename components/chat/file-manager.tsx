@@ -89,6 +89,7 @@ const FileManagerDialog = (props: Props) => {
                 searchLabel='Buscar un archivo...'
                 onInputChange={(text) => list.setFilterText(text)}
                 isLoading={list.isLoading}
+                className='border-white'
               />
               <ComboboxFormField
                 items={[
@@ -108,6 +109,7 @@ const FileManagerDialog = (props: Props) => {
                 emptyLabel='No hay archivos'
                 searchLabel='Buscar un catalogo...'
                 isLoading={list.isLoading}
+                className='border-white'
               />
               <InputFormField
                 controllerProps={{
@@ -120,6 +122,7 @@ const FileManagerDialog = (props: Props) => {
                   const file = e.target.files?.[0];
                   form.setValue('fileFile', file);
                 }}
+                className='border-white'
               />
             </form>
           </Form>

@@ -15,6 +15,7 @@ export interface ComboboxFormFieldProps<T extends FieldValues> {
   searchLabel: string;
   onInputChange?: (text: string) => void;
   isLoading?: boolean;
+  className?: string;
 }
 
 export function ComboboxFormField<T extends FieldValues>({
@@ -25,7 +26,8 @@ export function ComboboxFormField<T extends FieldValues>({
   emptyLabel,
   searchLabel,
   onInputChange,
-  isLoading = false
+  isLoading = false,
+  className,
 }: ComboboxFormFieldProps<T>) {
   return (
     <FormField
@@ -41,7 +43,8 @@ export function ComboboxFormField<T extends FieldValues>({
                   role="combobox"
                   className={cn(
                     "justify-between",
-                    !field.value && "text-muted-foreground"
+                    !field.value && "text-muted-foreground",
+                    className
                   )}
                 >
                   {field.value

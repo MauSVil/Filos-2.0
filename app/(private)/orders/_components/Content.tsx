@@ -258,6 +258,8 @@ const OrdersContent = () => {
 
         socket.emit('send_message', { phone_id: selectedChat, message: 'Imagen enviada', type: 'pdf', metadata: { url: orderInput?.documents?.order, mimeType: 'pdf', name: 'Orden de compra'  }  });
         socket.emit('update_contact', { phone_id: selectedChat, aiEnabled: false });
+
+        toast.success('Orden enviada exitosamente');
       }
     } catch (error) {
       if (error instanceof Error) {

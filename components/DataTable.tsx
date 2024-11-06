@@ -26,6 +26,7 @@ interface DataTableProps<TData> {
   columns: any[];
   enableInput?: boolean;
   onRowClick?: (row: any) => void;
+  enableShowColumns?: boolean;
 }
 
 export function DataTable<TData>({
@@ -35,6 +36,7 @@ export function DataTable<TData>({
   className,
   enableInput = true,
   onRowClick,
+  enableShowColumns = true,
 }: DataTableProps<TData>) {
 
   return (
@@ -81,34 +83,38 @@ export function DataTable<TData>({
             />
           )
         }
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button className="ml-auto">
-              Mostrar columnas
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter(
-                (column) => column.getCanHide()
-              )
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                )
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {
+          enableShowColumns && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button className="ml-auto">
+                  Mostrar columnas
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {table
+                  .getAllColumns()
+                  .filter(
+                    (column) => column.getCanHide()
+                  )
+                  .map((column) => {
+                    return (
+                      <DropdownMenuCheckboxItem
+                        key={column.id}
+                        className="capitalize"
+                        checked={column.getIsVisible()}
+                        onCheckedChange={(value) =>
+                          column.toggleVisibility(!!value)
+                        }
+                      >
+                        {column.id}
+                      </DropdownMenuCheckboxItem>
+                    )
+                  })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )
+        }
       </div>
       <div className="rounded-md border">
         <Table>

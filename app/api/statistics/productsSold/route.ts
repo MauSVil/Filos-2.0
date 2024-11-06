@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
   try {
-    const orders = await OrdersRepository.find({ dateRange: { from: moment('01/01/2024').toDate(), to: moment('12/31/2024').toDate() } });
+    const orders = await OrdersRepository.find({ dateRange: { from: moment('2024-01-01').toDate(), to: moment('2024-12-31').toDate() } });
     if (!orders.length) {
       return NextResponse.json({ error: 'No se encontraron ordenes' }, { status: 404 });
     }

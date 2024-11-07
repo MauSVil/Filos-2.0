@@ -43,7 +43,6 @@ export const POST = async (req: NextRequest) => {
       if (product.quantity - productQuantities[productId] < 0) {
         finalProductsObj[productId] = {
           ...product,
-          quantity: productQuantities[productId], // Cantidad para satisfacer las ordenes (No es para llegar a 0)
         };
       }
     });

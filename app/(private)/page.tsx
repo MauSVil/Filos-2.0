@@ -6,7 +6,6 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  Label,
   LabelList,
   Line,
   LineChart,
@@ -14,7 +13,6 @@ import {
   RadialBar,
   RadialBarChart,
   Rectangle,
-  ReferenceLine,
   XAxis,
   YAxis,
 } from "recharts"
@@ -33,126 +31,13 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { Separator } from "@/components/ui/separator"
-import { useDashboard } from "./_hooks/useDashboard"
-import { Button } from "@/components/ui/button"
-import { DownloadIcon } from "lucide-react"
-import { DataTable } from "@/components/DataTable"
-import DataTableColumnHeader from "@/components/DataTableHeader"
-import { Product } from "@/types/MongoTypes/Product"
-import { ColumnDef, getCoreRowModel, getPaginationRowModel, useReactTable } from "@tanstack/react-table"
-import { useMemo, useState } from "react"
+import ProductsOutOfStock from "./_components/ProductsOutOfStock"
 
 const Home = () => {
-  const [pagination, setPagination] = useState({
-    pageIndex: 0,
-    pageSize: 10,
-  });
-  const dashboardQuery = useDashboard();
-  const productsOutOfStock = dashboardQuery.data || {} as { [key: string]: Product };
-
-  const columns: ColumnDef<Product>[] = useMemo(
-    () =>
-      [
-        {
-          id: 'Nombre',
-          header: 'Nombre',
-          accessorKey: 'uniqId',
-          enableGlobalFilter: true,
-          enableSorting: true,
-          filterFn: "auto",
-          enableColumnFilter: true,
-          sortingFn: "textCaseSensitive",
-        },
-        {
-          id: 'Cantidad',
-          header: 'Cantidad',
-          accessorKey: 'quantity',
-          enableGlobalFilter: true,
-          enableSorting: true,
-          filterFn: "auto",
-          enableColumnFilter: true,
-          sortingFn: "textCaseSensitive",
-        },
-        {
-          id: 'Acciones',
-          header: 'Acciones',
-          cell: (cellData) => (
-            <div className="flex items-center gap-2">
-              <Button
-                size="icon"
-                variant="outline"
-                className="h-6 w-6"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                }}
-              >
-                -
-              </Button>
-              <p className="text-base text-gray-500">
-                {cellData.row.original.quantity}
-              </p>
-              <Button
-                size="icon"
-                variant="outline"
-                className="h-6 w-6"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                }}
-              >
-                +
-              </Button>
-            </div>
-          ),
-        }
-      ] satisfies ColumnDef<Product>[],
-    []
-  );
-
-  const table = useReactTable({
-    data: Object.keys(productsOutOfStock).map((productId) => {
-      return {
-        ...productsOutOfStock[productId],
-        _id: productId,
-      };
-    }),
-    columns,
-    getRowId(originalRow) {
-      return originalRow._id;
-    },
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onPaginationChange: setPagination,
-    globalFilterFn: "auto",
-    state: {
-      pagination,
-    },
-  })
-
   return (
     <div className="chart-wrapper mx-auto flex max-w-6xl flex-col flex-wrap items-start justify-center gap-6 p-6 sm:flex-row sm:p-8">
       <div className="grid w-full gap-6 sm:grid-cols-2 lg:max-w-[22rem] lg:grid-cols-1 xl:max-w-[25rem]">
-        <Card
-          className="lg:max-w-md" x-chunk="charts-01-chunk-0"
-        >
-          <CardHeader className="space-y-0 pb-2 mb-2 flex flex-row items-center justify-between">
-            <CardTitle className="text-2xl tabular-nums">
-              Productos pendientes
-            </CardTitle>
-            <Button size={'icon'} variant={'outline'} className="h-6 w-6">
-              <DownloadIcon className="h-3.5 w-3.5" />
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <DataTable table={table} isLoading={dashboardQuery.isLoading} columns={columns} enableInput={false} enableShowColumns={false} />
-          </CardContent>
-          <CardFooter className="flex-col items-start gap-1">
-            <CardDescription>
-              La cantidad mostrada es la cantidad con la que se pueden satisfacer las ordenes.
-            </CardDescription>
-          </CardFooter>
-        </Card>
+        <ProductsOutOfStock />
         <Card
           className="flex flex-col lg:max-w-md" x-chunk="charts-01-chunk-1"
         >

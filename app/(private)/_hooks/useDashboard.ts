@@ -1,6 +1,7 @@
 import { Product } from "@/types/MongoTypes/Product"
 import { useQuery } from "@tanstack/react-query"
 import ky from "ky"
+import moment from "moment"
 import { toast } from "sonner"
 
 export const useDashboard = () => {
@@ -9,10 +10,12 @@ export const useDashboard = () => {
     retry: 0,
     queryFn: async () => {
       try {
+        const today = moment()
+        const startDate = today.subtract(15, 'days')
         const resp = await ky.post('/api/dashboard/products-out-of-stock', {
           json: {
-            startDate: '2024-10-01',
-            endDate: '2024-10-31'
+            startDate: startDate.toISOString(),
+            endDate: today.toISOString()
           }
         }).json() as { data: { [key: string]: Product } }
         return resp.data || {}

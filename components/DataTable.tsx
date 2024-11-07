@@ -26,7 +26,7 @@ interface DataTableProps<TData> {
   columns: any[];
   enableInput?: boolean;
   onRowClick?: (row: any) => void;
-  enableShowColumns?: boolean;
+  enableShowColumns?: boolean
 }
 
 export function DataTable<TData>({
@@ -36,7 +36,7 @@ export function DataTable<TData>({
   className,
   enableInput = true,
   onRowClick,
-  enableShowColumns = true,
+  enableShowColumns = true
 }: DataTableProps<TData>) {
 
   return (

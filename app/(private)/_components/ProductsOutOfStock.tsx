@@ -138,7 +138,7 @@ const ProductsOutOfStock = () => {
       </CardContent>
       <CardFooter className="flex-col items-start gap-1">
         <CardDescription>
-          <p>La cantidad mostrada es la <strong className="font-semibold">cantidad total </strong>del producto.</p>
+          La cantidad mostrada es la <strong className="font-bold text-primary">cantidad total </strong>del producto.
         </CardDescription>
       </CardFooter>
     </Card>

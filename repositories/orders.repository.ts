@@ -29,12 +29,23 @@ export class OrdersRepository {
   static async find(filter: OrderRepositoryFilter = {}): Promise<Order[]> {
     await init();
     const filters = await OrderRepositoryFilterModel.parse(filter);
-    const { page, dateRange, ...rest } = filters;
-    const orders = await db.collection('orders').find<Order>({
+    const {
+      page,
+      dateRange,
+      dueDateRange,
+      advancedPaymentGreaterThan,
+      ...rest
+    } = filters;
+
+    const finalFilter = {
       ...rest,
       deleted_at: null,
-      ...(dateRange ? { requestDate: { $gte: dateRange.from, $lte: dateRange.to } } : {}),
-    }).sort({ created_at: -1 }).toArray();
+      ...(dateRange ? { requestDate: { "$gte": dateRange.from, "$lte": dateRange.to } } : {}),
+      ...(dueDateRange ? { dueDate: { "$gte": dueDateRange.from, "$lte": dueDateRange.to } } : {}),
+      ...(advancedPaymentGreaterThan !== undefined ? { advancedPayment: { "$gt": advancedPaymentGreaterThan } } : {}),
+    }
+  
+    const orders = await db.collection('orders').find<Order>(finalFilter).sort({ created_at: -1 }).toArray();
     return orders;
   }
 

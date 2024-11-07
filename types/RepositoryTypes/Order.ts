@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+const MongoOperatorSchema = z.record(z.any());
+
 export const OrderRepositoryFilterModel = z.object({
   id: z.string().optional(),
   page: z.number().optional(),
@@ -14,7 +16,7 @@ export const OrderRepositoryFilterModel = z.object({
   }).optional(),
   buyer: z.string().optional(),
   paid: z.boolean().optional(),
-  advancedPaymentGreaterThan: z.coerce.number().optional(),
+  orConditions: z.array(MongoOperatorSchema).optional(),
 });
 
 export type OrderRepositoryFilter = z.infer<typeof OrderRepositoryFilterModel>;

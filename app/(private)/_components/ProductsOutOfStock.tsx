@@ -13,7 +13,7 @@ const ProductsOutOfStock = () => {
   const [changes, setChanges] = useState<{ [key: string]: { quantity: number } }>({});
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 5,
+    pageSize: 3,
   });
 
   const columns: ColumnDef<Product>[] = useMemo(

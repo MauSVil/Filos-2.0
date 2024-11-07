@@ -11,19 +11,21 @@ export const POST = async (req: NextRequest) => {
 
     const orders = await OrdersRepository.find({
       dueDateRange: {
-        from: new Date(startDate),
-        to: new Date(endDate),
+        from: startDate,
+        to: endDate,
       },
-      advancedPaymentGreaterThan: 0,
+      orConditions: [
+        { advancedPayment: { $gt: 0 } },
+        { paid: true, }
+      ]
     });
-
+  
     const productsIds = orders.reduce((acc, order) => {
       return acc.concat(order.products.map(({ product }) => product.toString()));
     }, [] as string[]);
 
     const products = await ProductsRepository.find({ ids: productsIds });
     const productsMapped = _.keyBy(products, '_id');
-
 
     const productQuantities: { [key: string]: number } = {};
 
@@ -40,9 +42,11 @@ export const POST = async (req: NextRequest) => {
 
     Object.keys(productQuantities).forEach(productId => {
       const product = productsMapped[productId];
+      
       if (product.quantity - productQuantities[productId] < 0) {
         finalProductsObj[productId] = {
           ...product,
+          quantity: product.quantity - productQuantities[productId],
         };
       }
     });

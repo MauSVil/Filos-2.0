@@ -10,12 +10,13 @@ export const useDashboard = () => {
     retry: 0,
     queryFn: async () => {
       try {
-        const today = moment()
-        const startDate = today.subtract(15, 'days')
+        const today = moment().startOf('day');
+        const endDate = today.clone().add(15, 'day').endOf('day');
+
         const resp = await ky.post('/api/dashboard/products-out-of-stock', {
           json: {
-            startDate: startDate.toISOString(),
-            endDate: today.toISOString()
+            startDate: today.toISOString(),
+            endDate: endDate.toISOString()
           }
         }).json() as { data: { [key: string]: Product } }
         return resp.data || {}

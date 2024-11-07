@@ -33,19 +33,24 @@ export class OrdersRepository {
       page,
       dateRange,
       dueDateRange,
-      advancedPaymentGreaterThan,
+      orConditions,
       ...rest
     } = filters;
 
-    const finalFilter = {
+    const finalFilter: Record<string, any> = {
       ...rest,
       deleted_at: null,
-      ...(dateRange ? { requestDate: { "$gte": dateRange.from, "$lte": dateRange.to } } : {}),
-      ...(dueDateRange ? { dueDate: { "$gte": dueDateRange.from, "$lte": dueDateRange.to } } : {}),
-      ...(advancedPaymentGreaterThan !== undefined ? { advancedPayment: { "$gt": advancedPaymentGreaterThan } } : {}),
+    }
+
+    if (orConditions && orConditions.length > 0) {
+      finalFilter["$or"] = orConditions;
     }
   
-    const orders = await db.collection('orders').find<Order>(finalFilter).sort({ created_at: -1 }).toArray();
+    const orders = await db.collection('orders').find<Order>({
+      ...finalFilter,
+      ...(dateRange ? { requestDate: { "$gte": new Date(dateRange.from!), "$lte": new Date(dateRange.to!) } } : {}),
+      ...(dueDateRange ? { dueDate: { "$gte": new Date(dueDateRange.from!), "$lte": new Date(dueDateRange.to!) } } : {}),
+    }).sort({ created_at: -1 }).toArray();
     return orders;
   }
 

@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/DataTable";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DownloadIcon, SaveIcon } from "lucide-react";
+import ky from "ky";
+import { toast } from "sonner";
 
 const ProductsOutOfStock = () => {
   const [changes, setChanges] = useState<{ [key: string]: { quantity: number } }>({});
@@ -113,6 +115,21 @@ const ProductsOutOfStock = () => {
     },
   })
 
+  const handleUpdateProductsClick = async () => {
+    try {
+      await ky.post('/api/products/edit-from-dashboard', { json: { products: changes } }).json();
+      setChanges({});
+      dashboardQuery.refetch();
+      toast.success('Productos actualizados exitosamente');
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+        return;
+      }
+      toast.error('An error occurred');
+    }
+  }
+
   return (
     <Card className="lg:max-w-md" x-chunk="charts-01-chunk-0">
       <CardHeader className="space-y-0 pb-2 mb-2 flex flex-row items-center justify-between">
@@ -128,6 +145,7 @@ const ProductsOutOfStock = () => {
             size={"icon"}
             className="h-6 w-6"
             disabled={!Object.values(changes).length}
+            onClick={handleUpdateProductsClick}
           >
             <SaveIcon className="h-3.5 w-3.5" />
           </Button>

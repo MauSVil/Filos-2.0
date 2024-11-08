@@ -16,8 +16,12 @@ export class ProductsRepository {
   static async findOne(filter: ProductRepositoryFilter = {}): Promise<Product | null> {
     await init();
     const filters = await ProductRepositoryFilterModel.parse(filter);
-    const chat = await db.collection('products').findOne<Product>(filters);
-    return chat;
+    const { id, ...rest } = filters;
+    const product = await db.collection('products').findOne<Product>({
+      ...rest,
+      ...(id ? { _id: new ObjectId(id) } : {}),
+    });
+    return product;
   }
 
   static async find(filter: ProductRepositoryFilter = {}): Promise<Product[]> {

@@ -269,7 +269,7 @@ const PrivateLayout = (props: Props) => {
             <BreadcrumbList>
               {
                 currentPaths?.length > 0 && currentPaths.slice(1).map((path, index) => (
-                  <>
+                  <div key={index} className="flex items-center gap-2">
                     <BreadcrumbItem key={index}>
                       <BreadcrumbLink key={index} asChild>
                         <Link href="#">{path}</Link>
@@ -280,7 +280,7 @@ const PrivateLayout = (props: Props) => {
                         <BreadcrumbSeparator />
                       )
                     }
-                  </>
+                  </div>
                 ))
               }
             </BreadcrumbList>

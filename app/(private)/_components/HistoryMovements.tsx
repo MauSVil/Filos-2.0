@@ -2,10 +2,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ChartContainer } from "@/components/ui/chart"
 import { useHistoryMovements } from "../_hooks/useHistoryMovements";
 import { MovementHistory } from "@/types/RepositoryTypes/MovementHistory";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
-import { ChevronsUpDown } from "lucide-react";
+import { ChevronsUpDown, Loader2 } from "lucide-react";
 import moment from "moment";
 
 const HistoryMovements = () => {
@@ -13,16 +13,15 @@ const HistoryMovements = () => {
   const movementsHistoryQuery = useHistoryMovements();
   const movementsHistory = useMemo(() => movementsHistoryQuery.data || [], [movementsHistoryQuery.data]) as MovementHistory[];
 
-  return (
-    <Card
-      className="flex flex-col lg:max-w-md" x-chunk="charts-01-chunk-1"
-    >
-      <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2 [&>div]:flex-1">
-        <CardTitle className="text-2xl tabular-nums">
-          Ultimos movimientos
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col items-center gap-4 p-6 [&>div]:flex-1">
+  const returnContent = useCallback(() => {
+    if (movementsHistoryQuery.isLoading) return <Loader2 className="animate-spin" />;
+    if (movementsHistory.length === 0) {
+      return (
+        <p className="text-sm text-muted-foreground">No hay movimientos registrados</p>
+      )
+    }
+    return (
+      <>
         {
           movementsHistory.slice(0, 3).map((movementHistory) => {
             const isOpen = activeCollapsible === movementHistory._id;
@@ -64,6 +63,22 @@ const HistoryMovements = () => {
             )
           })
         }
+      </>
+    )
+
+  }, [movementsHistory, movementsHistoryQuery.isLoading, activeCollapsible]);
+
+  return (
+    <Card
+      className="flex flex-col lg:max-w-md" x-chunk="charts-01-chunk-1"
+    >
+      <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2 [&>div]:flex-1">
+        <CardTitle className="text-2xl tabular-nums">
+          Ultimos movimientos
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="flex flex-col items-center gap-4 p-6 [&>div]:flex-1">
+        {returnContent()}
       </CardContent>
     </Card>
   )

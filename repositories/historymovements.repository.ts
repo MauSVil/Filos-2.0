@@ -20,7 +20,7 @@ export class HistoryMovementsRepository {
 
   static async find(): Promise<MovementHistory[]> {
     await init();
-    const movementsHistory = await db.collection('MovementHistory').find<MovementHistory>({}).toArray();
+    const movementsHistory = await db.collection('MovementHistory').find<MovementHistory>({}).sort({ createdAt: -1 }).toArray();
     return movementsHistory;
   }
 

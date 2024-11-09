@@ -3,6 +3,7 @@ import { Product } from "@/types/MongoTypes/Product";
 import { ProductInput, ProductInputModel, ProductRepositoryFilter, ProductRepositoryFilterModel } from "@/types/RepositoryTypes/Product";
 import _ from "lodash";
 import { Db, ObjectId } from "mongodb";
+import { HistoryMovementsRepository } from "./historymovements.repository";
 
 let client;
 let db: Db;
@@ -60,24 +61,13 @@ export class ProductsRepository {
     return count;
   }
 
-  // static async insertOne(message: ProductInput) {
-  //   await init();
-  //   message.timestamp = new Date();
-  //   message.role = 'assistant';
-  //   const messageParsed = await ProductInputModel.parse(message);
-  //   await db.collection('products').insertOne(messageParsed);
-  //   return 'Message inserted';
-  // }
-
   static async updateOne(product: Partial<ProductInput>) {
     await init();
     const { _id, ...rest } = await ProductInputModel.parse(product);
     const id = new ObjectId(_id);
 
     await db.collection('products').updateOne({ _id: id }, { $set: rest });
+    await HistoryMovementsRepository.insertOne({ values: rest, type: 'update', collection: 'products' });
     return 'Product updated';
   }
-
-  // static async deleteOne() {
-  // }
 }

@@ -3,6 +3,7 @@ import { Buyer } from "@/types/MongoTypes/Buyer";
 import { BuyerInput, BuyerRepositoryFilter, BuyerRepositoryFilterModel } from "@/types/RepositoryTypes/Buyer";
 import _ from "lodash";
 import { Db, ObjectId } from "mongodb";
+import { HistoryMovementsRepository } from "./historymovements.repository";
 
 let client;
 let db: Db;
@@ -57,12 +58,7 @@ export class BuyersRepository {
     input.deletedAt = undefined;
     input.version = 2;
     await db.collection('buyers').insertOne(input);
+    await HistoryMovementsRepository.insertOne({ values: input, type: 'insert', collection: 'buyers' });
     return 'Buyer inserted';
   }
-
-  // static async updateOne() {
-  // }
-
-  // static async deleteOne() {
-  // }
 }

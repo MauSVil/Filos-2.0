@@ -3,6 +3,7 @@ import { Order } from "@/types/MongoTypes/Order";
 import { OrderInput, OrderInputModel, OrderRepositoryFilter, OrderRepositoryFilterModel, OrderUpdateInputModel } from "@/types/RepositoryTypes/Order";
 import _ from "lodash";
 import { Db, ObjectId } from "mongodb";
+import { HistoryMovementsRepository } from "./historymovements.repository";
 
 let client;
 let db: Db;
@@ -70,6 +71,7 @@ export class OrdersRepository {
     await init();
     const orderParsed = await OrderInputModel.parse(order);
     await db.collection('orders').insertOne(orderParsed);
+    await HistoryMovementsRepository.insertOne({ values: orderParsed, type: 'insert', collection: 'orders' });
     return 'Order inserted';
   }
 
@@ -77,9 +79,7 @@ export class OrdersRepository {
     await init();
     const orderParsed = await OrderUpdateInputModel.parse(order);
     await db.collection('orders').updateOne({ _id: new ObjectId(id) }, { $set: orderParsed });
+    await HistoryMovementsRepository.insertOne({ values: orderParsed, type: 'update', collection: 'orders' });
     return 'Order updated';
   }
-
-  // static async deleteOne() {
-  // }
 }

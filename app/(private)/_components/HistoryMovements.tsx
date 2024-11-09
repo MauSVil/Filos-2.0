@@ -1,5 +1,4 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChartContainer } from "@/components/ui/chart"
 import { useHistoryMovements } from "../_hooks/useHistoryMovements";
 import { MovementHistory } from "@/types/RepositoryTypes/MovementHistory";
 import { useCallback, useMemo, useState } from "react";
@@ -65,7 +64,6 @@ const HistoryMovements = () => {
         }
       </>
     )
-
   }, [movementsHistory, movementsHistoryQuery.isLoading, activeCollapsible]);
 
   return (

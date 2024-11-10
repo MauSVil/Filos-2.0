@@ -70,7 +70,6 @@ const SalesPerMonth = () => {
     }))
   }, [salesPerMonth]);
 
-  console.log(chartData, 'chartData');
 
   const chartConfig = useMemo(() => {
     return Object.keys(salesData).reduce(

@@ -44,6 +44,7 @@ export const GET = async (req: NextRequest) => {
     const orders = await OrdersRepository.find({
       dateRange: { from: moment().subtract(1, 'year').startOf('year').toDate(), to: moment().endOf('year').toDate() },
       paid: true,
+      status: 'Completado',
     });
     const groupedOrders: GroupedOrders = groupOrdersByYearAndMonth(orders);
 

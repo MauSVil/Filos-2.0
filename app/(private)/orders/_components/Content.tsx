@@ -304,12 +304,12 @@ const OrdersContent = () => {
     .filter((order) => {
       const startOfWeek = moment().startOf('week').toDate();
       const endOfWeek = moment().endOf('week').toDate();
-      const orderDate = moment(order?.dueDate).toDate();
+      const orderDate = moment(order?.requestDate).toDate();
       return orderDate >= startOfWeek && orderDate <= endOfWeek;
     })
     .filter((order) => order.paid)
     .reduce((acc, order) => {
-      return acc + (order?.finalAmount || 0);
+      return acc + (order?.totalAmount + order?.freightPrice || 0);
     }, 0);
   }, [orders]);
 
@@ -318,12 +318,12 @@ const OrdersContent = () => {
     .filter((order) => {
       const startOfWeek = moment().subtract(1, 'week').startOf('week').toDate();
       const endOfWeek = moment().subtract(1, 'week').endOf('week').toDate();
-      const orderDate = moment(order?.dueDate).toDate();
+      const orderDate = moment(order?.requestDate).toDate();
       return orderDate >= startOfWeek && orderDate <= endOfWeek;
     })
     .filter((order) => order.paid)
     .reduce((acc, order) => {
-      return acc + (order?.finalAmount || 0);
+      return acc + (order?.totalAmount + order?.freightPrice || 0);
     }, 0);
   }, [orders]);
 
@@ -332,12 +332,12 @@ const OrdersContent = () => {
     .filter((order) => {
       const startOfMonth = moment().startOf('month').toDate();
       const endOfMonth = moment().endOf('month').toDate();
-      const orderDate = moment(order?.dueDate).toDate();
+      const orderDate = moment(order?.requestDate).toDate();
       return orderDate >= startOfMonth && orderDate <= endOfMonth;
     })
     .filter((order) => order.paid)
     .reduce((acc, order) => {
-      return acc + (order?.finalAmount || 0);
+      return acc + (order?.totalAmount + order?.freightPrice || 0);
     }, 0);
   }, [orders]);
 
@@ -346,12 +346,12 @@ const OrdersContent = () => {
     .filter((order) => {
       const startOfMonth = moment().subtract(1, 'month').startOf('month').toDate();
       const endOfMonth = moment().subtract(1, 'month').endOf('month').toDate();
-      const orderDate = moment(order?.dueDate).toDate();
+      const orderDate = moment(order?.requestDate).toDate();
       return orderDate >= startOfMonth && orderDate <= endOfMonth;
     })
     .filter((order) => order.paid)
     .reduce((acc, order) => {
-      return acc + (order?.finalAmount || 0);
+      return acc + (order?.totalAmount + order?.freightPrice || 0);
     }, 0);
   }, [orders]);
 

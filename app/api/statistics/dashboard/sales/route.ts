@@ -8,11 +8,6 @@ interface GroupedOrders {
     [month: string]: number;
   };
 }
-interface GroupedOrdersTemp {
-  [year: number]: {
-    [month: string]: Order[];
-  };
-}
 
 const MONTHS = [
   "January", "February", "March", "April", "May", "June", 
@@ -21,8 +16,8 @@ const MONTHS = [
 
 const groupOrdersByYearAndMonth = (orders: Order[]): GroupedOrders => {
   const grouped: GroupedOrders = orders.reduce<GroupedOrders>((acc, order) => {
-    const year = moment(order.requestDate).year();
-    const month = moment(order.requestDate).format("MMMM");
+    const year = moment.utc(order.requestDate).year();
+    const month = moment.utc(order.requestDate).format("MMMM");
 
     if (!acc[year]) acc[year] = {};
 
@@ -44,37 +39,10 @@ const groupOrdersByYearAndMonth = (orders: Order[]): GroupedOrders => {
   return grouped;
 };
 
-const groupOrdersByYearAndMonthTemp = (orders: Order[]): GroupedOrdersTemp => {
-  const grouped: GroupedOrdersTemp = orders.reduce<GroupedOrdersTemp>((acc, order) => {
-    const year = moment(order.requestDate).year();
-    const month = moment(order.requestDate).format("MMMM");
-
-    if (!acc[year]) acc[year] = {};
-
-    if (!acc[year][month]) acc[year][month] = [];
-
-    acc[year][month].push(order);
-
-    return acc;
-  }, {});
-
-  for (const year of Object.keys(grouped)) {
-    for (const month of MONTHS) {
-      if (!grouped[parseInt(year)][month]) {
-        grouped[parseInt(year)][month] = [];
-      }
-    }
-  }
-
-  return grouped;
-};
-
 export const GET = async () => {
   try {
-    const from = moment().utc().subtract(1, 'year').startOf('year').toDate();
-    const to = moment().utc().endOf('year').toDate();
-
-    console.log(from, to);
+    const from = moment().subtract(1, 'year').startOf('year').toDate();
+    const to = moment().endOf('year').toDate();
 
     const orders = await OrdersRepository.find({
       dateRange: { from, to },
@@ -82,9 +50,8 @@ export const GET = async () => {
       status: 'Completado',
     });
     const groupedOrders: GroupedOrders = groupOrdersByYearAndMonth(orders);
-    const groupedOrdersTemp: GroupedOrdersTemp = groupOrdersByYearAndMonthTemp(orders);
 
-    return NextResponse.json({ data: groupedOrders, tempData: groupedOrdersTemp });
+    return NextResponse.json({ data: groupedOrders });
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 500 });

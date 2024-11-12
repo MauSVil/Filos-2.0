@@ -1,7 +1,7 @@
 import { OrdersRepository } from "@/repositories/orders.repository";
 import { Order } from "@/types/MongoTypes/Order";
 import moment from "moment";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 interface GroupedOrders {
   [year: number]: {
@@ -69,10 +69,15 @@ const groupOrdersByYearAndMonthTemp = (orders: Order[]): GroupedOrdersTemp => {
   return grouped;
 };
 
-export const GET = async (req: NextRequest) => {
+export const GET = async () => {
   try {
+    const from = moment().utc().subtract(1, 'year').startOf('year').toDate();
+    const to = moment().utc().endOf('year').toDate();
+
+    console.log(from, to);
+
     const orders = await OrdersRepository.find({
-      dateRange: { from: moment().utc().subtract(1, 'year').startOf('year').toDate(), to: moment().utc().endOf('year').toDate() },
+      dateRange: { from, to },
       paid: true,
       status: 'Completado',
     });

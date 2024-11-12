@@ -79,9 +79,7 @@ export const GET = async (req: NextRequest) => {
     const groupedOrders: GroupedOrders = groupOrdersByYearAndMonth(orders);
     const groupedOrdersTemp: GroupedOrdersTemp = groupOrdersByYearAndMonthTemp(orders);
 
-    console.log(groupedOrdersTemp, 'groupedOrdersTemp');
-
-    return NextResponse.json({ data: groupedOrders });
+    return NextResponse.json({ data: groupedOrders, tempData: groupedOrdersTemp });
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 500 });

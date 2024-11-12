@@ -2,9 +2,9 @@ import { NotificationType } from "@/types/MongoTypes/Notification";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { useMemo } from "react";
 import { ScrollArea } from "../ui/scroll-area";
-import moment from "moment";
 import ky from "ky";
 import { toast } from "sonner";
+import moment from "moment-timezone";
 
 interface Props {
   notifications: NotificationType[];
@@ -57,7 +57,7 @@ const Notifications = (props: Props) => {
             }
             {
                 unreadNotifications
-                .sort((a, b) => moment(b.timestamp).toDate().getTime() - moment(a.timestamp).toDate().getTime())
+                .sort((a, b) => moment(b.timestamp).tz('America/Mexico_City').toDate().getTime() - moment(a.timestamp).tz('America/Mexico_City').toDate().getTime())
                 .map((notification, idx) => (
                   <div
                   key={idx}
@@ -67,7 +67,7 @@ const Notifications = (props: Props) => {
                   <div className="grid gap-2">
                     <p className="text-md font-medium leading-none">{notification.title}</p>
                     <p className="text-sm font-medium leading-none text-blue-200">{notification.description}</p>
-                    <p className="text-xs text-muted-foreground mb-2">{moment(notification.timestamp).format('DD/MM/YYYY:HH:mm')}</p>
+                    <p className="text-xs text-muted-foreground mb-2">{moment(notification.timestamp).tz('America/Mexico_City').format('DD/MM/YYYY:HH:mm')}</p>
                   </div>
                 </div>
                 ))
@@ -85,7 +85,7 @@ const Notifications = (props: Props) => {
             }
             {
               readNotifications
-              .sort((a, b) => moment(b.timestamp).toDate().getTime() - moment(a.timestamp).toDate().getTime())
+              .sort((a, b) => moment(b.timestamp).tz('America/Mexico_City').toDate().getTime() - moment(a.timestamp).tz('America/Mexico_City').toDate().getTime())
               .map((notification, idx) => (
                 <div
                 key={idx}
@@ -94,7 +94,7 @@ const Notifications = (props: Props) => {
                 <div className="grid gap-2">
                   <p className="text-md font-medium leading-none">{notification.title}</p>
                   <p className="text-sm font-medium leading-none text-blue-200">{notification.description}</p>
-                  <p className="text-xs text-muted-foreground mb-2">{moment(notification.timestamp).format('DD/MM/YYYY:HH:mm')}</p>
+                  <p className="text-xs text-muted-foreground mb-2">{moment(notification.timestamp).tz('America/Mexico_City').format('DD/MM/YYYY:HH:mm')}</p>
                 </div>
               </div>
               ))

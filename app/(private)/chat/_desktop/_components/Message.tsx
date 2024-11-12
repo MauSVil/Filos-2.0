@@ -1,7 +1,7 @@
-import moment from "moment";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Message } from "@/types/Chat";
+import moment from "moment-timezone";
 
 const MessageComponent = ({ message, scrollToBottom }: { message: Message, scrollToBottom: () => void }) => {
   switch (message.type) {
@@ -10,7 +10,7 @@ const MessageComponent = ({ message, scrollToBottom }: { message: Message, scrol
         <>
           <span className="text-small ">{message.message}</span>
           <span className={`text-xs text-white text-right`}>
-            {moment(message.timestamp).format("HH:mm")}
+            {moment(message.timestamp).tz('America/Mexico_City').format("HH:mm")}
           </span>
         </>
       );
@@ -44,7 +44,7 @@ const MessageComponent = ({ message, scrollToBottom }: { message: Message, scrol
         <>
           <span className="text-small">No se pudo procesar este mensaje</span>
           <span className={`text-tiny text-white text-right`}>
-            {moment(message.timestamp).format("HH:mm")}
+            {moment(message.timestamp).tz('America/Mexico_City').format("HH:mm")}
           </span>
         </>
       )

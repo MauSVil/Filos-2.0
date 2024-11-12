@@ -3,6 +3,7 @@ import { Catalog } from "@/types/MongoTypes/Catalog";
 import { CatalogInput, CatalogInputModel, CatalogRepositoryFilter, CatalogRepositoryFilterModel } from "@/types/RepositoryTypes/Catalog";
 import _ from "lodash";
 import { Db, ObjectId } from "mongodb";
+import moment from "moment-timezone";
 
 let client;
 let db: Db;
@@ -51,7 +52,7 @@ export class CatalogsRepository {
   static async insertOne(input: CatalogInput) {
     await init();
     const inputParsed = await CatalogInputModel.parse(input);
-    inputParsed.createdAt = new Date();
+    inputParsed.createdAt = moment().tz('America/Mexico_City').toDate();
 
     await db.collection('catalogs').insertOne(input);
     return 'Catalog inserted';

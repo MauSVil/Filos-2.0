@@ -6,11 +6,10 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { ChevronLeft, ChevronRight, Copy, CreditCard, DownloadIcon, Edit, File, ListFilter, MoreVertical, Truck } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { ChevronRight, Copy, DownloadIcon, Edit, File, ListFilter, MoreVertical } from "lucide-react";
+import { useMemo, useState } from "react";
 import { useOrders } from "../_hooks/useOrders";
 import { useRouter } from "next/navigation";
-import moment from "moment";
 import { useBuyers } from "../../buyers/_hooks/useBuyers";
 import _ from "lodash";
 import { Order } from "@/types/MongoTypes/Order";
@@ -26,6 +25,7 @@ import { useProducts } from "../_hooks/useProducts";
 import { calculateChangePorcentage } from "@/lib/utils";
 import ky from "ky";
 import { useUpdateOrder } from "../_hooks/useUpdateOrder";
+import moment from "moment-timezone";
 
 export const statusTranslations: { [key: string]: string } = {
   retailPrice: 'Semi-mayoreo',
@@ -103,7 +103,7 @@ const OrdersContent = () => {
               <div className="flex flex-col gap-1">
                 <span>{mappedBuyers[cellData.row.original.buyer]?.name}</span>
                 <span className="text-xs text-muted-foreground">
-                  {`Fecha compromiso: ${moment(cellData.row.original.dueDate).format('DD/MM/YYYY')}`}
+                  {`Fecha compromiso: ${moment(cellData.row.original.dueDate).tz('America/Mexico_City').format('DD/MM/YYYY')}`}
                 </span>
               </div>
             )
@@ -302,10 +302,10 @@ const OrdersContent = () => {
   const salesThisWeek = useMemo(() => {
     return orders
     .filter((order) => {
-      const startOfWeek = moment().startOf('week').toDate();
-      const endOfWeek = moment().endOf('week').toDate();
-      const orderDate = moment.utc(order?.requestDate).toDate();
-      return orderDate >= startOfWeek && orderDate <= endOfWeek;
+      const startOfWeek = moment().tz('America/Mexico_City').startOf('week');
+      const endOfWeek = moment().tz('America/Mexico_City').endOf('week');
+      const orderDate = moment(order?.requestDate).tz('America/Mexico_City');
+      return orderDate.isBetween(startOfWeek, endOfWeek);
     })
     .filter((order) => order.paid)
     .reduce((acc, order) => {
@@ -316,10 +316,10 @@ const OrdersContent = () => {
   const salesLastWeek = useMemo(() => {
     return orders
     .filter((order) => {
-      const startOfWeek = moment().subtract(1, 'week').startOf('week').toDate();
-      const endOfWeek = moment().subtract(1, 'week').endOf('week').toDate();
-      const orderDate = moment.utc(order?.requestDate).toDate();
-      return orderDate >= startOfWeek && orderDate <= endOfWeek;
+      const startOfWeek = moment().tz('America/Mexico_City').subtract(1, 'week').startOf('week');
+      const endOfWeek = moment().tz('America/Mexico_City').subtract(1, 'week').endOf('week');
+      const orderDate = moment(order?.requestDate).tz('America/Mexico_City');
+      return orderDate.isBetween(startOfWeek, endOfWeek);
     })
     .filter((order) => order.paid)
     .reduce((acc, order) => {
@@ -330,10 +330,10 @@ const OrdersContent = () => {
   const salesThisMonth = useMemo(() => {
     return orders
     .filter((order) => {
-      const startOfMonth = moment().startOf('month').toDate();
-      const endOfMonth = moment().endOf('month').toDate();
-      const orderDate = moment.utc(order?.requestDate).toDate();
-      return orderDate >= startOfMonth && orderDate <= endOfMonth;
+      const startOfMonth = moment().startOf('month');
+      const endOfMonth = moment().endOf('month');
+      const orderDate = moment.utc(order?.requestDate);
+      return orderDate.isBetween(startOfMonth, endOfMonth);
     })
     .filter((order) => order.paid)
     .reduce((acc, order) => {
@@ -344,10 +344,10 @@ const OrdersContent = () => {
   const salesLastMonth = useMemo(() => {
     return orders
     .filter((order) => {
-      const startOfMonth = moment().subtract(1, 'month').startOf('month').toDate();
-      const endOfMonth = moment().subtract(1, 'month').endOf('month').toDate();
-      const orderDate = moment.utc(order?.requestDate).toDate();
-      return orderDate >= startOfMonth && orderDate <= endOfMonth;
+      const startOfMonth = moment().subtract(1, 'month').startOf('month');
+      const endOfMonth = moment().subtract(1, 'month').endOf('month');
+      const orderDate = moment.utc(order?.requestDate);
+      return orderDate.isBetween(startOfMonth, endOfMonth);
     })
     .filter((order) => order.paid)
     .reduce((acc, order) => {
@@ -496,7 +496,7 @@ const OrdersContent = () => {
                     </Button>
                   </CardTitle>
                   <CardDescription>
-                    {`Fecha de compromiso: ${moment(selectedOrder?.dueDate).format('DD/MM/YYYY')}`}
+                    {`Fecha de compromiso: ${moment(selectedOrder?.dueDate).tz('America/Mexico_City').format('DD/MM/YYYY')}`}
                   </CardDescription>
                 </div>
                 <div className="ml-auto flex items-center gap-1">

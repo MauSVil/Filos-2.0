@@ -22,8 +22,8 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { CalendarIcon } from "lucide-react"
 import { Calendar } from "@/components/ui/calendar"
-import moment from "moment"
 import { es } from "date-fns/locale"
+import moment from "moment-timezone";
 
 const monthsParsed: { [key: number]: string } = {
   1: "Enero",
@@ -62,7 +62,7 @@ const chartConfig3 = {
 }
 
 const BuyerStatisticsPage = () => {
-  const [date, setDate] = useState<string>(new Date().toISOString());
+  const [date, setDate] = useState<string>(moment().tz('America/Mexico_City').toISOString());
   const { id } = useParams() as { id: string }
   const buyerStatisticQuery = useBuyerStatistic({ id, date })
   const buyerStatistics = useMemo(() => buyerStatisticQuery.data || {}, [buyerStatisticQuery.data]) as { finalAmountPerMonth: { [key: number]: number }, productsPerMonth: { [key: number]: number }, mostPopularProducts: { [key: string]: number }, samples: number }
@@ -114,13 +114,13 @@ const BuyerStatisticsPage = () => {
               )}
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
-              {date ? moment(date).format('DD/MM/YYYY') : <span>Selecciona una fecha</span>}
+              {date ? moment(date).tz('America/Mexico_City').format('DD/MM/YYYY') : <span>Selecciona una fecha</span>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0">
             <Calendar
               mode="single"
-              selected={new Date(date)}
+              selected={moment(date).tz('America/Mexico_City').toDate()}
               onSelect={(date) => {
                 if (date) {
                   setDate(date.toISOString());

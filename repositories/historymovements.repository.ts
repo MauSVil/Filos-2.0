@@ -2,6 +2,7 @@ import clientPromise from "@/mongodb";
 import { MovementHistory } from "@/types/RepositoryTypes/MovementHistory";
 import _ from "lodash";
 import { Db, ObjectId } from "mongodb";
+import moment from "moment-timezone";
 
 let client;
 let db: Db;
@@ -27,8 +28,8 @@ export class HistoryMovementsRepository {
   static async insertOne(input: Omit<MovementHistory, '_id'>) {
     try {
       await init();
-      input.createdAt = new Date();
-      input.updatedAt = new Date();
+      input.createdAt = moment().tz('America/Mexico_City').toDate();
+      input.updatedAt = moment().tz('America/Mexico_City').toDate();
       input.deletedAt = null;
       await db.collection('MovementHistory').insertOne(input);
       return 'Movement history inserted';

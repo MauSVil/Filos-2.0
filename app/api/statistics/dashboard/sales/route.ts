@@ -1,7 +1,7 @@
 import { OrdersRepository } from "@/repositories/orders.repository";
 import { Order } from "@/types/MongoTypes/Order";
-import moment from "moment";
 import { NextResponse } from "next/server";
+import moment from "moment-timezone";
 
 interface GroupedOrders {
   [year: number]: {
@@ -16,8 +16,8 @@ const MONTHS = [
 
 const groupOrdersByYearAndMonth = (orders: Order[]): GroupedOrders => {
   const grouped: GroupedOrders = orders.reduce<GroupedOrders>((acc, order) => {
-    const year = moment.utc(order.requestDate).year();
-    const month = moment.utc(order.requestDate).format("MMMM");
+    const year = moment(order.requestDate).tz('America/Mexico_City').year();
+    const month = moment(order.requestDate).tz('America/Mexico_City').format("MMMM");
 
     if (!acc[year]) acc[year] = {};
 
@@ -41,8 +41,8 @@ const groupOrdersByYearAndMonth = (orders: Order[]): GroupedOrders => {
 
 export const GET = async () => {
   try {
-    const from = moment().subtract(1, 'year').startOf('year').toDate();
-    const to = moment().endOf('year').toDate();
+    const from = moment().tz('America/Mexico_City').subtract(1, 'year').startOf('year').toDate();
+    const to = moment().tz('America/Mexico_City').endOf('year').toDate();
 
     const orders = await OrdersRepository.find({
       dateRange: { from, to },

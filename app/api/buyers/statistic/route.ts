@@ -2,6 +2,7 @@ import { OrdersRepository } from "@/repositories/orders.repository";
 import { ProductsRepository } from "@/repositories/products.repository";
 import _ from "lodash";
 import { NextRequest, NextResponse } from "next/server";
+import moment from "moment-timezone";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -12,9 +13,9 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json({ error: 'No se pasaron los argumentos correctos' }, { status: 404 });
     }
 
-    const year = new Date(date).getFullYear();
+    const year = moment(date).tz('America/Mexico_City').year();
 
-    const orders = await OrdersRepository.find({ buyer: buyerId, paid: true, dateRange: { from: new Date(`01/01/${year}`), to: new Date(`12/31/${year}`) } });
+    const orders = await OrdersRepository.find({ buyer: buyerId, paid: true, dateRange: { from: moment(`${year}-01-01`).tz('America/Mexico_City').toDate(), to: moment(`${year}-12-31`).tz('America/Mexico_City').toDate() } });
 
     const finalAmountPerMonth = orders.reduce((acc, order) => {
       const month = order.requestDate.getMonth() + 1;

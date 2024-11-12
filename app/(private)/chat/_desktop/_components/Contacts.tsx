@@ -1,11 +1,11 @@
-import { Key, useMemo, useRef } from "react";
+import { Key, useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Check } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import moment from "moment";
 import { cn } from "@/utils/cn";
 import { Contact } from "@/types/Chat";
+import moment from "moment-timezone";
 
 interface ContactsProps {
   selectedChat: string;
@@ -19,8 +19,8 @@ const Contacts = (props: ContactsProps) => {
 
   const orderedContacts = useMemo(() => {
     return Object.values(contacts).sort((a, b) => {
-      const dateA = new Date(a.lastMessageSent || 0).getTime();
-      const dateB = new Date(b.lastMessageSent || 0).getTime();
+      const dateA = moment(a.lastMessageSent || 0).tz('America/Mexico_City').toDate().getTime();
+      const dateB = moment(b.lastMessageSent || 0).tz('America/Mexico_City').toDate().getTime();
       return dateB - dateA;
     });
   }, [contacts]);
@@ -45,7 +45,7 @@ const Contacts = (props: ContactsProps) => {
                 <div className="grid gap-1">
                   <p className="text-sm font-medium leading-none">{contact.fullName || contact.phone_id }</p>
                   <p className="text-xs text-muted-foreground mb-2">
-                    {moment(contact.lastMessageSent).fromNow()}
+                    {moment(contact.lastMessageSent).tz('America/Mexico_City').fromNow()}
                   </p>
                   <div className="flex items-center gap-1 mb-2">
                     {

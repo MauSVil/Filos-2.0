@@ -3,10 +3,11 @@ import { OrdersRepository } from "@/repositories/orders.repository";
 import { ProductsRepository } from "@/repositories/products.repository";
 import { Order } from "@/types/MongoTypes/Order";
 import { Product } from "@/types/MongoTypes/Product";
-import { OrderInput, OrderUpdateInputModel } from "@/types/RepositoryTypes/Order";
+import { OrderInput } from "@/types/RepositoryTypes/Order";
 import ky from "ky";
 import _ from "lodash";
 import { NextRequest, NextResponse } from "next/server";
+import moment from "moment-timezone";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -91,13 +92,13 @@ export const PUT = async (req: NextRequest) => {
       name,
       buyer,
       orderType,
-      dueDate: new Date(dueDate),
+      dueDate: moment(dueDate).tz('America/Mexico_City').toDate(),
       freightPrice,
       advancedPayment,
       description,
       products: productsParsed,
       status: 'Pendiente',
-      updated_at: new Date(),
+      updated_at: moment().tz('America/Mexico_City').toDate(),
       documents: {
         order: '',
       }

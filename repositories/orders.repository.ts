@@ -4,6 +4,7 @@ import { OrderInput, OrderInputModel, OrderRepositoryFilter, OrderRepositoryFilt
 import _ from "lodash";
 import { Db, ObjectId } from "mongodb";
 import { HistoryMovementsRepository } from "./historymovements.repository";
+import moment from "moment-timezone";
 
 let client;
 let db: Db;
@@ -49,8 +50,8 @@ export class OrdersRepository {
   
     const orders = await db.collection('orders').find<Order>({
       ...finalFilter,
-      ...(dateRange ? { requestDate: { "$gte": new Date(dateRange.from!), "$lte": new Date(dateRange.to!) } } : {}),
-      ...(dueDateRange ? { dueDate: { "$gte": new Date(dueDateRange.from!), "$lte": new Date(dueDateRange.to!) } } : {}),
+      ...(dateRange ? { requestDate: { "$gte": moment(dateRange.from!).tz('America/Mexico_City').toDate(), "$lte": moment(dateRange.to!).tz('America/Mexico_City').toDate() } } : {}),
+      ...(dueDateRange ? { dueDate: { "$gte": moment(dueDateRange.from!).tz('America/Mexico_City').toDate(), "$lte": moment(dueDateRange.to!).tz('America/Mexico_City').toDate() } } : {}),
     }).sort({ created_at: -1 }).toArray();
     return orders;
   }

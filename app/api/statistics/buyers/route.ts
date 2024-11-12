@@ -1,7 +1,7 @@
 import { BuyersRepository } from "@/repositories/buyers.repository";
 import { OrdersRepository } from "@/repositories/orders.repository";
 import _ from "lodash";
-import moment from "moment";
+import moment from "moment-timezone";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
@@ -10,7 +10,7 @@ export const POST = async (req: NextRequest) => {
     const { buyerId } = body;
 
     const orders = await OrdersRepository.find({
-      dateRange: { from: new Date("01/01/2024"), to: new Date("12/31/2024") },
+      dateRange: { from: moment().tz('America/Mexico_City').startOf('year').toDate(), to: moment().tz('America/Mexico_City').endOf('year').toDate() },
       ...(buyerId && { buyer: buyerId }),
     });
     if (!orders.length) {

@@ -5,7 +5,7 @@ import { useCallback, useMemo, useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
 import { ChevronsUpDown, Loader2 } from "lucide-react";
-import moment from "moment";
+import moment from "moment-timezone";
 
 const HistoryMovements = () => {
   const [activeCollapsible, setActiveCollapsible] = useState<string | null>(null);
@@ -39,7 +39,7 @@ const HistoryMovements = () => {
                       {`Se hizo un movimiento de tipo ${movementHistory.type === 'insert' ? 'inserción' : 'actualización'} de ${movementHistory.collection}`}
                     </p>
                     <CardDescription>
-                      {moment(movementHistory.createdAt).format('DD/MM/YYYY HH:mm:ss')}
+                      {moment(movementHistory.createdAt).tz('America/Mexico_City').format('DD/MM/YYYY HH:mm:ss')}
                     </CardDescription>
                   </div>
                   <CollapsibleTrigger asChild className="flex-1">

@@ -15,9 +15,10 @@ import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import ky, { HTTPError } from "ky";
+import moment from "moment-timezone";
 
 const defaultValues: Partial<TempOrder> = {
-  dueDate: new Date(),
+  dueDate: moment().tz('America/Mexico_City').toDate(),
 };
 
 const NewOrdersContent = () => {

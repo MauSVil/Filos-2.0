@@ -4,6 +4,7 @@ import { BuyerInput, BuyerRepositoryFilter, BuyerRepositoryFilterModel } from "@
 import _ from "lodash";
 import { Db, ObjectId } from "mongodb";
 import { HistoryMovementsRepository } from "./historymovements.repository";
+import moment from "moment-timezone";
 
 let client;
 let db: Db;
@@ -53,8 +54,8 @@ export class BuyersRepository {
 
   static async insertOne(input: BuyerInput) {
     await init();
-    input.createdAt = new Date();
-    input.updatedAt = new Date();
+    input.createdAt = moment().tz('America/Mexico_City').toDate();
+    input.updatedAt = moment().tz('America/Mexico_City').toDate();
     input.deletedAt = undefined;
     input.version = 2;
     await db.collection('buyers').insertOne(input);

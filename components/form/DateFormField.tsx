@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
 import { es } from "date-fns/locale";
-import moment from "moment";
+import moment from "moment-timezone";
 
 export interface NextUIInputFormFieldProps<T extends FieldValues> extends React.InputHTMLAttributes<HTMLInputElement> {
   controllerProps: UseControllerProps<T>;
@@ -40,7 +40,7 @@ export const DateFormField = <T extends FieldValues>(props: NextUIInputFormField
                   )}
                 >
                   {field.value ? (
-                    <span>{moment(field.value).format('DD/MM/YYYY')}</span>
+                    <span>{moment(field.value).tz('America/Mexico_City').format('DD/MM/YYYY')}</span>
                   ) : (
                     <span>{emptyLabel}</span>
                   )}
@@ -53,7 +53,7 @@ export const DateFormField = <T extends FieldValues>(props: NextUIInputFormField
                 mode="single"
                 selected={field.value}
                 onSelect={field.onChange}
-                disabled={(date) => date < new Date()}
+                disabled={(date) => moment(date).tz('America/Mexico_City').isBefore(moment().tz('America/Mexico_City'))}
                 lang="es"
                 locale={es}
               />

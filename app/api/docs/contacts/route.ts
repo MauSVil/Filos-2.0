@@ -2,6 +2,7 @@ import * as XLSX from 'xlsx';
 import clientPromise from '@/mongodb';
 import { Db } from 'mongodb';
 import { NextResponse } from "next/server";
+import moment from "moment-timezone";
 
 let client;
 let db: Db;
@@ -40,7 +41,7 @@ export const POST = async (req: Request) => {
     const contacts = data.map((contact: any) => {
       const newContact: any = {
         aiEnabled: true,
-        lastMessageSent: new Date(),
+        lastMessageSent: moment().tz('America/Mexico_City').toDate(),
       };
       for (const key in contact) {
         const title = excelTitles[key];

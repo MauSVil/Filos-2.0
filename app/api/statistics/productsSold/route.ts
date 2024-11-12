@@ -1,12 +1,12 @@
 import { OrdersRepository } from "@/repositories/orders.repository";
 import { ProductsRepository } from "@/repositories/products.repository";
 import _ from "lodash";
-import moment from "moment";
 import { NextRequest, NextResponse } from "next/server";
+import moment from "moment-timezone";
 
 export const GET = async (req: NextRequest) => {
   try {
-    const orders = await OrdersRepository.find({ dateRange: { from: moment('2024-01-01').toDate(), to: moment('2024-12-31').toDate() } });
+    const orders = await OrdersRepository.find({ dateRange: { from: moment('2024-01-01').tz('America/Mexico_City').toDate(), to: moment('2024-12-31').tz('America/Mexico_City').toDate() } });
     if (!orders.length) {
       return NextResponse.json({ error: 'No se encontraron ordenes' }, { status: 404 });
     }

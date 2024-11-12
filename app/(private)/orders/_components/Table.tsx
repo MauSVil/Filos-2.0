@@ -1,9 +1,9 @@
 
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Spinner, Chip, ChipProps, Button} from "@nextui-org/react";
 import { Key, useCallback, useMemo } from "react";
-import moment from "moment";
 import { Order } from "@/types/MongoTypes/Order";
 import { Icon } from "@iconify/react";
+import moment from "moment-timezone";
 
 const statusColorMap: Record<string, ChipProps["color"]>  = {
   Completado: "success",
@@ -30,7 +30,7 @@ const OrdersTable = ({ isLoading, orders }: { isLoading: boolean, orders: Order[
       case "name":
         return item.name;
       case "dueDate":
-        return moment(item.dueDate).format("DD/MM/YYYY");
+        return moment(item.dueDate).tz('America/Mexico_City').format("DD/MM/YYYY");
       case "status":
         return (
           <Chip className="capitalize" color={statusColorMap[item.status]} size="sm" variant="flat">

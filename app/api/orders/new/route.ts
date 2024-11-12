@@ -6,6 +6,7 @@ import { OrderInput, OrderInputModel } from "@/types/RepositoryTypes/Order";
 import ky from "ky";
 import _ from "lodash";
 import { NextRequest, NextResponse } from "next/server";
+import moment from "moment-timezone";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -30,10 +31,10 @@ export const POST = async (req: NextRequest) => {
       ...body,
       products: productsParsed,
       status: 'Pendiente',
-      created_at: new Date(),
-      updated_at: new Date(),
+      created_at: moment().tz('America/Mexico_City').toDate(),
+      updated_at: moment().tz('America/Mexico_City').toDate(),
       deleted_at: null,
-      requestDate: new Date(),
+      requestDate: moment().tz('America/Mexico_City').toDate(),
       totalAmount: 0,
       finalAmount: 0,
       paid: false,

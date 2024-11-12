@@ -2,12 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import ky from "ky";
 import path from "path";
 import fs from "fs/promises";
-import moment from "moment";
 import { OrdersRepository } from "@/repositories/orders.repository";
 import { BuyersRepository } from "@/repositories/buyers.repository";
 import { ProductsRepository } from "@/repositories/products.repository";
 import _ from "lodash";
 import { uploadImage } from "@/utils/aws/uploadImage";
+import moment from "moment-timezone";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -68,8 +68,8 @@ export const POST = async (req: NextRequest) => {
     const data = {
       title: 'Orden de compra',
       name: buyerName,
-      createdAt: moment(requestDate).format('DD-MM-YYYY'),
-      dueDate: moment(dueDate).format('DD-MM-YYYY'),
+      createdAt: moment(requestDate).tz('America/Mexico_City').format('DD-MM-YYYY'),
+      dueDate: moment(dueDate).tz('America/Mexico_City').format('DD-MM-YYYY'),
       phone: buyerPhone,
       email: buyerEmail,
       address: buyerAddress,

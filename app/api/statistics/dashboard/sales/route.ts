@@ -8,6 +8,11 @@ interface GroupedOrders {
     [month: string]: number;
   };
 }
+interface GroupedOrdersTemp {
+  [year: number]: {
+    [month: string]: Order[];
+  };
+}
 
 const MONTHS = [
   "January", "February", "March", "April", "May", "June", 
@@ -39,14 +44,42 @@ const groupOrdersByYearAndMonth = (orders: Order[]): GroupedOrders => {
   return grouped;
 };
 
+const groupOrdersByYearAndMonthTemp = (orders: Order[]): GroupedOrdersTemp => {
+  const grouped: GroupedOrdersTemp = orders.reduce<GroupedOrdersTemp>((acc, order) => {
+    const year = moment(order.requestDate).year();
+    const month = moment(order.requestDate).format("MMMM");
+
+    if (!acc[year]) acc[year] = {};
+
+    if (!acc[year][month]) acc[year][month] = [];
+
+    acc[year][month].push(order);
+
+    return acc;
+  }, {});
+
+  for (const year of Object.keys(grouped)) {
+    for (const month of MONTHS) {
+      if (!grouped[parseInt(year)][month]) {
+        grouped[parseInt(year)][month] = [];
+      }
+    }
+  }
+
+  return grouped;
+};
+
 export const GET = async (req: NextRequest) => {
   try {
     const orders = await OrdersRepository.find({
-      dateRange: { from: moment().subtract(1, 'year').startOf('year').toDate(), to: moment().endOf('year').toDate() },
+      dateRange: { from: moment().utc().subtract(1, 'year').startOf('year').toDate(), to: moment().utc().endOf('year').toDate() },
       paid: true,
       status: 'Completado',
     });
     const groupedOrders: GroupedOrders = groupOrdersByYearAndMonth(orders);
+    const groupedOrdersTemp: GroupedOrdersTemp = groupOrdersByYearAndMonthTemp(orders);
+
+    console.log(groupedOrdersTemp, 'groupedOrdersTemp');
 
     return NextResponse.json({ data: groupedOrders });
   } catch (error) {

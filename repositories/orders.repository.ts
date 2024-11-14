@@ -36,12 +36,17 @@ export class OrdersRepository {
       dateRange,
       dueDateRange,
       orConditions,
+      ids,
       ...rest
     } = filters;
 
     const finalFilter: Record<string, any> = {
       ...rest,
       deleted_at: null,
+    }
+
+    if (ids && ids.length > 0) {
+      finalFilter["_id"] = { $in: ids.map(id => new ObjectId(id)) };
     }
 
     if (orConditions && orConditions.length > 0) {

@@ -4,6 +4,7 @@ const MongoOperatorSchema = z.record(z.any());
 
 export const OrderRepositoryFilterModel = z.object({
   id: z.string().optional(),
+  ids: z.array(z.string()).optional(),
   page: z.number().optional(),
   status: z.enum(['Pendiente', 'Completado', 'Cancelado']).optional(),
   dateRange: z.object({

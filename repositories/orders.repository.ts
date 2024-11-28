@@ -52,12 +52,24 @@ export class OrdersRepository {
     if (orConditions && orConditions.length > 0) {
       finalFilter["$or"] = orConditions;
     }
+
+    if (dateRange) {
+      finalFilter.requestDate = {
+        $gte: dateRange.from,
+        $lte: dateRange.to,
+      };
+    }
+
+    if (dueDateRange) {
+      finalFilter.dueDate = {
+        $gte: dueDateRange.from,
+        $lte: dueDateRange.to,
+      };
+    }
+
+    console.log('finalFilter', finalFilter);
   
-    const orders = await db.collection('orders').find<Order>({
-      ...finalFilter,
-      ...(dateRange ? { requestDate: { "$gte": moment(dateRange.from!).tz('America/Mexico_City').toDate(), "$lte": moment(dateRange.to!).tz('America/Mexico_City').toDate() } } : {}),
-      ...(dueDateRange ? { dueDate: { "$gte": moment(dueDateRange.from!).tz('America/Mexico_City').toDate(), "$lte": moment(dueDateRange.to!).tz('America/Mexico_City').toDate() } } : {}),
-    }).sort({ created_at: -1 }).toArray();
+    const orders = await db.collection('orders').find<Order>(finalFilter).sort({ created_at: -1 }).toArray();
     return orders;
   }
 

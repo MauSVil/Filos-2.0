@@ -44,6 +44,12 @@ export const GET = async () => {
     const from = moment().tz('America/Mexico_City').subtract(1, 'year').startOf('year').toDate();
     const to = moment().tz('America/Mexico_City').endOf('year').toDate();
 
+    console.log({
+      dateRange: { from, to },
+      paid: true,
+      status: 'Completado',
+    })
+
     const orders = await OrdersRepository.find({
       dateRange: { from, to },
       paid: true,

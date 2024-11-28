@@ -66,8 +66,6 @@ export class OrdersRepository {
         $lte: dueDateRange.to,
       };
     }
-
-    console.log('finalFilter', finalFilter);
   
     const orders = await db.collection('orders').find<Order>(finalFilter).sort({ created_at: -1 }).toArray();
     return orders;

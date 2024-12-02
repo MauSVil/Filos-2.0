@@ -51,7 +51,7 @@ export const POST = async (req: NextRequest) => {
     const file = await fs.readFile(templatePath, 'utf8');
     const fileBlob = new Blob([file], { type: 'text/html' });
 
-    const myProductsToSend = products.map((productObj) => {
+    const myProductsToSend = products.filter((p) => p.quantity > 0).map((productObj) => {
       return {
         quantity: productObj.quantity,
         image: productsMapped[productObj.product].image,

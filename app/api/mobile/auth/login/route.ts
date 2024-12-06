@@ -21,7 +21,7 @@ export const POST = async (req: NextRequest) => {
       role: userFound.role,
     }
 
-    const token = await jwt.sign(myUser, 'secretWord');
+    const token = await jwt.sign(myUser, 'secretWord', { expiresIn: '7d' });
 
     return NextResponse.json({
       id: userFound._id,

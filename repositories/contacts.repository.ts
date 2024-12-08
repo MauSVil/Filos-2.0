@@ -24,7 +24,7 @@ export class ContactsRepository {
     await init();
     const filters = await ContactRepositoryFilterModel.parse(filter);
 
-    const contacts = await db.collection('whatsapp-contacts').find<Contact>(filters).toArray();
+    const contacts = await db.collection('whatsapp-contacts').find<Contact>(filters).sort({ lastMessageSent: -1 }).toArray();
     return contacts;
   }
 

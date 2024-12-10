@@ -3,6 +3,8 @@ import { z } from "zod";
 export const ContactRepositoryFilterModel = z.object({
   id: z.string().optional(),
   phone_id: z.string().optional(),
+  limit: z.number().optional(),
+  offset: z.number().optional(),
 });
 
 export type ContactRepositoryFilter = z.infer<typeof ContactRepositoryFilterModel>;

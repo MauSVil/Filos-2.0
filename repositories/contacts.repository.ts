@@ -23,8 +23,14 @@ export class ContactsRepository {
   static async find(filter: ContactRepositoryFilter = {}): Promise<Contact[]> {
     await init();
     const filters = await ContactRepositoryFilterModel.parse(filter);
+    const { limit, offset, ...rest } = filters;
 
-    const contacts = await db.collection('whatsapp-contacts').find<Contact>(filters).sort({ lastMessageSent: -1 }).toArray();
+    const contacts = await db.collection('whatsapp-contacts')
+      .find<Contact>({ ...rest })
+      .sort({ lastMessageSent: -1 })
+      .skip(offset || 0)
+      .limit(limit || 10)
+      .toArray();
     return contacts;
   }
 

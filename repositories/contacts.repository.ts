@@ -26,7 +26,7 @@ export class ContactsRepository {
     const { limit, offset, ...rest } = filters;
 
     const contacts = await db.collection('whatsapp-contacts')
-      .find<Contact>({ ...rest })
+      .find<Contact>({})
       .sort({ lastMessageSent: -1 })
       .skip(offset || 0)
       .limit(limit || 10)

@@ -512,7 +512,7 @@ const OrdersContent = () => {
                         disabled={selectedOrder?.status !== 'Pendiente'}
                         onClick={async () => {
                           await updateOrder.mutateAsync({ _id: selectedOrder?._id, status: 'Completado' })
-                          ordersQuery.refetch()
+                          await handlePaidStatus(selectedOrder?._id)
                         }}
                       >
                         Marcar como completado

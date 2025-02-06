@@ -1,5 +1,26 @@
 import { z } from "zod";
 
+export const ProductModel = z.object({
+  _id: z.string().optional(),
+  baseId: z.string().regex(/^M-\d{4}$/, {
+    message: "El formato debe ser 'M-3012', con una 'M', un guion y cuatro números.",
+  }),
+  uniqId: z.string(),
+  color: z.string(),
+  name: z.string(),
+  webPagePrice: z.number(),
+  wholesalePrice: z.number(),
+  retailPrice: z.number(),
+  specialPrice: z.number(),
+  quantity: z.number(),
+  size: z.string(),
+  deleted_at: z.union([z.null(), z.date()]).optional(),
+  image: z.string().optional(),
+  updated_at: z.date().optional(),
+})
+
+export type Product = z.infer<typeof ProductModel>;
+
 export const ProductRepositoryFilterModel = z.object({
   ids: z.array(z.string()).optional(),
   id: z.string().optional(),

@@ -28,7 +28,7 @@ export class ProductsRepository {
   static async find(filter: ProductRepositoryFilter = {}): Promise<Product[]> {
     await init();
     const filters = await ProductRepositoryFilterModel.parse(filter);
-    const { q, disponibility, ids, ...rest } = filters;
+    const { q, disponibility, ids, id, ...rest } = filters;
 
     const productsIds = ids?.map((id) => new ObjectId(id));
 
@@ -41,6 +41,7 @@ export class ProductsRepository {
         ]
       } : {}),
       ...(productsIds && { _id: { $in: productsIds } }),
+      ...(id && { _id: new ObjectId(id) }),
     }).toArray();
     return messages;
   }

@@ -6,6 +6,8 @@ export interface NextUIInputFormFieldProps<T extends FieldValues> extends React.
   controllerProps: UseControllerProps<T>;
   placeholder?: string;
   label?: string;
+  valueModifierOnChange?: (value: string) => any;
+  labelClassName?: string;
 }
 
 export const InputFormField = <T extends FieldValues>(props: NextUIInputFormFieldProps<T>) => {
@@ -16,6 +18,8 @@ export const InputFormField = <T extends FieldValues>(props: NextUIInputFormFiel
     label,
     type = "text",
     className,
+    valueModifierOnChange,
+    labelClassName,
     ...rest
   } = props;
   return (
@@ -23,7 +27,7 @@ export const InputFormField = <T extends FieldValues>(props: NextUIInputFormFiel
       {...controllerProps}
       render={({ field }) => (
         <FormItem hidden={hidden} className={className}>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel className={labelClassName}>{label}</FormLabel>
           <FormControl>
             <Input
               {...field}
@@ -31,6 +35,14 @@ export const InputFormField = <T extends FieldValues>(props: NextUIInputFormFiel
               type={type}
               className={className}
               {...rest}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (valueModifierOnChange) {
+                  field.onChange(valueModifierOnChange(value));
+                } else {
+                  field.onChange(value);
+                }
+              }}
             />
           </FormControl>
           <FormMessage className="text-xs text-red-500" />

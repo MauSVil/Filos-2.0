@@ -13,9 +13,10 @@ import { ImageModal } from './ImageModal';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { NewCatalogModal } from './NewCatalogueModal';
-import { MinusIcon, PlusIcon } from 'lucide-react';
+import { Edit, MinusIcon, PlusIcon } from 'lucide-react';
 import _ from 'lodash';
 import { EditProductModal } from './EditProductModal';
+import { useRouter } from 'next/navigation';
 
 const ProductsContent = () => {
   const [pagination, setPagination] = useState({
@@ -31,6 +32,8 @@ const ProductsContent = () => {
   const [productsToUpdate, setProductsToUpdate] = useState<{[key: string]: Product}>({});
 
   const productsQuery = useProducts();
+
+  const router = useRouter();
 
   const products = useMemo(() => {
     return productsQuery.data?.data || [];
@@ -254,6 +257,24 @@ const ProductsContent = () => {
           filterFn: "auto",
           enableColumnFilter: true,
           sortingFn: "textCaseSensitive",
+        },
+        {
+          id: 'Acciones',
+          header: 'Acciones',
+          cell: (cellData) => (
+            <div className="flex items-center gap-2">
+              <Button
+                size="icon"
+                variant="outline"
+                className="h-6 w-6"
+                onClick={() => {
+                  router.push(`/products/${cellData.row.original._id}`);
+                }}
+              >
+                <Edit className="h-3.5 w-3.5" />
+              </Button>
+            </div>
+          ),
         },
       ] satisfies ColumnDef<Product>[],
     [productsToUpdate]

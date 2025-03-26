@@ -7,7 +7,7 @@ import { ZodError } from "zod"
 export const POST = async (req: Request) => {
   const formData = await req.formData()
   const data = await formData.get('data')
-  const image = await formData.get('image') as any
+  const image = await formData.get('image') as File
 
   let dataVerified: ProductInput
 

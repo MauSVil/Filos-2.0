@@ -11,7 +11,7 @@ const Content = () => {
       form={form}
       isLoading={false}
       submit={methods.submit}
-      image={localStore.image as any}
+      image={localStore.image as File}
     />
   )
 }

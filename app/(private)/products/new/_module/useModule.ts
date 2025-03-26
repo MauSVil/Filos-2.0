@@ -48,7 +48,7 @@ export const useModule = () => {
       const formData = new FormData();
       const { image, ...rest } = data;
 
-      formData.append('image', data.image as any);
+      formData.append('image', data.image as File);
       formData.append('data', JSON.stringify(rest));
 
       const respData = await ky.post('/api/products', {

@@ -1,8 +1,9 @@
-import { Form, UseFormReturn } from "react-hook-form"
+import { UseFormReturn } from "react-hook-form"
 import { InputFormField } from "../form/InputFormField"
 import { ComboboxFormField } from "../form/ComboboxField"
 import { Button } from "@nextui-org/button"
 import { ProductClient } from "@/types/RepositoryTypes/Product.client";
+import { Form } from "../form";
 
 interface Props {
   form: UseFormReturn<ProductClient>;

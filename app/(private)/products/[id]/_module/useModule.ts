@@ -2,6 +2,7 @@
 
 import { Product } from "@/types/MongoTypes/Product";
 import { ProductModel } from "@/types/RepositoryTypes/Product";
+import { ProductClient } from "@/types/RepositoryTypes/Product.client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";
@@ -10,7 +11,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-const defaultValues: any = {
+const defaultValues: ProductClient = {
   baseId: "",
   uniqId: "",
   color: "",
@@ -32,7 +33,7 @@ export const useModule = () => {
   const params = useParams();
   const id = params.id;
   
-  const form = useForm<any>({
+  const form = useForm<ProductClient>({
     defaultValues,
     mode: "onChange",
     resolver: zodResolver(ProductModel),

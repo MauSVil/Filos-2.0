@@ -2,12 +2,13 @@ import { Form, UseFormReturn } from "react-hook-form"
 import { InputFormField } from "../form/InputFormField"
 import { ComboboxFormField } from "../form/ComboboxField"
 import { Button } from "@nextui-org/button"
+import { ProductClient } from "@/types/RepositoryTypes/Product.client";
 
 interface Props {
-  form: UseFormReturn<any>;
+  form: UseFormReturn<ProductClient>;
   isLoading: boolean;
   submit: () => void;
-  image?: any;
+  image?: File;
   file?: string;
 }
 
@@ -159,7 +160,7 @@ const ProductForm = ({ form, isLoading, submit, image, file }: Props) => {
           {
             image && (
               <div className="flex flex-col items-center gap-4 relative">
-                <img src={URL.createObjectURL(image as any)} alt="Imagen del producto" className="w-full max-h-96 object-contain" />
+                <img src={URL.createObjectURL(image)} alt="Imagen del producto" className="w-full max-h-96 object-contain" />
               </div>
             )
           }

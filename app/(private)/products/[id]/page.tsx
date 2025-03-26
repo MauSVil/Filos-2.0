@@ -11,8 +11,17 @@ import { useEffect, useState } from "react";
 import { ComboboxFormField } from "@/components/form/ComboboxField";
 import { useDebounce } from "@uidotdev/usehooks";
 import { Button } from "@/components/ui/button";
+import { z } from "zod";
 
-const defaultValues: Product = {
+const ProductClient = ProductModel.and(z.object({
+  image: z.instanceof(File).or(z.string()).optional(),
+}))
+
+type ProductClient = z.infer<typeof ProductClient>;
+
+
+
+const defaultValues: ProductClient = {
   baseId: "",
   uniqId: "",
   color: "",
@@ -34,7 +43,7 @@ const ProductIdPage = () => {
   const id = params.id;
   const { productQuery } = useProduct(id as string);
 
-  const form = useForm<Product>({
+  const form = useForm<ProductClient>({
     defaultValues,
     mode: "onChange",
     resolver: zodResolver(ProductModel),
@@ -223,7 +232,7 @@ const ProductIdPage = () => {
           {
             image && (
               <div className="flex flex-col items-center gap-4 relative">
-                <img src={URL.createObjectURL(image as File)} alt="Imagen del producto" className="w-full object-cover" />
+                <img src={URL.createObjectURL(image as File)} alt="Imagen del producto" className="w-full max-h-96 object-contain" />
               </div>
             )
           }

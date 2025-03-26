@@ -1,91 +1,20 @@
 'use client';
 
-import { useParams } from "next/navigation";
-import { useProduct } from "../_hooks/useProduct";
 import { Form } from "@/components/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Product, ProductModel } from "@/types/RepositoryTypes/Product";
 import { InputFormField } from "@/components/form/InputFormField";
-import { useEffect, useState } from "react";
 import { ComboboxFormField } from "@/components/form/ComboboxField";
-import { useDebounce } from "@uidotdev/usehooks";
 import { Button } from "@/components/ui/button";
-import { z } from "zod";
-
-const ProductClient = ProductModel.and(z.object({
-  image: z.instanceof(File).or(z.string()).optional(),
-}))
-
-type ProductClient = z.infer<typeof ProductClient>;
-
-
-
-const defaultValues: ProductClient = {
-  baseId: "",
-  uniqId: "",
-  color: "",
-  name: "",
-  webPagePrice: 0,
-  wholesalePrice: 0,
-  retailPrice: 0,
-  specialPrice: 0,
-  quantity: 0,
-  size: "",
-  deleted_at: null,
-  image: "",
-  updated_at: new Date(),
-};
+import { useModule } from "./_module/useModule";
 
 const ProductIdPage = () => {
-  const [file, setFile] = useState<string>();
-  const params = useParams();
-  const id = params.id;
-  const { productQuery } = useProduct(id as string);
+  const {
+    form,
+    flags,
+    localStore,
+    methods
+  } = useModule();
 
-  const form = useForm<ProductClient>({
-    defaultValues,
-    mode: "onChange",
-    resolver: zodResolver(ProductModel),
-  });
-
-  const { control, watch } = form;
-
-  const uniqId = watch('uniqId');
-
-  useEffect(() => {
-    if (productQuery.data?.data && productQuery.data?.data.length > 0) {
-      form.reset({
-        name: productQuery.data.data[0].name,
-        baseId: productQuery.data.data[0].baseId,
-        uniqId: productQuery.data.data[0].uniqId,
-        color: productQuery.data.data[0].color,
-        webPagePrice: productQuery.data.data[0].webPagePrice,
-        wholesalePrice: productQuery.data.data[0].wholesalePrice,
-        retailPrice: productQuery.data.data[0].retailPrice,
-        specialPrice: productQuery.data.data[0].specialPrice,
-        quantity: productQuery.data.data[0].quantity,
-        size: productQuery.data.data[0].size,
-      })
-
-      setFile(productQuery.data.data[0].image);
-    }
-  }, [productQuery.data]);
-
-  const debouncedUniqId = useDebounce(uniqId, 500);
-
-  useEffect(() => {
-    if (debouncedUniqId) {
-      const baseId = debouncedUniqId.slice(0, 6);
-      form.setValue('baseId', baseId);
-    }
-  }, [debouncedUniqId]);
-
-  const handleSubmit = form.handleSubmit(async (data) => {
-    console.log(data);
-  });
-
-  const image = watch('image');
+  const { control } = form;
 
   return (
     <Form {...form}>
@@ -98,7 +27,7 @@ const ProductIdPage = () => {
             }}
             name="name"
             label="Nombre"
-            disabled={productQuery.isLoading}
+            disabled={flags.isLoading}
           />
           <div className="flex gap-4">
             <InputFormField
@@ -109,7 +38,7 @@ const ProductIdPage = () => {
               }}
               name="uniqId"
               label="Id único"
-              disabled={productQuery.isLoading}
+              disabled={flags.isLoading}
             />
             <InputFormField
               className="flex-1"
@@ -129,7 +58,7 @@ const ProductIdPage = () => {
             }}
             name="color"
             label="Color"
-            disabled={productQuery.isLoading}
+            disabled={flags.isLoading}
           />
           <ComboboxFormField
             items={[
@@ -154,7 +83,7 @@ const ProductIdPage = () => {
               name="webPagePrice"
               label="Precio de página web"
               type="number"
-              disabled={productQuery.isLoading}
+              disabled={flags.isLoading}
               valueModifierOnChange={value => Number(value)}
             />
             <InputFormField
@@ -167,7 +96,7 @@ const ProductIdPage = () => {
               name="wholesalePrice"
               label="Precio de mayoreo"
               type="number"
-              disabled={productQuery.isLoading}
+              disabled={flags.isLoading}
               valueModifierOnChange={value => Number(value)}
             />
           </div>
@@ -181,7 +110,7 @@ const ProductIdPage = () => {
               name="retailPrice"
               label="Precio de menudeo"
               type="number"
-              disabled={productQuery.isLoading}
+              disabled={flags.isLoading}
               valueModifierOnChange={value => Number(value)}
             />
             <InputFormField
@@ -193,7 +122,7 @@ const ProductIdPage = () => {
               name="specialPrice"
               label="Precio especial"
               type="number"
-              disabled={productQuery.isLoading}
+              disabled={flags.isLoading}
               valueModifierOnChange={value => Number(value)}
             />
           </div>
@@ -206,7 +135,7 @@ const ProductIdPage = () => {
             name="quantity"
             label="Cantidad"
             type="number"
-            disabled={productQuery.isLoading}
+            disabled={flags.isLoading}
             valueModifierOnChange={value => Number(value)}
           />
         </div>
@@ -218,27 +147,27 @@ const ProductIdPage = () => {
             }}
             name="image"
             label="Imagen"
-            disabled={productQuery.isLoading}
+            disabled={flags.isLoading}
             type="file"
             className="mb-4"
           />
           {
-            file && !image && (
+            localStore.file && !localStore.image && (
               <div className="flex flex-col items-center gap-4 relative">
-                <img src={file} alt="Imagen del producto" className="w-full max-h-96 object-contain" />
+                <img src={localStore.file} alt="Imagen del producto" className="w-full max-h-96 object-contain" />
               </div>
             )
           }
           {
-            image && (
+            localStore.image && (
               <div className="flex flex-col items-center gap-4 relative">
-                <img src={URL.createObjectURL(image as File)} alt="Imagen del producto" className="w-full max-h-96 object-contain" />
+                <img src={URL.createObjectURL(localStore.image as File)} alt="Imagen del producto" className="w-full max-h-96 object-contain" />
               </div>
             )
           }
         </div>
       </div>
-      <Button onClick={handleSubmit} disabled={productQuery.isLoading} className="mt-4">
+      <Button onClick={methods.submit} disabled={flags.isLoading} className="mt-4">
         Guardar
       </Button>
     </Form>

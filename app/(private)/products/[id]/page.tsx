@@ -16,7 +16,7 @@ const ProductIdPage = () => {
       form={form}
       isLoading={flags.isLoading}
       submit={methods.submit}
-      image={localStore.image as File}
+      image={localStore.image as any}
       file={localStore.file}
     />
   );

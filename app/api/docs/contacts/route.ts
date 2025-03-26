@@ -30,7 +30,7 @@ export const POST = async (req: Request) => {
   try {
     await init();
     const formData = await req.formData();
-    const file = formData.get('file') as File | undefined;
+    const file = formData.get('file') as any;
     if (!file) return NextResponse.json({ message: 'File is required' }, { status: 400 });
     const buffer = await file.arrayBuffer();
 

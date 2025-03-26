@@ -1,12 +1,12 @@
 import { UseFormReturn } from "react-hook-form"
 import { InputFormField } from "../form/InputFormField"
 import { ComboboxFormField } from "../form/ComboboxField"
-import { ProductClient } from "@/types/RepositoryTypes/Product.client";
 import { Form } from "../form";
 import { Button } from "../ui/button";
+import { ProductInputClient } from "@/types/RepositoryTypes/Product.client";
 
 interface Props {
-  form: UseFormReturn<ProductClient>;
+  form: UseFormReturn<ProductInputClient>;
   isLoading: boolean;
   submit: () => void;
   image?: File;

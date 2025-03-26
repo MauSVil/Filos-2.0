@@ -16,6 +16,7 @@ export interface ComboboxFormFieldProps<T extends FieldValues> {
   onInputChange?: (text: string) => void;
   isLoading?: boolean;
   className?: string;
+  labelClassName?: string;
 }
 
 export function ComboboxFormField<T extends FieldValues>({
@@ -28,13 +29,17 @@ export function ComboboxFormField<T extends FieldValues>({
   onInputChange,
   isLoading = false,
   className,
+  labelClassName,
 }: ComboboxFormFieldProps<T>) {
   return (
     <FormField
       {...controllerProps}
       render={({ field }) => (
         <FormItem className="flex flex-col">
-          <FormLabel>{label}</FormLabel>
+          <div className='flex gap-2'>
+            <FormLabel className={cn("text-white", { labelClassName })}>{label}</FormLabel>
+            <FormMessage className='text-red-400 text-xs' />
+          </div>
           <Popover>
             <PopoverTrigger asChild>
               <FormControl>
@@ -101,7 +106,6 @@ export function ComboboxFormField<T extends FieldValues>({
               </Command>
             </PopoverContent>
           </Popover>
-          <FormMessage />
         </FormItem>
       )}
     />

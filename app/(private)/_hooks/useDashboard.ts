@@ -1,8 +1,8 @@
-import { Product } from "@/types/MongoTypes/Product"
 import { useQuery } from "@tanstack/react-query"
 import ky from "ky"
 import { toast } from "sonner"
 import moment from "moment-timezone";
+import { Product } from "@/types/RepositoryTypes/Product";
 
 export const useDashboard = () => {
   return useQuery<{ [key: string]: Product }>({

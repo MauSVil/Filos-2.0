@@ -3,13 +3,13 @@
 import { useMemo, useState } from "react";
 import { useDashboard } from "../_hooks/useDashboard";
 import { ColumnDef, getCoreRowModel, getPaginationRowModel, useReactTable } from "@tanstack/react-table";
-import { Product } from "@/types/MongoTypes/Product";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/DataTable";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DownloadIcon, SaveIcon } from "lucide-react";
 import ky from "ky";
 import { toast } from "sonner";
+import { Product } from "@/types/RepositoryTypes/Product";
 
 const ProductsOutOfStock = () => {
   const [changes, setChanges] = useState<{ [key: string]: { quantity: number } }>({});
@@ -56,8 +56,8 @@ const ProductsOutOfStock = () => {
                   setChanges((prevState) => {
                     return {
                       ...prevState,
-                      [cellData.row.original._id]: {
-                        quantity: (changes[cellData.row.original._id]?.quantity || 0) - 1,
+                      [cellData.row.original._id!]: {
+                        quantity: (changes[cellData.row.original._id!]?.quantity || 0) - 1,
                       },
                     }
                   })
@@ -66,7 +66,7 @@ const ProductsOutOfStock = () => {
                 -
               </Button>
               <p className="text-base text-gray-500">
-                {changes[cellData.row.original._id]?.quantity || 0}
+                {changes[cellData.row.original._id!]?.quantity || 0}
               </p>
               <Button
                 size="icon"
@@ -78,8 +78,8 @@ const ProductsOutOfStock = () => {
                   setChanges((prevState) => {
                     return {
                       ...prevState,
-                      [cellData.row.original._id]: {
-                        quantity: (changes[cellData.row.original._id]?.quantity || 0) + 1,
+                      [cellData.row.original._id!]: {
+                        quantity: (changes[cellData.row.original._id!]?.quantity || 0) + 1,
                       },
                     }
                   })
@@ -105,7 +105,7 @@ const ProductsOutOfStock = () => {
     data,
     columns,
     getRowId(originalRow) {
-      return originalRow._id;
+      return originalRow._id!;
     },
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),

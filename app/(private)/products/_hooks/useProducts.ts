@@ -1,4 +1,4 @@
-import { Product } from "@/types/MongoTypes/Product"
+import { Product } from "@/types/RepositoryTypes/Product"
 import { useQuery } from "@tanstack/react-query"
 import ky from "ky"
 

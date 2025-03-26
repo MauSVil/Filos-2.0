@@ -4,7 +4,6 @@ import { useMemo, useState } from 'react';
 import { useProducts } from '../_hooks/useProducts';
 import { DataTable } from '@/components/DataTable';
 import { ColumnDef, ColumnFiltersState, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, VisibilityState } from '@tanstack/react-table';
-import { Product } from '@/types/MongoTypes/Product';
 import DataTableColumnHeader from '@/components/DataTableHeader';
 import numeral from 'numeral';
 import Image from 'next/image';
@@ -13,10 +12,11 @@ import { ImageModal } from './ImageModal';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { NewCatalogModal } from './NewCatalogueModal';
-import { Edit, MinusIcon, PlusIcon } from 'lucide-react';
+import { Edit, MinusIcon, Plus, PlusIcon } from 'lucide-react';
 import _ from 'lodash';
 import { EditProductModal } from './EditProductModal';
 import { useRouter } from 'next/navigation';
+import { Product } from '@/types/RepositoryTypes/Product';
 
 const ProductsContent = () => {
   const [pagination, setPagination] = useState({
@@ -88,9 +88,9 @@ const ProductsContent = () => {
                 width={50}
                 height={50}
                 className="rounded-medium cursor-pointer"
-                src={cellData.row.original.image}
+                src={cellData.row.original.image!}
                 alt="image"
-                onClick={() => handleImageClick(cellData.row.original.image)}
+                onClick={() => handleImageClick(cellData.row.original.image!)}
               />
             );
           },
@@ -354,6 +354,15 @@ const ProductsContent = () => {
             onClick={handleUpdateProductsClick}
           >
             Actualizar
+          </Button>
+          <Button
+            onClick={() => {
+              router.push('/products/new');
+            }}
+            className='flex gap-2'
+          >
+            <Plus className='w-4 h-4' />
+            Crear producto
           </Button>
         </div>
       </div>

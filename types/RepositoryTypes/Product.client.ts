@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { ProductModel } from "./Product";
+import { ProductInputModel, ProductModel } from "./Product";
 
-export const ProductClient = ProductModel.extend({
+export const ProductInputClient = ProductInputModel.extend({
   image: z.instanceof(File).or(z.string()).optional(),
 });
 
-export type ProductClient = z.infer<typeof ProductClient>;
+export type ProductInputClient = z.infer<typeof ProductInputClient>;

@@ -1,6 +1,6 @@
 import { OrdersRepository } from "@/repositories/orders.repository";
 import { ProductsRepository } from "@/repositories/products.repository";
-import { Product } from "@/types/MongoTypes/Product";
+import { Product } from "@/types/RepositoryTypes/Product";
 import _ from "lodash";
 import { NextRequest, NextResponse } from "next/server";
 

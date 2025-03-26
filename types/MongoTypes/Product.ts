@@ -1,5 +1,5 @@
 export interface Product {
-  _id: string;
+  _id?: string | undefined;
   baseId: string;
   uniqId: string;
   color: string;
@@ -10,7 +10,7 @@ export interface Product {
   specialPrice: number;
   quantity: number;
   size: string;
-  deleted_at: null | Date;
+  deleted_at?: null | Date;
   image: string;
   updated_at: Date;
 }

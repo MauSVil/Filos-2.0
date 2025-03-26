@@ -1,10 +1,63 @@
 import { ProductsRepository } from "@/repositories/products.repository"
-import { Product } from "@/types/MongoTypes/Product"
+import { Product, ProductInput, ProductInputModel } from "@/types/RepositoryTypes/Product"
+import { uploadImage } from "@/utils/aws/uploadImage"
 import { NextResponse } from "next/server"
+import { ZodError } from "zod"
 
 export const POST = async (req: Request) => {
-  const body = await req.json()
-  console.log(body)
+  const formData = await req.formData()
+  const data = await formData.get('data')
+  const image = await formData.get('image') as File
+
+  let dataVerified: ProductInput
+
+  try {
+    const dataParsed = JSON.parse(data as string)
+    dataVerified = await ProductInputModel.parseAsync(dataParsed)
+  } catch (e) {
+    if (e instanceof ZodError) {
+      return NextResponse.json({ error: e.errors }, { status: 400 })
+    }
+    return NextResponse.json({ error: 'Invalid data' }, { status: 400 })
+  }
+
+  let insertedId: string;
+  try {
+    const insertedIdObj = await ProductsRepository.insertOne({
+      ...dataVerified,
+      created_at: new Date(),
+    })
+    insertedId = insertedIdObj.toString()
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({ devError: error.message, error: '[Insertar Producto] No se pudo insertar el producto P.1' }, { status: 500 })
+    }
+    return NextResponse.json({ error: 'An error occurred' }, { status: 500 })
+  }
+
+  let url: string;
+  if (image) {
+    try {
+      const arrayBuffer = await image.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      url = await uploadImage(`${insertedId}.png`, buffer);
+    } catch (error) {
+      if (error instanceof Error) {
+        return NextResponse.json({ devError: error.message, error: '[Insertar Producto] No se pudo insertar el producto P.2' }, { status: 500 })
+      }
+      return NextResponse.json({ error: 'An error occurred' }, { status: 500 })
+    }
+
+    try {
+      await ProductsRepository.updateOne({ _id: insertedId, image: url })
+    } catch (error) {
+      if (error instanceof Error) {
+        return NextResponse.json({ devError: error.message, error: '[Insertar Producto] No se pudo insertar el producto P.3' }, { status: 500 })
+      }
+      return NextResponse.json({ error: 'An error occurred' }, { status: 500 })
+    }
+  }
+
   return NextResponse.json({ message: 'Hello World' })
 }
 

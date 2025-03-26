@@ -5,7 +5,7 @@ import DataTableColumnHeader from "@/components/DataTableHeader";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Order } from "@/types/MongoTypes/Order";
-import { Product } from "@/types/MongoTypes/Product";
+import { Product } from "@/types/RepositoryTypes/Product";
 import { ColumnDef, ColumnFiltersState, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, VisibilityState } from "@tanstack/react-table";
 import _ from "lodash";
 import { ListFilter, MinusIcon, PlusIcon } from "lucide-react";
@@ -39,8 +39,8 @@ const Step1 = ({ order, type }: { order?: Order, type: 'new' | 'edit' }) => {
     const productsFromOrderMapped = _.keyBy(productsFromOrder, 'product');
     return (productsQuery.data?.data || []).filter((product) => {
       if (status === 'Todos') return true;
-      if (status === 'Con cantidad' && productsFromOrderMapped[product._id]?.quantity > 0) return true;
-      if (status === 'Sin cantidad' && (productsFromOrderMapped[product._id]?.quantity <= 0 || productsFromOrderMapped[product._id]?.quantity === undefined)) return true;
+      if (status === 'Con cantidad' && productsFromOrderMapped[product._id!]?.quantity > 0) return true;
+      if (status === 'Sin cantidad' && (productsFromOrderMapped[product._id!]?.quantity <= 0 || productsFromOrderMapped[product._id]?.quantity === undefined)) return true;
       return false;
     });
   }, [productsQuery.data, status, productsFromOrder]);
@@ -75,9 +75,9 @@ const Step1 = ({ order, type }: { order?: Order, type: 'new' | 'edit' }) => {
                 width={50}
                 height={50}
                 className="rounded-medium cursor-pointer"
-                src={cellData.row.original.image}
+                src={cellData.row.original.image!}
                 alt="image"
-                onClick={() => handleImageClick(cellData.row.original.image)}
+                onClick={() => handleImageClick(cellData.row.original.image!)}
               />
             );
           },

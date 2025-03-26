@@ -94,7 +94,7 @@ export const POST = async (req: NextRequest) => {
 
     const pdfs = products.map((product) => {
       return {
-        image: product.image,
+        image: product.image!,
         uniqId: product.uniqId,
       };
     });

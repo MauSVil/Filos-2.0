@@ -2,12 +2,11 @@ import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogFooter, 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { create, InstanceProps } from "react-modal-promise";
-import Image from "next/image";
-import { Product } from "@/types/MongoTypes/Product";
 import { useMemo } from "react";
 import _ from "lodash";
 import { toast } from "sonner";
 import ky from "ky";
+import { Product } from "@/types/RepositoryTypes/Product";
 
 export interface Props extends InstanceProps<any, any> {
   products: Product[];

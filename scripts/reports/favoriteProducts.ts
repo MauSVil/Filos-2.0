@@ -3,9 +3,10 @@ import path from 'path'
 
 import { OrdersRepository } from "@/repositories/orders.repository"
 import { ProductsRepository } from "@/repositories/products.repository"
+import moment from 'moment'
 
 const init = async () => {
-  const orders = await OrdersRepository.find({ paid: true, status: 'Completado' })
+  const orders = await OrdersRepository.find({ paid: true, status: 'Completado', dateRange: { from: moment('2023-01-01').tz('America/Mexico_City').toDate(), to: moment('2023-12-31').tz('America/Mexico_City').toDate() } })
 
   const productsObj: { [key: string]: number } = {}
 
@@ -26,6 +27,8 @@ const init = async () => {
   const productsModel = productsFound.map(product => {
     return {
       model: product.uniqId,
+      name: product.name,
+      color: product.color,
       quantity: productsObj[product._id.toString()]
     }
   }).sort((a, b) => b.quantity - a.quantity)

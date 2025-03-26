@@ -1,2838 +1,3332 @@
 [
   {
     "model": "M-2026-U-RH",
+    "name": "Sueter copo",
+    "color": "Rojo  con hueso",
     "quantity": 155
   },
   {
-    "model": "M-3241-RH",
-    "quantity": 118
-  },
-  {
     "model": "M-3276-U-RH",
+    "name": "Sueter Merry Christmas",
+    "color": "Rojo  con hueso",
     "quantity": 92
   },
   {
-    "model": "M-3241-NR",
-    "quantity": 91
-  },
-  {
     "model": "H-0107-M-RH",
+    "name": "Sueter copo",
+    "color": "Rojo con hueso",
     "quantity": 79
   },
   {
-    "model": "M-3283-U-RH",
-    "quantity": 72
-  },
-  {
-    "model": "M-3241-U-HR",
-    "quantity": 67
-  },
-  {
-    "model": "M-3165-U-HR",
-    "quantity": 66
-  },
-  {
-    "model": "M-3179-R",
-    "quantity": 62
-  },
-  {
     "model": "M-2026-C-U-MH",
+    "name": "Sueter copo cuello alto",
+    "color": "Marino con hueso",
     "quantity": 62
   },
   {
     "model": "H-0107-M-MH",
+    "name": "Sueter copo",
+    "color": "Marino con hueso",
     "quantity": 61
   },
   {
-    "model": "M-3234-U-R",
-    "quantity": 58
-  },
-  {
     "model": "H-0107-G-RH",
+    "name": "Sueter copo",
+    "color": "Rojo con hueso",
     "quantity": 58
   },
   {
-    "model": "M-4000-U- CNV",
-    "quantity": 50
-  },
-  {
-    "model": "M-4000-U- CNP",
+    "model": "M-3234-U-R",
+    "name": "Sueter cuello V perle",
+    "color": "Rojo",
     "quantity": 50
   },
   {
     "model": "H-0107-G-MH",
+    "name": "Sueter copo",
+    "color": "Marino con hueso",
     "quantity": 49
   },
   {
     "model": "M-3102-U-RH",
+    "name": "Vestido noche buena",
+    "color": "Rojo con hueso",
     "quantity": 49
   },
   {
     "model": "M-3105-U-RH",
+    "name": "Vestido navideño copo",
+    "color": "Rojo  con hueso",
     "quantity": 48
   },
   {
-    "model": "M-3157-U-HR",
-    "quantity": 46
-  },
-  {
     "model": "M-3270-U-RH",
+    "name": "Sueter copo 3",
+    "color": "Rojo con hueso",
     "quantity": 46
   },
   {
     "model": "M-3105-MH",
+    "name": "Vestido navideño copo",
+    "color": "Marino con hueso",
     "quantity": 46
   },
   {
-    "model": "M-0016-U-VM",
-    "quantity": 41
-  },
-  {
     "model": "M-3101-U-RH",
+    "name": "Sueter nochebuena",
+    "color": "Rojo con hueso",
     "quantity": 41
-  },
-  {
-    "model": "M-3165-U-NR",
-    "quantity": 40
-  },
-  {
-    "model": "M-3157-U-RH",
-    "quantity": 38
   },
   {
     "model": "N-0107-UNISEX-T10-RH",
+    "name": "COPO",
+    "color": "Rojo con hueso",
     "quantity": 36
   },
   {
     "model": "H-0106-M-RH",
+    "name": "Sueter noche buena",
+    "color": "Rojo  con hueso",
     "quantity": 36
   },
   {
     "model": "H-0106-M-MH",
+    "name": "Sueter noche buena",
+    "color": "Marino con hueso",
     "quantity": 36
   },
   {
     "model": "M-3275-U-HR",
+    "name": "Sueter noche buenas cuello alto",
+    "color": "Hueso con rojo",
     "quantity": 35
   },
   {
-    "model": "M-3283-U-HN",
-    "quantity": 35
+    "model": "M-0016-U-VM",
+    "name": "Capa filos",
+    "color": "Verde militar",
+    "quantity": 34
   },
   {
     "model": "M-2026-U-MH",
+    "name": "Sueter copo",
+    "color": "Marino con hueso",
     "quantity": 33
   },
   {
     "model": "M-3229-U-RGH",
+    "name": "Oso navideño",
+    "color": "Rojo con gorro hueso",
     "quantity": 33
   },
   {
     "model": "M-3276-U-MH",
+    "name": "Sueter Merry Christmas",
+    "color": "Marino con hueso",
     "quantity": 33
-  },
-  {
-    "model": "M-3283-U-NH",
-    "quantity": 33
-  },
-  {
-    "model": "M-2027-U-RH",
-    "quantity": 32
   },
   {
     "model": "M-3103-U-HV",
+    "name": "Sueter navideño reno",
+    "color": "Hueso y varios",
     "quantity": 32
   },
   {
+    "model": "M-3179-R",
+    "name": "Sueter cuello ojal panal",
+    "color": "Rojo",
+    "quantity": 30
+  },
+  {
     "model": "M-3215-U-A",
-    "quantity": 30
-  },
-  {
-    "model": "M-3165-U-RH",
-    "quantity": 30
-  },
-  {
-    "model": "M-3179-U-A",
-    "quantity": 29
-  },
-  {
-    "model": "M-3179-N",
+    "name": "Sueter trenza cuello alto",
+    "color": "Azul  electrico rey",
     "quantity": 29
   },
   {
     "model": "M-2026-U-ARH",
+    "name": "Sueter copo",
+    "color": "Azul  electrico rey con hueso",
     "quantity": 29
   },
   {
-    "model": "M-3187-U-AP",
-    "quantity": 28
-  },
-  {
     "model": "M-2026-U-HR",
+    "name": "Sueter copo",
+    "color": "Hueso con rojo",
     "quantity": 28
   },
   {
     "model": "H-0106-G-MH",
+    "name": "Sueter noche buena",
+    "color": "Marino con hueso",
     "quantity": 28
   },
   {
     "model": "M-3101-U-MH",
+    "name": "Sueter noche buena",
+    "color": "Marino con hueso",
     "quantity": 28
-  },
-  {
-    "model": "M-3282-U-RH",
-    "quantity": 28
-  },
-  {
-    "model": "M-3027-U-R",
-    "quantity": 27
-  },
-  {
-    "model": "M-3233-U-R",
-    "quantity": 27
-  },
-  {
-    "model": "M-2027-U-RR",
-    "quantity": 27
-  },
-  {
-    "model": "M-3241-U-APRB",
-    "quantity": 27
-  },
-  {
-    "model": "M-3241-RBVAN",
-    "quantity": 27
   },
   {
     "model": "H-0106-G-RH",
+    "name": "Sueter noche buena",
+    "color": "Rojo con hueso",
     "quantity": 27
   },
   {
     "model": "M-3270-U-GN",
+    "name": "Sueter copo 3",
+    "color": "Gris  C con Negro",
     "quantity": 27
   },
   {
-    "model": "M-3104-U-R",
-    "quantity": 26
-  },
-  {
-    "model": "M-3187-U-R",
-    "quantity": 26
-  },
-  {
-    "model": "M-3272-U-H",
-    "quantity": 26
-  },
-  {
-    "model": "M-3179-U-RB",
-    "quantity": 25
-  },
-  {
-    "model": "M-3230-U-G",
-    "quantity": 25
-  },
-  {
-    "model": "M-3241-VANRB",
-    "quantity": 25
-  },
-  {
     "model": "H-0107-M-HR",
+    "name": "Sueter copo",
+    "color": "Hueso con rojo",
     "quantity": 25
   },
   {
     "model": "M-3213-U-RH",
+    "name": "Navidad hombro descubierto",
+    "color": "Rojo con hueso",
     "quantity": 25
   },
   {
-    "model": "M-3166-U-N",
+    "model": "M-3187-U-AP",
+    "name": "Sueter cuello V panal",
+    "color": "Azul petroleo",
     "quantity": 24
   },
   {
-    "model": "M-3179-U-V",
+    "model": "M-3179-N",
+    "name": "Suéter cuello ojal panal",
+    "color": "Negro",
     "quantity": 24
   },
   {
     "model": "M-3229-U-HGR",
+    "name": "Sueter oso navideño",
+    "color": "Hueso con gorro rojo",
     "quantity": 24
   },
   {
-    "model": "M-2023-U-NH",
+    "model": "M-3233-U-R",
+    "name": "Sueter cuello de tortuga panal",
+    "color": "Rojo",
     "quantity": 23
   },
   {
-    "model": "M-3023-U-R",
-    "quantity": 23
-  },
-  {
-    "model": "M-3024-U-G",
-    "quantity": 23
-  },
-  {
-    "model": "M-3028-U-R",
-    "quantity": 23
-  },
-  {
-    "model": "M-3075-U-R",
-    "quantity": 23
-  },
-  {
-    "model": "M-3179-U-AR",
-    "quantity": 23
-  },
-  {
-    "model": "M-3243-U-L",
-    "quantity": 22
-  },
-  {
-    "model": "M-3243-U-N",
+    "model": "M-3230-U-G",
+    "name": "Sueter perle estrella",
+    "color": "Gris  D con negro",
     "quantity": 22
   },
   {
     "model": "N-0107-UNISEX-T6-RH",
+    "name": "COPO",
+    "color": "Rojo con hueso",
     "quantity": 22
   },
   {
     "model": "M-3276-U-GN",
+    "name": "Sueter Merry Christmas",
+    "color": "Gris C con negro",
     "quantity": 22
   },
   {
+    "model": "M-2023-U-NH",
+    "name": "Chaleco pata de gallo V",
+    "color": "Negro con hueso",
+    "quantity": 21
+  },
+  {
     "model": "M-3056-U-L",
+    "name": "Ensamble liso-Ligero",
+    "color": "Lila",
     "quantity": 21
   },
   {
-    "model": "M-3254-U-B",
+    "model": "M-3243-U-L",
+    "name": "Sueter ojal con conchas",
+    "color": "Lila ",
     "quantity": 21
   },
   {
-    "model": "M-3260-U-N",
-    "quantity": 21
-  },
-  {
-    "model": "M-3269-U-R",
+    "model": "M-3243-U-N",
+    "name": "Sueter ojal con conchas",
+    "color": "Naranja",
     "quantity": 21
   },
   {
     "model": "M-3105-HR",
+    "name": "Vestido navideño copo",
+    "color": "Hueso con rojo",
     "quantity": 21
   },
   {
     "model": "M-3270-U-HR",
+    "name": "Sueter copo 3",
+    "color": "Hueso con rojo",
     "quantity": 21
   },
   {
-    "model": "M-2024-U-NH",
+    "model": "M-3179-U-AR",
+    "name": "Sueter cuello ojal panal",
+    "color": "Azul  electrico rey",
     "quantity": 20
   },
   {
-    "model": "M-3028-U-N",
-    "quantity": 20
-  },
-  {
-    "model": "M-3083-U-T",
-    "quantity": 20
-  },
-  {
-    "model": "M-0016-U-N",
-    "quantity": 20
-  },
-  {
-    "model": "M-0016-U-G",
-    "quantity": 20
-  },
-  {
-    "model": "M-0016-U-T",
-    "quantity": 20
-  },
-  {
-    "model": "M-3233-U-AP",
+    "model": "M-3187-U-R",
+    "name": "Sueter cuello V panal",
+    "color": "Rojo",
     "quantity": 20
   },
   {
     "model": "M-2026-U-G",
+    "name": "Navidad copo",
+    "color": "Gris  C con hueso",
     "quantity": 20
   },
   {
     "model": "N-0107-UNISEX-T4-RH",
+    "name": "COPO",
+    "color": "Rojo con hueso",
     "quantity": 20
   },
   {
     "model": "N-0107-UNISEX-T8-RH",
+    "name": "COPO",
+    "color": "Rojo con hueso",
     "quantity": 20
   },
   {
     "model": "M-3023-G",
+    "name": "Chaleco corto R",
+    "color": "Gris C",
     "quantity": 19
   },
   {
-    "model": "M-3175-U-R",
+    "model": "M-0016-U-G",
+    "name": "Capa filos",
+    "color": "Gris C",
     "quantity": 19
   },
   {
-    "model": "M-3234-U-B",
+    "model": "M-0016-U-T",
+    "name": "Capa filos",
+    "color": "Tabaco 710V",
     "quantity": 19
   },
   {
-    "model": "M-2027-U-NH",
-    "quantity": 19
-  },
-  {
-    "model": "M-3254-U-N",
-    "quantity": 19
-  },
-  {
-    "model": "M-3255-U -BH",
+    "model": "M-3179-U-A",
+    "name": "Sueter cuello ojal panal",
+    "color": "Amarillo brillante",
     "quantity": 19
   },
   {
     "model": "M-3270-U-MH",
+    "name": "Sueter copo 3",
+    "color": "Marino con hueso",
     "quantity": 19
   },
   {
-    "model": "M-3249-U-HAB",
-    "quantity": 19
+    "model": "M-2024-U-NH",
+    "name": "Sueter estrellas",
+    "color": "Negro con hueso",
+    "quantity": 18
   },
   {
-    "model": "M-3175-U-N",
+    "model": "M-3083-U-T",
+    "name": "Sueter liso cuello alto",
+    "color": "Tabaco 710V",
+    "quantity": 18
+  },
+  {
+    "model": "M-3179-U-V",
+    "name": "Sueter cuello ojal panal",
+    "color": "Verde limon",
     "quantity": 18
   },
   {
     "model": "M-3215-U-H",
+    "name": "Sueter trenza cuello alto",
+    "color": "Hueso",
     "quantity": 18
   },
   {
-    "model": "M-3230-U-R",
+    "model": "M-3254-U-B",
+    "name": "Chaleco maxi calado con abertura",
+    "color": "beige 708W",
     "quantity": 18
   },
   {
     "model": "N-0107-UNISEX-T4-MH",
-    "quantity": 18
-  },
-  {
-    "model": "M-3102-U-MH",
+    "name": "COPO",
+    "color": "Marino con hueso",
     "quantity": 18
   },
   {
     "model": "M-3213-U-MH",
+    "name": "Navidad hombro descubierto",
+    "color": "Marino con hueso",
     "quantity": 18
   },
   {
-    "model": "M-3272-U-R",
-    "quantity": 18
-  },
-  {
-    "model": "M-3083-U-R",
+    "model": "M-0016-U-N",
+    "name": "Capa filos",
+    "color": "Negro",
     "quantity": 17
   },
   {
-    "model": "M-0016-U-A",
-    "quantity": 17
-  },
-  {
-    "model": "M-3179-C",
-    "quantity": 17
-  },
-  {
-    "model": "M-3179-NB",
-    "quantity": 17
-  },
-  {
-    "model": "M-2027-U-HRM",
-    "quantity": 17
-  },
-  {
-    "model": "M-3158-U-RH",
-    "quantity": 17
-  },
-  {
-    "model": "M-2023-U-RPN",
-    "quantity": 17
-  },
-  {
-    "model": "M-3260-U-B",
+    "model": "M-3233-U-AP",
+    "name": "Sueter cuello de tortuga panal",
+    "color": "Azul petroleo",
     "quantity": 17
   },
   {
     "model": "M-3220-U-HR",
+    "name": "Sueter navidad redondo",
+    "color": "Hueso con rojo",
     "quantity": 17
   },
   {
-    "model": "M-3243-U-RB",
+    "model": "M-3102-U-MH",
+    "name": "Vestido noche buena",
+    "color": "Marino con hueso",
     "quantity": 17
   },
   {
-    "model": "M-3272-U-N",
-    "quantity": 17
-  },
-  {
-    "model": "M-3023-U-N",
+    "model": "M-3023-U-R",
+    "name": "Chaleco corto R",
+    "color": "Rojo",
     "quantity": 16
   },
   {
-    "model": "M-3027-U-N",
+    "model": "M-3024-U-G",
+    "name": "Chaleco corto V",
+    "color": "Gris C",
     "quantity": 16
   },
   {
-    "model": "M-3037-U-HL",
+    "model": "M-3166-U-N",
+    "name": "Ensamble maxi de estrellas",
+    "color": "Negro con hueso",
     "quantity": 16
   },
   {
-    "model": "M-3179-U-RP",
+    "model": "M-3175-U-N",
+    "name": "Sueter liso hombros descubiertos panal",
+    "color": "Negro",
     "quantity": 16
   },
   {
-    "model": "M-3187-U-A",
+    "model": "M-3179-U-RB",
+    "name": "Sueter cuello ojal panal",
+    "color": "Rosa brillante",
     "quantity": 16
   },
   {
-    "model": "M-3230-U-N",
+    "model": "M-3230-U-R",
+    "name": "Sueter perle estrella",
+    "color": "Rojo con hueso",
+    "quantity": 16
+  },
+  {
+    "model": "M-3234-U-B",
+    "name": "Sueter cuello V perle",
+    "color": "Blanco",
+    "quantity": 16
+  },
+  {
+    "model": "M-3254-U-N",
+    "name": "Chaleco maxi calado con abertura",
+    "color": "Negro",
     "quantity": 16
   },
   {
     "model": "M-3220-U-HV",
+    "name": "Sueter navidad redondo",
+    "color": "hueso con verde fresa",
     "quantity": 16
   },
   {
-    "model": "M-3243-U-VAN",
+    "model": "M-3272-U-N",
+    "name": "Sueter trenza manga volada",
+    "color": "Negro",
+    "quantity": 16
+  },
+  {
+    "model": "M-3272-U-H",
+    "name": "Sueter trenza manga volada",
+    "color": "Hueso",
     "quantity": 16
   },
   {
     "model": "M-3270-U-HV",
+    "name": "Sueter copo 3",
+    "color": "Hueso con verde fresa",
     "quantity": 16
   },
   {
-    "model": "M-2024-U-RH",
+    "model": "M-3033-U-NHR",
+    "name": "Ensamble pata de gallo con cinta",
+    "color": "Negro con hueso  cinta roja",
     "quantity": 15
   },
   {
-    "model": "M-3024-U-C",
+    "model": "M-3037-U-HL",
+    "name": "Sueter corto abierto en cuadros",
+    "color": "Hueso con lila",
     "quantity": 15
   },
   {
-    "model": "M-3033-U-",
+    "model": "M-3075-U-R",
+    "name": "Vestido liso cuello alto",
+    "color": "Rojo",
     "quantity": 15
   },
   {
-    "model": "M-49262-U-G",
+    "model": "M-3165-U-HR",
+    "name": "Sueter  corazon en pecho cuello V",
+    "color": "Hueso con rojo",
     "quantity": 15
   },
   {
-    "model": "M-3239-U-NR",
+    "model": "M-2023-U-RPN",
+    "name": "Chaleco pata de gallo V",
+    "color": "hueso con palo de rosa   729 N",
     "quantity": 15
   },
   {
-    "model": "M-3243-U-RP",
+    "model": "M-3243-U-VAN",
+    "name": "Sueter ojal con conchas",
+    "color": "Verde agua N",
     "quantity": 15
   },
   {
     "model": "N-0106-UNISEX-T10-RH",
+    "name": "Noche buena",
+    "color": "Rojo con hueso",
     "quantity": 15
   },
   {
     "model": "M-3220-U-RH",
+    "name": "Sueter navidad redondo",
+    "color": "Rojo con hueso",
     "quantity": 15
   },
   {
     "model": "M-3220-U-MH",
+    "name": "Sueter navidad redondo",
+    "color": "Marino con hueso",
     "quantity": 15
   },
   {
     "model": "M-3275-U-RH",
+    "name": "Sueter noche buenas cuello alto",
+    "color": "Rojo con hueso",
     "quantity": 15
   },
   {
-    "model": "M-2027-U-HAP",
-    "quantity": 15
-  },
-  {
-    "model": "M-3044-U-N",
+    "model": "M-3023-U-N",
+    "name": "Chaleco corto R",
+    "color": "Negro",
     "quantity": 14
   },
   {
-    "model": "M-3094-U-",
+    "model": "M-3027-U-N",
+    "name": "Chaleco largo cuello de tortuga con trenza",
+    "color": "Negro",
     "quantity": 14
   },
   {
-    "model": "M-3187-U-NG",
+    "model": "M-49262-U-G",
+    "name": "Ensamble en pico",
+    "color": "Gris C",
     "quantity": 14
   },
   {
-    "model": "M-3187-U-RP",
+    "model": "M-3179-NB",
+    "name": "Sueter cuello ojal panal",
+    "color": "Naranja brillante",
+    "quantity": 14
+  },
+  {
+    "model": "M-3187-U-A",
+    "name": "Sueter cuello V panal",
+    "color": "Amarillo brillante",
     "quantity": 14
   },
   {
     "model": "M-3212-U-HRB",
+    "name": "Sueter oso",
+    "color": "Hueso con rosa brillante",
     "quantity": 14
   },
   {
     "model": "M-3215-U-N",
+    "name": "Sueter trenza cuello alto",
+    "color": "Negro",
     "quantity": 14
   },
   {
-    "model": "M-3215-U-R",
-    "quantity": 14
-  },
-  {
-    "model": "M-3226-U-V",
+    "model": "M-3230-U-N",
+    "name": "Sueter perle estrella",
+    "color": "Negro con hueso",
     "quantity": 14
   },
   {
     "model": "M-3233-U -T",
+    "name": "Sueter cuello de tortuga panal",
+    "color": "Tabaco 710V",
     "quantity": 14
   },
   {
     "model": "M-2029-U-RH",
+    "name": "Sueter nivideño copo 2",
+    "color": "Rojo  con hueso",
     "quantity": 14
   },
   {
     "model": "N-0107-UNISEX-T10-MH",
+    "name": "COPO",
+    "color": "Marino con hueso",
     "quantity": 14
   },
   {
     "model": "N-0106-UNISEX-T4-RH",
+    "name": "Noche buena",
+    "color": "Rojo con hueso",
     "quantity": 14
   },
   {
     "model": "N-0106-UNISEX-T8-RH",
+    "name": "Noche buena",
+    "color": "Rojo con hueso",
     "quantity": 14
   },
   {
     "model": "M-3229-U-RGV",
-    "quantity": 14
-  },
-  {
-    "model": "M-3214-U-HN",
+    "name": "Sueter oso navideño",
+    "color": "Rojo con gorro verde",
     "quantity": 14
   },
   {
     "model": "H-0107-EX-RH",
+    "name": "Sueter copo",
+    "color": "Rojo con hueso",
     "quantity": 14
   },
   {
-    "model": "M-3249-U-HR",
-    "quantity": 14
-  },
-  {
-    "model": "M-3023-U-C",
+    "model": "M-3028-U-N",
+    "name": "Chaleco largo cuello V liso",
+    "color": "Negro",
     "quantity": 13
   },
   {
-    "model": "M-3024-U-N",
+    "model": "M-3044-U-N",
+    "name": "Sueter super corto liso",
+    "color": "Negro",
     "quantity": 13
   },
   {
     "model": "M-3098-U-N",
+    "name": "Sueter bicolor con trenza en hombro descubierto",
+    "color": "Negro con hueso",
     "quantity": 13
   },
   {
-    "model": "M-3099-HR",
+    "model": "M-0016-U-A",
+    "name": "Capa filos",
+    "color": "Azul 766H",
     "quantity": 13
   },
   {
-    "model": "M-3104-U-N",
+    "model": "M-3179-C",
+    "name": "Sueter cuello ojal panal",
+    "color": "Cafe jaspe",
     "quantity": 13
   },
   {
     "model": "M-3215-U-G",
+    "name": "Sueter trenza cuello alto",
+    "color": "Gris  C",
     "quantity": 13
   },
   {
-    "model": "M-3233-U-N",
+    "model": "M-3255-U -BH",
+    "name": "Blusa cuello V bicolor",
+    "color": "Beige  710 K con Hueso",
     "quantity": 13
   },
   {
-    "model": "M-3095-U-AH",
+    "model": "M-3260-U-N",
+    "name": "Chaleco calado cuadro",
+    "color": "Negro",
     "quantity": 13
   },
   {
     "model": "M-2026-U-HAR",
-    "quantity": 13
-  },
-  {
-    "model": "M-3268-U-H",
+    "name": "Sueter copo",
+    "color": "Hueso con rey",
     "quantity": 13
   },
   {
     "model": "N-0107-UNISEX-T8-MH",
+    "name": "COPO",
+    "color": "Marino con hueso",
     "quantity": 13
   },
   {
-    "model": "M-3028-U-V",
-    "quantity": 12
+    "model": "M-3214-U-HN",
+    "name": "Sueter reno cuello ojal",
+    "color": "Hueso con negro",
+    "quantity": 13
   },
   {
-    "model": "M-49262-U-N",
+    "model": "M-3027-U-R",
+    "name": "Chaleco largo cuello de tortuga con trenza",
+    "color": "Rojo",
     "quantity": 12
   },
   {
     "model": "M-3087-U-NG",
+    "name": "Sueter bicolor cuello amplio detalle jaguar",
+    "color": "Negro con hueso Y  manga gris D con negro",
     "quantity": 12
   },
   {
-    "model": "M-0016-U-H",
+    "model": "M-3094-U-",
+    "name": "Sueter bicolor jaguar con cuello ojal",
+    "color": "Negro con hueso",
     "quantity": 12
   },
   {
-    "model": "M-3156-U-N",
+    "model": "M-3241-NR",
+    "name": "Sueter corazon en pecho ojal",
+    "color": "Negro con rojo",
     "quantity": 12
   },
   {
-    "model": "M-3174-U-H",
-    "quantity": 12
-  },
-  {
-    "model": "M-3233-U-RB",
-    "quantity": 12
-  },
-  {
-    "model": "M-3234-U-AP",
-    "quantity": 12
-  },
-  {
-    "model": "M-3158-U-HR",
-    "quantity": 12
-  },
-  {
-    "model": "M-3165-U-RR",
-    "quantity": 12
-  },
-  {
-    "model": "M-3237-U-RBRP",
-    "quantity": 12
-  },
-  {
-    "model": "M-3241-U-LM",
+    "model": "M-3260-U-B",
+    "name": "Chaleco calado cuadro",
+    "color": "Beige 710K",
     "quantity": 12
   },
   {
     "model": "M-3101-C-U-HR",
+    "name": "Sueter noche buena cuello alto",
+    "color": "Hueso con rojo",
     "quantity": 12
   },
   {
     "model": "M-3275-U-HM",
+    "name": "Sueter noche buenas cuello alto",
+    "color": "Hueso con marino",
     "quantity": 12
   },
   {
-    "model": "M-3281-RH",
-    "quantity": 12
-  },
-  {
-    "model": "M-3024-U-RM",
+    "model": "M-3023-U-C",
+    "name": "Chaleco corto R",
+    "color": "Beige 710V",
     "quantity": 11
   },
   {
-    "model": "M-3155-U-N",
+    "model": "M-3024-U-C",
+    "name": "Chaleco corto V",
+    "color": "Cafe tabaco 710V",
     "quantity": 11
   },
   {
-    "model": "M-3171-U-RB",
+    "model": "M-49262-U-N",
+    "name": "Ensamble en pico",
+    "color": "Negro",
     "quantity": 11
   },
   {
-    "model": "M-3184-U-T",
+    "model": "M-3104-U-N",
+    "name": "Sueter liso hombro descubierto",
+    "color": "Negro",
     "quantity": 11
   },
   {
-    "model": "M-3233-U-B",
+    "model": "M-0016-U-H",
+    "name": "Capa filos",
+    "color": "hueso",
     "quantity": 11
   },
   {
-    "model": "M-3234-U-RB",
+    "model": "M-3156-U-N",
+    "name": "Ensamble maxi zebra",
+    "color": "Negro con beige 710K",
     "quantity": 11
   },
   {
-    "model": "M-3250-U-VAN",
+    "model": "M-3187-U-NG",
+    "name": "Sueter cuello V panal",
+    "color": "Negro",
     "quantity": 11
   },
   {
-    "model": "M-2027-U-RHS",
+    "model": "M-3233-U-N",
+    "name": "Sueter cuello de tortuga panal",
+    "color": "Negro",
     "quantity": 11
   },
   {
-    "model": "M-3236-U-NH",
+    "model": "M-3233-U-RB",
+    "name": "Sueter cuello de tortuga panal",
+    "color": "Rosa brillante",
+    "quantity": 11
+  },
+  {
+    "model": "M-3234-U-AP",
+    "name": "Sueter cuello V perle",
+    "color": "Azul petroleo",
+    "quantity": 11
+  },
+  {
+    "model": "M-3165-U-NR",
+    "name": "Sueter corazon en pecho cuello V",
+    "color": "Negro con rojo",
+    "quantity": 11
+  },
+  {
+    "model": "M-3241-RH",
+    "name": "Sueter corazon en pecho ojal",
+    "color": "Rojo con blanco",
+    "quantity": 11
+  },
+  {
+    "model": "M-3243-U-RP",
+    "name": "Sueter ojal con conchas",
+    "color": "Rosa pastel",
     "quantity": 11
   },
   {
     "model": "H-0107-G-HR",
+    "name": "Sueter copo",
+    "color": "Hueso con rojo",
     "quantity": 11
   },
   {
     "model": "M-3229-U-HGV",
+    "name": "Sueter oso navideño",
+    "color": "Hueso con gorro verde",
     "quantity": 11
   },
   {
+    "model": "M-3024-U-N",
+    "name": "Chaleco corto V",
+    "color": "Negro",
+    "quantity": 10
+  },
+  {
     "model": "M-3027-U-G",
+    "name": "Chaleco largo cuello de tortuga con trenza",
+    "color": "Gris  D",
     "quantity": 10
   },
   {
     "model": "M-3031-U-NH",
-    "quantity": 10
-  },
-  {
-    "model": "M-3034-U-HA",
-    "quantity": 10
-  },
-  {
-    "model": "M-3056-U-A",
+    "name": "vestido pata de gallo cuello alto",
+    "color": "Negro con hueso",
     "quantity": 10
   },
   {
     "model": "M-3093-U-T",
+    "name": "Sueter zebra",
+    "color": "Tabaco 710V con negro",
+    "quantity": 10
+  },
+  {
+    "model": "M-3155-U-N",
+    "name": "Sueter zebra hombro descubierto",
+    "color": "Negro con hueso",
     "quantity": 10
   },
   {
     "model": "M-3171-U-NE",
+    "name": "Sueter liso hombro descubierto panal",
+    "color": "Negro",
     "quantity": 10
   },
   {
-    "model": "M-3175-U-RP",
+    "model": "M-3171-U-RB",
+    "name": "Sueter liso hombro descubierto panal",
+    "color": "Rosa brillante",
     "quantity": 10
   },
   {
-    "model": "M-3179-U-BL",
+    "model": "M-3215-U-R",
+    "name": "Sueter trenza cuello alto",
+    "color": "Rojo",
     "quantity": 10
   },
   {
-    "model": "M-3184-U-BL",
-    "quantity": 10
-  },
-  {
-    "model": "M-3187-U-AR",
+    "model": "M-3226-U-V",
+    "name": "Sueter perleado rayado",
+    "color": "Gris cemento  782 M---Maiz----beige 710K",
     "quantity": 10
   },
   {
     "model": "M-3227-U-T",
+    "name": "Ensamble perleado",
+    "color": "Tabaco 710V",
     "quantity": 10
   },
   {
-    "model": "M-2027-U-AH",
+    "model": "M-3233-U-B",
+    "name": "Sueter cuello de tortuga panal",
+    "color": "Blanco",
     "quantity": 10
   },
   {
-    "model": "M-3237-U-RPR",
+    "model": "M-3234-U-RB",
+    "name": "Sueter cuello V perle",
+    "color": "Rosa brillante",
     "quantity": 10
   },
   {
-    "model": "M-3240-U-RH",
-    "quantity": 10
-  },
-  {
-    "model": "M-3235-U-B",
-    "quantity": 10
-  },
-  {
-    "model": "M-3243-U-AE",
-    "quantity": 10
-  },
-  {
-    "model": "M-3268-U-R",
+    "model": "M-3165-U-RH",
+    "name": "Sueter corazon en pecho cuello V",
+    "color": "Rojo con hueso",
     "quantity": 10
   },
   {
     "model": "M-3213-U-HR",
+    "name": "Navidad hombro descubierto",
+    "color": "Hueso con rojo",
     "quantity": 10
   },
   {
     "model": "M-3270-U-HM",
+    "name": "Sueter copo 3",
+    "color": "Hueso con marino",
     "quantity": 10
   },
   {
-    "model": "M-3249-U-NRB",
-    "quantity": 10
-  },
-  {
-    "model": "M-3028-U-G",
+    "model": "M-2024-U-RH",
+    "name": "Sueter estrellas",
+    "color": "Rojo con hueso",
     "quantity": 9
   },
   {
-    "model": "M-3098-U-H",
+    "model": "M-3024-U-RM",
+    "name": "Chaleco corto V",
+    "color": "Rosa Mexicano",
     "quantity": 9
   },
   {
-    "model": "M-3212-U- NA",
+    "model": "M-3083-U-R",
+    "name": "Sueter liso cuello alto",
+    "color": "Rojo",
+    "quantity": 9
+  },
+  {
+    "model": "M-3174-U-H",
+    "name": "Sueter con trenza hombro descubierto",
+    "color": "Hueso",
+    "quantity": 9
+  },
+  {
+    "model": "M-3187-U-AR",
+    "name": "Sueter cuello V panal",
+    "color": "Azul  electrico rey",
     "quantity": 9
   },
   {
     "model": "M-3215-U-T",
+    "name": "Sueter trenza cuello alto",
+    "color": "Tabaco 710V",
     "quantity": 9
   },
   {
-    "model": "M-3227-U-R",
+    "model": "M-3241-VANRB",
+    "name": "Sueter corazon en pecho ojal",
+    "color": "Verde agua N con rosa brillante",
     "quantity": 9
   },
   {
-    "model": "M-3250-U-G",
+    "model": "M-3243-U-RB",
+    "name": "Sueter ojal con conchas",
+    "color": "Rosa brillante",
     "quantity": 9
   },
   {
-    "model": "M-3157-U-A",
-    "quantity": 9
-  },
-  {
-    "model": "M-3160-U-B",
-    "quantity": 9
-  },
-  {
-    "model": "M-3265-U-HM",
-    "quantity": 9
-  },
-  {
-    "model": "M-3269-U-N",
+    "model": "M-3268-U-H",
+    "name": "ESPIGAS REDONDO",
+    "color": "HUESO",
     "quantity": 9
   },
   {
     "model": "N-0106-UNISEX-T6-RH",
+    "name": "Noche buena",
+    "color": "Rojo con hueso",
     "quantity": 9
   },
   {
     "model": "M-3106-U-RH",
+    "name": "Bicolor con copo",
+    "color": "Rojo  con hueso",
     "quantity": 9
   },
   {
     "model": "M-3101-U-HR",
+    "name": "Sueter noche buena",
+    "color": "Hueso con rojo",
     "quantity": 9
   },
   {
     "model": "M-3101-C-U-MH",
-    "quantity": 9
-  },
-  {
-    "model": "M-3214-U-RH",
+    "name": "Sueter noche buena cuello alto",
+    "color": "Marino con hueso",
     "quantity": 9
   },
   {
     "model": "M-3214-U-GN",
+    "name": "Sueter reno cuello ojal",
+    "color": "Gris  C con negro",
     "quantity": 9
   },
   {
     "model": "M-3213-U-HV",
+    "name": "Navidad hombro descubierto",
+    "color": "hueso con verde fresa",
     "quantity": 9
   },
   {
     "model": "M-3275-U-TH",
+    "name": "Sueter noche buenas cuello alto",
+    "color": "Tabaco 710V con hueso",
     "quantity": 9
   },
   {
     "model": "H-0107-EX-HR",
+    "name": "Sueter Copo",
+    "color": "Hueso con rojo",
     "quantity": 9
   },
   {
-    "model": "M-3282-U-HR",
-    "quantity": 9
-  },
-  {
-    "model": "M-3281-GN",
-    "quantity": 9
-  },
-  {
-    "model": "M-3281-ACAP",
-    "quantity": 9
-  },
-  {
-    "model": "M-2024-U-GN",
+    "model": "M-3028-U-R",
+    "name": "Chaleco largo cuello V liso",
+    "color": "Rojo",
     "quantity": 8
   },
   {
-    "model": "M-3023-U-A",
-    "quantity": 8
-  },
-  {
-    "model": "M-3024-U-H",
-    "quantity": 8
-  },
-  {
-    "model": "M-3075-U-N",
+    "model": "M-3056-U-A",
+    "name": "Ensamble liso-Ligero",
+    "color": "Azul  acero",
     "quantity": 8
   },
   {
     "model": "M-3075-U-A",
+    "name": "Vestido liso cuello alto",
+    "color": "Azul cielo",
     "quantity": 8
   },
   {
     "model": "M-3087-U-BH",
+    "name": "Sueter bicolor cuello amplio detalle jaguar",
+    "color": "Beige  710k  con hueso",
     "quantity": 8
   },
   {
     "model": "M-3093-U-H",
+    "name": "Sueter zebra",
+    "color": "Hueso con beige 710 K",
     "quantity": 8
   },
   {
-    "model": "M-3179-L",
+    "model": "M-3098-U-H",
+    "name": "Sueter bicolor con trenza en hombro descubierto",
+    "color": "Hueso con tabaco 710v",
     "quantity": 8
   },
   {
-    "model": "M-3184-U-N",
+    "model": "M-3179-U-RP",
+    "name": "Sueter cuello ojal panal",
+    "color": "Rosa pastel",
     "quantity": 8
   },
   {
-    "model": "M-3184-U-RB",
-    "quantity": 8
-  },
-  {
-    "model": "M-3187-U-NJ",
-    "quantity": 8
-  },
-  {
-    "model": "M-3187-U-RB",
+    "model": "M-3184-U-T",
+    "name": "Ensamble con hoyos",
+    "color": "Tabaco 710V",
     "quantity": 8
   },
   {
     "model": "M-3199-U-LM",
+    "name": "Sueter caritas",
+    "color": "Lila con morado",
     "quantity": 8
   },
   {
     "model": "M-3210-U-H",
-    "quantity": 8
-  },
-  {
-    "model": "M-3216-U-NRB",
-    "quantity": 8
-  },
-  {
-    "model": "M-3237-U-LM",
+    "name": "Sudadera caritas colores con capucha",
+    "color": "Hueso",
     "quantity": 8
   },
   {
     "model": "M-2026-C-U.HR",
+    "name": "Sueter copo cuello alto",
+    "color": "Hueso con rojo",
     "quantity": 8
   },
   {
-    "model": "M-3243-U-H",
+    "model": "M-3243-U-AE",
+    "name": "Sueter ojal con conchas",
+    "color": "Azul electrico rey",
     "quantity": 8
   },
   {
-    "model": "M-3269-U-H",
+    "model": "M-3265-U-HM",
+    "name": "SUETER CALADO CON FRANJAS Y CAPUCHA",
+    "color": "HUESO CON MARINO",
+    "quantity": 8
+  },
+  {
+    "model": "M-3269-U-R",
+    "name": "MAXI TRENZA",
+    "color": "Rojo",
     "quantity": 8
   },
   {
     "model": "N-0107-UNISEX-T6-MH",
+    "name": "COPO",
+    "color": "Marino con hueso",
     "quantity": 8
   },
   {
     "model": "N-0106-UNISEX-T10-MH",
+    "name": "Noche buena",
+    "color": "Marino con hueso",
     "quantity": 8
   },
   {
-    "model": "M-3282-U-NR",
-    "quantity": 8
-  },
-  {
-    "model": "M-3281-HR",
+    "model": "M-3214-U-RH",
+    "name": "Sueter reno cuello ojal",
+    "color": "Rojo con hueso",
     "quantity": 8
   },
   {
     "model": "M-2022-U-NH",
+    "name": "Sueter circulos",
+    "color": "Negro con hueso",
     "quantity": 7
   },
   {
-    "model": "M-3028-U-RB",
-    "quantity": 7
-  },
-  {
-    "model": "M-3028-U-AB",
+    "model": "M-3023-U-A",
+    "name": "Chaleco corto R",
+    "color": "Azul 766H",
     "quantity": 7
   },
   {
     "model": "M-49262-U-V",
+    "name": "Ensamble en pico",
+    "color": "Vino 747D",
+    "quantity": 7
+  },
+  {
+    "model": "M-3075-U-N",
+    "name": "Vestido liso cuello alto",
+    "color": "Negro",
     "quantity": 7
   },
   {
     "model": "M-3093-U-N",
+    "name": "Sueter zebra",
+    "color": "Negro con hueso",
     "quantity": 7
   },
   {
-    "model": "M-3099-U-HN",
+    "model": "M-3104-U-R",
+    "name": "Sueter liso hombro descubierto",
+    "color": "Rojo",
     "quantity": 7
   },
   {
-    "model": "M-3152-U-N",
+    "model": "M-3175-U-R",
+    "name": "Sueter liso hombros descubiertos panal",
+    "color": "Rojo",
     "quantity": 7
   },
   {
-    "model": "M-3179-U-AC",
+    "model": "M-3179-L",
+    "name": "Sueter cuello ojal panal",
+    "color": "Lila",
     "quantity": 7
   },
   {
-    "model": "M-3186-U-V",
+    "model": "M-3187-U-NJ",
+    "name": "Sueter cuello V panal",
+    "color": "Naranja brillante",
     "quantity": 7
   },
   {
-    "model": "M-3199-U-R",
+    "model": "M-3187-U-RB",
+    "name": "Sueter cuello V panal",
+    "color": "Rosa brillante",
     "quantity": 7
   },
   {
-    "model": "M-3219-U-NH",
+    "model": "M-3187-U-RP",
+    "name": "Sueter cuello V panal",
+    "color": "Rosa pastel",
     "quantity": 7
   },
   {
-    "model": "M-3235-U-A",
+    "model": "M-3250-U-G",
+    "name": "Sueter con trenza en  V y crochet",
+    "color": "Gris  C",
     "quantity": 7
   },
   {
-    "model": "M-3242-U-B",
+    "model": "M-3250-U-VAN",
+    "name": "Sueter con trenza en  V y crochet",
+    "color": "Verde agua N",
     "quantity": 7
   },
   {
-    "model": "M-3242-U-VA",
+    "model": "M-3241-U-APRB",
+    "name": "Sueter corazon en pecho ojal",
+    "color": "Azul petroleo con rosa brillante",
     "quantity": 7
   },
   {
-    "model": "M-3158-U-GR ",
+    "model": "M-3241-U-HR",
+    "name": "Sueter corazon en pecho ojal",
+    "color": "Hueso con rojo",
     "quantity": 7
   },
   {
-    "model": "M-3239-U-APVA",
+    "model": "M-3243-U-H",
+    "name": "Sueter ojal con conchas",
+    "color": "Hueso",
     "quantity": 7
   },
   {
-    "model": "M-3240-U-APV",
-    "quantity": 7
-  },
-  {
-    "model": "M-3266-U-T",
+    "model": "M-3269-U-N",
+    "name": "MAXI TRENZA",
+    "color": "Negro",
     "quantity": 7
   },
   {
     "model": "M-2029-U-MH",
+    "name": "SUETER NAVIDEÑO COPO 2",
+    "color": "Marino con hueso",
     "quantity": 7
   },
   {
     "model": "M-3218-U-MH",
+    "name": "Sueter reno cuello R",
+    "color": "Marino con hueso",
     "quantity": 7
   },
   {
     "model": "H-0107-EX-MH",
+    "name": "Sueter copo",
+    "color": "Marino con hueso",
     "quantity": 7
-  },
-  {
-    "model": "M-2027-U-HVAN",
-    "quantity": 7
-  },
-  {
-    "model": "M-2021-U-G",
-    "quantity": 6
   },
   {
     "model": "M-2022-U-GH",
+    "name": "Sueter circulos",
+    "color": "Gris D con hueso",
     "quantity": 6
   },
   {
     "model": "M-2023-U-HN",
+    "name": "Chaleco pata de gallo V",
+    "color": "Hueso con negro",
     "quantity": 6
   },
   {
-    "model": "M-3028-U-RP",
-    "quantity": 6
-  },
-  {
-    "model": "M-3028-U-A",
+    "model": "M-3028-U-V",
+    "name": "Chaleco largo cuello V liso",
+    "color": "Verde limon",
     "quantity": 6
   },
   {
     "model": "M-3030-U-NH",
+    "name": "Chaleco pata de gallo cuello alto",
+    "color": "Negro con hueso",
     "quantity": 6
   },
   {
-    "model": "M-3036-U-N",
+    "model": "M-3034-U-HA",
+    "name": "Chaleco colores",
+    "color": "Hueso con azul y rosa",
     "quantity": 6
   },
   {
-    "model": "M-3041-U-N",
-    "quantity": 6
-  },
-  {
-    "model": "M-3060-U-V",
-    "quantity": 6
-  },
-  {
-    "model": "M-3072-U-V",
+    "model": "M-3152-U-N",
+    "name": "Ensamble zebra",
+    "color": "Negro con beige 710K",
     "quantity": 6
   },
   {
     "model": "M-3153-U-NH",
-    "quantity": 6
-  },
-  {
-    "model": "M-3154-U-N",
+    "name": "Sueter  zebra con boton",
+    "color": "Negro con hueso",
     "quantity": 6
   },
   {
     "model": "M-3170-U-R",
+    "name": "Ensamble estrellas",
+    "color": "Rosa brillante con rosa pastel",
     "quantity": 6
   },
   {
-    "model": "M-3172-U-R",
+    "model": "M-3179-U-BL",
+    "name": "Sueter cuello ojal panal",
+    "color": "Blanco",
     "quantity": 6
   },
   {
-    "model": "M-3175-U-AE",
+    "model": "M-3184-U-RB",
+    "name": "Ensamble con hoyos",
+    "color": "Rosa brillante",
     "quantity": 6
   },
   {
-    "model": "M-3178-U-A",
+    "model": "M-3186-U-V",
+    "name": "Sueter cuello V hoyos",
+    "color": "Verde limon",
     "quantity": 6
   },
   {
-    "model": "M-3184-U-R",
+    "model": "M-3199-U-R",
+    "name": "Sueter caritas",
+    "color": "Rosa pastel con rosa brillante",
     "quantity": 6
   },
   {
-    "model": "M-3186-U-A",
-    "quantity": 6
-  },
-  {
-    "model": "M-3187-U-B",
-    "quantity": 6
-  },
-  {
-    "model": "M-3205-U-V",
+    "model": "M-3219-U-NH",
+    "name": "Bluson pata de gallo",
+    "color": "Negro con hueso",
     "quantity": 6
   },
   {
     "model": "M-3225-U-A",
+    "name": "Sueter osos",
+    "color": "Azul cielo con negro",
     "quantity": 6
   },
   {
     "model": "M-3225-U-TN",
+    "name": "Sueter osos",
+    "color": "Tabaco  710v con  negro",
     "quantity": 6
   },
   {
-    "model": "M-3227-U-N",
+    "model": "M-3227-U-R",
+    "name": "Ensamble perleado",
+    "color": "Rojo",
     "quantity": 6
   },
   {
     "model": "M-3233-U-A",
+    "name": "Sueter cuello de tortuga panal",
+    "color": "Azul cielo",
     "quantity": 6
   },
   {
     "model": "M-3234-U-VA",
+    "name": "Sueter cuello V perle",
+    "color": "Verde agua N",
     "quantity": 6
   },
   {
-    "model": "M-3235-U-L",
+    "model": "M-3242-U-B",
+    "name": "Chaleco rombos calados ojal",
+    "color": "Blanco",
     "quantity": 6
   },
   {
-    "model": "M-3095-U-HR",
+    "model": "M-3241-RBVAN",
+    "name": "Sueter corazon en pecho ojal",
+    "color": "Rosa brillante con verde agua N",
     "quantity": 6
   },
   {
-    "model": "M-3237-U-A",
+    "model": "M-3235-U-B",
+    "name": "Chaleco rombos con lineas caladas cuello V",
+    "color": "Blanco",
     "quantity": 6
   },
   {
     "model": "M-3265-U-HT",
+    "name": "SUETER CALADO CON FRANJAS Y CAPUCHA",
+    "color": "HUESO CON TABACO  710V",
+    "quantity": 6
+  },
+  {
+    "model": "M-3268-U-R",
+    "name": "ESPIGAS REDONDO",
+    "color": "Rojo",
+    "quantity": 6
+  },
+  {
+    "model": "M-3269-U-H",
+    "name": "MAXI TRENZA",
+    "color": "Hueso",
     "quantity": 6
   },
   {
     "model": "N-0106-UNISEX-T8-MH",
+    "name": "Noche buena",
+    "color": "Marino con hueso",
     "quantity": 6
   },
   {
     "model": "M-3218-U-RH",
+    "name": "Sueter reno cuello R",
+    "color": "Rojo  con hueso",
     "quantity": 6
   },
   {
     "model": "M-2023-U-HB",
+    "name": "Chaleco pata de gallo V",
+    "color": "Hueso con beige 710 K",
+    "quantity": 5
+  },
+  {
+    "model": "M-2024-U-GN",
+    "name": "Sueter estrellas",
+    "color": "Gris D con negro",
     "quantity": 5
   },
   {
     "model": "M-3022-U-NH",
+    "name": "Sueter pata de gallo hombro descubierto",
+    "color": "Negro con hueso",
     "quantity": 5
   },
   {
     "model": "M-3024-U-L",
+    "name": "Chaleco corto V",
+    "color": "Lila",
+    "quantity": 5
+  },
+  {
+    "model": "M-3028-U-G",
+    "name": "Chaleco largo cuello V liso",
+    "color": "Gris C",
+    "quantity": 5
+  },
+  {
+    "model": "M-3036-U-N",
+    "name": "Top 1",
+    "color": "Negro",
+    "quantity": 5
+  },
+  {
+    "model": "M-3072-U-V",
+    "name": "Ensamble maxi 4 colores",
+    "color": "Varios",
     "quantity": 5
   },
   {
     "model": "M-3083-U-G",
+    "name": "Sueter liso cuello alto",
+    "color": "Gris C",
     "quantity": 5
   },
   {
     "model": "M-3083-U-N",
+    "name": "Sueter liso cuello alto",
+    "color": "Negro",
     "quantity": 5
   },
   {
     "model": "M-3099-U-HG",
+    "name": "Sueter  bicolor cuello amplio perle",
+    "color": "Hueso con gris grafito",
+    "quantity": 5
+  },
+  {
+    "model": "M-3099-HR",
+    "name": "Sueter bicolor cuello amplio perle",
+    "color": "Hueso con rojo",
+    "quantity": 5
+  },
+  {
+    "model": "M-3154-U-N",
+    "name": "Chaleco largo zebra",
+    "color": "Negro con hueso",
     "quantity": 5
   },
   {
     "model": "M-3052-(2)-U-V",
+    "name": "Ensamble 4 colores con capucha",
+    "color": "Varios",
     "quantity": 5
   },
   {
-    "model": "M-3171-U-AR",
+    "model": "M-3172-U-R",
+    "name": "Sueter fresas",
+    "color": "Rosa pastel",
     "quantity": 5
   },
   {
-    "model": "M-3171-U-N",
+    "model": "M-3175-U-AE",
+    "name": "Sueter liso hombros descubiertos panal",
+    "color": "Azul  electrico rey",
     "quantity": 5
   },
   {
-    "model": "M-3175-U-B",
+    "model": "M-3179-U-AC",
+    "name": "Sueter cuello ojal panal",
+    "color": "Azul cielo",
     "quantity": 5
   },
   {
-    "model": "M-3175-U-NB",
+    "model": "M-3184-U-BL",
+    "name": "Ensamble con hoyos",
+    "color": "Blanco",
     "quantity": 5
   },
   {
-    "model": "M-3182-U-PR",
+    "model": "M-3184-U-N",
+    "name": "Ensamble con hoyos",
+    "color": "Negro",
     "quantity": 5
   },
   {
-    "model": "M-3184-U-G",
+    "model": "M-3212-U- NA",
+    "name": "Sueter oso",
+    "color": "Negro con amarillo brillante",
     "quantity": 5
   },
   {
-    "model": "M-3212-U-GL",
+    "model": "M-3227-U-N",
+    "name": "Ensamble perleado",
+    "color": "Negro",
     "quantity": 5
   },
   {
-    "model": "M-3242-U-AP",
+    "model": "M-3242-U-VA",
+    "name": "Chaleco rombos calados ojal",
+    "color": "Verde agua N",
     "quantity": 5
   },
   {
     "model": "M-3250-U-PR",
-    "quantity": 5
-  },
-  {
-    "model": "M-3236-U-RR",
+    "name": "Sueter con trenza en  V y crochet",
+    "color": "Palo de rosa",
     "quantity": 5
   },
   {
     "model": "M-3255-U-BN",
+    "name": "Blusa cuello V bicolor",
+    "color": "Blanco con negro",
     "quantity": 5
   },
   {
-    "model": "M-3255-U-HRB",
-    "quantity": 5
-  },
-  {
-    "model": "M-3265-U-HN",
-    "quantity": 5
-  },
-  {
-    "model": "M-3268-U-N",
+    "model": "M-3266-U-T",
+    "name": "SUETER CALADO LISO CON CAPUCHA",
+    "color": "Tabaco 710V",
     "quantity": 5
   },
   {
     "model": "M-2026-C-U.RH",
+    "name": "Sueter copo cuello alto",
+    "color": "Rojo con hueso",
     "quantity": 5
   },
   {
     "model": "M-3102-U-HR",
+    "name": "Vestido noche buena",
+    "color": "Hueso con rojo",
+    "quantity": 5
+  },
+  {
+    "model": "M-3272-U-R",
+    "name": "Sueter trenza manga volada",
+    "color": "Rojo",
     "quantity": 5
   },
   {
     "model": "M-3275-U-MH",
+    "name": "Sueter noche buenas cuello alto",
+    "color": "Marino con hueso",
     "quantity": 5
   },
   {
-    "model": "M-3275-U-NG",
-    "quantity": 5
-  },
-  {
-    "model": "M-2027-U-HL",
+    "model": "M-3275-U-MG",
+    "name": "Sueter noche buenas cuello alto",
+    "color": "Marino con Gris C",
     "quantity": 5
   },
   {
     "model": "M-2024-U-HN",
+    "name": "Sueter estrellas",
+    "color": "Hueso con negro",
     "quantity": 4
   },
   {
-    "model": "M-3023-U-RP",
+    "model": "M-3024-U-H",
+    "name": "Chaleco corto V",
+    "color": "Hueso",
     "quantity": 4
   },
   {
-    "model": "M-3034-U-HG",
+    "model": "M-3028-U-RP",
+    "name": "Chaleco largo cuello V liso",
+    "color": "Rosa pastel",
     "quantity": 4
   },
   {
-    "model": "M-3041-U-L",
+    "model": "M-3028-U-RB",
+    "name": "Chaleco largo cuello V liso",
+    "color": "Rosa brillante",
     "quantity": 4
   },
   {
     "model": "M-3071-U-H",
+    "name": "Sueter bicolor hombros descubiertos y cuello alto",
+    "color": "Hueso con negro",
     "quantity": 4
   },
   {
     "model": "M-3082-U-H",
+    "name": "Ensamble rayado",
+    "color": "Hueso con arena y negro",
     "quantity": 4
   },
   {
     "model": "M-3083-U-H",
+    "name": "Sueter liso cuello alto",
+    "color": "Hueso",
     "quantity": 4
   },
   {
-    "model": "M-3084-U-N",
-    "quantity": 4
-  },
-  {
-    "model": "M-3087-U-R",
+    "model": "M-3099-U-HN",
+    "name": "Sueter bicolor cuello amplio perle",
+    "color": "Hueso con negro",
     "quantity": 4
   },
   {
     "model": "M-3104-U-L",
+    "name": "Sueter liso hombro descubierto",
+    "color": "Lila",
     "quantity": 4
   },
   {
-    "model": "M-0016-U-V",
+    "model": "M-3171-U-AR",
+    "name": "Sueter liso hombro descubierto panal",
+    "color": "Azul electrico rey",
     "quantity": 4
   },
   {
-    "model": "M-3150-U-N",
-    "quantity": 4
-  },
-  {
-    "model": "M-3156-U-B",
-    "quantity": 4
-  },
-  {
-    "model": "M-3162-U-T",
+    "model": "M-3171-U-N",
+    "name": "Sueter liso hombro descubierto panal",
+    "color": "Naranja",
     "quantity": 4
   },
   {
     "model": "M-3171-U-R",
+    "name": "Sueter liso hombro descubierto panal",
+    "color": "Rojo",
     "quantity": 4
   },
   {
     "model": "M-3171-U-V",
+    "name": "Sueter liso hombro descubierto panal",
+    "color": "Verde limon",
     "quantity": 4
   },
   {
     "model": "M-3171-U-VM",
+    "name": "Sueter liso hombro descubierto panal",
+    "color": "Verde militar",
     "quantity": 4
   },
   {
     "model": "M-3175-U-A",
+    "name": "Sueter liso hombros descubiertos panal",
+    "color": "Amarillo brillante",
+    "quantity": 4
+  },
+  {
+    "model": "M-3175-U-B",
+    "name": "Sueter liso hombros descubiertos panal",
+    "color": "Beige 710K",
+    "quantity": 4
+  },
+  {
+    "model": "M-3178-U-A",
+    "name": "Sueter corto panal con botones",
+    "color": "Azul  electrico rey",
     "quantity": 4
   },
   {
     "model": "M-3179-U-B",
+    "name": "Sueter cuello ojal panal",
+    "color": "Beige  708W",
     "quantity": 4
   },
   {
-    "model": "M-3182-U-B",
+    "model": "M-3182-U-PR",
+    "name": "Sueter V cruzado manga larga",
+    "color": "Palo de rosa",
     "quantity": 4
   },
   {
-    "model": "M-3185-U-A",
+    "model": "M-3184-U-G",
+    "name": "Ensamble con hoyos",
+    "color": "Gris C",
     "quantity": 4
   },
   {
-    "model": "M-3187-U-L",
+    "model": "M-3205-U-V",
+    "name": "Chaleco caritas colores",
+    "color": "Hueso",
     "quantity": 4
   },
   {
-    "model": "M-3195-U-V",
+    "model": "M-3212-U-GL",
+    "name": "Sueter oso",
+    "color": "Gris  C con lila",
     "quantity": 4
   },
   {
     "model": "M-3223-U-N",
+    "name": "Vestido oso",
+    "color": "Negro con hueso",
     "quantity": 4
   },
   {
     "model": "M-3227-U-RB",
+    "name": "Ensamble perleado",
+    "color": "Rosa brillante",
     "quantity": 4
   },
   {
     "model": "M-3228-U-NH",
+    "name": "Ensamble maxi Dalí",
+    "color": "Negro con hueso",
     "quantity": 4
   },
   {
     "model": "M-3234-U-L",
+    "name": "Sueter cuello V perle",
+    "color": "Lila ",
     "quantity": 4
   },
   {
-    "model": "M-3242-U-A",
-    "quantity": 4
-  },
-  {
-    "model": "M-3242-U-L",
-    "quantity": 4
-  },
-  {
-    "model": "M-3242-U-N",
-    "quantity": 4
-  },
-  {
-    "model": "M-3245-U-AP",
+    "model": "M-3235-U-A",
+    "name": "Chaleco rombos con lineas caladas cuello V",
+    "color": "Amarillo brillante",
     "quantity": 4
   },
   {
     "model": "M-3250-U-A",
+    "name": "Sueter con trenza en  V y crochet",
+    "color": "Azul cielo",
     "quantity": 4
   },
   {
-    "model": "M-2027-U-HN",
-    "quantity": 4
-  },
-  {
-    "model": "M-3089-U-A",
-    "quantity": 4
-  },
-  {
-    "model": "M-3089-U-M",
-    "quantity": 4
-  },
-  {
-    "model": "M-3089-U-V",
-    "quantity": 4
-  },
-  {
-    "model": "M-3158-U-RBRP",
-    "quantity": 4
-  },
-  {
-    "model": "M-3255-U-VANRB",
+    "model": "M-3241-U-LM",
+    "name": "Sueter corazon en pecho ojal",
+    "color": "Lila con morado",
     "quantity": 4
   },
   {
     "model": "M-3263-U-VAN",
+    "name": "Sueter maxi calado",
+    "color": "Verde agua N",
     "quantity": 4
   },
   {
-    "model": "M-3263-U-B",
-    "quantity": 4
-  },
-  {
-    "model": "M-3271-U-R",
+    "model": "M-3265-U-HN",
+    "name": "SUETER CALADO CON FRANJAS Y CAPUCHA",
+    "color": "HUESO CON  NEGRO",
     "quantity": 4
   },
   {
     "model": "N-0106-UNISEX-T4-MH",
+    "name": "Noche buena",
+    "color": "Marino con hueso",
     "quantity": 4
   },
   {
     "model": "N-0106-UNISEX-T6-MH",
+    "name": "Noche buena",
+    "color": "Marino con hueso",
     "quantity": 4
   },
   {
     "model": "M-3214-U-MH",
+    "name": "Sueter reno cuello ojal",
+    "color": "Marino con hueso",
     "quantity": 4
   },
   {
     "model": "H-0106-EX-MH",
-    "quantity": 4
-  },
-  {
-    "model": "M-3282-U-RBRP",
-    "quantity": 4
-  },
-  {
-    "model": "M-3289-U-RBVAN",
-    "quantity": 4
-  },
-  {
-    "model": "M-3289-U-ABAP",
-    "quantity": 4
-  },
-  {
-    "model": "M-3289-U-VANRB",
-    "quantity": 4
-  },
-  {
-    "model": "M-3289-U-NBRB",
+    "name": "Sueter noche buena",
+    "color": "Marino con hueso",
     "quantity": 4
   },
   {
     "model": "M-2021-U-H",
+    "name": "CHALECO CUELLO ALTO",
+    "color": "Hueso",
     "quantity": 3
   },
   {
     "model": "M-2022-U-RH",
+    "name": "Sueter circulos",
+    "color": "Rojo con hueso",
     "quantity": 3
   },
   {
     "model": "M-2023-U-HA",
+    "name": "Chaleco pata de gallo V",
+    "color": "Hueso con azul pastel",
     "quantity": 3
   },
   {
     "model": "M-2024-U-GB",
+    "name": "Sueter estrellas",
+    "color": "Gris D con blanco",
     "quantity": 3
   },
   {
-    "model": "M-3023-U-H",
+    "model": "M-3028-U-AB",
+    "name": "Chaleco largo cuello V liso",
+    "color": "Amarillo brillante",
     "quantity": 3
   },
   {
-    "model": "M-3028-U-L",
-    "quantity": 3
-  },
-  {
-    "model": "M-3028-U-AP",
-    "quantity": 3
-  },
-  {
-    "model": "M-3028-U-NJ",
+    "model": "M-3028-U-A",
+    "name": "Chaleco largo cuello V liso",
+    "color": "Azul cielo",
     "quantity": 3
   },
   {
     "model": "M-3032-U-N",
-    "quantity": 3
-  },
-  {
-    "model": "M-3037-U-HN",
+    "name": "Chaleco largo con abertura parte baja",
+    "color": "Negro",
     "quantity": 3
   },
   {
     "model": "M-3040-U-G",
+    "name": "Sueter corto con hoyos y capucha",
+    "color": "Gris C",
+    "quantity": 3
+  },
+  {
+    "model": "M-3041-U-L",
+    "name": "Sueter con hoyos abierto",
+    "color": "Lila",
     "quantity": 3
   },
   {
     "model": "M-3041-U-RP",
+    "name": "Sueter con hoyos abierto",
+    "color": "Rosa pastel",
+    "quantity": 3
+  },
+  {
+    "model": "M-3041-U-N",
+    "name": "Sueter con hoyos abierto",
+    "color": "Negro",
     "quantity": 3
   },
   {
     "model": "M-3049-U-C",
-    "quantity": 3
-  },
-  {
-    "model": "M-3057-U-H",
-    "quantity": 3
-  },
-  {
-    "model": "M-3057-U-AL",
+    "name": "Sueter combinado abierto",
+    "color": "Varios pastel",
     "quantity": 3
   },
   {
     "model": "M-49262-U-GD",
+    "name": "Ensamble en pico",
+    "color": "Gris  D",
     "quantity": 3
   },
   {
-    "model": "M-3067-U-V",
+    "model": "M-3060-U-V",
+    "name": "Chaleco 7 colores",
+    "color": "varios",
     "quantity": 3
   },
   {
     "model": "M-3071-U-L",
-    "quantity": 3
-  },
-  {
-    "model": "M-3084-U-H",
+    "name": "Sueter bicolor hombros descubiertos y cuello alto",
+    "color": "Lila con hueso",
     "quantity": 3
   },
   {
     "model": "M-3087-U-N",
+    "name": "Sueter bicolor cuello amplio detalle jaguar",
+    "color": "Negro con hueso",
+    "quantity": 3
+  },
+  {
+    "model": "M-3087-U-R",
+    "name": "Sueter bicolor cuello amplio detalle jaguar",
+    "color": "Rojo con hueso",
     "quantity": 3
   },
   {
     "model": "M-3104-U-H",
+    "name": "Sueter liso hombro descubierto",
+    "color": "Hueso",
     "quantity": 3
   },
   {
-    "model": "M-3104-U-RB",
+    "model": "M-0016-U-V",
+    "name": "Capa filos",
+    "color": "Vino 747D",
     "quantity": 3
   },
   {
     "model": "M-3108-U-N",
+    "name": "Sueter zebra cuello alto",
+    "color": "Negro",
+    "quantity": 3
+  },
+  {
+    "model": "M-3150-U-N",
+    "name": "Sueter bicolor jaguar hombros descubiertos",
+    "color": "Negro con hueso",
     "quantity": 3
   },
   {
     "model": "M-3153-U-N",
+    "name": "Sueter zebra con boton",
+    "color": "Negro con tabaco 710V",
     "quantity": 3
   },
   {
-    "model": "M-3170-U-A",
+    "model": "M-3156-U-B",
+    "name": "Ensamble maxi zebra",
+    "color": "Beige  710 K con negro",
+    "quantity": 3
+  },
+  {
+    "model": "M-3162-U-T",
+    "name": "Ensambla maxi pata de gallo",
+    "color": "Tabaco  710v con  negro",
     "quantity": 3
   },
   {
     "model": "M-3170-U-HR",
+    "name": "Ensamble estrellas",
+    "color": "Hueso con rosa",
     "quantity": 3
   },
   {
     "model": "M-3171-U-M",
+    "name": "Sueter liso hombro descubierto panal",
+    "color": "Morado",
+    "quantity": 3
+  },
+  {
+    "model": "M-3175-U-NB",
+    "name": "Sueter liso hombros descubiertos panal",
+    "color": "Naranja brillante",
     "quantity": 3
   },
   {
     "model": "M-3175-U-V",
+    "name": "Sueter liso hombros descubiertos panal",
+    "color": "Verde  brillante limon",
     "quantity": 3
   },
   {
     "model": "M-3178-U-N",
+    "name": "Sueter corto panal con botones",
+    "color": "Naranja brillante",
     "quantity": 3
   },
   {
-    "model": "M-3183-U-AR",
+    "model": "M-3182-U-B",
+    "name": "Sueter V cruzado manga larga",
+    "color": "Beige 710K",
     "quantity": 3
   },
   {
-    "model": "M-3183-U-PL",
+    "model": "M-3184-U-R",
+    "name": "Ensamble con hoyos",
+    "color": "Rojo",
     "quantity": 3
   },
   {
-    "model": "M-3185-U-M",
+    "model": "M-3187-U-B",
+    "name": "Sueter cuello V panal",
+    "color": "Blanco",
     "quantity": 3
   },
   {
-    "model": "M-3186-U-RB",
-    "quantity": 3
-  },
-  {
-    "model": "M-3193-U-R",
+    "model": "M-3187-U-L",
+    "name": "Sueter cuello V panal",
+    "color": "Lila",
     "quantity": 3
   },
   {
     "model": "M-3195-U-RB",
+    "name": "Vestido con franjas en cintura",
+    "color": "Rosa brillante",
     "quantity": 3
   },
   {
-    "model": "M-3200-U-RB",
-    "quantity": 3
-  },
-  {
-    "model": "M-3200-U-V",
+    "model": "M-3195-U-V",
+    "name": "Vestido con franjas en cintura",
+    "color": "Verde  brillante limon",
     "quantity": 3
   },
   {
     "model": "M-3203-U-A",
+    "name": "Ensamble tribal",
+    "color": "Azul  electrico rey con hueso",
     "quantity": 3
   },
   {
     "model": "M-3203-U-H",
-    "quantity": 3
-  },
-  {
-    "model": "M-3203-N",
+    "name": "Ensamble tribal",
+    "color": "Hueso con gric  C",
     "quantity": 3
   },
   {
     "model": "M-3203-HR",
+    "name": "Ensamble tribal",
+    "color": "Hueso con rojo",
     "quantity": 3
   },
   {
     "model": "M-3221-U-AH",
+    "name": "Sueter Dalí",
+    "color": "Azul  electrico rey con hueso",
     "quantity": 3
   },
   {
     "model": "M-3221-U-HN",
+    "name": "Sueter Dalí",
+    "color": "Hueso con negro",
     "quantity": 3
   },
   {
     "model": "M-3221-U-NH",
+    "name": "Sueter Dalí",
+    "color": "Negro con hueso",
     "quantity": 3
   },
   {
     "model": "M-3222-U-NH",
+    "name": "Sueter zebra",
+    "color": "Negro con hueso",
     "quantity": 3
   },
   {
     "model": "M-3223-U-TN",
+    "name": "Vestido oso",
+    "color": "Tabaco  710v con  negro",
     "quantity": 3
   },
   {
     "model": "M-3228-U-G",
+    "name": "Ensamble maxi Dalí",
+    "color": "Gris  D con negro",
+    "quantity": 3
+  },
+  {
+    "model": "M-3242-U-A",
+    "name": "Chaleco rombos calados ojal",
+    "color": "Amarillo brillante",
+    "quantity": 3
+  },
+  {
+    "model": "M-3242-U-AP",
+    "name": "Chaleco rombos calados ojal",
+    "color": "Azul petroleo",
+    "quantity": 3
+  },
+  {
+    "model": "M-3242-U-L",
+    "name": "Chaleco rombos calados ojal",
+    "color": "Lila ",
+    "quantity": 3
+  },
+  {
+    "model": "M-3245-U-AP",
+    "name": "Chaleco estrella calada",
+    "color": "Azul petroleo",
     "quantity": 3
   },
   {
     "model": "M-3246-U-AE",
-    "quantity": 3
-  },
-  {
-    "model": "M-3247-U-B",
+    "name": "Sueter cuello V hoyos y estrella",
+    "color": "Azul  electrico rey",
     "quantity": 3
   },
   {
     "model": "M-3250-U-H",
+    "name": "Sueter con trenza en  V y crochet",
+    "color": "Hueso",
     "quantity": 3
   },
   {
-    "model": "M-3089-U-H",
-    "quantity": 3
-  },
-  {
-    "model": "M-3095-U-HPR",
-    "quantity": 3
-  },
-  {
-    "model": "M-3216-U-NH",
-    "quantity": 3
-  },
-  {
-    "model": "M-3236-U-NHV",
-    "quantity": 3
-  },
-  {
-    "model": "M-3236-U-RBRP",
-    "quantity": 3
-  },
-  {
-    "model": "M-3241-U-NA",
-    "quantity": 3
-  },
-  {
-    "model": "M-3248-U-ARB",
+    "model": "M-3216-U-NRB",
+    "name": "Sueter love",
+    "color": "Negro con rosa brillante",
     "quantity": 3
   },
   {
     "model": "M-3211-U-V",
+    "name": "Sueter colorido",
+    "color": "Varios",
+    "quantity": 3
+  },
+  {
+    "model": "M-3255-U-HRB",
+    "name": "Blusa cuello V bicolor",
+    "color": "Hueso con Rosa brillante",
     "quantity": 3
   },
   {
     "model": "M-3260-U-H",
+    "name": "Chaleco calado cuadro",
+    "color": "Hueso",
     "quantity": 3
   },
   {
-    "model": "M-3268-U-PR",
-    "quantity": 3
-  },
-  {
-    "model": "M-3271-U-VM",
-    "quantity": 3
-  },
-  {
-    "model": "M-3271-U-T",
+    "model": "M-3263-U-B",
+    "name": "Sueter maxi calado",
+    "color": "Beige 710K",
     "quantity": 3
   },
   {
     "model": "N-0107-UNISEX-T10-HR",
+    "name": "COPO",
+    "color": "Hueso con rojo",
     "quantity": 3
   },
   {
-    "model": "N-3072-T10-RBVAN",
-    "quantity": 3
-  },
-  {
-    "model": "M-2027-U-HPR",
-    "quantity": 3
-  },
-  {
-    "model": "M-3028-U-H",
-    "quantity": 3
-  },
-  {
-    "model": "M-3240-U-NR",
-    "quantity": 3
-  },
-  {
-    "model": "M-3286-U-VAN",
-    "quantity": 3
-  },
-  {
-    "model": "M-3294-U-PR",
-    "quantity": 3
-  },
-  {
-    "model": "M-3295-U-APRB",
-    "quantity": 3
-  },
-  {
-    "model": "M-2021-U-N",
+    "model": "M-2021-U-G",
+    "name": "CHALECO CUELLO ALTO",
+    "color": "Gris C",
     "quantity": 2
   },
   {
     "model": "M-2021-U-V",
+    "name": "CHALECO CUELLO ALTO",
+    "color": "Vino 747D",
+    "quantity": 2
+  },
+  {
+    "model": "M-3023-U-H",
+    "name": "Chaleco corto R",
+    "color": "Hueso",
+    "quantity": 2
+  },
+  {
+    "model": "M-3023-U-RP",
+    "name": "Chaleco corto R",
+    "color": "Rosa pastel",
     "quantity": 2
   },
   {
     "model": "M-3024-U-B",
+    "name": "Chaleco corto V",
+    "color": "blanco",
     "quantity": 2
   },
   {
-    "model": "M-3034-U-HGR",
+    "model": "M-3028-U-AP",
+    "name": "Chaleco largo cuello V liso",
+    "color": "Amarillo pastel",
+    "quantity": 2
+  },
+  {
+    "model": "M-3034-U-HG",
+    "name": "Chaleco colores",
+    "color": "Hueso con gris  C y lila",
     "quantity": 2
   },
   {
     "model": "M-3045-U-AP",
+    "name": "Sueter corto con hoyos",
+    "color": "Amarillo pastel",
     "quantity": 2
   },
   {
     "model": "M-3050-U-A",
+    "name": "Chaleco cuello V rombos",
+    "color": "Amarillo pastel combinado",
     "quantity": 2
   },
   {
     "model": "M-3050-U-H",
-    "quantity": 2
-  },
-  {
-    "model": "M-3050-U-V",
+    "name": "Chaleco cuello V rombos",
+    "color": "Hueso combinado",
     "quantity": 2
   },
   {
     "model": "M-3053-U-HA",
+    "name": "Ensamble 2 colores ligero",
+    "color": "Hueso con azul cielo",
     "quantity": 2
   },
   {
     "model": "M-3052-U-P",
+    "name": "Ensamble 4 colores , ligero",
+    "color": "Pasteles con lila",
     "quantity": 2
   },
   {
-    "model": "M-3057-U-A",
+    "model": "M-3057-U-H",
+    "name": "Sueter cuello V 4 colores en Horizontal",
+    "color": "Hueso con azul y naranja",
     "quantity": 2
   },
   {
-    "model": "M-3067-U-A",
+    "model": "M-3067-U-V",
+    "name": "Envolvente de distintas formas",
+    "color": "Verde 791K",
     "quantity": 2
   },
   {
     "model": "M-3076-2-U-NR",
+    "name": "Ensamble maxi pata de gallo sin cinta inferior CON TUBULAR CHICO",
+    "color": "Negro con hueso",
     "quantity": 2
   },
   {
-    "model": "M-3079-U-N",
+    "model": "M-3084-U-N",
+    "name": "Chaleco zebra cuello V",
+    "color": "Negro con hueso",
+    "quantity": 2
+  },
+  {
+    "model": "M-3104-U-RB",
+    "name": "Sueter liso hombro descubierto",
+    "color": "Rosa brillante",
     "quantity": 2
   },
   {
     "model": "M-3108-U-H",
+    "name": "Sueter zebra cuello alto",
+    "color": "Hueso",
     "quantity": 2
   },
   {
     "model": "M-3153-U-H",
+    "name": "Sueter  zebra con boton",
+    "color": "Hueso con negro",
     "quantity": 2
   },
   {
     "model": "M-3162-U-G",
+    "name": "Ensamble maxi pata de gallo",
+    "color": "Gris  D  con negro",
     "quantity": 2
   },
   {
     "model": "M-3168-U-R",
+    "name": "Ensamble -chaleco 4 colores ligero con gorra",
+    "color": "Rosa con amarillo pastel",
+    "quantity": 2
+  },
+  {
+    "model": "M-3170-U-A",
+    "name": "Ensamble estrellas",
+    "color": "Amarillo con naranja",
     "quantity": 2
   },
   {
     "model": "M-3171-U-L",
+    "name": "Sueter liso hombro descubierto panal",
+    "color": "Lila",
     "quantity": 2
   },
   {
     "model": "M-3173-U-R",
+    "name": "Chaleco fresas",
+    "color": "Rosa pastel",
     "quantity": 2
   },
   {
-    "model": "M-3175-U-M",
+    "model": "M-3175-U-RP",
+    "name": "Sueter liso hombros descubiertos panal",
+    "color": "Rosa pastel",
     "quantity": 2
   },
   {
     "model": "M-3175-U-RB",
+    "name": "Sueter liso hombros descubiertos panal",
+    "color": "Rosa brillante",
     "quantity": 2
   },
   {
-    "model": "M-3182-U-RB",
+    "model": "M-3183-U-AR",
+    "name": "Sueter V cruzado manga corta",
+    "color": "Azul  electrico rey",
     "quantity": 2
   },
   {
     "model": "M-3183-U-B",
-    "quantity": 2
-  },
-  {
-    "model": "M-3183-U-BL",
+    "name": "Sueter V cruzado manga corta",
+    "color": "Beige 710K",
     "quantity": 2
   },
   {
     "model": "M-3183-U-V",
+    "name": "Sueter V cruzado manga corta",
+    "color": "Verde limon",
     "quantity": 2
   },
   {
-    "model": "M-3184-U-AB",
+    "model": "M-3185-U-A",
+    "name": "Sueter cuello ojal hoyos",
+    "color": "Amarillo brillante",
     "quantity": 2
   },
   {
-    "model": "M-3185-U-B",
+    "model": "M-3186-U-A",
+    "name": "Sueter cuello V hoyos",
+    "color": "Amarillo brillante",
     "quantity": 2
   },
   {
     "model": "M-3186-U-N",
-    "quantity": 2
-  },
-  {
-    "model": "M-3186-U-VF",
+    "name": "Sueter cuello V hoyos",
+    "color": "Naranja brillante",
     "quantity": 2
   },
   {
     "model": "M-3187-U-AC",
-    "quantity": 2
-  },
-  {
-    "model": "M-3193-U-B",
-    "quantity": 2
-  },
-  {
-    "model": "M-3193-U-N",
-    "quantity": 2
-  },
-  {
-    "model": "M-3195-U-B",
+    "name": "Sueter cuello V panal",
+    "color": "Azul cielo",
     "quantity": 2
   },
   {
     "model": "M-3198-HN",
-    "quantity": 2
-  },
-  {
-    "model": "M-3198-RB",
+    "name": "Top resorte",
+    "color": "Hueso con negro",
     "quantity": 2
   },
   {
     "model": "M-3199-U-V",
-    "quantity": 2
-  },
-  {
-    "model": "M-3200-U-R",
+    "name": "Sueter caritas",
+    "color": "Verde  brillante limon con amarillo pastel",
     "quantity": 2
   },
   {
     "model": "M-3202-U-A",
+    "name": "Sueter pestañas",
+    "color": "Azul  electrico rey",
+    "quantity": 2
+  },
+  {
+    "model": "M-3203-N",
+    "name": "Ensamble tribal",
+    "color": "Negro con hueso",
     "quantity": 2
   },
   {
     "model": "M-3208-U-RB",
+    "name": "Ensamble maxi hojas",
+    "color": "Rosa brillante",
     "quantity": 2
   },
   {
     "model": "M-3222-U-HN",
+    "name": "Sueter zebra",
+    "color": "Hueso con negro",
     "quantity": 2
   },
   {
     "model": "M-3228-U-H",
+    "name": "Ensamble maxi Dalí",
+    "color": "Hueso con negro",
     "quantity": 2
   },
   {
     "model": "M-3231-U-N",
+    "name": "Ensamble maxi mitad zebra",
+    "color": "Negro con hueso",
+    "quantity": 2
+  },
+  {
+    "model": "M-3235-U-L",
+    "name": "Chaleco rombos con lineas caladas cuello V",
+    "color": "Lila",
     "quantity": 2
   },
   {
     "model": "M-3235-U-N",
+    "name": "Chaleco rombos con lineas caladas cuello V",
+    "color": "Naranja brillante",
+    "quantity": 2
+  },
+  {
+    "model": "M-3242-U-N",
+    "name": "Chaleco rombos calados ojal",
+    "color": "Naranja brillante",
     "quantity": 2
   },
   {
     "model": "M-3242-U-RB",
-    "quantity": 2
-  },
-  {
-    "model": "M-3245-U-H",
-    "quantity": 2
-  },
-  {
-    "model": "M-3245-U-L",
+    "name": "Chaleco rombos calados ojal",
+    "color": "Rosa brillante",
     "quantity": 2
   },
   {
     "model": "M-3247-U-RB",
-    "quantity": 2
-  },
-  {
-    "model": "M-2027-U-RN",
-    "quantity": 2
-  },
-  {
-    "model": "M-2027-U-HR",
-    "quantity": 2
-  },
-  {
-    "model": "M-3089-U-AM",
-    "quantity": 2
-  },
-  {
-    "model": "M-3089-U-N",
-    "quantity": 2
-  },
-  {
-    "model": "M-3089-U-R",
-    "quantity": 2
-  },
-  {
-    "model": "M-3095-U-NH",
-    "quantity": 2
-  },
-  {
-    "model": "M-3176-U-B",
+    "name": "Ensamble con hoyos y estrella",
+    "color": "Rosa brillante",
     "quantity": 2
   },
   {
     "model": "M-3176-U-G",
-    "quantity": 2
-  },
-  {
-    "model": "M-3176-U-V",
+    "name": "Chaleco corazones calados",
+    "color": "Gris C",
     "quantity": 2
   },
   {
     "model": "M-3216-U-G",
+    "name": "Sueter love",
+    "color": "Gris  C con lila",
     "quantity": 2
   },
   {
-    "model": "M-3239-U-RH",
+    "model": "M-3237-U-LM",
+    "name": "Sueter corazones en linea",
+    "color": "Lila con morado",
     "quantity": 2
   },
   {
-    "model": "M-3240-U-NB",
-    "quantity": 2
-  },
-  {
-    "model": "M-3248-LM",
-    "quantity": 2
-  },
-  {
-    "model": "M-3248-RBVAN",
+    "model": "M-3248-U-ARB",
+    "name": "Chaleco corazon calado cuello ojal",
+    "color": "Azul petroleo con rosa brillante",
     "quantity": 2
   },
   {
     "model": "M-3104-M",
+    "name": "Sueter liso hombro descubierto ",
+    "color": "Morado",
+    "quantity": 2
+  },
+  {
+    "model": "M-3255-U-VANRB",
+    "name": "Blusa cuello  V  bicolor ",
+    "color": "Verde agua N con rosa brillante",
     "quantity": 2
   },
   {
     "model": "M-3263-U-RB",
+    "name": "Sueter maxi calado",
+    "color": "Rosa brillante",
     "quantity": 2
   },
   {
     "model": "M-3263-U-VM",
+    "name": "Sueter maxi calado",
+    "color": "Verde militar",
     "quantity": 2
   },
   {
     "model": "M-3263-U-M",
+    "name": "Sueter maxi calado",
+    "color": "Magenta  751D",
     "quantity": 2
   },
   {
-    "model": "M-3264-U-N",
+    "model": "M-3268-U-PR",
+    "name": "ESPIGAS REDONDO",
+    "color": "Palo de rosa",
     "quantity": 2
   },
   {
-    "model": "M-3266-U-B",
+    "model": "M-3268-U-N",
+    "name": "ESPIGAS REDONDO",
+    "color": "Negro",
     "quantity": 2
   },
   {
     "model": "M-3268-U-P",
+    "name": "ESPIGAS REDONDO",
+    "color": "Azul petroleo",
     "quantity": 2
   },
   {
-    "model": "M-3271-U-GC",
-    "quantity": 2
-  },
-  {
-    "model": "M-3271-U-N",
+    "model": "M-3271-U-VM",
+    "name": "Chaleco espigas  v",
+    "color": "Verde  militar 798 B",
     "quantity": 2
   },
   {
     "model": "M-3218-U-GN",
+    "name": "Sueter reno cuello R",
+    "color": "Gris  C con negro",
     "quantity": 2
   },
   {
     "model": "M-3273-U-HN",
+    "name": "Ensamble de flores",
+    "color": "Hueso con negro",
     "quantity": 2
   },
   {
     "model": "M-2021-U-R",
+    "name": "CHALECO CUELLO ALTO",
+    "color": "Rojo",
     "quantity": 2
   },
   {
     "model": "M-3257-U- RB",
+    "name": "Sueter asimetrico C/R",
+    "color": "Rosa brillante",
     "quantity": 2
   },
   {
     "model": "M-3257-U- N",
+    "name": "Sueter asimetrico C/R",
+    "color": "Negro",
     "quantity": 2
   },
   {
     "model": "M-3257-U- A",
+    "name": "Sueter asimetrico C/R",
+    "color": "Azul  electrico rey",
     "quantity": 2
   },
   {
     "model": "M-3256-U-L",
+    "name": "Bluson  C/R  curvo",
+    "color": "Lila ",
     "quantity": 2
   },
   {
     "model": "M-3258-U-NGH",
+    "name": "Sueter  con hoyos y franjas",
+    "color": "Negro-gris c -hueso",
     "quantity": 2
   },
   {
     "model": "N-0107-UNISEX-T4-HR",
+    "name": "COPO",
+    "color": "Hueso con rojo",
     "quantity": 2
   },
   {
     "model": "H-0106-EX-RH",
+    "name": "Sueter noche buena",
+    "color": "Rojo con hueso",
     "quantity": 2
   },
   {
     "model": "M-3162-U-HT",
+    "name": "Ensamble maxi pata de gallo",
+    "color": "Hueso con tabaco 710v",
     "quantity": 2
   },
   {
-    "model": "M-3287-U-VAN",
-    "quantity": 2
-  },
-  {
-    "model": "M-3287-U-AP",
-    "quantity": 2
-  },
-  {
-    "model": "M-3288-U-RB",
-    "quantity": 2
-  },
-  {
-    "model": "M-3288-U-B",
-    "quantity": 2
-  },
-  {
-    "model": "M-3288-U-GC",
-    "quantity": 2
-  },
-  {
-    "model": "M-3288-U-VAN",
-    "quantity": 2
-  },
-  {
-    "model": "M-3288-U-AB",
-    "quantity": 2
-  },
-  {
-    "model": "M-3293-U-B",
-    "quantity": 2
-  },
-  {
-    "model": "M-3294-U-RB",
-    "quantity": 2
-  },
-  {
-    "model": "M-3294-U-AB",
-    "quantity": 2
-  },
-  {
-    "model": "M-3295-U-NBAP",
-    "quantity": 2
-  },
-  {
-    "model": "M-4004-U-BYO",
-    "quantity": 2
+    "model": "M-2021-U-N",
+    "name": "CHALECO CUELLO ALTO",
+    "color": "Negro",
+    "quantity": 1
   },
   {
     "model": "M-2022-U-GN",
+    "name": "Sueter circulos",
+    "color": "Gris  D con negro",
     "quantity": 1
   },
   {
     "model": "M-2025-U-NH",
+    "name": "Ensamble pata de gallo abierto",
+    "color": "Negro con hueso",
     "quantity": 1
   },
   {
     "model": "M-3021-U-NH",
+    "name": "Sueter pata de gallo redondo",
+    "color": "Negro con hueso",
     "quantity": 1
   },
   {
     "model": "M-3025-U-NH",
+    "name": "Ensamble  pate de gallo c boton",
+    "color": "Negro con hueso",
+    "quantity": 1
+  },
+  {
+    "model": "M-3028-U-L",
+    "name": "Chaleco largo cuello V liso",
+    "color": "Lila",
+    "quantity": 1
+  },
+  {
+    "model": "M-3028-U-NJ",
+    "name": "Chaleco largo cuello V liso",
+    "color": "Naranja brillante",
     "quantity": 1
   },
   {
     "model": "M-3032-U-R",
+    "name": "Chaleco largo con abertura parte baja",
+    "color": "Rojo",
     "quantity": 1
   },
   {
     "model": "M-3032-U-G",
+    "name": "Chaleco largo con abertura parte baja",
+    "color": "Gris  C",
+    "quantity": 1
+  },
+  {
+    "model": "M-3034-U-HGR",
+    "name": "Chaleco colores",
+    "color": "Hueso con gris perla y rosa salmon",
+    "quantity": 1
+  },
+  {
+    "model": "M-3037-U-HN",
+    "name": "Sueter corto abierto en cuadros",
+    "color": "Hueso con negro",
     "quantity": 1
   },
   {
     "model": "M-3038-U-G",
+    "name": "Top 2",
+    "color": "Gris C",
     "quantity": 1
   },
   {
     "model": "M-3038-R",
+    "name": "Top 2",
+    "color": "Rosa pastel",
     "quantity": 1
   },
   {
     "model": "M-3038-U-L",
+    "name": "Top 2",
+    "color": "Lila",
     "quantity": 1
   },
   {
     "model": "M-3040-U-N",
+    "name": "Sueter corto con hoyos y capucha",
+    "color": "Negro",
     "quantity": 1
   },
   {
     "model": "M-3040-U-L",
+    "name": "Sueter corto con hoyos y capucha",
+    "color": "Lila",
     "quantity": 1
   },
   {
     "model": "M-3040-U-B",
+    "name": "Sueter corto con hoyos y capucha",
+    "color": "Beige  708W",
     "quantity": 1
   },
   {
     "model": "M-3044-U-AC",
+    "name": "Sueter super corto liso",
+    "color": "Azul cielo",
     "quantity": 1
   },
   {
     "model": "M-3045-U-AC",
+    "name": "Sueter corto con hoyos",
+    "color": "Azul cielo",
     "quantity": 1
   },
   {
     "model": "M-3045-U-G",
+    "name": "Sueter corto con hoyos",
+    "color": "Gris C",
     "quantity": 1
   },
   {
     "model": "M-3045-U-S",
+    "name": "Sueter corto con hoyos",
+    "color": "Shedron",
     "quantity": 1
   },
   {
     "model": "M-3045-U-V",
+    "name": "Sueter corto con hoyos",
+    "color": "Verde agua",
+    "quantity": 1
+  },
+  {
+    "model": "M-3050-U-V",
+    "name": "Chaleco cuello V rombos",
+    "color": "Verde agua combinado",
     "quantity": 1
   },
   {
     "model": "M-3053-U-HV",
+    "name": "Ensamble 2 colores ligero",
+    "color": "Hueso con verde agua",
     "quantity": 1
   },
   {
     "model": "M-3053-HL",
+    "name": "Ensamble 2 colores ligero",
+    "color": "Hueso con lila",
     "quantity": 1
   },
   {
     "model": "M-3053-U-HN",
+    "name": "Ensamble 2 colores ligero",
+    "color": "Hueso con negro",
     "quantity": 1
   },
   {
     "model": "M-3052-B",
+    "name": "Ensamble 4 colores , ligero",
+    "color": "Brillantes",
     "quantity": 1
   },
   {
     "model": "M-3052-U-A",
+    "name": "Ensamble 4 colores , ligero",
+    "color": "Amarillo con pasteles",
     "quantity": 1
   },
   {
     "model": "M-3056-U-V",
+    "name": "Ensamble liso-Ligero",
+    "color": "Verde Agua",
+    "quantity": 1
+  },
+  {
+    "model": "M-3057-U-A",
+    "name": "Sueter cuello V 4 colores en Horizontal",
+    "color": "Azul con amarillo y hueso",
+    "quantity": 1
+  },
+  {
+    "model": "M-3057-U-AL",
+    "name": "Sueter cuello V 4 colores en Horizontal",
+    "color": "Amarillo con lila ,hueso y azul",
     "quantity": 1
   },
   {
     "model": "M-49262-2-N",
+    "name": "Chaleco ensamble",
+    "color": "Negro",
     "quantity": 1
   },
   {
     "model": "M-49262-2-V",
+    "name": "Chaleco ensamble",
+    "color": "vino",
+    "quantity": 1
+  },
+  {
+    "model": "M-3067-U-A",
+    "name": "Envolvente de distintas formas",
+    "color": "Azul 766H",
     "quantity": 1
   },
   {
     "model": "M-3067-U-N",
+    "name": "Envolvente de distintas formas",
+    "color": "Negro",
     "quantity": 1
   },
   {
     "model": "M-3067-U-NP",
+    "name": "Envolvente de distintas formas",
+    "color": "Naranja Palido",
     "quantity": 1
   },
   {
     "model": "M-3067-U-H",
+    "name": "Envolvente de distintas formas",
+    "color": "Hueso",
     "quantity": 1
   },
   {
     "model": "M-3071-U-T",
+    "name": "Sueter bicolor hombros descubiertos y cuello alto",
+    "color": "Caqui con hueso",
     "quantity": 1
   },
   {
     "model": "M-3071-U-G",
+    "name": "Sueter bicolor hombros descubiertos y cuello alto",
+    "color": "Gris  C con negro",
     "quantity": 1
   },
   {
     "model": "M-3074-U-V",
+    "name": "Vestido 4 colores",
+    "color": "Varios",
     "quantity": 1
   },
   {
     "model": "M-3076-1-U-H",
+    "name": "Ensamble maxi pata de gallo con cinta inferior",
+    "color": "Hueso con negro",
     "quantity": 1
   },
   {
     "model": "M-3076-1-U-N",
+    "name": "Ensamble maxi pata de gallo con cinta inferior",
+    "color": "Negro con hueso",
     "quantity": 1
   },
   {
     "model": "M-3076-1-U-R",
+    "name": "Ensamble maxi pata de gallo con cinta inferior",
+    "color": "Rojo con hueso",
     "quantity": 1
   },
   {
-    "model": "M-3079-U-R",
+    "model": "M-3084-U-H",
+    "name": "Chaleco zebra cuello V",
+    "color": "Hueso con beige 710K",
     "quantity": 1
   },
   {
     "model": "M-3084-U-RC",
+    "name": "Chaleco zebra cuello V",
+    "color": "Palo de rosa con uva",
     "quantity": 1
   },
   {
     "model": "M-3084-U-T",
+    "name": "Chaleco zebra cuello V",
+    "color": "Tabaco  710v con  negro",
     "quantity": 1
   },
   {
     "model": "M-3090-U-V",
-    "quantity": 1
-  },
-  {
-    "model": "M-3091-U-N",
+    "name": "Sueter pata de gallo con colores variados",
+    "color": "Varios",
     "quantity": 1
   },
   {
     "model": "M-3099-U-H",
+    "name": "Sueter bicolor cuello amplio perle",
+    "color": "Hueso con azul",
     "quantity": 1
   },
   {
     "model": "M-3108-U-R",
+    "name": "Sueter zebra cuello alto",
+    "color": "Rojo con hueso",
     "quantity": 1
   },
   {
     "model": "M-3150-U-T",
+    "name": "Sueter bicolor jaguar hombros descubiertos",
+    "color": "Tabaco 710V con hueso",
     "quantity": 1
   },
   {
     "model": "M-3168-U-N",
+    "name": "Ensamble-chaleco 4 colores  ligero con gorra",
+    "color": "Naranja con amarillo",
     "quantity": 1
   },
   {
     "model": "M-3169-U-A",
+    "name": "Chaleco colores en cuadros",
+    "color": "Amarillo",
     "quantity": 1
   },
   {
     "model": "M-3170-U-H",
+    "name": "Ensamble estrellas",
+    "color": "Hueso con amarillo",
     "quantity": 1
   },
   {
     "model": "M-3170-U-N",
+    "name": "Ensamble estrellas",
+    "color": "Naranja con amarillo",
     "quantity": 1
   },
   {
     "model": "M-3171-U-A",
+    "name": "Sueter liso hombro descubierto panal",
+    "color": "Amarillo brillante",
     "quantity": 1
   },
   {
     "model": "M-3171-U-B",
+    "name": "Sueter liso hombro descubierto panal",
+    "color": "Blanco",
     "quantity": 1
   },
   {
     "model": "M-3175-U-BL",
+    "name": "Sueter liso hombros descubiertos panal",
+    "color": "Blanco",
     "quantity": 1
   },
   {
     "model": "M-3175-U-L",
+    "name": "Sueter liso hombros descubiertos panal",
+    "color": "Lila ",
+    "quantity": 1
+  },
+  {
+    "model": "M-3175-U-M",
+    "name": "Sueter liso hombros descubiertos panal",
+    "color": "Morado",
     "quantity": 1
   },
   {
     "model": "M-3181-U-R",
+    "name": "Ensamble -chaleco estrella",
+    "color": "Rosa brillante con rosa pastel",
     "quantity": 1
   },
   {
-    "model": "M-3182-U-N",
+    "model": "M-3182-U-RB",
+    "name": "Sueter V cruzado manga larga",
+    "color": "Rosa brillante",
     "quantity": 1
   },
   {
     "model": "M-3182-U-V",
+    "name": "Sueter V cruzado manga larga",
+    "color": "Verde limon",
+    "quantity": 1
+  },
+  {
+    "model": "M-3183-U-BL",
+    "name": "Sueter V cruzado manga corta",
+    "color": "Blanco",
+    "quantity": 1
+  },
+  {
+    "model": "M-3183-U-PL",
+    "name": "Sueter V cruzado manga corta",
+    "color": "Palo de rosa",
     "quantity": 1
   },
   {
     "model": "M-3183-U-RB",
+    "name": "Sueter V cruzado manga corta",
+    "color": "Rosa brillante",
     "quantity": 1
   },
   {
     "model": "M-3184-U-NB",
+    "name": "Ensamble con hoyos",
+    "color": "Naranja brillante",
     "quantity": 1
   },
   {
     "model": "M-3184-U-VF",
+    "name": "Ensamble con hoyos",
+    "color": "Verde fosforescente",
+    "quantity": 1
+  },
+  {
+    "model": "M-3185-U-B",
+    "name": "Sueter cuello ojal hoyos",
+    "color": "Blanco",
+    "quantity": 1
+  },
+  {
+    "model": "M-3185-U-M",
+    "name": "Sueter cuello ojal hoyos",
+    "color": "Morado",
     "quantity": 1
   },
   {
     "model": "M-3186-U-R",
+    "name": "Sueter cuelo V hoyos",
+    "color": "Rojo",
     "quantity": 1
   },
   {
-    "model": "M-3191-U-A",
+    "model": "M-3186-U-RB",
+    "name": "Sueter cuello V hoyos",
+    "color": "Rosa brillante",
     "quantity": 1
   },
   {
-    "model": "M-3191-U-N",
+    "model": "M-3186-U-VF",
+    "name": "Sueter cuello V hoyos",
+    "color": "Verde fosforescente",
     "quantity": 1
   },
   {
-    "model": "M-3193-U-AR",
+    "model": "M-3193-U-B",
+    "name": "Sueter vampira cuello V con hoyos",
+    "color": "Blanco",
     "quantity": 1
   },
   {
-    "model": "M-3193-U-VF",
+    "model": "M-3193-U-N",
+    "name": "Sueter vampira cuello V con hoyos",
+    "color": "Naranja brillante",
     "quantity": 1
   },
   {
-    "model": "M-3194-U-RB",
+    "model": "M-3195-U-B",
+    "name": "Vestido con franjas en cintura",
+    "color": "Blanco",
     "quantity": 1
   },
   {
     "model": "M-3198-B",
+    "name": "Top resorte",
+    "color": "Blanco",
     "quantity": 1
   },
   {
     "model": "M-3198-N",
+    "name": "Top resorte",
+    "color": "Naranja brillante",
     "quantity": 1
   },
   {
-    "model": "M-3198-RBRP",
+    "model": "M-3198-RB",
+    "name": "Top resorte",
+    "color": "Rosa brillante",
     "quantity": 1
   },
   {
     "model": "M-3198-V",
+    "name": "Top resorte",
+    "color": "Verde  brillante limon",
     "quantity": 1
   },
   {
     "model": "M-0400-U-LM",
+    "name": "Chaleco estrella",
+    "color": "Lila, morado y hueso",
     "quantity": 1
   },
   {
-    "model": "M-0400-U-RRBH",
+    "model": "M-3200-U-RB",
+    "name": "Sueter carita",
+    "color": "Rosa brillante",
     "quantity": 1
   },
   {
-    "model": "M-0400-U-VVBH",
+    "model": "M-3200-U-V",
+    "name": "Sueter carita",
+    "color": "Verde  brillante limon",
     "quantity": 1
   },
   {
     "model": "M-3202-U-N",
+    "name": "Sueter pestañas",
+    "color": "Negro",
     "quantity": 1
   },
   {
     "model": "M-3202-RB",
+    "name": "Sueter pestañas",
+    "color": "Rosa brillante",
     "quantity": 1
   },
   {
     "model": "M-3202-RB-V",
+    "name": "Sueter pestañas",
+    "color": "Verde  brillante limon",
     "quantity": 1
   },
   {
     "model": "M-3207-U-A",
+    "name": "Sueter hojas",
+    "color": "Amarillo brillante con  negro  y hueso",
     "quantity": 1
   },
   {
     "model": "M-3207-RB",
+    "name": "Sueter hojas",
+    "color": "Rosa brillante con  negro  y hueso",
     "quantity": 1
   },
   {
     "model": "M-3210-U-N",
-    "quantity": 1
-  },
-  {
-    "model": "M-3212-U-LM",
+    "name": "Sudadera caritas colores con capucha",
+    "color": "Negro",
     "quantity": 1
   },
   {
     "model": "M-3221-U-TN",
+    "name": "Sueter Dalí",
+    "color": "Tabaco 710V con negro",
     "quantity": 1
   },
   {
     "model": "M-3224-U-HR",
+    "name": "Sueter pata de gallo cuello alto",
+    "color": "Hueso con rosa",
     "quantity": 1
   },
   {
     "model": "M-3224-U-NH",
+    "name": "Sueter pata de gallo cuello alto",
+    "color": "Negro con hueso",
     "quantity": 1
   },
   {
     "model": "M-3224-U-TN",
+    "name": "Sueter pata de gallo cuello alto",
+    "color": "Tabaco  710v con  negro",
     "quantity": 1
   },
   {
     "model": "M-3225-U-NH",
+    "name": "Sueter osos",
+    "color": "Negro con hueso",
     "quantity": 1
   },
   {
     "model": "M-3227-U-G",
+    "name": "Ensamble perleado",
+    "color": "Gris  D",
     "quantity": 1
   },
   {
     "model": "M-3228-U-TN",
+    "name": "Ensamble maxi Dalí",
+    "color": "Tabaco  710v con  negro",
     "quantity": 1
   },
   {
     "model": "M-3235-U-RB",
-    "quantity": 1
-  },
-  {
-    "model": "M-3235-U-VA",
+    "name": "Chaleco rombos con lineas caladas cuello V",
+    "color": "Rosa brillante",
     "quantity": 1
   },
   {
     "model": "M-3242-U-V",
+    "name": "Chaleco rombos calados ojal",
+    "color": "Verde limon",
     "quantity": 1
   },
   {
-    "model": "M-3245-U-N",
+    "model": "M-3245-U-H",
+    "name": "Chaleco estrella calada",
+    "color": "Hueso",
     "quantity": 1
   },
   {
-    "model": "M-3245-U-V",
+    "model": "M-3245-U-L",
+    "name": "Chaleco estrella calada",
+    "color": "Lila ",
     "quantity": 1
   },
   {
     "model": "M-3246-U-B",
-    "quantity": 1
-  },
-  {
-    "model": "M-3246-U-L",
-    "quantity": 1
-  },
-  {
-    "model": "M-3247-U-A",
+    "name": "Sueter cuello V hoyos y estrella",
+    "color": "Blanco",
     "quantity": 1
   },
   {
     "model": "M-3247-U-RM",
+    "name": "Ensamble con hoyos y estrella",
+    "color": "Rosa Magenta",
     "quantity": 1
   },
   {
     "model": "M-3250-U-B",
+    "name": "Sueter con trenza en  V y crochet",
+    "color": "Blanco",
     "quantity": 1
   },
   {
     "model": "M-3251-U-AM",
+    "name": "Ensamble -chaleco crochet",
+    "color": "Azul 766H",
     "quantity": 1
   },
   {
     "model": "M-3251-U-B",
+    "name": "Ensamble- chaleco crochet",
+    "color": "Blanco",
     "quantity": 1
   },
   {
     "model": "M-3252-U-B",
+    "name": "Blusa con trenza en V",
+    "color": "Blanco",
     "quantity": 1
   },
   {
-    "model": "M-3089-U-RB",
+    "model": "M-2027-U-AH",
+    "name": "Sueter corazones",
+    "color": "Azul cielo con hueso",
     "quantity": 1
   },
   {
-    "model": "M-3158-U-RPR",
+    "model": "M-2027-U-RH",
+    "name": "Sueter corazones",
+    "color": "Rosa pastel con hueso",
     "quantity": 1
   },
   {
-    "model": "M-3176-U-L",
+    "model": "M-3089-U-N",
+    "name": "Sueter corazones hoyos",
+    "color": "Naranja brillante",
     "quantity": 1
   },
   {
-    "model": "M-3176-U_RB",
+    "model": "M-3089-U-V",
+    "name": "Sueter corazones hoyos",
+    "color": "Verde limon",
     "quantity": 1
   },
   {
-    "model": "M-3216-U-HN",
+    "model": "M-3160-U-B",
+    "name": "Sueter corazon hpmbro descubierto",
+    "color": "Blanco",
     "quantity": 1
   },
   {
-    "model": "M-3238-U-LM",
+    "model": "M-3176-U-B",
+    "name": "Chaleco corazones calados",
+    "color": "Blanco",
     "quantity": 1
   },
   {
-    "model": "M-3240-U-BN",
+    "model": "M-3237-U-RBRP",
+    "name": "Sueter corazones en linea",
+    "color": "Rosa brillante con rosa pastel",
+    "quantity": 1
+  },
+  {
+    "model": "M-3239-U-APVA",
+    "name": "Sueter corazones mezclados",
+    "color": "Azul petroleo con verde agua N",
+    "quantity": 1
+  },
+  {
+    "model": "M-3239-U-NR",
+    "name": "Sueter corazones mezclados",
+    "color": "Negro con rojo",
+    "quantity": 1
+  },
+  {
+    "model": "M-3248-LM",
+    "name": "Chaleco corazon calado cuello ojal",
+    "color": "Lila con morado",
     "quantity": 1
   },
   {
     "model": "N-3072-T8-RBVAN",
+    "name": "Corazon ojal",
+    "color": "Rosa brillante con verde agua N",
     "quantity": 1
   },
   {
     "model": "M-3036-U-MO",
+    "name": "Top 1",
+    "color": "Morado",
     "quantity": 1
   },
   {
     "model": "M-3252-U-VAN",
+    "name": "Blusa corta trenza en V",
+    "color": "Verde agua N",
     "quantity": 1
   },
   {
-    "model": "M-3264-U-H",
+    "model": "M-3264-U-N",
+    "name": "Chaleco maxi calado",
+    "color": "Negro",
     "quantity": 1
   },
   {
-    "model": "M-3266-U-RB",
+    "model": "M-3266-U-B",
+    "name": "SUETER CALADO LISO CON CAPUCHA",
+    "color": "Beige  708W",
     "quantity": 1
   },
   {
-    "model": "M-3271-U-A",
+    "model": "M-3271-U-R",
+    "name": "Chaleco espigas  V",
+    "color": "Rojo",
     "quantity": 1
   },
   {
-    "model": "M-3271-U-H",
+    "model": "M-3271-U-GC",
+    "name": "Chaleco espigas  V",
+    "color": "Gris cemento  782 M",
     "quantity": 1
   },
   {
     "model": "M-3209-U-RBH",
+    "name": "Sueter holgado carita",
+    "color": "Rosa brillante con hueso",
     "quantity": 1
   },
   {
     "model": "N-3073-T6-RH",
+    "name": "Sueter copo 3",
+    "color": "Rojo con hueso",
     "quantity": 1
   },
   {
     "model": "M-3257-U- L",
+    "name": "Sueter asimetrico C/R",
+    "color": "Lila ",
     "quantity": 1
   },
   {
     "model": "M-3257-U- R",
+    "name": "Sueter asimetrico C/R",
+    "color": "Rojo",
     "quantity": 1
   },
   {
     "model": "M-3257-U- H",
+    "name": "Sueter asimetrico C/R",
+    "color": "Hueso",
     "quantity": 1
   },
   {
     "model": "M-3256-U-RB",
+    "name": "Bluson  C/R  curvo",
+    "color": "Rosa brillante",
     "quantity": 1
   },
   {
     "model": "M-3184-U-MO",
+    "name": "Ensamble  con hoyos",
+    "color": "Morado",
     "quantity": 1
   },
   {
     "model": "M-3258-U-PRRBH",
+    "name": "OJAL CON HOYOS Y FRANJAS",
+    "color": "Palo de rosa-Rosa brillante-hueso",
     "quantity": 1
   },
   {
     "model": "M-3258-U-NRBG",
+    "name": "OJAL CON HOYOS Y FRANJAS",
+    "color": "NEGRO-ROSA BRILLANTE-GRIS C",
     "quantity": 1
   },
   {
     "model": "M-3258-U-AENAA",
+    "name": "OJAL CON HOYOS Y FRANJAS",
+    "color": "AZUL REY-NEGRO-AZUL ACERO 766H",
     "quantity": 1
   },
   {
     "model": "M-3257-U- AM",
+    "name": "Sueter asimetrico C/R",
+    "color": "Azul marino",
     "quantity": 1
   },
   {
     "model": "M-3257-U- VL",
-    "quantity": 1
-  },
-  {
-    "model": "M-3281-RBRP",
-    "quantity": 1
-  },
-  {
-    "model": "N-3072-T4-NRB",
-    "quantity": 1
-  },
-  {
-    "model": "M-3100",
-    "quantity": 1
-  },
-  {
-    "model": "M-3027-U-H",
-    "quantity": 1
-  },
-  {
-    "model": "M-3237-U-RPRB",
-    "quantity": 1
-  },
-  {
-    "model": "M-3284-U-HL",
-    "quantity": 1
-  },
-  {
-    "model": "M-3284-U-APH",
-    "quantity": 1
-  },
-  {
-    "model": "M-3284-U-HPR",
-    "quantity": 1
-  },
-  {
-    "model": "M-3285-U-RBN",
-    "quantity": 1
-  },
-  {
-    "model": "M-3285-U-APRB",
-    "quantity": 1
-  },
-  {
-    "model": "M-3287-U-NB",
-    "quantity": 1
-  },
-  {
-    "model": "M-3287-U-RB",
-    "quantity": 1
-  },
-  {
-    "model": "M-3287-U-H",
-    "quantity": 1
-  },
-  {
-    "model": "M-3287-U-B",
-    "quantity": 1
-  },
-  {
-    "model": "M-3287-U-GC",
-    "quantity": 1
-  },
-  {
-    "model": "M-3288-U-H",
-    "quantity": 1
-  },
-  {
-    "model": "M-3288-U-AP",
-    "quantity": 1
-  },
-  {
-    "model": "M-3286-U-AP",
-    "quantity": 1
-  },
-  {
-    "model": "M-3286-U-GC",
-    "quantity": 1
-  },
-  {
-    "model": "M-3286-U-H",
-    "quantity": 1
-  },
-  {
-    "model": "M-3286-U-PR",
-    "quantity": 1
-  },
-  {
-    "model": "M-3290-U-HL",
-    "quantity": 1
-  },
-  {
-    "model": "N-3289-T6-NBRB",
-    "quantity": 1
-  },
-  {
-    "model": "N-3289-T6-RBVAN",
-    "quantity": 1
-  },
-  {
-    "model": "N-3289-T10-ABAP",
-    "quantity": 1
-  },
-  {
-    "model": "N-3289-T10-VANRB",
-    "quantity": 1
-  },
-  {
-    "model": "M-3291-U-NB",
-    "quantity": 1
-  },
-  {
-    "model": "M-3293-U-AP",
-    "quantity": 1
-  },
-  {
-    "model": "M-3293-U-AB",
-    "quantity": 1
-  },
-  {
-    "model": "M-3293-U-H",
-    "quantity": 1
-  },
-  {
-    "model": "M-3294-U-VL",
-    "quantity": 1
-  },
-  {
-    "model": "M-3294-U-H",
-    "quantity": 1
-  },
-  {
-    "model": "M-3295-U-RBVAN",
-    "quantity": 1
-  },
-  {
-    "model": "M-3293-U-N",
-    "quantity": 1
-  },
-  {
-    "model": "M-3280-U-G",
-    "quantity": 1
-  },
-  {
-    "model": "M-4001-U-GN",
-    "quantity": 1
-  },
-  {
-    "model": "M-4001-U-HN",
-    "quantity": 1
-  },
-  {
-    "model": "M-4008-U-NRGC",
-    "quantity": 1
-  },
-  {
-    "model": "M-4008-U-HTB",
+    "name": "Sueter asimetrico C/R",
+    "color": "Verde limon",
     "quantity": 1
   }
 ]

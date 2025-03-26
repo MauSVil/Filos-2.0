@@ -4,7 +4,6 @@ import { OrderInput, OrderInputModel, OrderRepositoryFilter, OrderRepositoryFilt
 import _ from "lodash";
 import { Db, ObjectId } from "mongodb";
 import { HistoryMovementsRepository } from "./historymovements.repository";
-import moment from "moment-timezone";
 
 let client;
 let db: Db;

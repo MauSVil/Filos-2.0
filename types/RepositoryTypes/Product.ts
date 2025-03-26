@@ -22,12 +22,6 @@ export const ProductModel = z.object({
 
 export type Product = z.infer<typeof ProductModel>;
 
-export const ProductClient = ProductModel.and(z.object({
-  image: z.instanceof(File).or(z.string()).optional(),
-}))
-
-export type ProductClient = z.infer<typeof ProductClient>;
-
 export const ProductRepositoryFilterModel = z.object({
   ids: z.array(z.string()).optional(),
   id: z.string().optional(),

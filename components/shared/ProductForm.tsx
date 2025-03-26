@@ -10,7 +10,7 @@ interface Props {
   form: UseFormReturn<ProductClient>;
   isLoading: boolean;
   submit: () => void;
-  image?: File;
+  image?: any;
   file?: string;
 }
 

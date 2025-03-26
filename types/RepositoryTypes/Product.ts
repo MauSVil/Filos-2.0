@@ -15,7 +15,7 @@ export const ProductModel = z.object({
   quantity: z.number(),
   size: z.string(),
   deleted_at: z.union([z.null(), z.date()]).optional(),
-  image: z.string().optional(),
+  image: z.string().or(z.instanceof(File)).optional(),
   updated_at: z.date().optional(),
 })
 

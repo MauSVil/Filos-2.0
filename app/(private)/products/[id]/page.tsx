@@ -7,9 +7,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Product, ProductModel } from "@/types/RepositoryTypes/Product";
 import { InputFormField } from "@/components/form/InputFormField";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ComboboxFormField } from "@/components/form/ComboboxField";
-import { useDebounceCallback } from "usehooks-ts";
 import { useDebounce } from "@uidotdev/usehooks";
 import { Button } from "@/components/ui/button";
 
@@ -30,6 +29,7 @@ const defaultValues: Product = {
 };
 
 const ProductIdPage = () => {
+  const [file, setFile] = useState<string>();
   const params = useParams();
   const id = params.id;
   const { productQuery } = useProduct(id as string);
@@ -58,6 +58,8 @@ const ProductIdPage = () => {
         quantity: productQuery.data.data[0].quantity,
         size: productQuery.data.data[0].size,
       })
+
+      setFile(productQuery.data.data[0].image);
     }
   }, [productQuery.data]);
 
@@ -74,127 +76,158 @@ const ProductIdPage = () => {
     console.log(data);
   });
 
+  const image = watch('image');
+
   return (
     <Form {...form}>
-      <div className="flex flex-col gap-4">
-        <InputFormField
-          controllerProps={{
-            control,
-            name: "name",
-          }}
-          name="name"
-          label="Nombre"
-          disabled={productQuery.isLoading}
-        />
-        <div className="flex gap-4">
+      <div className="flex gap-4">
+        <div className="flex w-3/4 flex-col gap-4">
           <InputFormField
-            className="flex-1"
             controllerProps={{
               control,
-              name: "uniqId",
+              name: "name",
             }}
-            name="uniqId"
-            label="Id único"
+            name="name"
+            label="Nombre"
             disabled={productQuery.isLoading}
           />
+          <div className="flex gap-4">
+            <InputFormField
+              className="flex-1"
+              controllerProps={{
+                control,
+                name: "uniqId",
+              }}
+              name="uniqId"
+              label="Id único"
+              disabled={productQuery.isLoading}
+            />
+            <InputFormField
+              className="flex-1"
+              controllerProps={{
+                control,
+                name: "baseId",
+              }}
+              name="baseId"
+              label="Id base"
+              disabled
+            />
+          </div>
           <InputFormField
-            className="flex-1"
             controllerProps={{
               control,
-              name: "baseId",
+              name: "color",
             }}
-            name="baseId"
-            label="Id base"
-            disabled
-          />
-        </div>
-        <InputFormField
-          controllerProps={{
-            control,
-            name: "color",
-          }}
-          name="color"
-          label="Color"
-          disabled={productQuery.isLoading}
-        />
-        <ComboboxFormField
-          items={[
-            { label: 'Unitalla', value: 'UNI' }
-          ]}
-          controllerProps={{
-            control,
-            name: 'size'
-          }}
-          label='Talla'
-          placeholder='Selecciona una talla...'
-          searchLabel='Buscar una talla...'
-          emptyLabel="No hay tallas"
-        />
-        <div className="flex gap-4">
-          <InputFormField
-            className="flex-1"
-            controllerProps={{
-              control,
-              name: "webPagePrice",
-            }}
-            name="webPagePrice"
-            label="Precio de página web"
-            type="number"
+            name="color"
+            label="Color"
             disabled={productQuery.isLoading}
-            valueModifierOnChange={value => Number(value)}
           />
-          <InputFormField
-            className="flex-1"
+          <ComboboxFormField
+            items={[
+              { label: 'Unitalla', value: 'UNI' }
+            ]}
             controllerProps={{
               control,
-              name: "wholesalePrice",
+              name: 'size'
             }}
-            labelClassName="text-green-500"
-            name="wholesalePrice"
-            label="Precio de mayoreo"
-            type="number"
-            disabled={productQuery.isLoading}
-            valueModifierOnChange={value => Number(value)}
+            label='Talla'
+            placeholder='Selecciona una talla...'
+            searchLabel='Buscar una talla...'
+            emptyLabel="No hay tallas"
           />
-        </div>
-        <div className="flex gap-4">
-          <InputFormField
-            className="flex-1"
-            controllerProps={{
-              control,
-              name: "retailPrice",
-            }}
-            name="retailPrice"
-            label="Precio de menudeo"
-            type="number"
-            disabled={productQuery.isLoading}
-            valueModifierOnChange={value => Number(value)}
-          />
-          <InputFormField
-            className="flex-1"
-            controllerProps={{
-              control,
-              name: "specialPrice",
-            }}
-            name="specialPrice"
-            label="Precio especial"
-            type="number"
-            disabled={productQuery.isLoading}
-            valueModifierOnChange={value => Number(value)}
-          />
-        </div>
+          <div className="flex gap-4">
+            <InputFormField
+              className="flex-1"
+              controllerProps={{
+                control,
+                name: "webPagePrice",
+              }}
+              name="webPagePrice"
+              label="Precio de página web"
+              type="number"
+              disabled={productQuery.isLoading}
+              valueModifierOnChange={value => Number(value)}
+            />
+            <InputFormField
+              className="flex-1"
+              controllerProps={{
+                control,
+                name: "wholesalePrice",
+              }}
+              labelClassName="text-green-500"
+              name="wholesalePrice"
+              label="Precio de mayoreo"
+              type="number"
+              disabled={productQuery.isLoading}
+              valueModifierOnChange={value => Number(value)}
+            />
+          </div>
+          <div className="flex gap-4">
+            <InputFormField
+              className="flex-1"
+              controllerProps={{
+                control,
+                name: "retailPrice",
+              }}
+              name="retailPrice"
+              label="Precio de menudeo"
+              type="number"
+              disabled={productQuery.isLoading}
+              valueModifierOnChange={value => Number(value)}
+            />
+            <InputFormField
+              className="flex-1"
+              controllerProps={{
+                control,
+                name: "specialPrice",
+              }}
+              name="specialPrice"
+              label="Precio especial"
+              type="number"
+              disabled={productQuery.isLoading}
+              valueModifierOnChange={value => Number(value)}
+            />
+          </div>
 
-        <InputFormField
-          controllerProps={{
-            control,
-            name: "quantity",
-          }}
-          name="quantity"
-          label="Cantidad"
-          type="number"
-          disabled={productQuery.isLoading}
-          valueModifierOnChange={value => Number(value)}
-        />
+          <InputFormField
+            controllerProps={{
+              control,
+              name: "quantity",
+            }}
+            name="quantity"
+            label="Cantidad"
+            type="number"
+            disabled={productQuery.isLoading}
+            valueModifierOnChange={value => Number(value)}
+          />
+        </div>
+        <div className="flex-col gap-4 w-1/4">
+          <InputFormField
+            controllerProps={{
+              control,
+              name: "image",
+            }}
+            name="image"
+            label="Imagen"
+            disabled={productQuery.isLoading}
+            type="file"
+            className="mb-4"
+          />
+          {
+            file && !image && (
+              <div className="flex flex-col items-center gap-4 relative">
+                <img src={file} alt="Imagen del producto" className="w-full max-h-96 object-contain" />
+              </div>
+            )
+          }
+          {
+            image && (
+              <div className="flex flex-col items-center gap-4 relative">
+                <img src={URL.createObjectURL(image as File)} alt="Imagen del producto" className="w-full object-cover" />
+              </div>
+            )
+          }
+        </div>
       </div>
       <Button onClick={handleSubmit} disabled={productQuery.isLoading} className="mt-4">
         Guardar

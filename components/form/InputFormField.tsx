@@ -35,12 +35,18 @@ export const InputFormField = <T extends FieldValues>(props: NextUIInputFormFiel
               type={type}
               className={className}
               {...rest}
+              value={type === 'file' ? '' : field.value}
               onChange={(e) => {
-                const value = e.target.value;
-                if (valueModifierOnChange) {
-                  field.onChange(valueModifierOnChange(value));
-                } else {
-                  field.onChange(value);
+                if (type !== 'file') {
+                  const value = e.target.value;
+                  if (valueModifierOnChange) {
+                    field.onChange(valueModifierOnChange(value));
+                  } else {
+                    field.onChange(value);
+                  }
+                }
+                if (type === 'file') {
+                  field.onChange(e.target.files?.[0]);
                 }
               }}
             />

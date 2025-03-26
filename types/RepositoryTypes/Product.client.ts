@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ProductInputModel, ProductModel } from "./Product";
+import { ProductInputModel } from "./Product";
 
 export const ProductInputClient = ProductInputModel.extend({
   image: z.instanceof(File).or(z.string()).optional(),

@@ -1,7 +1,7 @@
 'use client';
 
 import { Product } from "@/types/MongoTypes/Product";
-import { ProductClient, ProductModel } from "@/types/RepositoryTypes/Product";
+import { ProductModel } from "@/types/RepositoryTypes/Product";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";

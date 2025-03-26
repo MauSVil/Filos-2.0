@@ -1,5 +1,3 @@
-'use client';
-
 import { Form, UseFormReturn } from "react-hook-form"
 import { InputFormField } from "../form/InputFormField"
 import { ComboboxFormField } from "../form/ComboboxField"
@@ -7,7 +5,7 @@ import { Button } from "@nextui-org/button"
 import { ProductClient } from "@/types/RepositoryTypes/Product";
 
 interface Props {
-  form: UseFormReturn<ProductClient>;
+  form: UseFormReturn<any>;
   isLoading: boolean;
   submit: () => void;
   image?: any;

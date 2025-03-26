@@ -10,7 +10,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-const defaultValues: ProductClient = {
+const defaultValues: any = {
   baseId: "",
   uniqId: "",
   color: "",
@@ -32,7 +32,7 @@ export const useModule = () => {
   const params = useParams();
   const id = params.id;
   
-  const form = useForm<ProductClient>({
+  const form = useForm<any>({
     defaultValues,
     mode: "onChange",
     resolver: zodResolver(ProductModel),

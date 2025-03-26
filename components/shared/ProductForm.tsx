@@ -162,7 +162,7 @@ const ProductForm = ({ form, isLoading, submit, image, file }: Props) => {
           {
             image && (
               <div className="flex flex-col items-center gap-4 relative">
-                <img src={URL.createObjectURL(image as File)} alt="Imagen del producto" className="w-full max-h-96 object-contain" />
+                <img src={URL.createObjectURL(image as any)} alt="Imagen del producto" className="w-full max-h-96 object-contain" />
               </div>
             )
           }

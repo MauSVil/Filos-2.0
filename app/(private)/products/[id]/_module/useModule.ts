@@ -3,12 +3,13 @@
 import { Product } from "@/types/MongoTypes/Product";
 import { ProductInputClient } from "@/types/RepositoryTypes/Product.client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";
 import ky from "ky";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const defaultValues: ProductInputClient = {
   baseId: "",
@@ -29,9 +30,11 @@ const defaultValues: ProductInputClient = {
 export const useModule = () => {
   const [file, setFile] = useState<string>();
 
+  const router = useRouter();
+
   const params = useParams();
   const id = params.id;
-  
+
   const form = useForm<ProductInputClient>({
     defaultValues,
     mode: "onChange",
@@ -44,7 +47,7 @@ export const useModule = () => {
   const uniqId = watch('uniqId');
   const image = watch('image');
 
-  
+
   // Misc
   const debouncedUniqId = useDebounce(uniqId, 500);
 
@@ -83,9 +86,30 @@ export const useModule = () => {
     }
   }, [debouncedUniqId]);
 
+  const editProductMutation = useMutation({
+    mutationKey: ['products', 'edit'],
+    mutationFn: async (data: ProductInputClient) => {
+      const formData = new FormData();
+      const { image, ...rest } = data;
+      formData.append('image', data.image as File);
+      formData.append('data', JSON.stringify(rest));
+      const respData = await ky.put(`/api/products/${id}`, {
+        body: formData
+      }).json();
+      return respData
+    },
+    onSuccess: () => {
+      toast.success('Se edito el producto correctamente');
+      router.push('/products');
+    },
+    onError: (err) => {
+      toast.error('Hubo un error al editar el producto');
+    }
+  })
+
   // Handlers
   const submit = handleSubmit(async (data) => {
-    console.log(data);
+    editProductMutation.mutate(data);
   });
 
   return {

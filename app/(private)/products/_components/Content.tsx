@@ -17,6 +17,7 @@ import _ from 'lodash';
 import { EditProductModal } from './EditProductModal';
 import { useRouter } from 'next/navigation';
 import { Product } from '@/types/RepositoryTypes/Product';
+import { cn } from '@/lib/utils';
 
 const ProductsContent = () => {
   const [pagination, setPagination] = useState({
@@ -173,7 +174,11 @@ const ProductsContent = () => {
                 >
                   <MinusIcon className="h-3.5 w-3.5" />
                 </Button>
-                <p className="text-base text-gray-500">
+                <p
+                  className={cn("text-base text-gray-500", {
+                    'text-red-200': (productsToUpdate[cellData.row.original._id]?.quantity || cellData.row.original.quantity || 0) < 0,
+                  })}
+                >
                   {productsToUpdate[cellData.row.original._id]?.quantity || cellData.row.original.quantity || 0}
                 </p>
                 <Button

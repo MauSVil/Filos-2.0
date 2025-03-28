@@ -37,7 +37,7 @@ export function ComboboxFormField<T extends FieldValues>({
       render={({ field }) => (
         <FormItem className="flex flex-col">
           <div className='flex gap-2'>
-            <FormLabel className={cn("text-white", { labelClassName })}>{label}</FormLabel>
+            <FormLabel className={cn("text-white", { [labelClassName!]: labelClassName })}>{label}</FormLabel>
             <FormMessage className='text-red-400 text-xs' />
           </div>
           <Popover>

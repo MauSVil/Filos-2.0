@@ -29,7 +29,7 @@ export const InputFormField = <T extends FieldValues>(props: NextUIInputFormFiel
       render={({ field }) => (
         <FormItem hidden={hidden} className={className}>
           <div className="flex gap-2">
-            <FormLabel className={cn("text-white", { labelClassName: labelClassName })}>{label}</FormLabel>
+            <FormLabel className={cn("text-white", { [labelClassName!]: labelClassName })}>{label}</FormLabel>
             <FormMessage className='text-red-400 text-xs' />
           </div>
           <FormControl>

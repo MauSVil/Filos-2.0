@@ -1,12 +1,14 @@
-import { ImageModal } from "@/app/(private)/products/_components/ImageModal";
-import { useProducts } from "@/app/(private)/products/_hooks/useProducts";
-import { DataTable } from "@/components/DataTable";
-import DataTableColumnHeader from "@/components/DataTableHeader";
-import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Order } from "@/types/MongoTypes/Order";
-import { Product } from "@/types/RepositoryTypes/Product";
-import { ColumnDef, ColumnFiltersState, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, VisibilityState } from "@tanstack/react-table";
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
+  VisibilityState,
+} from "@tanstack/react-table";
 import _ from "lodash";
 import { ListFilter, MinusIcon, PlusIcon } from "lucide-react";
 import Image from "next/image";
@@ -14,39 +16,65 @@ import { useEffect, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 
-const productOrderStatuses = [
-  'Todos',
-  'Con cantidad',
-  'Sin cantidad',
-]
+import { ImageModal } from "@/app/(private)/products/_components/ImageModal";
+import { useProducts } from "@/app/(private)/products/_hooks/useProducts";
+import { DataTable } from "@/components/DataTable";
+import DataTableColumnHeader from "@/components/DataTableHeader";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Order } from "@/types/MongoTypes/Order";
+import { Product } from "@/types/RepositoryTypes/Product";
 
-const Step1 = ({ order, type }: { order?: Order, type: 'new' | 'edit' }) => {
+const productOrderStatuses = ["Todos", "Con cantidad", "Sin cantidad"];
+
+const Step1 = ({ order, type }: { order?: Order; type: "new" | "edit" }) => {
   const form = useFormContext();
-  const [status, setStatus] = useState(productOrderStatuses[0])
-  const [sorting, setSorting] = useState<SortingState>([{ id: 'uniqId', desc: false }]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-  const [globalFilter, setGlobalFilter] = useState('')
+  const [status, setStatus] = useState(productOrderStatuses[0]);
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: "uniqId", desc: false },
+  ]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [globalFilter, setGlobalFilter] = useState("");
 
   const productsQuery = useProducts();
 
   const productsFromOrder = useMemo(() => {
     if (!order) return [];
+
     return order.products || [];
   }, [order]);
 
   const products = useMemo(() => {
-    const productsFromOrderMapped = _.keyBy(productsFromOrder, 'product');
+    const productsFromOrderMapped = _.keyBy(productsFromOrder, "product");
+
     return (productsQuery.data?.data || []).filter((product) => {
-      if (status === 'Todos') return true;
-      if (status === 'Con cantidad' && productsFromOrderMapped[product._id!]?.quantity > 0) return true;
-      if (status === 'Sin cantidad' && (productsFromOrderMapped[product._id!]?.quantity <= 0 || productsFromOrderMapped[product._id]?.quantity === undefined)) return true;
+      if (status === "Todos") return true;
+      if (
+        status === "Con cantidad" &&
+        productsFromOrderMapped[product._id!]?.quantity > 0
+      )
+        return true;
+      if (
+        status === "Sin cantidad" &&
+        (productsFromOrderMapped[product._id!]?.quantity <= 0 ||
+          productsFromOrderMapped[product._id]?.quantity === undefined)
+      )
+        return true;
+
       return false;
     });
   }, [productsQuery.data, status, productsFromOrder]);
 
-  const { watch } = form
-  const productsForm = watch('products', {});
+  const { watch } = form;
+  const productsForm = watch("products", {});
 
   const handleImageClick = async (image: string) => {
     try {
@@ -54,9 +82,10 @@ const Step1 = ({ order, type }: { order?: Order, type: 'new' | 'edit' }) => {
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
+
         return;
       }
-      toast.error('An error occurred');
+      toast.error("An error occurred");
     }
   };
 
@@ -64,43 +93,43 @@ const Step1 = ({ order, type }: { order?: Order, type: 'new' | 'edit' }) => {
     () =>
       [
         {
-          id: 'Imagen',
+          id: "Imagen",
           header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Imagen" />
           ),
-          accessorKey: 'image',
+          accessorKey: "image",
           cell: (cellData) => {
             return (
               <Image
-                width={50}
-                height={50}
-                className="rounded-medium cursor-pointer"
-                src={cellData.row.original.image!}
                 alt="image"
+                className="rounded-medium cursor-pointer"
+                height={50}
+                src={cellData.row.original.image!}
+                width={50}
                 onClick={() => handleImageClick(cellData.row.original.image!)}
               />
             );
           },
         },
         {
-          id: 'Modelo',
+          id: "Modelo",
           header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Modelo" />
           ),
-          accessorKey: 'uniqId',
+          accessorKey: "uniqId",
           enableGlobalFilter: true,
           enableSorting: true,
           filterFn: "auto",
           enableColumnFilter: true,
           sortingFn: "textCaseSensitive",
-          maxSize: 10
+          maxSize: 10,
         },
         {
-          id: 'Color',
+          id: "Color",
           header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Color" />
           ),
-          accessorKey: 'color',
+          accessorKey: "color",
           enableGlobalFilter: true,
           enableSorting: true,
           filterFn: "auto",
@@ -108,27 +137,29 @@ const Step1 = ({ order, type }: { order?: Order, type: 'new' | 'edit' }) => {
           sortingFn: "textCaseSensitive",
         },
         {
-          id: 'Acciones',
+          id: "Acciones",
           header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Acciones" />
           ),
           cell: (cellData) => (
             <div className="flex items-center gap-2">
               <Button
+                className="h-6 w-6"
                 size="icon"
                 variant="outline"
-                className="h-6 w-6"
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
-                  form.setValue('products', {
+                  form.setValue("products", {
                     ...productsForm,
                     [cellData.row.original._id]: {
                       ...productsForm[cellData.row.original._id],
                       product: cellData.row.original._id,
-                      quantity: (productsForm[cellData.row.original._id]?.quantity || 0) - 1,
+                      quantity:
+                        (productsForm[cellData.row.original._id]?.quantity ||
+                          0) - 1,
                     },
-                  })
+                  });
                 }}
               >
                 <MinusIcon className="h-3.5 w-3.5" />
@@ -138,20 +169,22 @@ const Step1 = ({ order, type }: { order?: Order, type: 'new' | 'edit' }) => {
                 {productsForm[cellData.row.original._id]?.quantity || 0}
               </p>
               <Button
+                className="h-6 w-6"
                 size="icon"
                 variant="outline"
-                className="h-6 w-6"
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
-                  form.setValue('products', {
+                  form.setValue("products", {
                     ...productsForm,
                     [cellData.row.original._id]: {
                       ...productsForm[cellData.row.original._id],
                       product: cellData.row.original._id,
-                      quantity: (productsForm[cellData.row.original._id]?.quantity || 0) + 1,
+                      quantity:
+                        (productsForm[cellData.row.original._id]?.quantity ||
+                          0) + 1,
                     },
-                  })
+                  });
                 }}
               >
                 <PlusIcon className="h-3.5 w-3.5" />
@@ -161,7 +194,7 @@ const Step1 = ({ order, type }: { order?: Order, type: 'new' | 'edit' }) => {
           ),
         },
       ] satisfies ColumnDef<Product>[],
-    [productsForm]
+    [productsForm],
   );
 
   const table = useReactTable({
@@ -185,62 +218,59 @@ const Step1 = ({ order, type }: { order?: Order, type: 'new' | 'edit' }) => {
       columnVisibility,
       globalFilter,
     },
-  })
+  });
 
   useEffect(() => {
     if (!order || Object.keys(productsForm || {}).length > 0) return;
     const { products } = order;
-    const productsMapped = _.keyBy(products, 'product');
-    form.setValue('products', productsMapped);
+    const productsMapped = _.keyBy(products, "product");
+
+    form.setValue("products", productsMapped);
   }, [order, productsForm]);
 
   return (
     <div className="flex flex-col gap-4">
       <h3 className="text-lg font-semibold">Productos</h3>
-      {
-        type === 'edit' && (
-          <div className="flex items-center">
-            <div className="ml-auto flex items-center gap-2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-7 gap-1 text-sm"
-                  >
-                    <ListFilter className="h-3.5 w-3.5" />
-                    <span className="sr-only sm:not-sr-only">Filtrar</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Filrar por:</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  {
-                    productOrderStatuses.map((statusLabel) => {
-                      return (
-                        <DropdownMenuCheckboxItem
-                          checked={status === statusLabel}
-                          onCheckedChange={() => setStatus(statusLabel)}
-                        >
-                          {statusLabel}
-                        </DropdownMenuCheckboxItem>
-                      )
-                    })
-                  }
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+      {type === "edit" && (
+        <div className="flex items-center">
+          <div className="ml-auto flex items-center gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  className="h-7 gap-1 text-sm"
+                  size="sm"
+                  variant="outline"
+                >
+                  <ListFilter className="h-3.5 w-3.5" />
+                  <span className="sr-only sm:not-sr-only">Filtrar</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Filrar por:</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {productOrderStatuses.map((statusLabel) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      checked={status === statusLabel}
+                      onCheckedChange={() => setStatus(statusLabel)}
+                    >
+                      {statusLabel}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
-        )
-      }
+        </div>
+      )}
       <DataTable
-        table={table}
-        isLoading={productsQuery.isLoading}
+        className="mb-4"
         columns={columns}
-        className='mb-4'
+        isLoading={productsQuery.isLoading}
+        table={table}
       />
     </div>
-  )
-}
+  );
+};
 
 export default Step1;

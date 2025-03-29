@@ -1,26 +1,36 @@
-import clientPromise from "@/mongodb";
-import { Product, ProductInput, ProductInputModel, ProductRepositoryFilter, ProductRepositoryFilterModel } from "@/types/RepositoryTypes/Product";
-import _ from "lodash";
 import { Db, ObjectId } from "mongodb";
+
 import { HistoryMovementsRepository } from "./historymovements.repository";
+
+import {
+  Product,
+  ProductInput,
+  ProductInputModel,
+  ProductRepositoryFilter,
+  ProductRepositoryFilterModel,
+} from "@/types/RepositoryTypes/Product";
+import clientPromise from "@/mongodb";
 
 let client;
 let db: Db;
 
 const init = async () => {
   client = await clientPromise;
-  db = client.db('test') as Db;
+  db = client.db("test") as Db;
 };
 
 export class ProductsRepository {
-  static async findOne(filter: ProductRepositoryFilter = {}): Promise<Product | null> {
+  static async findOne(
+    filter: ProductRepositoryFilter = {},
+  ): Promise<Product | null> {
     await init();
     const filters = await ProductRepositoryFilterModel.parse(filter);
     const { id, ...rest } = filters;
-    const product = await db.collection('products').findOne<Product>({
+    const product = await db.collection("products").findOne<Product>({
       ...rest,
       ...(id ? { _id: new ObjectId(id) } : {}),
     });
+
     return product;
   }
 
@@ -31,17 +41,23 @@ export class ProductsRepository {
 
     const productsIds = ids?.map((id) => new ObjectId(id));
 
-    const messages = await db.collection('products').find<Product>({
-      ...rest,
-      ...(q ? {
-        $or: [
-          { uniqId: { $regex: q, $options: 'i' } },
-          { name: { $regex: q, $options: 'i' } }
-        ]
-      } : {}),
-      ...(productsIds && { _id: { $in: productsIds } }),
-      ...(id && { _id: new ObjectId(id) }),
-    }).toArray();
+    const messages = await db
+      .collection("products")
+      .find<Product>({
+        ...rest,
+        ...(q
+          ? {
+              $or: [
+                { uniqId: { $regex: q, $options: "i" } },
+                { name: { $regex: q, $options: "i" } },
+              ],
+            }
+          : {}),
+        ...(productsIds && { _id: { $in: productsIds } }),
+        ...(id && { _id: new ObjectId(id) }),
+      })
+      .toArray();
+
     return messages;
   }
 
@@ -50,9 +66,14 @@ export class ProductsRepository {
     const productParsed = await ProductInputModel.parse(product);
     const { _id, ...rest } = productParsed;
 
-    const { insertedId } = await db.collection('products').insertOne(rest);
+    const { insertedId } = await db.collection("products").insertOne(rest);
 
-    await HistoryMovementsRepository.insertOne({ values: rest, type: 'insert', collection: 'products' });
+    await HistoryMovementsRepository.insertOne({
+      values: rest,
+      type: "insert",
+      collection: "products",
+    });
+
     return insertedId;
   }
 
@@ -60,15 +81,18 @@ export class ProductsRepository {
     await init();
     const filters = await ProductRepositoryFilterModel.parse(filter);
     const { page, q, disponibility, ...rest } = filters;
-    const count = await db.collection('products').countDocuments({
+    const count = await db.collection("products").countDocuments({
       ...rest,
-      ...(q ? {
-        $or: [
-          { uniqId: { $regex: q, $options: 'i' } },
-          { name: { $regex: q, $options: 'i' } }
-        ]
-      } : {}),
+      ...(q
+        ? {
+            $or: [
+              { uniqId: { $regex: q, $options: "i" } },
+              { name: { $regex: q, $options: "i" } },
+            ],
+          }
+        : {}),
     });
+
     return count;
   }
 
@@ -77,8 +101,13 @@ export class ProductsRepository {
     const { _id, ...rest } = await ProductInputModel.partial().parse(product);
     const id = new ObjectId(_id);
 
-    await db.collection('products').updateOne({ _id: id }, { $set: rest });
-    await HistoryMovementsRepository.insertOne({ values: rest, type: 'update', collection: 'products' });
-    return 'Product updated';
+    await db.collection("products").updateOne({ _id: id }, { $set: rest });
+    await HistoryMovementsRepository.insertOne({
+      values: rest,
+      type: "update",
+      collection: "products",
+    });
+
+    return "Product updated";
   }
 }

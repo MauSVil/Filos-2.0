@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import Link from "next/link"
+import Link from "next/link";
 import {
   Bell,
   Home,
@@ -12,7 +12,12 @@ import {
   Settings,
   ShoppingCart,
   Users2,
-} from "lucide-react"
+} from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+
+import { useNotifications } from "./_hooks/useNotifications";
+import { socket } from "./_socket";
 
 import {
   Breadcrumb,
@@ -20,45 +25,51 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+} from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/ui/tooltip"
-import { usePathname } from "next/navigation"
-import { cn } from "@/utils/cn"
-import { NotificationType } from "@/types/MongoTypes/Notification"
-import { useNotifications } from "./_hooks/useNotifications"
-import { useEffect, useMemo, useState } from "react"
-import { socket } from "./_socket"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import Notifications from "@/components/layout/notifications"
+} from "@/components/ui/tooltip";
+import { cn } from "@/utils/cn";
+import { NotificationType } from "@/types/MongoTypes/Notification";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import Notifications from "@/components/layout/notifications";
 
 interface Props {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const PrivateLayout = (props: Props) => {
   const { children } = props;
-  const [notificationsState, setNotificationsState] = useState<NotificationType[]>([])
+  const [notificationsState, setNotificationsState] = useState<
+    NotificationType[]
+  >([]);
 
   const pathname = usePathname();
-  const currentPaths = pathname.split("/")
-  const currentPath = currentPaths?.[1]
+  const currentPaths = pathname.split("/");
+  const currentPath = currentPaths?.[1];
 
   const notifications = useNotifications();
-  const notificationsData = useMemo(() => notifications?.data || [], [notifications.data]);
+  const notificationsData = useMemo(
+    () => notifications?.data || [],
+    [notifications.data],
+  );
 
   useEffect(() => {
     setNotificationsState(notificationsData);
   }, [notificationsData.length, notifications.isFetching]);
 
   useEffect(() => {
-    socket.on('new_notification', (notification: NotificationType) => {
-      const audio = new Audio('/sounds/Notification.mp3');
+    socket.on("new_notification", (notification: NotificationType) => {
+      const audio = new Audio("/sounds/Notification.mp3");
+
       audio.volume = 0.8;
       audio.play();
       setNotificationsState((prevState) => {
@@ -67,13 +78,13 @@ const PrivateLayout = (props: Props) => {
     });
 
     return () => {
-      socket.off('new_notification');
+      socket.off("new_notification");
     };
   }, []);
 
   const onNotificationClick = (notification: NotificationType) => {
     notifications.refetch();
-  }
+  };
 
   return (
     <div className="flex flex-1 w-full flex-col bg-muted/40">
@@ -82,10 +93,13 @@ const PrivateLayout = (props: Props) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
+                className={cn(
+                  "flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+                  {
+                    "bg-accent": currentPath === "",
+                  },
+                )}
                 href="/"
-                className={cn("flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8", {
-                  "bg-accent": currentPath === ""
-                })}
               >
                 <Home className="h-5 w-5" />
                 <span className="sr-only">Dashboard</span>
@@ -96,10 +110,13 @@ const PrivateLayout = (props: Props) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
+                className={cn(
+                  "flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+                  {
+                    "bg-accent": currentPath === "orders",
+                  },
+                )}
                 href="/orders"
-                className={cn("flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8", {
-                  "bg-accent": currentPath === "orders"
-                })}
               >
                 <ShoppingCart className="h-5 w-5" />
                 <span className="sr-only">Ordenes</span>
@@ -110,10 +127,13 @@ const PrivateLayout = (props: Props) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
+                className={cn(
+                  "flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+                  {
+                    "bg-accent": currentPath === "products",
+                  },
+                )}
                 href="/products"
-                className={cn("flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8", {
-                  "bg-accent": currentPath === "products"
-                })}
               >
                 <Package className="h-5 w-5" />
                 <span className="sr-only">Productos</span>
@@ -124,10 +144,13 @@ const PrivateLayout = (props: Props) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
+                className={cn(
+                  "flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+                  {
+                    "bg-accent": currentPath === "buyers",
+                  },
+                )}
                 href="/buyers"
-                className={cn("flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8", {
-                  "bg-accent": currentPath === "buyers"
-                })}
               >
                 <Users2 className="h-5 w-5" />
                 <span className="sr-only">Compradores</span>
@@ -138,10 +161,13 @@ const PrivateLayout = (props: Props) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
+                className={cn(
+                  "flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+                  {
+                    "bg-accent": currentPath === "chat",
+                  },
+                )}
                 href="/chat"
-                className={cn("flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8", {
-                  "bg-accent": currentPath === "chat"
-                })}
               >
                 <MessageCircle className="h-5 w-5" />
                 <span className="sr-only">Chat</span>
@@ -152,10 +178,13 @@ const PrivateLayout = (props: Props) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
+                className={cn(
+                  "flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+                  {
+                    "bg-accent": currentPath === "catalogs",
+                  },
+                )}
                 href="/catalogs"
-                className={cn("flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8", {
-                  "bg-accent": currentPath === "catalogs"
-                })}
               >
                 <ImagesIcon className="h-5 w-5" />
                 <span className="sr-only">Catalogos</span>
@@ -166,10 +195,13 @@ const PrivateLayout = (props: Props) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
+                className={cn(
+                  "flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+                  {
+                    "bg-accent": currentPath === "editPrices",
+                  },
+                )}
                 href="/editPrices"
-                className={cn("flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8", {
-                  "bg-accent": currentPath === "editPrices"
-                })}
               >
                 <ImagesIcon className="h-5 w-5" />
                 <span className="sr-only">Editar Precios</span>
@@ -183,27 +215,40 @@ const PrivateLayout = (props: Props) => {
             <PopoverTrigger>
               <div className="relative flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
                 <Bell className="h-5 w-5" />
-                {
-                  notificationsState.filter((notification) => !notification.read).length > 0 && (
-                    <div className="absolute top-0 right-0 flex items-center justify-center h-4 w-4 text-xs font-semibold bg-blue-500 rounded-full text-primary">
-                      {notificationsState.filter((notification) => !notification.read).length}
-                    </div>
-                  )
-                }
+                {notificationsState.filter((notification) => !notification.read)
+                  .length > 0 && (
+                  <div className="absolute top-0 right-0 flex items-center justify-center h-4 w-4 text-xs font-semibold bg-blue-500 rounded-full text-primary">
+                    {
+                      notificationsState.filter(
+                        (notification) => !notification.read,
+                      ).length
+                    }
+                  </div>
+                )}
                 <span className="sr-only">Notificaciones</span>
               </div>
             </PopoverTrigger>
-            <PopoverContent side="right" className="w-[400px]" collisionPadding={50}>
-              <Notifications notifications={notificationsState} onNotificationClick={onNotificationClick} />
+            <PopoverContent
+              className="w-[400px]"
+              collisionPadding={50}
+              side="right"
+            >
+              <Notifications
+                notifications={notificationsState}
+                onNotificationClick={onNotificationClick}
+              />
             </PopoverContent>
           </Popover>
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
+                className={cn(
+                  "flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+                  {
+                    "bg-accent": currentPath === "settings",
+                  },
+                )}
                 href="#"
-                className={cn("flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8", {
-                  "bg-accent": currentPath === "settings"
-                })}
               >
                 <Settings className="h-5 w-5" />
                 <span className="sr-only">Settings</span>
@@ -217,61 +262,76 @@ const PrivateLayout = (props: Props) => {
         <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
           <Sheet>
             <SheetTrigger asChild>
-              <Button size="icon" variant="outline" className="sm:hidden">
+              <Button className="sm:hidden" size="icon" variant="outline">
                 <PanelLeft className="h-5 w-5" />
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="sm:max-w-xs">
+            <SheetContent className="sm:max-w-xs" side="left">
               <nav className="grid gap-6 text-lg font-medium">
                 <Link
+                  className={cn(
+                    "flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground",
+                    {
+                      "text-foreground": currentPath === "",
+                    },
+                  )}
                   href="/"
-                  className={cn("flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground", {
-                    "text-foreground": currentPath === ""
-                  })}
                 >
                   <Home className="h-5 w-5" />
                   Dashboard
                 </Link>
                 <Link
+                  className={cn(
+                    "flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground",
+                    {
+                      "text-foreground": currentPath === "orders",
+                    },
+                  )}
                   href="/orders"
-                  className={cn("flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground", {
-                    "text-foreground": currentPath === "orders"
-                  })}
                 >
                   <ShoppingCart className="h-5 w-5" />
                   Ordenes
                 </Link>
                 <Link
+                  className={cn(
+                    "flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground",
+                    {
+                      "text-foreground": currentPath === "products",
+                    },
+                  )}
                   href="/products"
-                  className={cn("flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground", {
-                    "text-foreground": currentPath === "products"
-                  })}
                 >
                   <Package className="h-5 w-5" />
                   Productos
                 </Link>
                 <Link
+                  className={cn(
+                    "flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground",
+                    {
+                      "text-foreground": currentPath === "buyers",
+                    },
+                  )}
                   href="/buyers"
-                  className={cn("flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground", {
-                    "text-foreground": currentPath === "buyers"
-                  })}
                 >
                   <Users2 className="h-5 w-5" />
                   Compradores
                 </Link>
                 <Link
+                  className={cn(
+                    "flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground",
+                    {
+                      "text-foreground": currentPath === "buyers",
+                    },
+                  )}
                   href="/chat"
-                  className={cn("flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground", {
-                    "text-foreground": currentPath === "buyers"
-                  })}
                 >
                   <MessageCircle className="h-5 w-5" />
                   Chat
                 </Link>
                 <Link
-                  href="#"
                   className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                  href="#"
                 >
                   <LineChart className="h-5 w-5" />
                   Settings
@@ -281,22 +341,19 @@ const PrivateLayout = (props: Props) => {
           </Sheet>
           <Breadcrumb className="hidden md:flex">
             <BreadcrumbList>
-              {
-                currentPaths?.length > 0 && currentPaths.slice(1).map((path, index) => (
+              {currentPaths?.length > 0 &&
+                currentPaths.slice(1).map((path, index) => (
                   <div key={index} className="flex items-center gap-2">
                     <BreadcrumbItem key={index}>
                       <BreadcrumbLink key={index} asChild>
                         <Link href="#">{path}</Link>
                       </BreadcrumbLink>
                     </BreadcrumbItem>
-                    {
-                      index + 1 < currentPaths.length - 1 && (
-                        <BreadcrumbSeparator />
-                      )
-                    }
+                    {index + 1 < currentPaths.length - 1 && (
+                      <BreadcrumbSeparator />
+                    )}
                   </div>
-                ))
-              }
+                ))}
             </BreadcrumbList>
           </Breadcrumb>
         </header>
@@ -305,7 +362,7 @@ const PrivateLayout = (props: Props) => {
         </main>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PrivateLayout
+export default PrivateLayout;

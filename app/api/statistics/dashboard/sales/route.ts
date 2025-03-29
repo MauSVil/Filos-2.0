@@ -1,7 +1,8 @@
-import { OrdersRepository } from "@/repositories/orders.repository";
-import { Order } from "@/types/MongoTypes/Order";
 import { NextResponse } from "next/server";
 import moment from "moment-timezone";
+
+import { OrdersRepository } from "@/repositories/orders.repository";
+import { Order } from "@/types/MongoTypes/Order";
 
 interface GroupedOrders {
   [year: number]: {
@@ -10,14 +11,26 @@ interface GroupedOrders {
 }
 
 const MONTHS = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 const groupOrdersByYearAndMonth = (orders: Order[]): GroupedOrders => {
   const grouped: GroupedOrders = orders.reduce<GroupedOrders>((acc, order) => {
-    const year = moment(order.requestDate).tz('America/Mexico_City').year();
-    const month = moment(order.requestDate).tz('America/Mexico_City').format("MMMM");
+    const year = moment(order.requestDate).tz("America/Mexico_City").year();
+    const month = moment(order.requestDate)
+      .tz("America/Mexico_City")
+      .format("MMMM");
 
     if (!acc[year]) acc[year] = {};
 
@@ -41,13 +54,17 @@ const groupOrdersByYearAndMonth = (orders: Order[]): GroupedOrders => {
 
 export const GET = async () => {
   try {
-    const from = moment().tz('America/Mexico_City').subtract(1, 'year').startOf('year').toDate();
-    const to = moment().tz('America/Mexico_City').endOf('year').toDate();
+    const from = moment()
+      .tz("America/Mexico_City")
+      .subtract(1, "year")
+      .startOf("year")
+      .toDate();
+    const to = moment().tz("America/Mexico_City").endOf("year").toDate();
 
     const orders = await OrdersRepository.find({
       dateRange: { from, to },
       paid: true,
-      status: 'Completado',
+      status: "Completado",
     });
     const groupedOrders: GroupedOrders = groupOrdersByYearAndMonth(orders);
 
@@ -56,6 +73,7 @@ export const GET = async () => {
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
-    return NextResponse.json({ error: 'An error occurred' }, { status: 500 });
+
+    return NextResponse.json({ error: "An error occurred" }, { status: 500 });
   }
-}
+};

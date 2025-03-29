@@ -1,22 +1,23 @@
 "use client";
 import React, { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import ky, { HTTPError } from "ky";
+
 import { useOrder } from "../_hooks/useOrder";
+import Step0 from "../../new/_components/Steps/Step0";
+import Step1 from "../../new/_components/Steps/Step1";
+import Step2 from "../../new/_components/Steps/Step2";
+import { TempOrder, TempOrderInput } from "../../new/schemas/CreateFormValues";
+
 import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import Step0 from "../../new/_components/Steps/Step0";
-import Step1 from "../../new/_components/Steps/Step1";
-import Step2 from "../../new/_components/Steps/Step2";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { TempOrder, TempOrderInput } from "../../new/schemas/CreateFormValues";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import ky, { HTTPError } from "ky";
 import { Order } from "@/types/MongoTypes/Order";
-import _ from "lodash";
 
 const Content = ({ id }: { id: string }) => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -27,7 +28,10 @@ const Content = ({ id }: { id: string }) => {
   const router = useRouter();
 
   const orderQuery = useOrder({ id });
-  const order = useMemo(() => orderQuery?.data || {}, [orderQuery.data]) as Order;
+  const order = useMemo(
+    () => orderQuery?.data || {},
+    [orderQuery.data],
+  ) as Order;
 
   const ContentComponent = useMemo(() => {
     switch (currentStep) {
@@ -36,7 +40,14 @@ const Content = ({ id }: { id: string }) => {
       case 1:
         return <Step1 order={order} type="edit" />;
       case 2:
-        return <Step2 label="Actualizando orden..." success={success} successLabel="Orden actualizada correctamente" error={error} />;
+        return (
+          <Step2
+            error={error}
+            label="Actualizando orden..."
+            success={success}
+            successLabel="Orden actualizada correctamente"
+          />
+        );
       default:
         return <div>No hay informacion</div>;
     }
@@ -46,7 +57,7 @@ const Content = ({ id }: { id: string }) => {
     if (currentStep === 0) return;
     setCurrentStep((prev) => prev - 1);
     setError(undefined);
-  }
+  };
 
   const form = useForm<TempOrder>({
     defaultValues: {},
@@ -64,25 +75,31 @@ const Content = ({ id }: { id: string }) => {
       console.error(err);
       toast.error("Faltan productos por agregar");
       setError("Faltan productos por agregar");
+
       return;
     }
 
     try {
       setCurrentStep((prev) => prev + 1);
 
-      await ky.put('/api/orders', { json: {
-        _id: id,
-        ...data,
-      } }).json();
+      await ky
+        .put("/api/orders", {
+          json: {
+            _id: id,
+            ...data,
+          },
+        })
+        .json();
 
       setLoading(false);
       setSuccess(true);
     } catch (error) {
       console.error(error);
       setLoading(false);
-  
+
       if (error instanceof HTTPError) {
-        const errorData = await error.response.json() as { error: string };
+        const errorData = (await error.response.json()) as { error: string };
+
         toast.error(errorData.error || "Hubo un error al editar la orden");
         setError("Hubo un error al editar la orden");
       } else if (error instanceof Error) {
@@ -98,21 +115,23 @@ const Content = ({ id }: { id: string }) => {
   const handleNextStep = () => {
     if (currentStep === 1) {
       onSubmit();
+
       return;
-    };
+    }
 
     if (currentStep === 2) {
       orderQuery.refetch();
       router.push("/orders");
+
       return;
     }
-  
+
     form.trigger().then((isValid) => {
       if (isValid) {
         setCurrentStep((prev) => prev + 1);
       }
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     if (orderQuery.isPending) return;
@@ -126,24 +145,21 @@ const Content = ({ id }: { id: string }) => {
       description,
     } = order;
 
-    form.setValue('name', name);
-    form.setValue('buyer', buyer);
-    form.setValue('dueDate', dueDate);
-    form.setValue('orderType', orderType);
-    form.setValue('freightPrice', freightPrice);
-    form.setValue('advancedPayment', advancedPayment);
-    form.setValue('description', description);
-
+    form.setValue("name", name);
+    form.setValue("buyer", buyer);
+    form.setValue("dueDate", dueDate);
+    form.setValue("orderType", orderType);
+    form.setValue("freightPrice", freightPrice);
+    form.setValue("advancedPayment", advancedPayment);
+    form.setValue("description", description);
   }, [orderQuery.isPending]);
 
   return (
     <div className="w-full h-full flex flex-col items-center">
       <div className="flex flex-col w-full mb-5 gap-4">
-        {
-          (currentStep === 0 || currentStep === 1) && (
-            <Progress value={(currentStep + 1) * 100 / 4} />
-          )
-        }
+        {(currentStep === 0 || currentStep === 1) && (
+          <Progress value={((currentStep + 1) * 100) / 4} />
+        )}
       </div>
       <Separator className="mb-5" />
       <div className="mb-5 w-full flex-1 bg-blue">
@@ -156,17 +172,17 @@ const Content = ({ id }: { id: string }) => {
       <div className="w-full flex justify-between items-center gap-4 mt-5">
         <Button
           className="w-1/2"
-          onClick={handleBackStep}
           color="secondary"
           disabled={loading || currentStep === 0 || success}
+          onClick={handleBackStep}
         >
           Atras
         </Button>
         <Button
           className={cn("w-1/2")}
-          onClick={handleNextStep}
-          variant={currentStep === 1 ? "success" : "default" }
           disabled={loading || !!error}
+          variant={currentStep === 1 ? "default" : "default"}
+          onClick={handleNextStep}
         >
           {currentStep === 0 && "Siguiente"}
           {currentStep === 1 && "Actualizar"}
@@ -174,7 +190,7 @@ const Content = ({ id }: { id: string }) => {
         </Button>
       </div>
     </div>
-  )
+  );
 };
 
 export default Content;

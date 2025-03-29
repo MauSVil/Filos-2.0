@@ -1,8 +1,21 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { useMemo } from "react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+
 import { useSalesPerMonth } from "../_hooks/useSalesPerMonth";
+
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 type SalesData = {
   [year: number]: {
@@ -58,36 +71,38 @@ const months = [
 
 const SalesPerMonth = () => {
   const salesPerMonthQuery = useSalesPerMonth();
-  const salesPerMonth = useMemo(() => salesPerMonthQuery.data || {}, [salesPerMonthQuery.data]);
+  const salesPerMonth = useMemo(
+    () => salesPerMonthQuery.data || {},
+    [salesPerMonthQuery.data],
+  );
 
   const chartData = useMemo(() => {
     return months.map((month) => ({
       month,
-      ...Object.keys(salesPerMonth).reduce((acc, year) => {
-        acc[year] = salesPerMonth[parseInt(year)][month] || 0;
-        return acc;
-      }, {} as Record<string, number>),
-    }))
+      ...Object.keys(salesPerMonth).reduce(
+        (acc, year) => {
+          acc[year] = salesPerMonth[parseInt(year)][month] || 0;
+
+          return acc;
+        },
+        {} as Record<string, number>,
+      ),
+    }));
   }, [salesPerMonth]);
 
-
   const chartConfig = useMemo(() => {
-    return Object.keys(salesData).reduce(
-      (acc, year, index) => {
-        acc[year] = {
-          label: year,
-          color: `hsl(var(--chart-${index + 1}))`,
-        };
-        return acc;
-      },
-      {} as ChartConfig
-    );
+    return Object.keys(salesData).reduce((acc, year, index) => {
+      acc[year] = {
+        label: year,
+        color: `hsl(var(--chart-${index + 1}))`,
+      };
+
+      return acc;
+    }, {} as ChartConfig);
   }, [salesPerMonth]);
 
   return (
-    <Card
-      className="max-w-xs" x-chunk="charts-01-chunk-2"
-    >
+    <Card className="max-w-xs" x-chunk="charts-01-chunk-2">
       <CardHeader>
         <CardTitle>Ventas por mes ($)</CardTitle>
       </CardHeader>
@@ -103,24 +118,24 @@ const SalesPerMonth = () => {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
-              tickLine={false}
               axisLine={false}
-              tickMargin={8}
+              dataKey="month"
               tickFormatter={(value) => value.slice(0, 3)}
+              tickLine={false}
+              tickMargin={8}
             />
             <ChartTooltip
-              cursor={false}
               content={<ChartTooltipContent indicator="dot" />}
+              cursor={false}
             />
             {Object.keys(salesData).map((year) => (
               <Area
                 key={year}
                 dataKey={year}
-                type="natural"
                 fill={`var(--color-${year})`}
                 fillOpacity={0.4}
                 stroke={`var(--color-${year})`}
+                type="natural"
               />
             ))}
           </AreaChart>

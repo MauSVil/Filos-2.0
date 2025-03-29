@@ -1,14 +1,13 @@
 import React from "react";
+
 import Content from "./_components/Content";
 
 interface Props {
-  params: {
-    id: string;
-  }
+  params: Promise<{ id: string }>
 }
 
-const OrderEditPage = ({ params }: Props) => {
-  const { id } = params;
+const OrderEditPage = async ({ params }: Props) => {
+  const { id } = await params;
 
   return <Content id={id} />;
 };

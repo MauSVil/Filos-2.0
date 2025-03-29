@@ -1,10 +1,12 @@
-'use client';
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useMemo } from "react";
+
+import Chat from "../../_desktop/_components/Chat";
 
 import { Button } from "@/components/ui/button";
-import Chat from "../../_desktop/_components/Chat";
-import { useRouter } from "next/navigation";
 import { useContact } from "@/app/(private)/orders/_hooks/useContact";
-import { useMemo } from "react";
 import { Contact } from "@/types/Chat";
 
 interface Props {
@@ -17,22 +19,23 @@ const SelectedChatContent = (props: Props) => {
 
   const handleBackClick = () => {
     router.back();
-  }
+  };
 
   const contactQuery = useContact({ phone_id: selectedChat, enabled: true });
-  const contact = useMemo(() => contactQuery?.data || [], [contactQuery.data]) as Contact;
+  const contact = useMemo(
+    () => contactQuery?.data || [],
+    [contactQuery.data],
+  ) as Contact;
 
   return (
     <div className="flex flex-col gap-4">
       <div className="justify-start">
-        <Button onClick={handleBackClick}>
-          Volver
-        </Button>
+        <Button onClick={handleBackClick}>Volver</Button>
       </div>
       <Chat
+        contact={contact}
         loading={contactQuery.isLoading}
         selectedChat={selectedChat}
-        contact={contact}
       />
     </div>
   );

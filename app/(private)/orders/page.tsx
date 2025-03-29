@@ -1,9 +1,7 @@
 import OrdersContent from "./_components/Content";
 
 const OrdersPage = () => {
-  return (
-    <OrdersContent />
-  );
-}
+  return <OrdersContent />;
+};
 
 export default OrdersPage;

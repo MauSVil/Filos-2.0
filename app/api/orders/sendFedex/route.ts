@@ -1,6 +1,7 @@
+import { NextRequest, NextResponse } from "next/server";
+
 import { OrdersRepository } from "@/repositories/orders.repository";
 import { Order } from "@/types/MongoTypes/Order";
-import { NextRequest, NextResponse } from "next/server";
 
 const fedexCredentials = {
   apiKey: "l7f77a66bccf2f4d1b84de97e111f1f35f", // Reemplaza con tu clave API
@@ -27,12 +28,12 @@ const getAccessToken = async () => {
   }
 
   const data = await response.json();
+
   // console.log("Access token obtenido:", data.access_token);
   return data.access_token;
 };
 
 const createShipment = async (accessToken: string, ordersFound: Order[]) => {
-
   console.log(ordersFound, ordersFound.length);
 
   const payload = {
@@ -105,16 +106,19 @@ const createShipment = async (accessToken: string, ordersFound: Order[]) => {
 
   if (!response.ok) {
     const errorDetails = await response.json();
+
     console.error("Error en detalles:", errorDetails);
     throw new Error(`Error creando shipment: ${response.statusText}`);
   }
 
   const data = await response.json();
+
   console.log(JSON.stringify(data, null, 2));
 
-  const trackingNumber = data.output.transactionShipments[0].masterTrackingNumber;
-  console.log("Número de seguimiento:", trackingNumber);
+  const trackingNumber =
+    data.output.transactionShipments[0].masterTrackingNumber;
 
+  console.log("Número de seguimiento:", trackingNumber);
 
   // const encodedLabel = data.output.transactionShipments[0].pieceResponses[0].packageDocuments[0].encodedLabel;
 
@@ -127,16 +131,19 @@ export const POST = async (req: NextRequest) => {
   try {
     const body = await req.json();
     const { orders } = body;
-  
+
     const ordersFound = await OrdersRepository.find({ ids: orders });
 
     const accessToken = await getAccessToken();
+
     await createShipment(accessToken, ordersFound);
-    return NextResponse.json({ message: 'Orders sent to Fedex' });
+
+    return NextResponse.json({ message: "Orders sent to Fedex" });
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
-    return NextResponse.json({ error: 'An error occurred' }, { status: 500 });
+
+    return NextResponse.json({ error: "An error occurred" }, { status: 500 });
   }
-}
+};

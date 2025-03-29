@@ -1,8 +1,9 @@
+import _ from "lodash";
+import { NextRequest, NextResponse } from "next/server";
+
 import { OrdersRepository } from "@/repositories/orders.repository";
 import { ProductsRepository } from "@/repositories/products.repository";
 import { Product } from "@/types/RepositoryTypes/Product";
-import _ from "lodash";
-import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -14,22 +15,21 @@ export const POST = async (req: NextRequest) => {
         from: startDate,
         to: endDate,
       },
-      orConditions: [
-        { advancedPayment: { $gt: 0 } },
-        { paid: true, }
-      ]
+      orConditions: [{ advancedPayment: { $gt: 0 } }, { paid: true }],
     });
-  
+
     const productsIds = orders.reduce((acc, order) => {
-      return acc.concat(order.products.map(({ product }) => product.toString()));
+      return acc.concat(
+        order.products.map(({ product }) => product.toString()),
+      );
     }, [] as string[]);
 
     const products = await ProductsRepository.find({ ids: productsIds });
-    const productsMapped = _.keyBy(products, '_id');
+    const productsMapped = _.keyBy(products, "_id");
 
     const productQuantities: { [key: string]: number } = {};
 
-    orders.forEach(order => {
+    orders.forEach((order) => {
       order.products.forEach(({ product, quantity }) => {
         if (!productQuantities[product]) {
           productQuantities[product] = 0;
@@ -40,9 +40,9 @@ export const POST = async (req: NextRequest) => {
 
     const finalProductsObj: { [key: string]: Product } = {};
 
-    Object.keys(productQuantities).forEach(productId => {
+    Object.keys(productQuantities).forEach((productId) => {
       const product = productsMapped[productId];
-      
+
       if (product.quantity - productQuantities[productId] < 0) {
         finalProductsObj[productId] = {
           ...product,
@@ -56,6 +56,7 @@ export const POST = async (req: NextRequest) => {
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
-    return NextResponse.json({ error: 'An error occurred' }, { status: 500 });
+
+    return NextResponse.json({ error: "An error occurred" }, { status: 500 });
   }
-}
+};

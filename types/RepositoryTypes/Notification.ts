@@ -6,14 +6,15 @@ export const NotificationRepositoryFilterModel = z.object({
   page: z.number().optional(),
 });
 
-export type NotificationRepositoryFilter = z.infer<typeof NotificationRepositoryFilterModel>;
+export type NotificationRepositoryFilter = z.infer<
+  typeof NotificationRepositoryFilterModel
+>;
 
 export const NotificationInputModel = z.object({
   phone_id: z.string(),
   message: z.string(),
-  role: z.enum(['user', 'assistant']),
+  role: z.enum(["user", "assistant"]),
   timestamp: z.date(),
 });
 
 export type NotificationInput = z.infer<typeof NotificationInputModel>;
-

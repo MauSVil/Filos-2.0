@@ -1,26 +1,31 @@
 import { FieldValues, UseControllerProps } from "react-hook-form";
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
-import { Input } from "../ui/input";
+
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
 import { Switch } from "../ui/switch";
 
-export interface NextUIInputFormFieldProps<T extends FieldValues> extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface NextUIInputFormFieldProps<T extends FieldValues>
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   controllerProps: UseControllerProps<T>;
   placeholder?: string;
   label?: string;
 }
 
-export const SwitchFormField = <T extends FieldValues>(props: NextUIInputFormFieldProps<T>) => {
-  const {
-    controllerProps,
-    hidden,
-    label,
-    className,
-  } = props;
+export const SwitchFormField = <T extends FieldValues>(
+  props: NextUIInputFormFieldProps<T>,
+) => {
+  const { controllerProps, hidden, label, className } = props;
+
   return (
     <FormField
       {...controllerProps}
       render={({ field }) => (
-        <FormItem hidden={hidden} className={className}>
+        <FormItem className={className} hidden={hidden}>
           <FormLabel>{label}</FormLabel>
           <FormControl>
             <Switch
@@ -33,5 +38,5 @@ export const SwitchFormField = <T extends FieldValues>(props: NextUIInputFormFie
         </FormItem>
       )}
     />
-  )
+  );
 };

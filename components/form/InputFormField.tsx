@@ -1,9 +1,18 @@
 import { FieldValues, UseControllerProps } from "react-hook-form";
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
 import { Input } from "../ui/input";
+
 import { cn } from "@/lib/utils";
 
-export interface NextUIInputFormFieldProps<T extends FieldValues> extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface NextUIInputFormFieldProps<T extends FieldValues>
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   controllerProps: UseControllerProps<T>;
   placeholder?: string;
   label?: string;
@@ -11,7 +20,9 @@ export interface NextUIInputFormFieldProps<T extends FieldValues> extends React.
   labelClassName?: string;
 }
 
-export const InputFormField = <T extends FieldValues>(props: NextUIInputFormFieldProps<T>) => {
+export const InputFormField = <T extends FieldValues>(
+  props: NextUIInputFormFieldProps<T>,
+) => {
   const {
     controllerProps,
     hidden,
@@ -23,33 +34,41 @@ export const InputFormField = <T extends FieldValues>(props: NextUIInputFormFiel
     labelClassName,
     ...rest
   } = props;
+
   return (
     <FormField
       {...controllerProps}
       render={({ field }) => (
-        <FormItem hidden={hidden} className={className}>
+        <FormItem className={className} hidden={hidden}>
           <div className="flex gap-2">
-            <FormLabel className={cn("text-white", { [labelClassName!]: labelClassName })}>{label}</FormLabel>
-            <FormMessage className='text-red-400 text-xs' />
+            <FormLabel
+              className={cn("text-white", {
+                [labelClassName!]: labelClassName,
+              })}
+            >
+              {label}
+            </FormLabel>
+            <FormMessage className="text-red-400 text-xs" />
           </div>
           <FormControl>
             <Input
               {...field}
+              className={className}
               placeholder={placeholder}
               type={type}
-              className={className}
               {...rest}
-              value={type === 'file' ? '' : field.value}
+              value={type === "file" ? "" : field.value}
               onChange={(e) => {
-                if (type !== 'file') {
+                if (type !== "file") {
                   const value = e.target.value;
+
                   if (valueModifierOnChange) {
                     field.onChange(valueModifierOnChange(value));
                   } else {
                     field.onChange(value);
                   }
                 }
-                if (type === 'file') {
+                if (type === "file") {
                   field.onChange(e.target.files?.[0]);
                 }
               }}
@@ -58,5 +77,5 @@ export const InputFormField = <T extends FieldValues>(props: NextUIInputFormFiel
         </FormItem>
       )}
     />
-  )
+  );
 };

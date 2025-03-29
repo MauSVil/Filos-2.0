@@ -1,40 +1,58 @@
+import { Db, ObjectId } from "mongodb";
+
 import clientPromise from "@/mongodb";
 import { NotificationType } from "@/types/MongoTypes/Notification";
-import { NotificationRepositoryFilter, NotificationRepositoryFilterModel } from "@/types/RepositoryTypes/Notification";
-import _ from "lodash";
-import { Db, ObjectId } from "mongodb";
+import {
+  NotificationRepositoryFilter,
+  NotificationRepositoryFilterModel,
+} from "@/types/RepositoryTypes/Notification";
 
 let client;
 let db: Db;
 
 const init = async () => {
   client = await clientPromise;
-  db = client.db('test') as Db;
+  db = client.db("test") as Db;
 };
 
 export class NotificationsRepository {
-  static async findOne(filter: NotificationRepositoryFilter = {}): Promise<NotificationType | null> {
+  static async findOne(
+    filter: NotificationRepositoryFilter = {},
+  ): Promise<NotificationType | null> {
     await init();
     const filters = await NotificationRepositoryFilterModel.parse(filter);
-    const chat = await db.collection('notifications').findOne<NotificationType>(filters);
+    const chat = await db
+      .collection("notifications")
+      .findOne<NotificationType>(filters);
+
     return chat;
   }
 
-  static async find(filter: NotificationRepositoryFilter = {}): Promise<NotificationType[]> {
+  static async find(
+    filter: NotificationRepositoryFilter = {},
+  ): Promise<NotificationType[]> {
     await init();
     const filters = await NotificationRepositoryFilterModel.parse(filter);
-    const messages = await db.collection('notifications').find<NotificationType>(filters).sort({ timestamp: -1 }).toArray();
+    const messages = await db
+      .collection("notifications")
+      .find<NotificationType>(filters)
+      .sort({ timestamp: -1 })
+      .toArray();
+
     return messages;
   }
 
-  static async count(filter: NotificationRepositoryFilter = {}): Promise<number> {
+  static async count(
+    filter: NotificationRepositoryFilter = {},
+  ): Promise<number> {
     await init();
     const filters = await NotificationRepositoryFilterModel.parse(filter);
     const { page, ...rest } = filters;
-    const count = await db.collection('notifications').countDocuments({
+    const count = await db.collection("notifications").countDocuments({
       ...rest,
-      status: 'Pendiente'
+      status: "Pendiente",
     });
+
     return count;
   }
 
@@ -49,8 +67,11 @@ export class NotificationsRepository {
 
   static async updateOne(id: string, update: Partial<NotificationType>) {
     await init();
-    await db.collection('notifications').updateOne({ _id: new ObjectId(id) }, { $set: update });
-    return 'Notification updated';
+    await db
+      .collection("notifications")
+      .updateOne({ _id: new ObjectId(id) }, { $set: update });
+
+    return "Notification updated";
   }
 
   // static async deleteOne() {

@@ -1,14 +1,12 @@
+'use client';
+
 import SelectedChatContent from "./_components/SelectedChatContent";
 
-interface Props {
-  params: {
-    chat: string;
-  }
-}
+type Props = {
+  params: Promise<{ chat: string }>;
+};
 
-const SelectedChatPage = ({ params }: Props) => {
-  const { chat } = params;
+export default async function SelectedChatPage({ params }: Props) {
+  const { chat } = await params;
   return <SelectedChatContent selectedChat={chat} />;
 }
-
-export default SelectedChatPage;

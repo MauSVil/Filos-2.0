@@ -1,15 +1,17 @@
 "use client";
 
-import { Form } from "@/components/form";
 import { Control, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CreateFormValues } from "../_schemas/CreateFormValues";
-import { InputFormField } from "@/components/form/InputFormField";
+
 import { useCreateBuyer } from "../../_hooks/useCreateBuyer";
+
+import { InputFormField } from "@/components/form/InputFormField";
+import { Form } from "@/components/form";
 import { Button } from "@/components/ui/button";
 import { SwitchFormField } from "@/components/form/SwitchFormField";
+import { BuyerInput, BuyerInputModel } from "@/types/RepositoryTypes/Buyer";
 
-const defaultValues: CreateFormValues = {
+const defaultValues: BuyerInput = {
   name: "",
   email: "",
   phone: "",
@@ -20,19 +22,20 @@ const defaultValues: CreateFormValues = {
 const NewBuyersContent = () => {
   const mutation = useCreateBuyer();
 
-  const form = useForm<CreateFormValues>({
+  const form = useForm<BuyerInput>({
     defaultValues,
     mode: "onChange",
-    resolver: zodResolver(CreateFormValues),
+    resolver: zodResolver(BuyerInputModel),
   });
 
   const { handleSubmit } = form;
 
-  const control = form.control as any as Control<CreateFormValues>;
+  const control = form.control as any as Control<BuyerInput>;
 
-  const onSubmit = (values: CreateFormValues) => {
+  const onSubmit = (values: BuyerInput) => {
     const formdata = new FormData();
-    formdata.append('data', JSON.stringify(values));
+
+    formdata.append("data", JSON.stringify(values));
     mutation.mutate(formdata);
   };
 
@@ -86,19 +89,19 @@ const NewBuyersContent = () => {
               name="address"
             />
             <SwitchFormField
+              className="flex flex-col gap-2"
               controllerProps={{
                 control,
                 name: "isChain",
               }}
               label="Es un cliente de cadena?"
               name="isChain"
-              className="flex flex-col gap-2"
             />
           </div>
         </form>
       </Form>
     </div>
-  )
-}
+  );
+};
 
 export default NewBuyersContent;

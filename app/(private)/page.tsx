@@ -1,21 +1,22 @@
-"use client"
+"use client";
 
 import {
   Area,
   AreaChart,
   Bar,
   BarChart,
-  CartesianGrid,
   LabelList,
-  Line,
-  LineChart,
   PolarAngleAxis,
   RadialBar,
   RadialBarChart,
   Rectangle,
   XAxis,
   YAxis,
-} from "recharts"
+} from "recharts";
+
+import ProductsOutOfStock from "./_components/ProductsOutOfStock";
+import HistoryMovements from "./_components/HistoryMovements";
+import SalesPerMonth from "./_components/SalesPerMonth";
 
 import {
   Card,
@@ -24,16 +25,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
-import { Separator } from "@/components/ui/separator"
-import ProductsOutOfStock from "./_components/ProductsOutOfStock"
-import HistoryMovements from "./_components/HistoryMovements"
-import SalesPerMonth from "./_components/SalesPerMonth"
+} from "@/components/ui/chart";
+import { Separator } from "@/components/ui/separator";
 
 const Home = () => {
   return (
@@ -44,9 +42,7 @@ const Home = () => {
       </div>
       <div className="grid w-full flex-1 gap-6 lg:max-w-[20rem]">
         <SalesPerMonth />
-        <Card
-          className="max-w-xs" x-chunk="charts-01-chunk-3"
-        >
+        <Card className="max-w-xs" x-chunk="charts-01-chunk-3">
           <CardHeader className="p-4 pb-0">
             <CardTitle>Walking Distance</CardTitle>
             <CardDescription>
@@ -62,22 +58,16 @@ const Home = () => {
               </span>
             </div>
             <ChartContainer
+              className="ml-auto w-[72px]"
               config={{
                 steps: {
                   label: "Steps",
                   color: "hsl(var(--chart-1))",
                 },
               }}
-              className="ml-auto w-[72px]"
             >
               <BarChart
                 accessibilityLayer
-                margin={{
-                  left: 0,
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                }}
                 data={[
                   {
                     date: "2024-01-01",
@@ -108,31 +98,36 @@ const Home = () => {
                     steps: 1600,
                   },
                 ]}
+                margin={{
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                }}
               >
                 <Bar
+                  activeBar={<Rectangle fillOpacity={0.8} />}
+                  activeIndex={6}
                   dataKey="steps"
                   fill="var(--color-steps)"
-                  radius={2}
                   fillOpacity={0.2}
-                  activeIndex={6}
-                  activeBar={<Rectangle fillOpacity={0.8} />}
+                  radius={2}
                 />
                 <XAxis
+                  hide
+                  axisLine={false}
                   dataKey="date"
                   tickLine={false}
-                  axisLine={false}
                   tickMargin={4}
-                  hide
                 />
               </BarChart>
             </ChartContainer>
           </CardContent>
         </Card>
-        <Card
-          className="max-w-xs" x-chunk="charts-01-chunk-4"
-        >
+        <Card className="max-w-xs" x-chunk="charts-01-chunk-4">
           <CardContent className="flex gap-4 p-4 pb-2">
             <ChartContainer
+              className="h-[140px] w-full"
               config={{
                 move: {
                   label: "Move",
@@ -147,15 +142,10 @@ const Home = () => {
                   color: "hsl(var(--chart-3))",
                 },
               }}
-              className="h-[140px] w-full"
             >
               <BarChart
-                margin={{
-                  left: 0,
-                  right: 0,
-                  top: 0,
-                  bottom: 10,
-                }}
+                barGap={2}
+                barSize={32}
                 data={[
                   {
                     activity: "stand",
@@ -177,25 +167,29 @@ const Home = () => {
                   },
                 ]}
                 layout="vertical"
-                barSize={32}
-                barGap={2}
+                margin={{
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 10,
+                }}
               >
-                <XAxis type="number" dataKey="value" hide />
+                <XAxis hide dataKey="value" type="number" />
                 <YAxis
-                  dataKey="activity"
-                  type="category"
-                  tickLine={false}
-                  tickMargin={4}
                   axisLine={false}
                   className="capitalize"
+                  dataKey="activity"
+                  tickLine={false}
+                  tickMargin={4}
+                  type="category"
                 />
                 <Bar dataKey="value" radius={5}>
                   <LabelList
-                    position="insideLeft"
                     dataKey="label"
                     fill="white"
-                    offset={8}
                     fontSize={12}
+                    offset={8}
+                    position="insideLeft"
                   />
                 </Bar>
               </BarChart>
@@ -212,7 +206,7 @@ const Home = () => {
                   </span>
                 </div>
               </div>
-              <Separator orientation="vertical" className="mx-2 h-10 w-px" />
+              <Separator className="mx-2 h-10 w-px" orientation="vertical" />
               <div className="grid flex-1 auto-rows-min gap-0.5">
                 <div className="text-xs text-muted-foreground">Exercise</div>
                 <div className="flex items-baseline gap-1 text-2xl font-bold tabular-nums leading-none">
@@ -222,7 +216,7 @@ const Home = () => {
                   </span>
                 </div>
               </div>
-              <Separator orientation="vertical" className="mx-2 h-10 w-px" />
+              <Separator className="mx-2 h-10 w-px" orientation="vertical" />
               <div className="grid flex-1 auto-rows-min gap-0.5">
                 <div className="text-xs text-muted-foreground">Stand</div>
                 <div className="flex items-baseline gap-1 text-2xl font-bold tabular-nums leading-none">
@@ -237,9 +231,7 @@ const Home = () => {
         </Card>
       </div>
       <div className="grid w-full flex-1 gap-6">
-        <Card
-          className="max-w-xs" x-chunk="charts-01-chunk-5"
-        >
+        <Card className="max-w-xs" x-chunk="charts-01-chunk-5">
           <CardContent className="flex gap-4 p-4">
             <div className="grid items-center gap-2">
               <div className="grid flex-1 auto-rows-min gap-0.5">
@@ -271,6 +263,7 @@ const Home = () => {
               </div>
             </div>
             <ChartContainer
+              className="mx-auto aspect-square w-full max-w-[80%]"
               config={{
                 move: {
                   label: "Move",
@@ -285,15 +278,9 @@ const Home = () => {
                   color: "hsl(var(--chart-3))",
                 },
               }}
-              className="mx-auto aspect-square w-full max-w-[80%]"
             >
               <RadialBarChart
-                margin={{
-                  left: -10,
-                  right: -10,
-                  top: -10,
-                  bottom: -10,
-                }}
+                barSize={24}
                 data={[
                   {
                     activity: "stand",
@@ -311,25 +298,28 @@ const Home = () => {
                     fill: "var(--color-move)",
                   },
                 ]}
-                innerRadius="20%"
-                barSize={24}
-                startAngle={90}
                 endAngle={450}
+                innerRadius="20%"
+                margin={{
+                  left: -10,
+                  right: -10,
+                  top: -10,
+                  bottom: -10,
+                }}
+                startAngle={90}
               >
                 <PolarAngleAxis
-                  type="number"
-                  domain={[0, 100]}
                   dataKey="value"
+                  domain={[0, 100]}
                   tick={false}
+                  type="number"
                 />
-                <RadialBar dataKey="value" background cornerRadius={5} />
+                <RadialBar background cornerRadius={5} dataKey="value" />
               </RadialBarChart>
             </ChartContainer>
           </CardContent>
         </Card>
-        <Card
-          className="max-w-xs" x-chunk="charts-01-chunk-6"
-        >
+        <Card className="max-w-xs" x-chunk="charts-01-chunk-6">
           <CardHeader className="p-4 pb-0">
             <CardTitle>Active Energy</CardTitle>
             <CardDescription>
@@ -344,22 +334,16 @@ const Home = () => {
               </span>
             </div>
             <ChartContainer
+              className="ml-auto w-[64px]"
               config={{
                 calories: {
                   label: "Calories",
                   color: "hsl(var(--chart-1))",
                 },
               }}
-              className="ml-auto w-[64px]"
             >
               <BarChart
                 accessibilityLayer
-                margin={{
-                  left: 0,
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                }}
                 data={[
                   {
                     date: "2024-01-01",
@@ -390,29 +374,33 @@ const Home = () => {
                     calories: 345,
                   },
                 ]}
+                margin={{
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                }}
               >
                 <Bar
+                  activeBar={<Rectangle fillOpacity={0.8} />}
+                  activeIndex={6}
                   dataKey="calories"
                   fill="var(--color-calories)"
-                  radius={2}
                   fillOpacity={0.2}
-                  activeIndex={6}
-                  activeBar={<Rectangle fillOpacity={0.8} />}
+                  radius={2}
                 />
                 <XAxis
+                  hide
+                  axisLine={false}
                   dataKey="date"
                   tickLine={false}
-                  axisLine={false}
                   tickMargin={4}
-                  hide
                 />
               </BarChart>
             </ChartContainer>
           </CardContent>
         </Card>
-        <Card
-          className="max-w-xs" x-chunk="charts-01-chunk-7"
-        >
+        <Card className="max-w-xs" x-chunk="charts-01-chunk-7">
           <CardHeader className="space-y-0 pb-0">
             <CardDescription>Time in Bed</CardDescription>
             <CardTitle className="flex items-baseline gap-1 text-4xl tabular-nums">
@@ -474,10 +462,10 @@ const Home = () => {
                   bottom: 0,
                 }}
               >
-                <XAxis dataKey="date" hide />
-                <YAxis domain={["dataMin - 5", "dataMax + 2"]} hide />
+                <XAxis hide dataKey="date" />
+                <YAxis hide domain={["dataMin - 5", "dataMax + 2"]} />
                 <defs>
-                  <linearGradient id="fillTime" x1="0" y1="0" x2="0" y2="1">
+                  <linearGradient id="fillTime" x1="0" x2="0" y1="0" y2="1">
                     <stop
                       offset="5%"
                       stopColor="var(--color-time)"
@@ -492,14 +480,14 @@ const Home = () => {
                 </defs>
                 <Area
                   dataKey="time"
-                  type="natural"
                   fill="url(#fillTime)"
                   fillOpacity={0.4}
                   stroke="var(--color-time)"
+                  type="natural"
                 />
                 <ChartTooltip
-                  cursor={false}
                   content={<ChartTooltipContent hideLabel />}
+                  cursor={false}
                   formatter={(value) => (
                     <div className="flex min-w-[120px] items-center text-xs text-muted-foreground">
                       Time in bed
@@ -518,7 +506,7 @@ const Home = () => {
         </Card>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

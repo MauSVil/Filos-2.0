@@ -1,24 +1,40 @@
 import { z } from "zod";
 
-
 export const ProductModel = z.object({
   _id: z.string(),
   baseId: z.string().regex(/^M-\d{4}$/, {
-    message: "El formato debe ser 'M-3012', con una 'M', un guion y cuatro números.",
+    message:
+      "El formato debe ser 'M-3012', con una 'M', un guion y cuatro números.",
   }),
-  uniqId: z.string({ message: 'El campo uniqId es requerido' }).min(1, 'El campo uniqId es requerido'),
-  color: z.string({ message: 'El campo color es requerido' }).min(1, 'El campo color es requerido'),
-  name: z.string({ message: 'El campo name es requerido' }).min(1, 'El campo name es requerido'),
-  webPagePrice: z.number({ message: 'El campo webPagePrice es requerido' }).min(1, 'El campo webPagePrice es requerido'),
-  wholesalePrice: z.number({ message: 'El campo wholesalePrice es requerido' }).min(1, 'El campo wholesalePrice es requerido'),
-  retailPrice: z.number({ message: 'El campo retailPrice es requerido' }).min(1, 'El campo retailPrice es requerido'),
-  specialPrice: z.number({ message: 'El campo specialPrice es requerido' }).min(1, 'El campo specialPrice es requerido'),
-  quantity: z.number({ message: 'El campo quantity es requerido' }),
-  size: z.string({ message: 'El campo size es requerido' }).min(1, 'El campo size es requerido'),
+  uniqId: z
+    .string({ message: "El campo uniqId es requerido" })
+    .min(1, "El campo uniqId es requerido"),
+  color: z
+    .string({ message: "El campo color es requerido" })
+    .min(1, "El campo color es requerido"),
+  name: z
+    .string({ message: "El campo name es requerido" })
+    .min(1, "El campo name es requerido"),
+  webPagePrice: z
+    .number({ message: "El campo webPagePrice es requerido" })
+    .min(1, "El campo webPagePrice es requerido"),
+  wholesalePrice: z
+    .number({ message: "El campo wholesalePrice es requerido" })
+    .min(1, "El campo wholesalePrice es requerido"),
+  retailPrice: z
+    .number({ message: "El campo retailPrice es requerido" })
+    .min(1, "El campo retailPrice es requerido"),
+  specialPrice: z
+    .number({ message: "El campo specialPrice es requerido" })
+    .min(1, "El campo specialPrice es requerido"),
+  quantity: z.number({ message: "El campo quantity es requerido" }),
+  size: z
+    .string({ message: "El campo size es requerido" })
+    .min(1, "El campo size es requerido"),
   deleted_at: z.union([z.null(), z.coerce.date()]).optional(),
   image: z.string().optional(),
   updated_at: z.coerce.date().optional(),
-})
+});
 
 export type Product = z.infer<typeof ProductModel>;
 
@@ -32,7 +48,9 @@ export const ProductRepositoryFilterModel = z.object({
   baseId: z.string().optional(),
 });
 
-export type ProductRepositoryFilter = z.infer<typeof ProductRepositoryFilterModel>;
+export type ProductRepositoryFilter = z.infer<
+  typeof ProductRepositoryFilterModel
+>;
 
 export const ProductInputModel = z.object({
   _id: z.string().optional(),
@@ -53,4 +71,3 @@ export const ProductInputModel = z.object({
 });
 
 export type ProductInput = z.infer<typeof ProductInputModel>;
-

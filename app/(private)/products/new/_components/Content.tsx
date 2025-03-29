@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
-import ProductForm from "@/components/shared/ProductForm"
-import { useModule } from "../_module/useModule"
+import { useModule } from "../_module/useModule";
+
+import ProductForm from "@/components/shared/ProductForm";
 
 const Content = () => {
   const { form, localStore, methods } = useModule();
@@ -9,11 +10,11 @@ const Content = () => {
   return (
     <ProductForm
       form={form}
+      image={localStore.image as File}
       isLoading={false}
       submit={methods.submit}
-      image={localStore.image as File}
     />
-  )
-}
+  );
+};
 
-export default Content
+export default Content;

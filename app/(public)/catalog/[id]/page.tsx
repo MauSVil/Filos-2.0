@@ -1,10 +1,11 @@
 import PublicCataloguesContent from "./_components/Content";
 
-const PublicCataloguesPage = (props: { params: { id: string } }) => {
+const PublicCataloguesPage = async (props: { params: Promise<{ id: string }> }) => {
   const { params } = props;
-  return (
-    <PublicCataloguesContent id={params.id} />
-  );
+
+  const { id } = await params;
+
+  return <PublicCataloguesContent id={id} />;
 };
 
 export default PublicCataloguesPage;

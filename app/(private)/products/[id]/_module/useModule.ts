@@ -1,7 +1,5 @@
-'use client';
+"use client";
 
-import { Product } from "@/types/MongoTypes/Product";
-import { ProductInputClient } from "@/types/RepositoryTypes/Product.client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";
@@ -10,6 +8,9 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+import { ProductInputClient } from "@/types/RepositoryTypes/Product.client";
+import { Product } from "@/types/MongoTypes/Product";
 
 const defaultValues: ProductInputClient = {
   baseId: "",
@@ -44,9 +45,8 @@ export const useModule = () => {
   const { watch, handleSubmit } = form;
 
   // Watchers
-  const uniqId = watch('uniqId');
-  const image = watch('image');
-
+  const uniqId = watch("uniqId");
+  const image = watch("image");
 
   // Misc
   const debouncedUniqId = useDebounce(uniqId, 500);
@@ -55,10 +55,13 @@ export const useModule = () => {
   const productQuery = useQuery({
     queryKey: ["product", id],
     queryFn: async () => {
-      const resp = await ky.post('/api/products/search', { json: { id } }).json() as { data: Product[], count: number }
-      return resp
-    }
-  })
+      const resp = (await ky
+        .post("/api/products/search", { json: { id } })
+        .json()) as { data: Product[]; count: number };
+
+      return resp;
+    },
+  });
 
   useEffect(() => {
     if (productQuery.data?.data && productQuery.data?.data.length > 0) {
@@ -73,7 +76,7 @@ export const useModule = () => {
         specialPrice: productQuery.data.data[0].specialPrice,
         quantity: productQuery.data.data[0].quantity,
         size: productQuery.data.data[0].size,
-      })
+      });
 
       setFile(productQuery.data.data[0].image);
     }
@@ -82,30 +85,35 @@ export const useModule = () => {
   useEffect(() => {
     if (debouncedUniqId) {
       const baseId = debouncedUniqId.slice(0, 6);
-      form.setValue('baseId', baseId);
+
+      form.setValue("baseId", baseId);
     }
   }, [debouncedUniqId]);
 
   const editProductMutation = useMutation({
-    mutationKey: ['products', 'edit'],
+    mutationKey: ["products", "edit"],
     mutationFn: async (data: ProductInputClient) => {
       const formData = new FormData();
       const { image, ...rest } = data;
-      formData.append('image', data.image as File);
-      formData.append('data', JSON.stringify(rest));
-      const respData = await ky.put(`/api/products/${id}`, {
-        body: formData
-      }).json();
-      return respData
+
+      formData.append("image", data.image as File);
+      formData.append("data", JSON.stringify(rest));
+      const respData = await ky
+        .put(`/api/products/${id}`, {
+          body: formData,
+        })
+        .json();
+
+      return respData;
     },
     onSuccess: () => {
-      toast.success('Se edito el producto correctamente');
-      router.push('/products');
+      toast.success("Se edito el producto correctamente");
+      router.push("/products");
     },
     onError: (err) => {
-      toast.error('Hubo un error al editar el producto');
-    }
-  })
+      toast.error("Hubo un error al editar el producto");
+    },
+  });
 
   // Handlers
   const submit = handleSubmit(async (data) => {
@@ -117,7 +125,7 @@ export const useModule = () => {
     localStore: {
       product: productQuery.data?.data[0],
       file,
-      image
+      image,
     },
     methods: {
       setFile,
@@ -126,6 +134,6 @@ export const useModule = () => {
     flags: {
       isLoading: productQuery.isLoading,
       isError: productQuery.isError,
-    }
-  }
-}
+    },
+  };
+};

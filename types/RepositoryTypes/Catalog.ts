@@ -5,7 +5,9 @@ export const CatalogRepositoryFilterModel = z.object({
   name: z.string().optional(),
 });
 
-export type CatalogRepositoryFilter = z.infer<typeof CatalogRepositoryFilterModel>;
+export type CatalogRepositoryFilter = z.infer<
+  typeof CatalogRepositoryFilterModel
+>;
 
 export const CatalogInputModel = z.object({
   name: z.string(),
@@ -14,4 +16,3 @@ export const CatalogInputModel = z.object({
 });
 
 export type CatalogInput = z.infer<typeof CatalogInputModel>;
-

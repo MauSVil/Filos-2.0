@@ -7,7 +7,9 @@ export const ContactRepositoryFilterModel = z.object({
   offset: z.number().optional(),
 });
 
-export type ContactRepositoryFilter = z.infer<typeof ContactRepositoryFilterModel>;
+export type ContactRepositoryFilter = z.infer<
+  typeof ContactRepositoryFilterModel
+>;
 
 export const ContactInputModel = z.object({
   name: z.string(),
@@ -21,4 +23,3 @@ export const ContactInputModel = z.object({
 });
 
 export type ContactInput = z.infer<typeof ContactInputModel>;
-

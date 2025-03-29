@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,6 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import ky from "ky";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+
 import { ProductInputClient } from "@/types/RepositoryTypes/Product.client";
 
 const defaultValues: ProductInputClient = {
@@ -37,42 +38,46 @@ export const useModule = () => {
 
   const { watch, handleSubmit } = form;
 
-  const image = watch('image');
-  const uniqId = watch('uniqId');
+  const image = watch("image");
+  const uniqId = watch("uniqId");
 
   const debouncedUniqId = useDebounce(uniqId, 500);
 
   const newProductMutation = useMutation({
-    mutationKey: ['products', 'new'],
+    mutationKey: ["products", "new"],
     mutationFn: async (data: ProductInputClient) => {
       const formData = new FormData();
       const { image, ...rest } = data;
 
-      formData.append('image', data.image as File);
-      formData.append('data', JSON.stringify(rest));
+      formData.append("image", data.image as File);
+      formData.append("data", JSON.stringify(rest));
 
-      const respData = await ky.post('/api/products', {
-        body: formData
-      }).json();
-      return respData
+      const respData = await ky
+        .post("/api/products", {
+          body: formData,
+        })
+        .json();
+
+      return respData;
     },
 
     onSuccess: () => {
-      toast.success('Se creo el producto correctamente');
-      router.push('/products');
+      toast.success("Se creo el producto correctamente");
+      router.push("/products");
     },
 
     onError: (err) => {
-      toast.error('Hubo un error al crear el producto');
-    }
-  })
+      toast.error("Hubo un error al crear el producto");
+    },
+  });
 
   useEffect(() => {
     if (debouncedUniqId) {
       const baseId = debouncedUniqId.slice(0, 6);
-      form.setValue('baseId', baseId);
+
+      form.setValue("baseId", baseId);
     } else {
-      form.setValue('baseId', '');
+      form.setValue("baseId", "");
     }
   }, [debouncedUniqId]);
 
@@ -83,10 +88,10 @@ export const useModule = () => {
   return {
     form,
     localStore: {
-      image
+      image,
     },
     methods: {
-      submit
-    }
-  }
-}
+      submit,
+    },
+  };
+};

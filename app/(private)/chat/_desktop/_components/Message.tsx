@@ -1,53 +1,62 @@
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Message } from "@/types/Chat";
 import moment from "moment-timezone";
 
-const MessageComponent = ({ message, scrollToBottom }: { message: Message, scrollToBottom: () => void }) => {
+import { Button } from "@/components/ui/button";
+import { Message } from "@/types/Chat";
+
+const MessageComponent = ({
+  message,
+  scrollToBottom,
+}: {
+  message: Message;
+  scrollToBottom: () => void;
+}) => {
   switch (message.type) {
-    case 'text':
+    case "text":
       return (
         <>
           <span className="text-small">{message.message}</span>
           <span className={`text-xs text-white text-right`}>
-            {moment(message.timestamp).tz('America/Mexico_City').format("HH:mm")}
+            {moment(message.timestamp)
+              .tz("America/Mexico_City")
+              .format("HH:mm")}
           </span>
         </>
       );
-    case 'image':
+    case "image":
       return (
         <Image
-          width={150}
-          height={150}
-          className="rounded-medium"
-          src={message.metadata.url}
           alt="image"
+          className="rounded-medium"
+          height={150}
+          src={message.metadata.url}
+          width={150}
           onLoad={scrollToBottom}
         />
       );
-    case 'pdf':
+    case "pdf":
       return (
         <div className="flex flex-col gap-1">
-          <span className="text-small">
-            Se envio satisfactoriamente el PDF
-          </span>
+          <span className="text-small">Se envio satisfactoriamente el PDF</span>
           <Button
             size="sm"
-            onClick={() => window.open(message.metadata.url, '_blank')}
+            onClick={() => window.open(message.metadata.url, "_blank")}
           >
             Ver PDF
           </Button>
         </div>
-      )
+      );
     default:
       return (
         <>
           <span className="text-small">No se pudo procesar este mensaje</span>
           <span className={`text-tiny text-white text-right`}>
-            {moment(message.timestamp).tz('America/Mexico_City').format("HH:mm")}
+            {moment(message.timestamp)
+              .tz("America/Mexico_City")
+              .format("HH:mm")}
           </span>
         </>
-      )
+      );
   }
 };
 

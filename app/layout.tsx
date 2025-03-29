@@ -1,11 +1,11 @@
 import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import clsx from "clsx";
+import { Inter as FontSans } from "next/font/google";
 
 import { Providers } from "./providers";
 
 import { siteConfig } from "@/config/site";
-import { Inter as FontSans } from "next/font/google"
 
 export const metadata: Metadata = {
   title: {
@@ -28,7 +28,7 @@ export const viewport: Viewport = {
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
-})
+});
 
 export default function RootLayout({
   children,

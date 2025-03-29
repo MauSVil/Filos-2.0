@@ -1,36 +1,52 @@
-'use client';
+"use client";
 
-import { useMemo, useState } from 'react';
-import { useProducts } from '../_hooks/useProducts';
-import { DataTable } from '@/components/DataTable';
-import { ColumnDef, ColumnFiltersState, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, VisibilityState } from '@tanstack/react-table';
-import DataTableColumnHeader from '@/components/DataTableHeader';
-import numeral from 'numeral';
-import Image from 'next/image';
-import { toast } from 'sonner';
-import { ImageModal } from './ImageModal';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Button } from '@/components/ui/button';
-import { NewCatalogModal } from './NewCatalogueModal';
-import { Edit, MinusIcon, Plus, PlusIcon } from 'lucide-react';
-import _ from 'lodash';
-import { EditProductModal } from './EditProductModal';
-import { useRouter } from 'next/navigation';
-import { Product } from '@/types/RepositoryTypes/Product';
-import { cn } from '@/lib/utils';
+import { useMemo, useState } from "react";
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
+  VisibilityState,
+} from "@tanstack/react-table";
+import numeral from "numeral";
+import Image from "next/image";
+import { toast } from "sonner";
+import { Edit, MinusIcon, Plus, PlusIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+
+import { useProducts } from "../_hooks/useProducts";
+
+import { EditProductModal } from "./EditProductModal";
+import { NewCatalogModal } from "./NewCatalogueModal";
+import { ImageModal } from "./ImageModal";
+
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import DataTableColumnHeader from "@/components/DataTableHeader";
+import { DataTable } from "@/components/DataTable";
+import { Product } from "@/types/RepositoryTypes/Product";
+import { cn } from "@/lib/utils";
 
 const ProductsContent = () => {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
   });
-  const [sorting, setSorting] = useState<SortingState>([{ id: 'uniqId', desc: false }]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-  const [globalFilter, setGlobalFilter] = useState('')
-  const [rowSelection, setRowSelection] = useState({})
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: "uniqId", desc: false },
+  ]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [globalFilter, setGlobalFilter] = useState("");
+  const [rowSelection, setRowSelection] = useState({});
 
-  const [productsToUpdate, setProductsToUpdate] = useState<{[key: string]: Product}>({});
+  const [productsToUpdate, setProductsToUpdate] = useState<{
+    [key: string]: Product;
+  }>({});
 
   const productsQuery = useProducts();
 
@@ -46,9 +62,10 @@ const ProductsContent = () => {
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
+
         return;
       }
-      toast.error('An error occurred');
+      toast.error("An error occurred");
     }
   };
 
@@ -56,11 +73,13 @@ const ProductsContent = () => {
     () =>
       [
         {
-          id: 'select',
+          id: "select",
           header: ({ table }) => (
             <Checkbox
               {...{
-                checked: table.getIsSomeRowsSelected() ? 'indeterminate' : table.getIsAllRowsSelected(),
+                checked: table.getIsSomeRowsSelected()
+                  ? "indeterminate"
+                  : table.getIsAllRowsSelected(),
                 // onCheckedChange: table.getToggleAllRowsSelectedHandler(),
               }}
             />
@@ -78,30 +97,30 @@ const ProductsContent = () => {
           ),
         },
         {
-          id: 'Imagen',
+          id: "Imagen",
           header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Imagen" />
           ),
-          accessorKey: 'image',
+          accessorKey: "image",
           cell: (cellData) => {
             return (
               <Image
-                width={50}
-                height={50}
-                className="rounded-medium cursor-pointer"
-                src={cellData.row.original.image!}
                 alt="image"
+                className="rounded-medium cursor-pointer"
+                height={50}
+                src={cellData.row.original.image!}
+                width={50}
                 onClick={() => handleImageClick(cellData.row.original.image!)}
               />
             );
           },
         },
         {
-          id: 'Modelo',
+          id: "Modelo",
           header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Modelo" />
           ),
-          accessorKey: 'uniqId',
+          accessorKey: "uniqId",
           enableGlobalFilter: true,
           enableSorting: true,
           filterFn: "auto",
@@ -109,11 +128,11 @@ const ProductsContent = () => {
           sortingFn: "textCaseSensitive",
         },
         {
-          id: 'Nombre',
+          id: "Nombre",
           header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Nombre" />
           ),
-          accessorKey: 'name',
+          accessorKey: "name",
           enableGlobalFilter: true,
           enableSorting: true,
           filterFn: "auto",
@@ -121,11 +140,11 @@ const ProductsContent = () => {
           sortingFn: "textCaseSensitive",
         },
         {
-          id: 'Color',
+          id: "Color",
           header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Color" />
           ),
-          accessorKey: 'color',
+          accessorKey: "color",
           enableGlobalFilter: true,
           enableSorting: true,
           filterFn: "auto",
@@ -133,11 +152,11 @@ const ProductsContent = () => {
           sortingFn: "textCaseSensitive",
         },
         {
-          id: 'Talla',
+          id: "Talla",
           header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Talla" />
           ),
-          accessorKey: 'size',
+          accessorKey: "size",
           enableGlobalFilter: true,
           enableSorting: true,
           filterFn: "auto",
@@ -145,18 +164,18 @@ const ProductsContent = () => {
           sortingFn: "textCaseSensitive",
         },
         {
-          id: 'Disponibilidad',
+          id: "Disponibilidad",
           header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Disponibilidad" />
           ),
-          accessorKey: 'quantity',
+          accessorKey: "quantity",
           cell: (cellData) => {
             return (
               <div className="flex items-center gap-2">
                 <Button
+                  className="h-6 w-6"
                   size="icon"
                   variant="outline"
-                  className="h-6 w-6"
                   onClick={(e) => {
                     e.stopPropagation();
                     e.preventDefault();
@@ -166,25 +185,34 @@ const ProductsContent = () => {
                         ...prevState,
                         [cellData.row.original._id]: {
                           ...cellData.row.original,
-                          quantity: (productsToUpdate[cellData.row.original._id]?.quantity || cellData.row.original.quantity || 0) - 1,
+                          quantity:
+                            (productsToUpdate[cellData.row.original._id]
+                              ?.quantity ||
+                              cellData.row.original.quantity ||
+                              0) - 1,
                         },
-                      }
-                    })
+                      };
+                    });
                   }}
                 >
                   <MinusIcon className="h-3.5 w-3.5" />
                 </Button>
                 <p
                   className={cn("text-base text-gray-500", {
-                    'text-red-200': (productsToUpdate[cellData.row.original._id]?.quantity || cellData.row.original.quantity || 0) < 0,
+                    "text-red-200":
+                      (productsToUpdate[cellData.row.original._id]?.quantity ||
+                        cellData.row.original.quantity ||
+                        0) < 0,
                   })}
                 >
-                  {productsToUpdate[cellData.row.original._id]?.quantity || cellData.row.original.quantity || 0}
+                  {productsToUpdate[cellData.row.original._id]?.quantity ||
+                    cellData.row.original.quantity ||
+                    0}
                 </p>
                 <Button
+                  className="h-6 w-6"
                   size="icon"
                   variant="outline"
-                  className="h-6 w-6"
                   onClick={(e) => {
                     e.stopPropagation();
                     e.preventDefault();
@@ -193,17 +221,21 @@ const ProductsContent = () => {
                         ...prevState,
                         [cellData.row.original._id]: {
                           ...cellData.row.original,
-                          quantity: (productsToUpdate[cellData.row.original._id]?.quantity || cellData.row.original.quantity || 0) + 1,
+                          quantity:
+                            (productsToUpdate[cellData.row.original._id]
+                              ?.quantity ||
+                              cellData.row.original.quantity ||
+                              0) + 1,
                         },
-                      }
-                    })
+                      };
+                    });
                   }}
                 >
                   <PlusIcon className="h-3.5 w-3.5" />
                   <span className="sr-only">More</span>
                 </Button>
               </div>
-            )
+            );
           },
           enableGlobalFilter: true,
           enableSorting: true,
@@ -212,12 +244,17 @@ const ProductsContent = () => {
           sortingFn: "textCaseSensitive",
         },
         {
-          id: 'Precio especial',
+          id: "Precio especial",
           header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Precio especial" className='text-green-400' />
+            <DataTableColumnHeader
+              className="text-green-400"
+              column={column}
+              title="Precio especial"
+            />
           ),
-          accessorKey: 'specialPrice',
-          accessorFn: ({ specialPrice }) => numeral(specialPrice).format('$0,0.00'),
+          accessorKey: "specialPrice",
+          accessorFn: ({ specialPrice }) =>
+            numeral(specialPrice).format("$0,0.00"),
           enableGlobalFilter: true,
           enableSorting: true,
           filterFn: "auto",
@@ -225,12 +262,17 @@ const ProductsContent = () => {
           sortingFn: "textCaseSensitive",
         },
         {
-          id: 'Precio mayoreo',
+          id: "Precio mayoreo",
           header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Precio mayoreo" className='text-purple-400' />
+            <DataTableColumnHeader
+              className="text-purple-400"
+              column={column}
+              title="Precio mayoreo"
+            />
           ),
-          accessorKey: 'wholesalePrice',
-          accessorFn: ({ wholesalePrice }) => numeral(wholesalePrice).format('$0,0.00'),
+          accessorKey: "wholesalePrice",
+          accessorFn: ({ wholesalePrice }) =>
+            numeral(wholesalePrice).format("$0,0.00"),
           enableGlobalFilter: true,
           enableSorting: true,
           filterFn: "auto",
@@ -238,12 +280,17 @@ const ProductsContent = () => {
           sortingFn: "textCaseSensitive",
         },
         {
-          id: 'Precio semi-mayoreo',
+          id: "Precio semi-mayoreo",
           header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Precio semi-mayoreo" className='text-yellow-400' />
+            <DataTableColumnHeader
+              className="text-yellow-400"
+              column={column}
+              title="Precio semi-mayoreo"
+            />
           ),
-          accessorKey: 'retailPrice',
-          accessorFn: ({ retailPrice }) => numeral(retailPrice).format('$0,0.00'),
+          accessorKey: "retailPrice",
+          accessorFn: ({ retailPrice }) =>
+            numeral(retailPrice).format("$0,0.00"),
           enableGlobalFilter: true,
           enableSorting: true,
           filterFn: "auto",
@@ -251,12 +298,17 @@ const ProductsContent = () => {
           sortingFn: "textCaseSensitive",
         },
         {
-          id: 'Precio pagina web',
+          id: "Precio pagina web",
           header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Precio pagina web" className='text-red-400' />
+            <DataTableColumnHeader
+              className="text-red-400"
+              column={column}
+              title="Precio pagina web"
+            />
           ),
-          accessorKey: 'webPagePrice',
-          accessorFn: ({ webPagePrice }) => numeral(webPagePrice).format('$0,0.00'),
+          accessorKey: "webPagePrice",
+          accessorFn: ({ webPagePrice }) =>
+            numeral(webPagePrice).format("$0,0.00"),
           enableGlobalFilter: true,
           enableSorting: true,
           filterFn: "auto",
@@ -264,14 +316,14 @@ const ProductsContent = () => {
           sortingFn: "textCaseSensitive",
         },
         {
-          id: 'Acciones',
-          header: 'Acciones',
+          id: "Acciones",
+          header: "Acciones",
           cell: (cellData) => (
             <div className="flex items-center gap-2">
               <Button
+                className="h-6 w-6"
                 size="icon"
                 variant="outline"
-                className="h-6 w-6"
                 onClick={() => {
                   router.push(`/products/${cellData.row.original._id}`);
                 }}
@@ -282,7 +334,7 @@ const ProductsContent = () => {
           ),
         },
       ] satisfies ColumnDef<Product>[],
-    [productsToUpdate]
+    [productsToUpdate],
   );
 
   const table = useReactTable({
@@ -309,39 +361,43 @@ const ProductsContent = () => {
       columnVisibility,
       globalFilter,
       pagination,
-      rowSelection
+      rowSelection,
     },
-  })
+  });
 
   const handleNewCatalogClick = async () => {
     try {
       const productIds = Object.keys(rowSelection);
-      await NewCatalogModal({productIds});
+
+      await NewCatalogModal({ productIds });
       setRowSelection({});
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
+
         return;
       }
-      toast.error('An error occurred');
+      toast.error("An error occurred");
     }
   };
 
   const handleUpdateProductsClick = async () => {
     try {
       const resp = await EditProductModal({ products, productsToUpdate });
+
       productsQuery.refetch();
-      if (resp === 'ok') {
+      if (resp === "ok") {
         setProductsToUpdate({});
       }
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
+
         return;
       }
-      toast.error('An error occurred');
+      toast.error("An error occurred");
     }
-  }
+  };
 
   return (
     <>
@@ -361,24 +417,24 @@ const ProductsContent = () => {
             Actualizar
           </Button>
           <Button
+            className="flex gap-2"
             onClick={() => {
-              router.push('/products/new');
+              router.push("/products/new");
             }}
-            className='flex gap-2'
           >
-            <Plus className='w-4 h-4' />
+            <Plus className="w-4 h-4" />
             Crear producto
           </Button>
         </div>
       </div>
       <DataTable
-        table={table}
-        isLoading={productsQuery.isLoading}
+        className="mb-4"
         columns={columns}
-        className='mb-4'
+        isLoading={productsQuery.isLoading}
+        table={table}
       />
     </>
-  )
-}
+  );
+};
 
 export default ProductsContent;

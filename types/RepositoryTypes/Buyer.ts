@@ -23,4 +23,3 @@ export const BuyerInputModel = z.object({
 });
 
 export type BuyerInput = z.infer<typeof BuyerInputModel>;
-

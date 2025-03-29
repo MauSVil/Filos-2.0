@@ -1,29 +1,44 @@
-"use client"
-import { Bar, BarChart, CartesianGrid, LabelList, Line, LineChart, XAxis, YAxis } from "recharts"
+"use client";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  LabelList,
+  Line,
+  LineChart,
+  XAxis,
+  YAxis,
+} from "recharts";
+import { useParams } from "next/navigation";
+import { useMemo, useState } from "react";
+import _ from "lodash";
+import { CalendarIcon } from "lucide-react";
+import { es } from "date-fns/locale";
+import moment from "moment-timezone";
+
+import { useBuyerStatistic } from "../../../_hooks/useBuyerStatistic";
+
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
-import { useBuyerStatistic } from "../../../_hooks/useBuyerStatistic"
-import { useParams } from "next/navigation"
-import { useMemo, useState } from "react"
-import _ from "lodash"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import { CalendarIcon } from "lucide-react"
-import { Calendar } from "@/components/ui/calendar"
-import { es } from "date-fns/locale"
-import moment from "moment-timezone";
+} from "@/components/ui/chart";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { Calendar } from "@/components/ui/calendar";
 
 const monthsParsed: { [key: number]: string } = {
   1: "Enero",
@@ -38,68 +53,88 @@ const monthsParsed: { [key: number]: string } = {
   10: "Octubre",
   11: "Noviembre",
   12: "Diciembre",
-}
+};
 
 const chartConfig = {
   sales: {
     label: "Ventas",
     color: "hsl(var(--chart-1))",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 const chartConfig2 = {
   products: {
     label: "Ventas",
     color: "hsl(var(--chart-1))",
   },
-}
+};
 
 const chartConfig3 = {
   models: {
     label: "Modelo",
     color: "hsl(var(--chart-1))",
   },
-}
+};
 
 const BuyerStatisticsPage = () => {
-  const [date, setDate] = useState<string>(moment().tz('America/Mexico_City').toISOString());
-  const { id } = useParams() as { id: string }
-  const buyerStatisticQuery = useBuyerStatistic({ id, date })
-  const buyerStatistics = useMemo(() => buyerStatisticQuery.data || {}, [buyerStatisticQuery.data]) as { finalAmountPerMonth: { [key: number]: number }, productsPerMonth: { [key: number]: number }, mostPopularProducts: { [key: string]: number }, samples: number }
+  const [date, setDate] = useState<string>(
+    moment().tz("America/Mexico_City").toISOString(),
+  );
+  const { id } = useParams() as { id: string };
+  const buyerStatisticQuery = useBuyerStatistic({ id, date });
+  const buyerStatistics = useMemo(
+    () => buyerStatisticQuery.data || {},
+    [buyerStatisticQuery.data],
+  ) as {
+    finalAmountPerMonth: { [key: number]: number };
+    productsPerMonth: { [key: number]: number };
+    mostPopularProducts: { [key: string]: number };
+    samples: number;
+  };
 
   const chartData1 = useMemo(() => {
     const orderPerMonth = buyerStatistics.finalAmountPerMonth || {};
-    return   Object.keys(orderPerMonth).map((month) => {
+
+    return Object.keys(orderPerMonth).map((month) => {
       const monthNumber = parseInt(month);
+
       return {
         month,
         sales: buyerStatistics.finalAmountPerMonth[monthNumber],
-      }
-    })
-  }, [buyerStatistics])
+      };
+    });
+  }, [buyerStatistics]);
 
   const chartData2 = useMemo(() => {
     const orderPerMonth = buyerStatistics.productsPerMonth || {};
-    return   Object.keys(orderPerMonth).map((month) => {
+
+    return Object.keys(orderPerMonth).map((month) => {
       const monthNumber = parseInt(month);
+
       return {
         month,
         products: buyerStatistics.productsPerMonth[monthNumber],
-      }
-    })
-  }, [buyerStatistics])
+      };
+    });
+  }, [buyerStatistics]);
 
   const chartData3 = useMemo(() => {
     const popularProducts = buyerStatistics.mostPopularProducts || {};
-    const sorted = _.sortBy(_.toPairs(popularProducts), ([key, value]) => value).reverse();
+    const sorted = _.sortBy(
+      _.toPairs(popularProducts),
+      ([key, value]) => value,
+    ).reverse();
     const sortedObj = _.fromPairs(sorted);
-    return Object.keys(sortedObj).slice(0, 5).map((key) => {
-      return {
-        model: key,
-        models: buyerStatistics.mostPopularProducts[key],
-      }
-    })
-  }, [buyerStatistics])
+
+    return Object.keys(sortedObj)
+      .slice(0, 5)
+      .map((key) => {
+        return {
+          model: key,
+          models: buyerStatistics.mostPopularProducts[key],
+        };
+      });
+  }, [buyerStatistics]);
 
   return (
     <div className="flex flex-col gap-4 p-4">
@@ -107,27 +142,31 @@ const BuyerStatisticsPage = () => {
         <Popover>
           <PopoverTrigger asChild>
             <Button
-              variant={"outline"}
               className={cn(
                 "w-[280px] justify-start text-left font-normal",
-                !date && "text-muted-foreground"
+                !date && "text-muted-foreground",
               )}
+              variant={"outline"}
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
-              {date ? moment(date).tz('America/Mexico_City').format('DD/MM/YYYY') : <span>Selecciona una fecha</span>}
+              {date ? (
+                moment(date).tz("America/Mexico_City").format("DD/MM/YYYY")
+              ) : (
+                <span>Selecciona una fecha</span>
+              )}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0">
             <Calendar
+              initialFocus
+              locale={es}
               mode="single"
-              selected={moment(date).tz('America/Mexico_City').toDate()}
+              selected={moment(date).tz("America/Mexico_City").toDate()}
               onSelect={(date) => {
                 if (date) {
                   setDate(date.toISOString());
                 }
               }}
-              initialFocus
-              locale={es}
             />
           </PopoverContent>
         </Popover>
@@ -141,27 +180,22 @@ const BuyerStatisticsPage = () => {
           </CardHeader>
           <CardContent>
             <ChartContainer config={chartConfig}>
-              <LineChart
-                accessibilityLayer
-                data={chartData1}
-              >
+              <LineChart accessibilityLayer data={chartData1}>
                 <CartesianGrid vertical={false} />
                 <XAxis
-                  dataKey="month"
-                  tickLine={false}
                   axisLine={false}
-                  tickMargin={8}
+                  dataKey="month"
                   tickFormatter={(value) => monthsParsed[value].slice(0, 3)}
+                  tickLine={false}
+                  tickMargin={8}
                 />
-                <ChartTooltip
-                  content={<ChartTooltipContent hideLabel />}
-                />
-                <YAxis  />
+                <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+                <YAxis />
                 <Line
                   dataKey="sales"
-                  type="linear"
                   stroke="var(--color-sales)"
                   strokeWidth={2}
+                  type="linear"
                 />
               </LineChart>
             </ChartContainer>
@@ -174,27 +208,22 @@ const BuyerStatisticsPage = () => {
           </CardHeader>
           <CardContent>
             <ChartContainer config={chartConfig2}>
-              <LineChart
-                accessibilityLayer
-                data={chartData2}
-              >
+              <LineChart accessibilityLayer data={chartData2}>
                 <CartesianGrid vertical={false} />
                 <XAxis
-                  dataKey="month"
-                  tickLine={false}
                   axisLine={false}
-                  tickMargin={8}
+                  dataKey="month"
                   tickFormatter={(value) => monthsParsed[value].slice(0, 3)}
+                  tickLine={false}
+                  tickMargin={8}
                 />
-                <ChartTooltip
-                  content={<ChartTooltipContent hideLabel />}
-                />
-                <YAxis  />
+                <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+                <YAxis />
                 <Line
                   dataKey="products"
-                  type="linear"
                   stroke="var(--color-products)"
                   strokeWidth={2}
+                  type="linear"
                 />
               </LineChart>
             </ChartContainer>
@@ -207,36 +236,33 @@ const BuyerStatisticsPage = () => {
           </CardHeader>
           <CardContent>
             <ChartContainer config={chartConfig3}>
-              <BarChart
-                accessibilityLayer
-                data={chartData3}
-              >
+              <BarChart accessibilityLayer data={chartData3}>
                 <CartesianGrid vertical={false} />
                 <XAxis
+                  axisLine={false}
                   dataKey="model"
                   tickLine={false}
                   tickMargin={10}
-                  axisLine={false}
                 />
                 <ChartTooltip
-                  cursor={false}
                   content={<ChartTooltipContent hideLabel />}
+                  cursor={false}
                 />
                 <Bar dataKey="models" fill="var(--color-models)" radius={8}>
                   <LabelList
-                    position="top"
-                    offset={12}
                     className="fill-foreground"
                     fontSize={12}
+                    offset={12}
+                    position="top"
                   />
                 </Bar>
               </BarChart>
             </ChartContainer>
           </CardContent>
-      </Card>
+        </Card>
       </div>
     </div>
-  ); 
-}
+  );
+};
 
 export default BuyerStatisticsPage;

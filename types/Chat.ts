@@ -19,7 +19,7 @@ export type Message = {
   message: string;
   metadata: {
     url: string;
-  }
+  };
 };
 
 export type SerializedError = {

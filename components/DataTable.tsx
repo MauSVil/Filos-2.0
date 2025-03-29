@@ -1,15 +1,27 @@
-'use client';
+"use client";
 
-import { Table as TableType, flexRender } from '@tanstack/react-table';
-import { CSSProperties } from 'react';
+import { Table as TableType, flexRender } from "@tanstack/react-table";
+import { CSSProperties } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Button } from "./ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { Input } from "./ui/input";
 
-import { Button } from './ui/button';
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu';
-import { cn } from '@/utils/cn';
-import { Input } from './ui/input';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { cn } from "@/utils/cn";
 
 interface DataTableProps<TData> {
   table: TableType<TData>;
@@ -26,7 +38,7 @@ interface DataTableProps<TData> {
   columns: any[];
   enableInput?: boolean;
   onRowClick?: (row: any) => void;
-  enableShowColumns?: boolean
+  enableShowColumns?: boolean;
 }
 
 export function DataTable<TData>({
@@ -36,36 +48,35 @@ export function DataTable<TData>({
   className,
   enableInput = true,
   onRowClick,
-  enableShowColumns = true
+  enableShowColumns = true,
 }: DataTableProps<TData>) {
-
   return (
     <div className={cn("", className)}>
       <div className="flex items-between pb-2 gap-4">
-        <div className='flex items-center gap-2 mb-4'>
+        <div className="flex items-center gap-2 mb-4">
           <Button
-            form=''
-            size={'sm'}
-            onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
+            form=""
+            size={"sm"}
+            onClick={() => table.previousPage()}
           >
             <ChevronLeft size={14} />
           </Button>
           <span className="text-sm">
-            {`${table.getState().pagination.pageIndex + 1 } / ${table.getPageCount()}`}
+            {`${table.getState().pagination.pageIndex + 1} / ${table.getPageCount()}`}
           </span>
           <Button
-            form=''
-            size={'sm'}
-            onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
+            form=""
+            size={"sm"}
+            onClick={() => table.nextPage()}
           >
             <ChevronRight size={14} />
           </Button>
           <Input
-            className='w-12'
+            className="w-12"
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
+              if (e.key === "Enter") {
                 if (Number(e.currentTarget.value) > 0) {
                   table.setPageIndex(Number(e.currentTarget.value) - 1);
                 }
@@ -73,48 +84,40 @@ export function DataTable<TData>({
             }}
           />
         </div>
-        {
-          enableInput && (
-            <Input
-              className="flex-1"
-              placeholder="Buscar..."
-              value={table.getState().globalFilter}
-              onChange={(e) => table.setGlobalFilter(e.target.value)}
-            />
-          )
-        }
-        {
-          enableShowColumns && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button className="ml-auto">
-                  Mostrar columnas
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                {table
-                  .getAllColumns()
-                  .filter(
-                    (column) => column.getCanHide()
-                  )
-                  .map((column) => {
-                    return (
-                      <DropdownMenuCheckboxItem
-                        key={column.id}
-                        className="capitalize"
-                        checked={column.getIsVisible()}
-                        onCheckedChange={(value) =>
-                          column.toggleVisibility(!!value)
-                        }
-                      >
-                        {column.id}
-                      </DropdownMenuCheckboxItem>
-                    )
-                  })}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )
-        }
+        {enableInput && (
+          <Input
+            className="flex-1"
+            placeholder="Buscar..."
+            value={table.getState().globalFilter}
+            onChange={(e) => table.setGlobalFilter(e.target.value)}
+          />
+        )}
+        {enableShowColumns && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button className="ml-auto">Mostrar columnas</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      checked={column.getIsVisible()}
+                      className="capitalize"
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
       <div className="rounded-md border">
         <Table>
@@ -127,11 +130,11 @@ export function DataTable<TData>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -139,7 +142,10 @@ export function DataTable<TData>({
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell
+                  className="h-24 text-center"
+                  colSpan={columns.length}
+                >
                   Cargando...
                 </TableCell>
               </TableRow>
@@ -156,14 +162,20 @@ export function DataTable<TData>({
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell
+                  className="h-24 text-center"
+                  colSpan={columns.length}
+                >
                   No hay resultados
                 </TableCell>
               </TableRow>

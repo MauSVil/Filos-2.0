@@ -1,10 +1,12 @@
-'use client';
+"use client";
 
-import { UseFormReturn } from "react-hook-form"
-import { InputFormField } from "../form/InputFormField"
-import { ComboboxFormField } from "../form/ComboboxField"
+import { UseFormReturn } from "react-hook-form";
+
+import { InputFormField } from "../form/InputFormField";
+import { ComboboxFormField } from "../form/ComboboxField";
 import { Form } from "../form";
 import { Button } from "../ui/button";
+
 import { ProductInputClient } from "@/types/RepositoryTypes/Product.client";
 
 interface Props {
@@ -27,9 +29,9 @@ const ProductForm = ({ form, isLoading, submit, image, file }: Props) => {
               control,
               name: "name",
             }}
-            name="name"
-            label="Nombre"
             disabled={isLoading}
+            label="Nombre"
+            name="name"
           />
           <div className="flex gap-4">
             <InputFormField
@@ -38,19 +40,19 @@ const ProductForm = ({ form, isLoading, submit, image, file }: Props) => {
                 control,
                 name: "uniqId",
               }}
-              name="uniqId"
-              label="Id único"
               disabled={isLoading}
+              label="Id único"
+              name="uniqId"
             />
             <InputFormField
+              disabled
               className="flex-1"
               controllerProps={{
                 control,
                 name: "baseId",
               }}
-              name="baseId"
               label="Id base"
-              disabled
+              name="baseId"
             />
           </div>
           <InputFormField
@@ -58,22 +60,20 @@ const ProductForm = ({ form, isLoading, submit, image, file }: Props) => {
               control,
               name: "color",
             }}
-            name="color"
-            label="Color"
             disabled={isLoading}
+            label="Color"
+            name="color"
           />
           <ComboboxFormField
-            items={[
-              { label: 'Unitalla', value: 'UNI' }
-            ]}
             controllerProps={{
               control,
-              name: 'size'
+              name: "size",
             }}
-            label='Talla'
-            placeholder='Selecciona una talla...'
-            searchLabel='Buscar una talla...'
             emptyLabel="No hay tallas"
+            items={[{ label: "Unitalla", value: "UNI" }]}
+            label="Talla"
+            placeholder="Selecciona una talla..."
+            searchLabel="Buscar una talla..."
           />
           <div className="flex gap-4">
             <InputFormField
@@ -82,12 +82,12 @@ const ProductForm = ({ form, isLoading, submit, image, file }: Props) => {
                 control,
                 name: "webPagePrice",
               }}
-              name="webPagePrice"
-              label="Precio de página web"
-              type="number"
               disabled={isLoading}
-              valueModifierOnChange={value => Number(value)}
+              label="Precio de página web"
               labelClassName="text-red-400"
+              name="webPagePrice"
+              type="number"
+              valueModifierOnChange={(value) => Number(value)}
             />
             <InputFormField
               className="flex-1"
@@ -95,12 +95,12 @@ const ProductForm = ({ form, isLoading, submit, image, file }: Props) => {
                 control,
                 name: "wholesalePrice",
               }}
+              disabled={isLoading}
+              label="Precio de mayoreo"
               labelClassName="text-purple-400"
               name="wholesalePrice"
-              label="Precio de mayoreo"
               type="number"
-              disabled={isLoading}
-              valueModifierOnChange={value => Number(value)}
+              valueModifierOnChange={(value) => Number(value)}
             />
           </div>
           <div className="flex gap-4">
@@ -110,12 +110,12 @@ const ProductForm = ({ form, isLoading, submit, image, file }: Props) => {
                 control,
                 name: "retailPrice",
               }}
-              name="retailPrice"
-              label="Precio de menudeo"
-              type="number"
               disabled={isLoading}
-              valueModifierOnChange={value => Number(value)}
+              label="Precio de menudeo"
               labelClassName="text-yellow-400"
+              name="retailPrice"
+              type="number"
+              valueModifierOnChange={(value) => Number(value)}
             />
             <InputFormField
               className="flex-1"
@@ -123,12 +123,12 @@ const ProductForm = ({ form, isLoading, submit, image, file }: Props) => {
                 control,
                 name: "specialPrice",
               }}
-              name="specialPrice"
-              label="Precio especial"
-              type="number"
               disabled={isLoading}
-              valueModifierOnChange={value => Number(value)}
+              label="Precio especial"
               labelClassName="text-green-400"
+              name="specialPrice"
+              type="number"
+              valueModifierOnChange={(value) => Number(value)}
             />
           </div>
 
@@ -137,46 +137,50 @@ const ProductForm = ({ form, isLoading, submit, image, file }: Props) => {
               control,
               name: "quantity",
             }}
-            name="quantity"
-            label="Cantidad"
-            type="number"
             disabled={isLoading}
-            valueModifierOnChange={value => Number(value)}
+            label="Cantidad"
+            name="quantity"
+            type="number"
+            valueModifierOnChange={(value) => Number(value)}
           />
         </div>
         <div className="flex-col gap-4 w-1/4">
           <InputFormField
+            className="mb-4"
             controllerProps={{
               control,
               name: "image",
             }}
-            name="image"
-            label="Imagen"
             disabled={isLoading}
+            label="Imagen"
+            name="image"
             type="file"
-            className="mb-4"
           />
-          {
-            file && !image && (
-              <div className="flex flex-col items-center gap-4 relative">
-                <img src={file} alt="Imagen del producto" className="w-full max-h-96 object-contain" />
-              </div>
-            )
-          }
-          {
-            image && (
-              <div className="flex flex-col items-center gap-4 relative">
-                <img src={URL.createObjectURL(image)} alt="Imagen del producto" className="w-full max-h-96 object-contain" />
-              </div>
-            )
-          }
+          {file && !image && (
+            <div className="flex flex-col items-center gap-4 relative">
+              <img
+                alt="Imagen del producto"
+                className="w-full max-h-96 object-contain"
+                src={file}
+              />
+            </div>
+          )}
+          {image && (
+            <div className="flex flex-col items-center gap-4 relative">
+              <img
+                alt="Imagen del producto"
+                className="w-full max-h-96 object-contain"
+                src={URL.createObjectURL(image)}
+              />
+            </div>
+          )}
         </div>
       </div>
-      <Button onClick={submit} disabled={isLoading} className="mt-4">
+      <Button className="mt-4" disabled={isLoading} onClick={submit}>
         Guardar
       </Button>
     </Form>
-  )
-}
+  );
+};
 
 export default ProductForm;

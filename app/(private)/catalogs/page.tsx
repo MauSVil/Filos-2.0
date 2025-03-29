@@ -1,9 +1,7 @@
 import CataloguesContent from "./_components/Content";
 
 const CataloguesPage = () => {
-  return (
-    <CataloguesContent />
-  );
-}
+  return <CataloguesContent />;
+};
 
 export default CataloguesPage;

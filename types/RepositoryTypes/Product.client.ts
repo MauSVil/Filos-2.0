@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { ProductInputModel } from "./Product";
 
 const isClient = typeof window !== "undefined";

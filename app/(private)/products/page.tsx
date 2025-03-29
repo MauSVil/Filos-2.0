@@ -1,9 +1,7 @@
 import ProductsContent from "./_components/Content";
 
 const ProductsPage = () => {
-  return (
-    <ProductsContent />
-  );
-}
+  return <ProductsContent />;
+};
 
 export default ProductsPage;

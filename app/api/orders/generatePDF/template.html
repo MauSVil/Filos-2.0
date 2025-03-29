@@ -1,166 +1,221 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>{{ title }}</title>
-</head>
-<style>
-  @page {
-    size: A3;
-    margin: 1cm;
-  }
-  h1, h2, h3, h4, p, strong {
-    margin: 0;
-    padding: 0;
-  }
-  h4 {
-    margin-bottom: 10px;
-  }
-  p {
-    margin-bottom: 5px;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 30px;
-  }
-  thead {
-    background-color: #093646;
-    color: white;
-  } 
-  th, td {
-    text-align: center;
-    padding: 10px;
-    border-bottom: 1px solid #dddddd;
-    font-size: 10px;
-  }
-  .p-m0 {
-    margin: 0;
-  }
-  .new-page {
-    page-break-before: always;
-  }
-</style>
-<body>
-  <div>
-    <div style="display: grid; gap: 15px; grid-template-columns: 1fr 1fr 1fr;">
-      <div style="display: flex; align-items: center; justify-content: center;">
-        <img src="https://filos-develop.s3.us-west-1.amazonaws.com/resources/Screenshot+2023-06-02+at+1.21.04.png" alt="logo" style="width: 150px; height: 100px;" />
-      </div>
-      <div style="padding: 10px;">
-        <h4>TEJIDOS MAEL S.A DE C.V</h4>
-        <p><strong>RFC: </strong>TMA170428HU3</p>
-        <p><strong>Calle: </strong>Municipio Libre #70</p>
-        <p><strong>Colonia: </strong>Coscomate del Progreso</p>
-        <p><strong>Ciudad: </strong>Jilotepec</p>
-        <p><strong>CP: </strong>54253</p>
-        <p><strong>Estado: </strong>Estado de México</p>
-      </div>
-      <div style="padding: 10px;">
-        <h4>DATOS COMPRADOR</h4>
-        <p><strong>Nombre: </strong>{{ name }}</p>
-        <p><strong>Fecha: </strong>{{ createdAt }}</p>
-        <p><strong style="color: red">Fecha aprox de entrega a paqueteria: </strong>{{ dueDate }}</p>
-        <p><strong>Numero celular: </strong>{{ phone }}</p>
-        <p><strong>Direccion: </strong>{{ address }}</p>
-        <p><strong>Correo: </strong>{{ email }}</p>
+  <head>
+    <title>{{ title }}</title>
+  </head>
+  <style>
+    @page {
+      size: A3;
+      margin: 1cm;
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    p,
+    strong {
+      margin: 0;
+      padding: 0;
+    }
+    h4 {
+      margin-bottom: 10px;
+    }
+    p {
+      margin-bottom: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    thead {
+      background-color: #093646;
+      color: white;
+    }
+    th,
+    td {
+      text-align: center;
+      padding: 10px;
+      border-bottom: 1px solid #dddddd;
+      font-size: 10px;
+    }
+    .p-m0 {
+      margin: 0;
+    }
+    .new-page {
+      page-break-before: always;
+    }
+  </style>
+  <body>
+    <div>
+      <div style="display: grid; gap: 15px; grid-template-columns: 1fr 1fr 1fr">
+        <div
+          style="display: flex; align-items: center; justify-content: center"
+        >
+          <img
+            src="https://filos-develop.s3.us-west-1.amazonaws.com/resources/Screenshot+2023-06-02+at+1.21.04.png"
+            alt="logo"
+            style="width: 150px; height: 100px"
+          />
+        </div>
+        <div style="padding: 10px">
+          <h4>TEJIDOS MAEL S.A DE C.V</h4>
+          <p><strong>RFC: </strong>TMA170428HU3</p>
+          <p><strong>Calle: </strong>Municipio Libre #70</p>
+          <p><strong>Colonia: </strong>Coscomate del Progreso</p>
+          <p><strong>Ciudad: </strong>Jilotepec</p>
+          <p><strong>CP: </strong>54253</p>
+          <p><strong>Estado: </strong>Estado de México</p>
+        </div>
+        <div style="padding: 10px">
+          <h4>DATOS COMPRADOR</h4>
+          <p><strong>Nombre: </strong>{{ name }}</p>
+          <p><strong>Fecha: </strong>{{ createdAt }}</p>
+          <p>
+            <strong style="color: red"
+              >Fecha aprox de entrega a paqueteria: </strong
+            >{{ dueDate }}
+          </p>
+          <p><strong>Numero celular: </strong>{{ phone }}</p>
+          <p><strong>Direccion: </strong>{{ address }}</p>
+          <p><strong>Correo: </strong>{{ email }}</p>
+        </div>
       </div>
     </div>
-  </div>
-  <div style="width: 100%; margin-top: 40px;">
-    <table style="width: 100%;">
-      <thead>
-        <tr>
-          <th><p class="p-m0">Cantidad</p></th>
-          <th><p class="p-m0">Imagen</p></th>
-          <th><p class="p-m0">Color</p></th>
-          <th><p class="p-m0">Codigo</p></th>
-          <th><p class="p-m0">Talla</p></th>
-          <th><p class="p-m0">Precio Unitario</p></th>
-          <th><p class="p-m0">Total</p></th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for item in products %}
+    <div style="width: 100%; margin-top: 40px">
+      <table style="width: 100%">
+        <thead>
+          <tr>
+            <th><p class="p-m0">Cantidad</p></th>
+            <th><p class="p-m0">Imagen</p></th>
+            <th><p class="p-m0">Color</p></th>
+            <th><p class="p-m0">Codigo</p></th>
+            <th><p class="p-m0">Talla</p></th>
+            <th><p class="p-m0">Precio Unitario</p></th>
+            <th><p class="p-m0">Total</p></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in products %}
           <tr>
             <td><p>{{ item.quantity }}</p></td>
-            <td><img src="{{ item.image }}" alt="logo" style="height: 100px; width: 70px" /></td>
+            <td>
+              <img
+                src="{{ item.image }}"
+                alt="logo"
+                style="height: 100px; width: 70px"
+              />
+            </td>
             <td><p>{{ item.color }}</p></td>
             <td><p>{{ item.uniqId }}</p></td>
             <td><p>{{ item.size }}</p></td>
             <td><p>${{ item.price }}</p></td>
             <td><p>${{ item.total }}</p></td>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-  <div style="width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 15px" class="new-page">
-    <table>
-      <thead>
-        <tr>
-          <th colspan="2"><p>Datos Bancarios</p></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><p>Beneficiario</p></td>
-          <td><p>TEJIDOS MAEL S.A DE C.V</p></td>
-        </tr>
-        <tr>
-          <td><p>Número de cuenta</p></td>
-          <td><p>SANTANDER 92002161806</p></td>
-        </tr>
-        <tr>
-          <td><p>CLABE interbancaria</p></td>
-          <td><p>01 4435 9200 2161 8060</p></td>
-        </tr>
-        <tr>
-          <td><p>Nota</p></td>
-          <td><p>Enviar comprobante por WhatsApp 56 1852 2449, colocar como referencia/concepto el nombre del cliente, *todo pedido requiere del 50% de anticipo para comenzar la producción</p></td>
-        </tr>
-      </tbody>
-    </table>
-    <table>
-      <thead>
-        <tr>
-          <th colspan="2"><p>Totales</p></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><p>Cantidad de piezas</p></td>
-          <td><p>{{ totalQuantity }}</p></td>
-        </tr>
-        <tr>
-          <td><p>Total</p></td>
-          <td><p>${{ totalAmount }}</p></td>
-        </tr>
-        <tr>
-          <td><p>Flete</p></td>
-          <td><p>${{ freightPrice }}</p></td>
-        </tr>
-        <tr>
-          <td><p>Anticipo</p></td>
-          <td><p>${{ advancedPayment }}</p></td>
-        </tr>
-        <tr>
-          <td><p>Total Sueteres + Flete - Anticipo</p></td>
-          <td><p>${{ superTotal }}</p></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div style="display: flex; justify-content: center; margin-top: 15px;">
-    <div style="max-width: 75%; border: 1px solid red; height: fit-content; padding: 35px;">
-      <h4>Observaciones</h4>
-      <p><strong>1.- </strong>Sólo se respetan las prendas apartadas con anticipo del 50%</p>
-      <p><strong>2.- </strong>Las tonalidades de los colores pueden variar</p>
-      <p><strong>3.- </strong>Los envíos se realizan los domingos y lunes</p>
-      <p><strong>4.- </strong>Su cotización es válida por un mes</p>
-      <p><strong>5.- </strong>En caso que el cliente no solicite seguro para su envío al momento de realizar su depósito libera de toda responsabilidad a la empresa por su extravío en el envío o daños que sufre la mercancía</p>
-      <p><strong>6.- </strong>Los paquetes se envían por estafeta/fedex y llegan en un lapso de 3-5 días hábiles si las prendas solicitadas están disponibles</p>
-      <p><strong>7.- </strong>NO se hacen cambios ni devoluciones</p>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
-  </div>
-</body>
+    <div
+      style="
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      "
+      class="new-page"
+    >
+      <table>
+        <thead>
+          <tr>
+            <th colspan="2"><p>Datos Bancarios</p></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><p>Beneficiario</p></td>
+            <td><p>TEJIDOS MAEL S.A DE C.V</p></td>
+          </tr>
+          <tr>
+            <td><p>Número de cuenta</p></td>
+            <td><p>SANTANDER 92002161806</p></td>
+          </tr>
+          <tr>
+            <td><p>CLABE interbancaria</p></td>
+            <td><p>01 4435 9200 2161 8060</p></td>
+          </tr>
+          <tr>
+            <td><p>Nota</p></td>
+            <td>
+              <p>
+                Enviar comprobante por WhatsApp 56 1852 2449, colocar como
+                referencia/concepto el nombre del cliente, *todo pedido requiere
+                del 50% de anticipo para comenzar la producción
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table>
+        <thead>
+          <tr>
+            <th colspan="2"><p>Totales</p></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><p>Cantidad de piezas</p></td>
+            <td><p>{{ totalQuantity }}</p></td>
+          </tr>
+          <tr>
+            <td><p>Total</p></td>
+            <td><p>${{ totalAmount }}</p></td>
+          </tr>
+          <tr>
+            <td><p>Flete</p></td>
+            <td><p>${{ freightPrice }}</p></td>
+          </tr>
+          <tr>
+            <td><p>Anticipo</p></td>
+            <td><p>${{ advancedPayment }}</p></td>
+          </tr>
+          <tr>
+            <td><p>Total Sueteres + Flete - Anticipo</p></td>
+            <td><p>${{ superTotal }}</p></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="display: flex; justify-content: center; margin-top: 15px">
+      <div
+        style="
+          max-width: 75%;
+          border: 1px solid red;
+          height: fit-content;
+          padding: 35px;
+        "
+      >
+        <h4>Observaciones</h4>
+        <p>
+          <strong>1.- </strong>Sólo se respetan las prendas apartadas con
+          anticipo del 50%
+        </p>
+        <p><strong>2.- </strong>Las tonalidades de los colores pueden variar</p>
+        <p><strong>3.- </strong>Los envíos se realizan los domingos y lunes</p>
+        <p><strong>4.- </strong>Su cotización es válida por un mes</p>
+        <p>
+          <strong>5.- </strong>En caso que el cliente no solicite seguro para su
+          envío al momento de realizar su depósito libera de toda
+          responsabilidad a la empresa por su extravío en el envío o daños que
+          sufre la mercancía
+        </p>
+        <p>
+          <strong>6.- </strong>Los paquetes se envían por estafeta/fedex y
+          llegan en un lapso de 3-5 días hábiles si las prendas solicitadas
+          están disponibles
+        </p>
+        <p><strong>7.- </strong>NO se hacen cambios ni devoluciones</p>
+      </div>
+    </div>
+  </body>
 </html>

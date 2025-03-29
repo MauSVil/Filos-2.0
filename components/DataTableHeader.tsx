@@ -1,16 +1,22 @@
-import { CaretSortIcon, EyeNoneIcon } from '@radix-ui/react-icons';
-import { Column } from '@tanstack/react-table';
-import { ArrowDownIcon, ArrowUpIcon } from 'lucide-react';
+import { CaretSortIcon, EyeNoneIcon } from "@radix-ui/react-icons";
+import { Column } from "@tanstack/react-table";
+import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
 
-import { cn } from '@/utils/cn';
+import { Button } from "./ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
-import { Button } from './ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu';
+import { cn } from "@/utils/cn";
 
 interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {
-  column: Column<TData, TValue>
-  title: string
+  column: Column<TData, TValue>;
+  title: string;
 }
 
 const messages = {
@@ -19,16 +25,15 @@ const messages = {
     desc: "Descendente",
     hide: "Ocultar",
   },
-}
+};
 
 function DataTableColumnHeader<TData, TValue>({
   column,
   title,
   className,
 }: DataTableColumnHeaderProps<TData, TValue>) {
-
   if (!column.getCanSort()) {
-    return <div className={cn(className)}>{title}</div>
+    return <div className={cn(className)}>{title}</div>;
   }
 
   return (
@@ -36,9 +41,9 @@ function DataTableColumnHeader<TData, TValue>({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
-            variant="ghost"
-            size="sm"
             className="-ml-3 h-8 data-[state=open]:bg-accent"
+            size="sm"
+            variant="ghost"
           >
             <span>{title}</span>
             {column.getIsSorted() === "desc" ? (
@@ -67,7 +72,7 @@ function DataTableColumnHeader<TData, TValue>({
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
-  )
+  );
 }
 
-export default DataTableColumnHeader
+export default DataTableColumnHeader;

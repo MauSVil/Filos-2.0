@@ -3,11 +3,11 @@ export interface Order {
   name: string;
   requestDate: Date;
   dueDate: Date;
-  products: { product: string, quantity: number, total: number }[];
+  products: { product: string; quantity: number; total: number }[];
   buyer: string;
   active: boolean;
-  status: 'Pendiente' | 'Completado' | 'Cancelado';
-  orderType: 'retailPrice' | 'wholesalePrice' | 'specialPrice' | 'webPagePrice';
+  status: "Pendiente" | "Completado" | "Cancelado";
+  orderType: "retailPrice" | "wholesalePrice" | "specialPrice" | "webPagePrice";
   freightPrice: number;
   advancedPayment: number;
   description: string;

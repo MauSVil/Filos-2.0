@@ -40,7 +40,7 @@ const ProductsOutOfStock = () => {
         {
           id: "Nombre",
           header: "Nombre",
-          accessorKey: "uniqId",
+          accessorKey: "name",
           enableGlobalFilter: true,
           enableSorting: true,
           filterFn: "auto",

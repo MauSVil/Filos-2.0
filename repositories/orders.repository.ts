@@ -3,8 +3,8 @@ import { Db, ObjectId } from "mongodb";
 import { HistoryMovementsRepository } from "./historymovements.repository";
 
 import clientPromise from "@/mongodb";
-import { Order } from "@/types/MongoTypes/Order";
 import {
+  Order,
   OrderInput,
   OrderInputModel,
   OrderRepositoryFilter,

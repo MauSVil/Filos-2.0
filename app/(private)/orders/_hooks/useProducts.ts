@@ -1,8 +1,7 @@
+import { Product } from "@/types/RepositoryTypes/Product";
 import { useQuery } from "@tanstack/react-query";
 import ky from "ky";
 import { toast } from "sonner";
-
-import { Product } from "@/types/MongoTypes/Product";
 
 export const useProducts = ({ products }: { products?: string[] }) => {
   return useQuery<Product[]>({

@@ -1,8 +1,8 @@
 import { Db } from "mongodb";
 
 import clientPromise from "@/mongodb";
-import { Contact } from "@/types/MongoTypes/Contact";
 import {
+  Contact,
   ContactInput,
   ContactRepositoryFilter,
   ContactRepositoryFilterModel,

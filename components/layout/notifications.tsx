@@ -5,12 +5,12 @@ import moment from "moment-timezone";
 
 import { ScrollArea } from "../ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Notification } from "@/types/RepositoryTypes/Notification";
 
-import { NotificationType } from "@/types/MongoTypes/Notification";
 
 interface Props {
-  notifications: NotificationType[];
-  onNotificationClick: (notification: NotificationType) => void;
+  notifications: Notification[];
+  onNotificationClick: (notification: Notification) => void;
 }
 
 const Notifications = (props: Props) => {
@@ -24,7 +24,7 @@ const Notifications = (props: Props) => {
     return notifications.filter((notification) => notification.read);
   }, [notifications]);
 
-  const handleNotificationClick = async (notification: NotificationType) => {
+  const handleNotificationClick = async (notification: Notification) => {
     try {
       await ky
         .put(`/api/notifications/${notification._id}`, {

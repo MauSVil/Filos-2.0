@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { ProductInputClient } from "@/types/RepositoryTypes/Product.client";
-import { Product } from "@/types/MongoTypes/Product";
+import { Product } from "@/types/RepositoryTypes/Product";
 
 const defaultValues: ProductInputClient = {
   baseId: "",

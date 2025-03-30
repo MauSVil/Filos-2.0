@@ -20,7 +20,7 @@ import { InputFormField } from "../form/InputFormField";
 import { Button } from "../ui/button";
 
 import { fileFormSchema } from "@/zodSchemas/FileForm";
-import { Product } from "@/types/MongoTypes/Product";
+import { Product } from "@/types/RepositoryTypes/Product";
 
 export interface Props extends InstanceProps<any, any> {}
 
@@ -97,10 +97,11 @@ const FileManagerDialog = (props: Props) => {
               }}
               emptyLabel="No hay archivos"
               isLoading={list.isLoading}
-              items={list.items.map((item) => ({
-                label: item.uniqId,
-                value: item.image,
-              }))}
+              // items={list.items.map((item) => ({
+              //   label: item.uniqId,
+              //   value: item.image,
+              // }))}
+              items={[]}
               label="Selecciona un archivo de AWS"
               placeholder="Selecciona un modelo..."
               searchLabel="Buscar un archivo..."

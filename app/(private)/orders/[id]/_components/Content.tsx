@@ -17,7 +17,7 @@ import { Progress } from "@/components/ui/progress";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Order } from "@/types/MongoTypes/Order";
+import { Order } from "@/types/RepositoryTypes/Order";
 
 const Content = ({ id }: { id: string }) => {
   const [currentStep, setCurrentStep] = useState(0);

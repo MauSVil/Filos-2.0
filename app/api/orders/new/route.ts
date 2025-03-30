@@ -6,8 +6,8 @@ import moment from "moment-timezone";
 import { BuyersRepository } from "@/repositories/buyers.repository";
 import { OrdersRepository } from "@/repositories/orders.repository";
 import { ProductsRepository } from "@/repositories/products.repository";
-import { Product } from "@/types/MongoTypes/Product";
 import { OrderInput, OrderInputModel } from "@/types/RepositoryTypes/Order";
+import { Product } from "@/types/RepositoryTypes/Product";
 
 export const POST = async (req: NextRequest) => {
   try {

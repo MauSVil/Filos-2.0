@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import moment from "moment-timezone";
 
 import { OrdersRepository } from "@/repositories/orders.repository";
-import { Order } from "@/types/MongoTypes/Order";
+import { Order } from "@/types/RepositoryTypes/Order";
 
 interface GroupedOrders {
   [year: number]: {

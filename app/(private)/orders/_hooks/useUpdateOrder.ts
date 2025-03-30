@@ -2,8 +2,8 @@ import { useMutation } from "@tanstack/react-query";
 import ky, { HTTPError } from "ky";
 import { toast } from "sonner";
 
-import { Order } from "@/types/MongoTypes/Order";
 import { SerializedError } from "@/types/Chat";
+import { Order } from "@/types/RepositoryTypes/Order";
 
 export const useUpdateOrder = () => {
   return useMutation<{}, SerializedError, Partial<Order>>({

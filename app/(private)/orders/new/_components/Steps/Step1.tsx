@@ -29,8 +29,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Order } from "@/types/MongoTypes/Order";
 import { Product } from "@/types/RepositoryTypes/Product";
+import { Order } from "@/types/RepositoryTypes/Order";
 
 const productOrderStatuses = ["Todos", "Con cantidad", "Sin cantidad"];
 

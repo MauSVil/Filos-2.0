@@ -10,6 +10,17 @@ export const BuyerRepositoryFilterModel = z.object({
 
 export type BuyerRepositoryFilter = z.infer<typeof BuyerRepositoryFilterModel>;
 
+export const BuyerModel = z.object({
+  _id: z.string(),
+  name: z.string(),
+  phone: z.string(),
+  address: z.string(),
+  email: z.string().email(),
+  isChain: z.boolean(),
+});
+
+export type Buyer = z.infer<typeof BuyerModel>;
+
 export const BuyerInputModel = z.object({
   name: z.string(),
   email: z.string().optional(),

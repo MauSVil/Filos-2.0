@@ -4,8 +4,8 @@ import { useParams } from "next/navigation";
 import { useMemo } from "react";
 
 import { useBuyers } from "../../../_hooks/useBuyers";
+import { Buyer } from "@/types/RepositoryTypes/Buyer";
 
-import { Buyer } from "@/types/MongoTypes/Buyer";
 
 const BuyerGeneralPage = () => {
   const { id } = useParams() as { id: string };

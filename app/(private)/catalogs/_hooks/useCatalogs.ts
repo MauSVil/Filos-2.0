@@ -1,8 +1,8 @@
+import { Catalog } from "@/types/RepositoryTypes/Catalog";
 import { useQuery } from "@tanstack/react-query";
 import ky from "ky";
 import { toast } from "sonner";
 
-import { Catalog } from "@/types/MongoTypes/Catalog";
 
 export const useCatalogs = () => {
   return useQuery<Catalog[]>({

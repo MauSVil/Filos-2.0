@@ -1,8 +1,7 @@
+import { Contact } from "@/types/RepositoryTypes/Contact";
 import { useQuery } from "@tanstack/react-query";
 import ky from "ky";
 import { toast } from "sonner";
-
-import { Contact } from "@/types/MongoTypes/Contact";
 
 export const useContact = ({
   phone_id,

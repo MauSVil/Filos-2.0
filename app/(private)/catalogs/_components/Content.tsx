@@ -18,8 +18,8 @@ import { useCatalogs } from "../_hooks/useCatalogs";
 
 import { DataTable } from "@/components/DataTable";
 import DataTableColumnHeader from "@/components/DataTableHeader";
-import { Catalog } from "@/types/MongoTypes/Catalog";
 import { Button } from "@/components/ui/button";
+import { Catalog } from "@/types/RepositoryTypes/Catalog";
 
 const CataloguesContent = () => {
   const [pagination, setPagination] = useState({

@@ -34,13 +34,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/utils/cn";
-import { NotificationType } from "@/types/MongoTypes/Notification";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import Notifications from "@/components/layout/notifications";
+import { Notification } from "@/types/RepositoryTypes/Notification";
 
 interface Props {
   children: React.ReactNode;
@@ -49,7 +49,7 @@ interface Props {
 const PrivateLayout = (props: Props) => {
   const { children } = props;
   const [notificationsState, setNotificationsState] = useState<
-    NotificationType[]
+  Notification[]
   >([]);
 
   const pathname = usePathname();
@@ -67,7 +67,7 @@ const PrivateLayout = (props: Props) => {
   }, [notificationsData.length, notifications.isFetching]);
 
   useEffect(() => {
-    socket.on("new_notification", (notification: NotificationType) => {
+    socket.on("new_notification", (notification: Notification) => {
       const audio = new Audio("/sounds/Notification.mp3");
 
       audio.volume = 0.8;
@@ -82,7 +82,7 @@ const PrivateLayout = (props: Props) => {
     };
   }, []);
 
-  const onNotificationClick = (notification: NotificationType) => {
+  const onNotificationClick = (notification: Notification) => {
     notifications.refetch();
   };
 

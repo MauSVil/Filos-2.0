@@ -1,8 +1,8 @@
 import { Db, ObjectId } from "mongodb";
 
 import clientPromise from "@/mongodb";
-import { NotificationType } from "@/types/MongoTypes/Notification";
 import {
+  Notification,
   NotificationRepositoryFilter,
   NotificationRepositoryFilterModel,
 } from "@/types/RepositoryTypes/Notification";
@@ -18,24 +18,24 @@ const init = async () => {
 export class NotificationsRepository {
   static async findOne(
     filter: NotificationRepositoryFilter = {},
-  ): Promise<NotificationType | null> {
+  ): Promise<Notification | null> {
     await init();
     const filters = await NotificationRepositoryFilterModel.parse(filter);
     const chat = await db
       .collection("notifications")
-      .findOne<NotificationType>(filters);
+      .findOne<Notification>(filters);
 
     return chat;
   }
 
   static async find(
     filter: NotificationRepositoryFilter = {},
-  ): Promise<NotificationType[]> {
+  ): Promise<Notification[]> {
     await init();
     const filters = await NotificationRepositoryFilterModel.parse(filter);
     const messages = await db
       .collection("notifications")
-      .find<NotificationType>(filters)
+      .find<Notification>(filters)
       .sort({ timestamp: -1 })
       .toArray();
 
@@ -65,7 +65,7 @@ export class NotificationsRepository {
   //   return 'Message inserted';
   // }
 
-  static async updateOne(id: string, update: Partial<NotificationType>) {
+  static async updateOne(id: string, update: Partial<Notification>) {
     await init();
     await db
       .collection("notifications")

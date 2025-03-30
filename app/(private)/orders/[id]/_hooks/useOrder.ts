@@ -1,7 +1,7 @@
+import { Order } from "@/types/RepositoryTypes/Order";
 import { useQuery } from "@tanstack/react-query";
 import ky from "ky";
 
-import { Order } from "@/types/MongoTypes/Order";
 
 export const useOrder = ({ id }: { id: string }) => {
   return useQuery<Order>({

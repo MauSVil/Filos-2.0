@@ -55,12 +55,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { Order } from "@/types/MongoTypes/Order";
 import { cn } from "@/utils/cn";
 import { DataTable } from "@/components/DataTable";
 import DataTableColumnHeader from "@/components/DataTableHeader";
 import { useSocket } from "@/contexts/socketContext";
 import { calculateChangePorcentage } from "@/lib/utils";
+import { Order } from "@/types/RepositoryTypes/Order";
 
 export const statusTranslations: { [key: string]: string } = {
   retailPrice: "Semi-mayoreo",
@@ -123,7 +123,7 @@ const OrdersContent = () => {
     router.push("/orders/new");
   };
 
-  const setDownloadClick = (url: string) => {
+  const setDownloadClick = (url?: string) => {
     window.open(url, "_blank");
   };
 

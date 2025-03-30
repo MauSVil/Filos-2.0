@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { BuyersRepository } from "@/repositories/buyers.repository";
 import { OrdersRepository } from "@/repositories/orders.repository";
-import { Order } from "@/types/MongoTypes/Order";
+import { Order } from "@/types/RepositoryTypes/Order";
 
 export const PUT = async (req: NextRequest) => {
   try {

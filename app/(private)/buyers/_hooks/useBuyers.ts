@@ -1,8 +1,8 @@
+import { Buyer } from "@/types/RepositoryTypes/Buyer";
 import { useQuery } from "@tanstack/react-query";
 import ky from "ky";
 import { toast } from "sonner";
 
-import { Buyer } from "@/types/MongoTypes/Buyer";
 
 export const useBuyers = ({
   buyers,

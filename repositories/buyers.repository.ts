@@ -4,8 +4,8 @@ import moment from "moment-timezone";
 import { HistoryMovementsRepository } from "./historymovements.repository";
 
 import clientPromise from "@/mongodb";
-import { Buyer } from "@/types/MongoTypes/Buyer";
 import {
+  Buyer,
   BuyerInput,
   BuyerRepositoryFilter,
   BuyerRepositoryFilterModel,

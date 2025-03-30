@@ -11,6 +11,16 @@ export type ContactRepositoryFilter = z.infer<
   typeof ContactRepositoryFilterModel
 >;
 
+export const ContactModel = z.object({
+  _id: z.string(),
+  aiEnabled: z.boolean(),
+  lastMessageSent: z.coerce.date(),
+  fullName: z.string(),
+  phone_id: z.string(),
+});
+
+export type Contact = z.infer<typeof ContactModel>;
+
 export const ContactInputModel = z.object({
   name: z.string(),
   email: z.string(),

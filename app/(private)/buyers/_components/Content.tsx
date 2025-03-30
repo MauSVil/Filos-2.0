@@ -17,10 +17,10 @@ import {
 import { useBuyers } from "../_hooks/useBuyers";
 
 import { DataTable } from "@/components/DataTable";
-import { Buyer } from "@/types/MongoTypes/Buyer";
 import DataTableColumnHeader from "@/components/DataTableHeader";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Buyer } from "@/types/RepositoryTypes/Buyer";
 
 const BuyersContent = () => {
   const router = useRouter();

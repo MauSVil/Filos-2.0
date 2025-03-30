@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { OrdersRepository } from "@/repositories/orders.repository";
-import { Order } from "@/types/MongoTypes/Order";
+import { Order } from "@/types/RepositoryTypes/Order";
 
 const fedexCredentials = {
   apiKey: "l7f77a66bccf2f4d1b84de97e111f1f35f", // Reemplaza con tu clave API

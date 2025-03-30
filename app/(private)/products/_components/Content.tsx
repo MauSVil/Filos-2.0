@@ -15,7 +15,7 @@ import {
 import numeral from "numeral";
 import Image from "next/image";
 import { toast } from "sonner";
-import { Edit, MinusIcon, Plus, PlusIcon } from "lucide-react";
+import { ChevronDown, Edit, MinusIcon, Plus, PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { useProducts } from "../_hooks/useProducts";
@@ -403,38 +403,40 @@ const ProductsContent = () => {
       <div className="flex items-center justify-end mb-4">
         <div className="flex items-center gap-2">
           <Button
-            className="ml-auto"
-            disabled={!table.getSelectedRowModel().rows.length}
-            onClick={handleNewCatalogClick}
-          >
-            Crear catalogo
-          </Button>
-          <Button
             disabled={!Object.keys(productsToUpdate).length}
             onClick={handleUpdateProductsClick}
           >
             Actualizar
           </Button>
-          <Button
-            className="flex gap-2"
-            onClick={() => {
-              router.push("/products/new");
-            }}
-          >
-            <Plus className="w-4 h-4" />
-            Crear producto
-          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <Button variant="default">Acciones</Button>
+              <Button
+                variant="default"
+              >
+                Acciones
+                <ChevronDown className="w-4 h-4" />
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Billing</DropdownMenuItem>
-              <DropdownMenuItem>Team</DropdownMenuItem>
-              <DropdownMenuItem>Subscription</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  router.push("/products/new");
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <Plus className="w-4 h-4" />
+                  Crear producto
+                </div>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                disabled={!table.getSelectedRowModel().rows.length}
+                onClick={handleNewCatalogClick}
+              >
+                <div className="flex items-center gap-2">
+                  <Plus className="w-4 h-4" />
+                  Crear catalogo
+                </div>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

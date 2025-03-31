@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod";
 
 import { ProductsRepository } from "@/repositories/products.repository";
@@ -9,7 +9,8 @@ import {
 } from "@/types/RepositoryTypes/Product";
 import { uploadImage } from "@/utils/aws/uploadImage";
 
-export const POST = async (req: Request) => {
+
+export const POST = async (req: NextRequest) => {
   const formData = await req.formData();
   const data = await formData.get("data");
   const image = (await formData.get("image")) as File;
@@ -93,7 +94,7 @@ export const POST = async (req: Request) => {
   return NextResponse.json({ message: "Hello World" });
 };
 
-export const PUT = async (req: Request) => {
+export const PUT = async (req: NextRequest) => {
   try {
     const body = (await req.json()) as Partial<Product>;
 

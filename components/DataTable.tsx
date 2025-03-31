@@ -1,7 +1,7 @@
 "use client";
 
 import { Table as TableType, flexRender } from "@tanstack/react-table";
-import { CSSProperties } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Button } from "./ui/button";
@@ -22,6 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/utils/cn";
+import { useDebounce } from "@uidotdev/usehooks";
 
 interface DataTableProps<TData> {
   table: TableType<TData>;
@@ -39,6 +40,7 @@ interface DataTableProps<TData> {
   enableInput?: boolean;
   onRowClick?: (row: any) => void;
   enableShowColumns?: boolean;
+  totalHits?: number;
 }
 
 export function DataTable<TData>({
@@ -49,7 +51,20 @@ export function DataTable<TData>({
   enableInput = true,
   onRowClick,
   enableShowColumns = true,
+  totalHits
 }: DataTableProps<TData>) {
+  const [q, setQ] = useState<string>("");
+
+  const debouncedValue = useDebounce(q, 500);
+
+  useEffect(() => {
+    if (debouncedValue) {
+      table.setGlobalFilter(debouncedValue);
+    } else {
+      table.setGlobalFilter("");
+    }
+  }, [debouncedValue]);
+
   return (
     <div className={cn("", className)}>
       <div className="flex items-between pb-2 gap-4">
@@ -88,8 +103,8 @@ export function DataTable<TData>({
           <Input
             className="flex-1"
             placeholder="Buscar..."
-            value={table.getState().globalFilter}
-            onChange={(e) => table.setGlobalFilter(e.target.value)}
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
           />
         )}
         {enableShowColumns && (
@@ -119,6 +134,11 @@ export function DataTable<TData>({
           </DropdownMenu>
         )}
       </div>
+      {totalHits !== undefined && (
+        <div className="text-sm text-gray-500 mb-2">
+          Total de resultados: {totalHits}
+        </div>
+      )}
       <div className="rounded-md border">
         <Table>
           <TableHeader>

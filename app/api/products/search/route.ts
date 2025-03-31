@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import MeiliSearch from "meilisearch";
 import dotenv from "dotenv";
 
@@ -11,29 +11,28 @@ const client = new MeiliSearch({
   apiKey: process.env.MEILISEARCH_APIKEY!,
 });
 
-export const GET = async (req: Request) => {
+export const GET = async (req: NextRequest) => {
   try {
     const { searchParams } = new URL(req.url);
-    const query = searchParams.get("q") || "";
-    const limit = parseInt(searchParams.get("limit") || "10");
 
-    const index = client.index("products");
+    const query = searchParams.get("query") || "";
 
-    await index.updateSearchableAttributes(["baseId", "uniqId", "name"]);
-    const products = await index.search(query, {
-      matchingStrategy: "all",
-      limit,
-    });
+    const limit = searchParams.get("limit") || "10";
 
-    return NextResponse.json({ data: products });
-  } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+    const page = searchParams.get("page") || "1";
+
+    const results = await client.index("products").search(query, {
+      limit: parseInt(limit),
+      offset: (parseInt(page) - 1) * parseInt(limit),
+    })
+    return NextResponse.json(results);
+  } catch (err) {
+    if (err instanceof Error) {
+      return NextResponse.json({ error: 'Hubo un error con la consulta GET', devError: err.message }, { status: 400 })
     }
-
-    return NextResponse.json({ error: "An error occurred" }, { status: 500 });
+    return NextResponse.json({ error: 'Hubo un error inesperado', devError: '' }, { status: 400 })
   }
-};
+}
 
 export const POST = async (req: Request) => {
   try {

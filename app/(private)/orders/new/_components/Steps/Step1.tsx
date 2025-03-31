@@ -16,7 +16,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 
-import { ImageModal } from "@/app/(private)/products/_components/ImageModal";
+import { ImageModal } from "@/app/(private)/products/_modals/ImageModal";
 import { useProducts } from "@/app/(private)/products/_hooks/useProducts";
 import { DataTable } from "@/components/DataTable";
 import DataTableColumnHeader from "@/components/DataTableHeader";

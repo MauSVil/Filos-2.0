@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Meilisearch } from "../Meilisearch";
 
 export const ProductModel = z.object({
   _id: z.string(),
@@ -37,6 +38,8 @@ export const ProductModel = z.object({
 });
 
 export type Product = z.infer<typeof ProductModel>;
+
+export type MeiliSearchProduct = Meilisearch<Product>;
 
 export const ProductRepositoryFilterModel = z.object({
   ids: z.array(z.string()).optional(),

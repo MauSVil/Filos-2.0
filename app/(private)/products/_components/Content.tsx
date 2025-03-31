@@ -1,28 +1,18 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import {
   ColumnDef,
-  ColumnFiltersState,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  SortingState,
   useReactTable,
-  VisibilityState,
 } from "@tanstack/react-table";
 import numeral from "numeral";
 import Image from "next/image";
-import { toast } from "sonner";
 import { ChevronDown, Edit, MinusIcon, Plus, PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-
-import { useProducts } from "../_hooks/useProducts";
-
-import { EditProductModal } from "./EditProductModal";
-import { NewCatalogModal } from "./NewCatalogueModal";
-import { ImageModal } from "./ImageModal";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -30,43 +20,15 @@ import DataTableColumnHeader from "@/components/DataTableHeader";
 import { DataTable } from "@/components/DataTable";
 import { Product } from "@/types/RepositoryTypes/Product";
 import { cn } from "@/lib/utils";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useModule } from "../_module/useModule";
 
 const ProductsContent = () => {
-  const [pagination, setPagination] = useState({
-    pageIndex: 0,
-    pageSize: 10,
-  });
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [globalFilter, setGlobalFilter] = useState("");
-  const [rowSelection, setRowSelection] = useState({});
-
-  const [productsToUpdate, setProductsToUpdate] = useState<{
-    [key: string]: Product;
-  }>({});
-
-  const productsQuery = useProducts();
+  const { methods, localData, flags } = useModule();
+  const { handleImageClick, handleNewCatalogClick, handleUpdateProductsClick, setPagination, setColumnVisibility, setColumnFilters, setGlobalFilter, setSorting, setRowSelection, setProductsToUpdate } = methods;
+  const { products, sorting, columnFilters, columnVisibility, pagination, rowSelection, productsToUpdate, total } = localData;
 
   const router = useRouter();
-
-  const products = useMemo(() => {
-    return productsQuery.data?.data || [];
-  }, [productsQuery.data?.data]);
-
-  const handleImageClick = async (image: string) => {
-    try {
-      await ImageModal({ image });
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-
-        return;
-      }
-      toast.error("An error occurred");
-    }
-  };
 
   const columns: ColumnDef<Product>[] = useMemo(
     () =>
@@ -346,10 +308,13 @@ const ProductsContent = () => {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    manualPagination: true,
+    pageCount: Math.ceil(total / pagination.pageSize),
     onPaginationChange: setPagination,
     onColumnVisibilityChange: setColumnVisibility,
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
+    manualFiltering: true,
     onSortingChange: setSorting,
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
@@ -358,45 +323,10 @@ const ProductsContent = () => {
       sorting,
       columnFilters,
       columnVisibility,
-      globalFilter,
       pagination,
       rowSelection,
     },
   });
-
-  const handleNewCatalogClick = async () => {
-    try {
-      const productIds = Object.keys(rowSelection);
-
-      await NewCatalogModal({ productIds });
-      setRowSelection({});
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-
-        return;
-      }
-      toast.error("An error occurred");
-    }
-  };
-
-  const handleUpdateProductsClick = async () => {
-    try {
-      const resp = await EditProductModal({ products, productsToUpdate });
-
-      productsQuery.refetch();
-      if (resp === "ok") {
-        setProductsToUpdate({});
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-
-        return;
-      }
-      toast.error("An error occurred");
-    }
-  };
 
   return (
     <>
@@ -444,8 +374,9 @@ const ProductsContent = () => {
       <DataTable
         className="mb-4"
         columns={columns}
-        isLoading={productsQuery.isLoading}
+        isLoading={flags.isLoading}
         table={table}
+        totalHits={total}
       />
     </>
   );

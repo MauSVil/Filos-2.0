@@ -24,6 +24,7 @@ export const GET = async (req: NextRequest) => {
     const results = await client.index("products").search(query, {
       limit: parseInt(limit),
       offset: (parseInt(page) - 1) * parseInt(limit),
+      filter: ["is_deleted = false"],
     })
     return NextResponse.json(results);
   } catch (err) {

@@ -5,7 +5,7 @@ import { ImageModal } from "../_modals/ImageModal";
 import { NewCatalogModal } from "../_modals/NewCatalogueModal";
 import { EditProductModal } from "../_modals/EditProductModal";
 import { MeiliSearchProduct, Product } from "@/types/RepositoryTypes/Product";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import ky from "ky";
 
 export const useModule = () => {
@@ -32,6 +32,25 @@ export const useModule = () => {
       return resp;
     },
   });
+
+  const deleteMutation = useMutation({
+    mutationKey: ["deleteProduct"],
+    mutationFn: async (productId: string) => {
+      const resp = await ky.delete(`/api/products/${productId}`);
+      return resp;
+    },
+    onSuccess: () => {
+      toast.success("Se ha eliminado el producto correctamente");
+      productsQuery.refetch();
+    },
+    onError: (error) => {
+      if (error instanceof Error) {
+        toast.error(error.message);
+        return;
+      }
+      toast.error("Ha ocurrido un error");
+    }
+  })
 
   useEffect(() => {
     productsQuery.refetch();
@@ -106,6 +125,7 @@ export const useModule = () => {
       setProductsToUpdate,
       setColumnVisibility,
       setGlobalFilter,
+      deleteProduct: deleteMutation.mutateAsync,
     },
     flags: {
       isLoading: productsQuery.isLoading,

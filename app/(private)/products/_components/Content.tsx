@@ -11,7 +11,7 @@ import {
 } from "@tanstack/react-table";
 import numeral from "numeral";
 import Image from "next/image";
-import { ChevronDown, Edit, MinusIcon, Plus, PlusIcon } from "lucide-react";
+import { ChevronDown, Edit, MinusIcon, Plus, PlusIcon, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
@@ -283,7 +283,7 @@ const ProductsContent = () => {
           cell: (cellData) => (
             <div className="flex items-center gap-2">
               <Button
-                className="h-6 w-6"
+                className="h-6 w-6 cursor-pointer"
                 size="icon"
                 variant="outline"
                 onClick={() => {
@@ -291,6 +291,16 @@ const ProductsContent = () => {
                 }}
               >
                 <Edit className="h-3.5 w-3.5" />
+              </Button>
+              <Button
+                className="h-6 w-6 cursor-pointer"
+                size="icon"
+                variant="outline"
+                onClick={() => {
+                  methods.deleteProduct(cellData.row.original._id);
+                }}
+              >
+                <Trash className="h-3.5 w-3.5" />
               </Button>
             </div>
           ),

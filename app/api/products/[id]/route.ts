@@ -86,3 +86,28 @@ export const PUT = async (
     );
   }
 };
+
+export const DELETE = async (req: NextRequest, params: { params: Promise<{ id: string }> }) => {
+  const { id } = await params.params;
+
+  try {
+    if (!id) throw new Error('El ID del producto es requerido');
+    await ProductsRepository.updateOne({
+      _id: id,
+      deleted_at: new Date(),
+    })
+    return NextResponse.json(
+      { message: "El producto ha sido eliminado correctamente" },
+      { status: 200 },
+    );
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 },
+    );
+  }
+}

@@ -75,48 +75,8 @@ const ProductForm = ({ form, isLoading, submit, image, file }: Props) => {
             placeholder="Selecciona una talla..."
             searchLabel="Buscar una talla..."
           />
+
           <div className="flex gap-4">
-            <InputFormField
-              className="flex-1"
-              controllerProps={{
-                control,
-                name: "webPagePrice",
-              }}
-              disabled={isLoading}
-              label="Precio de página web"
-              labelClassName="text-red-400"
-              name="webPagePrice"
-              type="number"
-              valueModifierOnChange={(value) => Number(value)}
-            />
-            <InputFormField
-              className="flex-1"
-              controllerProps={{
-                control,
-                name: "wholesalePrice",
-              }}
-              disabled={isLoading}
-              label="Precio de mayoreo"
-              labelClassName="text-purple-400"
-              name="wholesalePrice"
-              type="number"
-              valueModifierOnChange={(value) => Number(value)}
-            />
-          </div>
-          <div className="flex gap-4">
-            <InputFormField
-              className="flex-1"
-              controllerProps={{
-                control,
-                name: "retailPrice",
-              }}
-              disabled={isLoading}
-              label="Precio de menudeo"
-              labelClassName="text-yellow-400"
-              name="retailPrice"
-              type="number"
-              valueModifierOnChange={(value) => Number(value)}
-            />
             <InputFormField
               className="flex-1"
               controllerProps={{
@@ -127,6 +87,49 @@ const ProductForm = ({ form, isLoading, submit, image, file }: Props) => {
               label="Precio especial"
               labelClassName="text-green-400"
               name="specialPrice"
+              type="number"
+              valueModifierOnChange={(value) => Number(value)}
+            />
+            <InputFormField
+              className="flex-1"
+              controllerProps={{
+                control,
+                name: "wholesalePrice",
+              }}
+              disabled={isLoading}
+              label="Precio mayoreo"
+              labelClassName="text-purple-400"
+              name="wholesalePrice"
+              type="number"
+              valueModifierOnChange={(value) => Number(value)}
+            />
+          </div>
+
+          <div className="flex gap-4">
+            <InputFormField
+              className="flex-1"
+              controllerProps={{
+                control,
+                name: "retailPrice",
+              }}
+              disabled={isLoading}
+              label="Precio semi-mayoreo"
+              labelClassName="text-yellow-400"
+              name="retailPrice"
+              type="number"
+              valueModifierOnChange={(value) => Number(value)}
+            />
+
+            <InputFormField
+              className="flex-1"
+              controllerProps={{
+                control,
+                name: "webPagePrice",
+              }}
+              disabled={isLoading}
+              label="Precio página web"
+              labelClassName="text-red-400"
+              name="webPagePrice"
               type="number"
               valueModifierOnChange={(value) => Number(value)}
             />

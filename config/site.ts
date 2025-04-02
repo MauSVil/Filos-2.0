@@ -1,7 +1,7 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Filos w/ NextUI",
+  name: "Filos",
   description: "Make beautiful websites regardless of your design experience.",
   links: {
     github: "https://github.com/nextui-org/nextui",

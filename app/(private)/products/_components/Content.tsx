@@ -64,12 +64,13 @@ const ProductsContent = () => {
           ),
           accessorKey: "image",
           cell: (cellData) => {
+            console.log({ image: cellData.row.original.image });
             return (
               <Image
                 alt="image"
                 className="rounded-medium cursor-pointer"
                 height={50}
-                src={cellData.row.original.image!}
+                src={cellData.row.original.image !== 'undefined' ? cellData.row.original.image! : '/'}
                 width={50}
                 onClick={() => handleImageClick(cellData.row.original.image!)}
               />

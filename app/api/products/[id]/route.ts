@@ -48,7 +48,7 @@ export const PUT = async (
       dataVerified.image = url;
     }
 
-    if (image && typeof image === "string") {
+    if (image && typeof image === "string" && image !== 'undefined') {
       dataVerified.image = image;
     }
   } catch (error) {

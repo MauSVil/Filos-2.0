@@ -7,7 +7,7 @@ import {
   ProductInput,
   ProductInputModel,
 } from "@/types/RepositoryTypes/Product";
-import { uploadImage } from "@/utils/aws/uploadImage";
+import { FileService } from "@/services/file.service";
 
 
 export const POST = async (req: NextRequest) => {
@@ -59,7 +59,8 @@ export const POST = async (req: NextRequest) => {
       const arrayBuffer = await image.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
 
-      url = await uploadImage(`${insertedId}.png`, buffer);
+      url = await FileService.uploadFile('products', insertedId, buffer, 'image/png');
+
     } catch (error) {
       if (error instanceof Error) {
         return NextResponse.json(

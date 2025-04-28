@@ -10,6 +10,7 @@ import { OrdersRepository } from "@/repositories/orders.repository";
 import { BuyersRepository } from "@/repositories/buyers.repository";
 import { ProductsRepository } from "@/repositories/products.repository";
 import { uploadImage } from "@/utils/aws/uploadImage";
+import { FileService } from "@/services/file.service";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -120,6 +121,9 @@ export const POST = async (req: NextRequest) => {
 
     const pdfBuffer = await pdfResponse.arrayBuffer();
     const buffer = Buffer.from(pdfBuffer);
+
+    try { await FileService.uploadFile('orders', body.id, buffer, 'application/pdf') }
+    catch { console.error('Error uploading file to Minio') }
 
     const url = await uploadImage(`orderDocs/${body.id}.pdf`, buffer);
 

@@ -1,4 +1,5 @@
 import { Client } from 'minio';
+import JSZip from 'jszip';
 
 export class FileService {
   private static minioClient = new Client({
@@ -40,5 +41,31 @@ export class FileService {
     }
 
     return files;
+  }
+
+  static async createZipFromDocuments(
+    documents: { name: string, buffer: Buffer }[],
+    getPath?: (doc: { name: string, buffer: Buffer }) => string
+  ): Promise<Buffer> {
+    const zip = new JSZip();
+  
+    documents.forEach((doc) => {
+      const path = getPath ? getPath(doc) : "";
+      const fullPath = path ? `${path}/${doc.name}` : doc.name;
+      zip.file(fullPath, doc.buffer);
+    });
+  
+    console.log("Starting to generate ZIP...");
+  
+    const zipContent = await zip.generateAsync(
+      { type: "nodebuffer" },
+      (metadata) => {
+        console.log(`Progress: ${metadata.percent.toFixed(2)}%`);
+      }
+    );
+  
+    console.log("ZIP generation completed");
+  
+    return zipContent;
   }
 }

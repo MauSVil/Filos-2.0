@@ -29,7 +29,7 @@ export const OrderModel = z.object({
   totalAmount: z.coerce.number(),
   documents: z.object({
     order: z.string().optional(),
-  }),
+  }).optional(),
   pdfStatus: z.string(),
   paid: z.boolean(),
 });

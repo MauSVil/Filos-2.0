@@ -1,18 +1,21 @@
 import { ObjectId } from "mongodb";
 import { z } from "zod";
 
-export const OrderModel = z.object({
-  _id: z.instanceof(ObjectId).optional(),
+const ProductModel = z.object({
+  product: z.string(),
+  quantity: z.coerce.number(),
+  total: z.coerce.number(),
+});
+
+const DocumentsModel = z.object({
+  order: z.string().optional(),
+});
+
+const OrderBaseModel = z.object({
   name: z.string(),
   requestDate: z.coerce.date(),
   dueDate: z.coerce.date(),
-  products: z.array(
-    z.object({
-      product: z.string(),
-      quantity: z.coerce.number(),
-      total: z.coerce.number(),
-    }),
-  ),
+  products: z.array(ProductModel),
   buyer: z.string(),
   active: z.boolean(),
   status: z.enum(["Pendiente", "Completado", "Cancelado"]),
@@ -27,11 +30,18 @@ export const OrderModel = z.object({
   description: z.string(),
   finalAmount: z.coerce.number(),
   totalAmount: z.coerce.number(),
-  documents: z.object({
-    order: z.string().optional(),
-  }).optional(),
+  documents: DocumentsModel.optional(),
   pdfStatus: z.string(),
   paid: z.boolean(),
 });
 
+export const OrderModel = OrderBaseModel.extend({
+  _id: z.instanceof(ObjectId),
+});
 export type Order = z.infer<typeof OrderModel>;
+
+export const CreateOrderInputModel = OrderBaseModel;
+export type CreateOrderInput = z.infer<typeof CreateOrderInputModel>;
+
+export const UpdateOrderInputModel = OrderBaseModel.partial();
+export type UpdateOrderInput = z.infer<typeof UpdateOrderInputModel>;

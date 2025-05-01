@@ -12,6 +12,7 @@ const DocumentsModel = z.object({
 });
 
 export const OrderBase = z.object({
+  _id: z.string(),
   name: z.string(),
   requestDate: z.coerce.date(),
   dueDate: z.coerce.date(),
@@ -36,10 +37,15 @@ export const OrderBase = z.object({
 });
 export type OrderBaseType = z.infer<typeof OrderBase>;
 
-export const OrderInput = OrderBase;
+export const OrderBaseWithId = OrderBase.extend({
+  _id: z.instanceof(ObjectId),
+});
+export type OrderBaseWithIdType = z.infer<typeof OrderBaseWithId>;
+
+export const OrderInput = OrderBase.omit({
+  _id: true,
+});
 export type OrderInputType = z.infer<typeof OrderInput>;
 
-export const OrderUpdate = OrderBase.extend({
-  _id: z.instanceof(ObjectId),
-}).partial();
+export const OrderUpdate = OrderBase.omit({ _id: true }).partial();
 export type OrderUpdateType = z.infer<typeof OrderUpdate>;

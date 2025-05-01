@@ -2,7 +2,7 @@ import { UsersRepository } from "@/repositories/users.repository";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { z, ZodError } from "zod";
-import bycript from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 const Body = z.object({
@@ -12,14 +12,14 @@ const Body = z.object({
 
 type Body = z.infer<typeof Body>;
 
-export const POST = async (req: NextRequest) => {  
+export const POST = async (req: NextRequest) => {
   try {
     const validatedBody = Body.parse(await req.json());
     const userFound = await UsersRepository.findOne({ email: validatedBody.email });
 
     if (!userFound) throw new Error("Usuario no encontrado");
 
-    const isValid = await bycript.compare(validatedBody.password, userFound.password);
+    const isValid = await bcrypt.compare(validatedBody.password, userFound.password);
     if (!isValid) throw new Error("Contraseña incorrecta");
 
     const myUser = {

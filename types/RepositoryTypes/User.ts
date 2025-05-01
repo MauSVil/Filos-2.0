@@ -21,7 +21,7 @@ export const UserRepositoryFilterModel = z.object({
 export type UserRepositoryFilter = z.infer<typeof UserRepositoryFilterModel>;
 
 export const MongoUserModel = z.object({
-  _id: z.instanceof(ObjectId).optional(),
+  _id: z.string().optional(),
   email: z.string(),
   name: z.string(),
   firstLastName: z.string(),

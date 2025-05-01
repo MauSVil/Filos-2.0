@@ -4,8 +4,8 @@ import { useDebounce } from "@uidotdev/usehooks";
 import ky from "ky";
 import { useEffect, useState } from "react"
 import { OrderDetailModal } from "../_modals/OrderDetail";
-import { BuyerClientType } from "@/types/v2/Buyer/Client.type";
-import { OrderClientType } from "@/types/v2/Order/Client.type";
+import { BuyerBaseType } from "@/types/v2/Buyer/Base.type";
+import { OrderBaseType } from "@/types/v2/Order/Base.type";
 
 const orderStatuses = ["Pendiente", "Completado", "Cancelado"];
 
@@ -18,12 +18,12 @@ export const useModule = () => {
   const debouncedValue = useDebounce(q, 500);
 
   const [status, setStatus] = useState(orderStatuses[0]);
-  const [buyersStore, setBuyersStore] = useState<Record<string, BuyerClientType>>({});
+  const [buyersStore, setBuyersStore] = useState<Record<string, BuyerBaseType>>({});
 
   const ordersQuery = useQuery({
     queryKey: ['orders', debouncedValue],
     queryFn: async () => {
-      const resp = await ky.get(`/api/v2/orders/search?limit=${pagination.pageSize}&page=${pagination.pageIndex + 1}&query=${debouncedValue}&filters=status=${status}`).json<Meilisearch<OrderClientType>>();
+      const resp = await ky.get(`/api/v2/orders/search?limit=${pagination.pageSize}&page=${pagination.pageIndex + 1}&query=${debouncedValue}&filters=status=${status}`).json<Meilisearch<OrderBaseType>>();
       return resp
     }
   })
@@ -31,7 +31,7 @@ export const useModule = () => {
   const buyersQuery = useQuery({
     queryKey: ['buyers'],
     queryFn: async () => {
-      const resp = await ky.post(`/api/v2/buyers/search`, { json: {} }).json<BuyerClientType[]>();
+      const resp = await ky.post(`/api/v2/buyers/search`, { json: {} }).json<BuyerBaseType[]>();
       return resp
     },
     enabled: !!ordersQuery.data?.hits.length,
@@ -39,7 +39,7 @@ export const useModule = () => {
 
   useEffect(() => {
     if (buyersQuery.data) {
-      const buyersMap: Record<string, BuyerClientType> = {};
+      const buyersMap: Record<string, BuyerBaseType> = {};
       buyersQuery.data.forEach((buyer) => {
         buyersMap[buyer._id.toString()] = buyer;
       });
@@ -62,7 +62,7 @@ export const useModule = () => {
     window.open(url, "_blank");
   };
 
-  const openOrderDetail = async (order: OrderClientType) => {
+  const openOrderDetail = async (order: OrderBaseType) => {
     try {
       await OrderDetailModal({ orderId: order._id.toString() });
       ordersQuery.refetch();

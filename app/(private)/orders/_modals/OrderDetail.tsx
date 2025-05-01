@@ -18,7 +18,7 @@ import ky from "ky";
 import { useEffect, useMemo, useState } from "react";
 import { Product } from "@/types/v2/Product.type";
 import { toast } from "sonner";
-import { OrderClientType } from "@/types/v2/Order/Client.type";
+import { OrderBaseType } from "@/types/v2/Order/Base.type";
 
 interface Props extends InstanceProps<any, any> {
   orderId: string;
@@ -218,10 +218,10 @@ export const OrderDetailModal = create(OrderDetail);
 const useModule = ({ orderId }: { orderId: string }) => {
   const [productsStore, setProductsStore] = useState<Record<string, Product>>({});
 
-  const orderQuery = useQuery<OrderClientType>({
+  const orderQuery = useQuery<OrderBaseType>({
     queryKey: ["order", orderId],
     queryFn: async () => {
-      const resp = await ky.get(`/api/v2/orders/${orderId}`).json<OrderClientType>();
+      const resp = await ky.get(`/api/v2/orders/${orderId}`).json<OrderBaseType>();
       return resp;
     },
     enabled: !!orderId,
@@ -244,8 +244,8 @@ const useModule = ({ orderId }: { orderId: string }) => {
 
   const editOrderMutation = useMutation({
     mutationKey: ["editOrder"],
-    mutationFn: async (data: Partial<OrderClientType>) => {
-      const resp = await ky.put(`/api/v2/orders/status`, { json: { _id: orderId, ...data } }).json<OrderClientType>();
+    mutationFn: async (data: Partial<OrderBaseType>) => {
+      const resp = await ky.put(`/api/v2/orders/status`, { json: { _id: orderId, ...data } }).json<OrderBaseType>();
       return resp;
     }
   })
@@ -335,7 +335,7 @@ const useModule = ({ orderId }: { orderId: string }) => {
 
   return {
     localData: {
-      order: orderQuery.data || ({} as OrderClientType),
+      order: orderQuery.data || ({} as OrderBaseType),
     },
     store: {
       productsStore,

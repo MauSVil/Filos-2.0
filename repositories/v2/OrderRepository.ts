@@ -1,6 +1,5 @@
 import clientPromise from "@/mongodb";
-import { OrderUpdateType } from "@/types/v2/Order/Base.type";
-import { OrderServerType } from "@/types/v2/Order/Server.type";
+import { OrderBaseWithIdType, OrderUpdateType } from "@/types/v2/Order/Base.type";
 import { Db, Filter } from "mongodb";
 
 let client;
@@ -11,21 +10,21 @@ const init = async () => {
 };
 
 export class OrderRepository {
-  static async find(filter: Filter<OrderServerType>) {
+  static async find(filter: Filter<OrderBaseWithIdType>) {
     await init();
-    const orders = await db.collection<OrderServerType>("orders").find(filter).toArray();
+    const orders = await db.collection<OrderBaseWithIdType>("orders").find(filter).toArray();
     return orders;
   }
 
-  static async findOne(filter: Filter<OrderServerType>) {
+  static async findOne(filter: Filter<OrderBaseWithIdType>) {
     await init();
-    const order = await db.collection<OrderServerType>("orders").findOne(filter);
+    const order = await db.collection<OrderBaseWithIdType>("orders").findOne(filter);
     return order;
   }
 
-  static async update(filter: Filter<OrderServerType>, data: OrderUpdateType) {
+  static async update(filter: Filter<OrderBaseWithIdType>, data: OrderUpdateType) {
     await init();
-    const order = await db.collection<OrderServerType>("orders");
+    const order = await db.collection<OrderBaseWithIdType>("orders");
     const updatedOrder = await order.findOneAndUpdate(
       filter,
       { $set: data },

@@ -30,11 +30,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Product } from "@/types/RepositoryTypes/Product";
-import { OrderClientType } from "@/types/v2/Order/Client.type";
+import { OrderBaseType } from "@/types/v2/Order/Base.type";
 
 const productOrderStatuses = ["Todos", "Con cantidad", "Sin cantidad"];
 
-const Step1 = ({ order, type }: { order?: OrderClientType; type: "new" | "edit" }) => {
+const Step1 = ({ order, type }: { order?: OrderBaseType; type: "new" | "edit" }) => {
   const form = useFormContext();
   const [status, setStatus] = useState(productOrderStatuses[0]);
   const [sorting, setSorting] = useState<SortingState>([

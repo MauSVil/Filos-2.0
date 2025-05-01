@@ -12,7 +12,7 @@ export const BuyerRepositoryFilterModel = z.object({
 export type BuyerRepositoryFilter = z.infer<typeof BuyerRepositoryFilterModel>;
 
 export const BuyerModel = z.object({
-  _id: z.instanceof(ObjectId),
+  _id: z.string(),
   name: z.string(),
   phone: z.string(),
   address: z.string(),

@@ -2,7 +2,7 @@ import { handleError } from "@/lib/handleError";
 import { OrderRepository } from "@/repositories/v2/OrderRepository";
 import { NextRequest, NextResponse } from "next/server";
 import MeiliSearch from "meilisearch";
-import { OrderServer } from "@/types/v2/Order/Server.type";
+import { OrderBaseWithId } from "@/types/v2/Order/Base.type";
 
 const client = new MeiliSearch({
   host: process.env.MEILISEARCH_HOST!,
@@ -12,7 +12,7 @@ const client = new MeiliSearch({
 export const POST = async (req: NextRequest) => {
   try {
     const prebody = await req.json();
-    const body = await OrderServer.partial().parseAsync(prebody)
+    const body = await OrderBaseWithId.partial().parseAsync(prebody)
     const orders = await OrderRepository.find(body);
     return NextResponse.json({ orders });
   } catch (error) {

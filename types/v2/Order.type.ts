@@ -36,7 +36,7 @@ const OrderBaseModel = z.object({
 });
 
 export const OrderModel = OrderBaseModel.extend({
-  _id: z.instanceof(ObjectId),
+  _id: z.string(),
 });
 export type Order = z.infer<typeof OrderModel>;
 

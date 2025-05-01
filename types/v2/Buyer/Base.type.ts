@@ -2,6 +2,7 @@ import { ObjectId } from "mongodb";
 import { z } from "zod";
 
 export const BuyerBase = z.object({
+  _id: z.string(),
   name: z.string(),
   email: z.string().email().optional(),
   phone: z.coerce.string(),
@@ -13,10 +14,18 @@ export const BuyerBase = z.object({
 });
 export type BuyerBaseType = z.infer<typeof BuyerBase>;
 
-export const BuyerInput = BuyerBase;
+export const BuyerBaseWithId = BuyerBase.extend({
+  _id: z.instanceof(ObjectId),
+});
+export type BuyerBaseWithIdType = z.infer<typeof BuyerBaseWithId>;
+
+export const BuyerInput = BuyerBase.omit({
+  _id: true,
+  createdAt: true,
+  updatedAt: true,
+  deletedAt: true,
+});
 export type BuyerInputType = z.infer<typeof BuyerInput>;
 
-export const BuyerUpdate = BuyerBase.extend({
-  _id: z.instanceof(ObjectId),
-}).partial();
+export const BuyerUpdate = BuyerBase.partial();
 export type BuyerUpdateType = z.infer<typeof BuyerUpdate>;

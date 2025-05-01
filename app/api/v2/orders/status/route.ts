@@ -1,6 +1,6 @@
 import { BuyerRepository } from "@/repositories/v2/BuyerRepository";
 import { OrderRepository } from "@/repositories/v2/OrderRepository";
-import { OrderServerType } from "@/types/v2/Order/Server.type";
+import { OrderBaseType } from "@/types/v2/Order/Base.type";
 import ky from "ky";
 import { ObjectId } from "mongodb";
 import { NextRequest, NextResponse } from "next/server";
@@ -10,7 +10,7 @@ export const PUT = async (req: NextRequest) => {
   try {
     let debug: string = "";
     const body = await req.json();
-    const { _id, ...rest } = body as OrderServerType;
+    const { _id, ...rest } = body as OrderBaseType;
 
     const prevOrder = await OrderRepository.findOne({ _id: new ObjectId(_id) });
 
@@ -21,7 +21,7 @@ export const PUT = async (req: NextRequest) => {
       );
     }
 
-    const { status, paid } = rest as OrderServerType;
+    const { status, paid } = rest;
 
     await OrderRepository.update({ _id: new ObjectId(_id) }, {
       ...(status && { status }),

@@ -2,8 +2,7 @@ import { handleError } from "@/lib/handleError";
 import { BuyerRepository } from "@/repositories/v2/BuyerRepository";
 import { OrderRepository } from "@/repositories/v2/OrderRepository";
 import { ProductRepository } from "@/repositories/v2/ProductRepository";
-import { OrderInput } from "@/types/RepositoryTypes/Order";
-import { OrderServerType } from "@/types/v2/Order/Server.type";
+import { OrderBaseType, OrderInputType } from "@/types/v2/Order/Base.type";
 import { Product } from "@/types/v2/Product.type";
 import ky from "ky";
 import _ from "lodash";
@@ -60,7 +59,7 @@ export const POST = async (req: NextRequest, { params }: { params: Promise<{ id:
       freightPrice,
       advancedPayment,
       description,
-    } = body as OrderServerType;
+    } = body as OrderBaseType;
 
     const buyerFound = await BuyerRepository.findOne({ _id: new ObjectId(buyer) });
 
@@ -89,7 +88,7 @@ export const POST = async (req: NextRequest, { params }: { params: Promise<{ id:
     }
 
     const productsIds = Object.keys(body.products);
-    const products = await ProductRepository.find({ _id: { $in: productsIds.map(pi => new ObjectId(pi)) } });
+    const products = await ProductRepository.find({ _id: { $in: productsIds } });
     const productsMapped: { [key: string]: Product } = _.keyBy(
       products,
       "_id",
@@ -106,7 +105,7 @@ export const POST = async (req: NextRequest, { params }: { params: Promise<{ id:
         };
       });
 
-    const newOrder: OrderInput = {
+    const newOrder: OrderInputType = {
       ...prevOrder,
       name,
       buyer,
@@ -117,7 +116,6 @@ export const POST = async (req: NextRequest, { params }: { params: Promise<{ id:
       description,
       products: productsParsed,
       status: "Pendiente",
-      updated_at: moment().tz("America/Mexico_City").toDate(),
       documents: {
         order: "",
       },

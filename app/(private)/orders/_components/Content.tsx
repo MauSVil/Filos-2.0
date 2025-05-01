@@ -34,7 +34,7 @@ import {
 import { DataTable } from "@/components/DataTable";
 import DataTableColumnHeader from "@/components/DataTableHeader";
 import { useModule } from "../_modules/useModule";
-import { OrderClientType } from "@/types/v2/Order/Client.type";
+import { OrderBaseType } from "@/types/v2/Order/Base.type";
 
 export const statusTranslations: { [key: string]: string } = {
   retailPrice: "Semi-mayoreo",
@@ -51,7 +51,7 @@ const OrdersContent = () => {
 
   const router = useRouter();
 
-  const columns: ColumnDef<OrderClientType>[] = useMemo(
+  const columns: ColumnDef<OrderBaseType>[] = useMemo(
     () =>
       [
         {
@@ -180,7 +180,7 @@ const OrdersContent = () => {
             </div>
           ),
         },
-      ] satisfies ColumnDef<OrderClientType>[],
+      ] satisfies ColumnDef<OrderBaseType>[],
     [buyers],
   );
   const table = useReactTable({

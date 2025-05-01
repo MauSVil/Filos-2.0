@@ -1,9 +1,8 @@
-import { ObjectId } from "mongodb";
 import { z } from "zod";
 import { Meilisearch } from "../Meilisearch";
 
 export const ProductSchema = z.object({
-  _id: z.instanceof(ObjectId).optional(),
+  _id: z.string().optional(),
   baseId: z.string(),
   uniqId: z.string(),
   color: z.string(),

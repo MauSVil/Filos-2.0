@@ -27,10 +27,13 @@ export const GET = async (req: NextRequest) => {
     const query = searchParams.get("query") || "";
     const limit = searchParams.get("limit") || "10";
     const page = searchParams.get("page") || "1";
+    const filters = searchParams.get("filters") || "";
 
     const results = await client.index("orders").search(query, {
       limit: parseInt(limit),
       offset: (parseInt(page) - 1) * parseInt(limit),
+      filter: filters ? filters.split(",") : [],
+      sort: ["requestDate:desc"],
     })
     return NextResponse.json(results);
 

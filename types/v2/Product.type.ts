@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 import { z } from "zod";
 import { Meilisearch } from "../Meilisearch";
 
-const productSchema = z.object({
+export const ProductSchema = z.object({
   _id: z.instanceof(ObjectId).optional(),
   baseId: z.string(),
   uniqId: z.string(),
@@ -20,6 +20,6 @@ const productSchema = z.object({
   updated_at: z.coerce.date(),
 });
 
-export type Product = z.infer<typeof productSchema>;
+export type Product = z.infer<typeof ProductSchema>;
 
 export type MeiliSearchProduct = Meilisearch<Product>;

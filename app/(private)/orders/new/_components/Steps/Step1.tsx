@@ -30,7 +30,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Product } from "@/types/RepositoryTypes/Product";
-import { Order } from "@/types/RepositoryTypes/Order";
+import { Order } from "@/types/v2/Order.type";
 
 const productOrderStatuses = ["Todos", "Con cantidad", "Sin cantidad"];
 

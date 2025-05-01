@@ -17,7 +17,7 @@ import { Progress } from "@/components/ui/progress";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Order } from "@/types/RepositoryTypes/Order";
+import { useModule } from "../_modules/useModule";
 
 const Content = ({ id }: { id: string }) => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -27,11 +27,9 @@ const Content = ({ id }: { id: string }) => {
 
   const router = useRouter();
 
-  const orderQuery = useOrder({ id });
-  const order = useMemo(
-    () => orderQuery?.data || {},
-    [orderQuery.data],
-  ) as Order;
+  const { localData, flags, methods } = useModule({ id });
+  const { order } = localData;
+  const { refetch } = methods;
 
   const ContentComponent = useMemo(() => {
     switch (currentStep) {
@@ -82,14 +80,7 @@ const Content = ({ id }: { id: string }) => {
     try {
       setCurrentStep((prev) => prev + 1);
 
-      await ky
-        .put("/api/orders", {
-          json: {
-            _id: id,
-            ...data,
-          },
-        })
-        .json();
+      await ky.post(`/api/v2/orders/${id}`, { json: { ...data } }).json();
 
       setLoading(false);
       setSuccess(true);
@@ -120,7 +111,7 @@ const Content = ({ id }: { id: string }) => {
     }
 
     if (currentStep === 2) {
-      orderQuery.refetch();
+      refetch();
       router.push("/orders");
 
       return;
@@ -134,7 +125,7 @@ const Content = ({ id }: { id: string }) => {
   };
 
   useEffect(() => {
-    if (orderQuery.isPending) return;
+    if (flags.isLoading) return;
     const {
       name,
       buyer,
@@ -152,7 +143,7 @@ const Content = ({ id }: { id: string }) => {
     form.setValue("freightPrice", freightPrice);
     form.setValue("advancedPayment", advancedPayment);
     form.setValue("description", description);
-  }, [orderQuery.isPending]);
+  }, [flags.isLoading]);
 
   return (
     <div className="w-full h-full flex flex-col items-center">

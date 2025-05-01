@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { z } from "zod";
 
 export const BuyerRepositoryFilterModel = z.object({
@@ -11,7 +12,7 @@ export const BuyerRepositoryFilterModel = z.object({
 export type BuyerRepositoryFilter = z.infer<typeof BuyerRepositoryFilterModel>;
 
 export const BuyerModel = z.object({
-  _id: z.string(),
+  _id: z.instanceof(ObjectId),
   name: z.string(),
   phone: z.string(),
   address: z.string(),

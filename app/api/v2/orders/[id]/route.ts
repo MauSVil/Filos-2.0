@@ -3,7 +3,7 @@ import { BuyerRepository } from "@/repositories/v2/BuyerRepository";
 import { OrderRepository } from "@/repositories/v2/OrderRepository";
 import { ProductRepository } from "@/repositories/v2/ProductRepository";
 import { OrderInput } from "@/types/RepositoryTypes/Order";
-import { Order } from "@/types/v2/Order.type";
+import { OrderServerType } from "@/types/v2/Order/Server.type";
 import { Product } from "@/types/v2/Product.type";
 import ky from "ky";
 import _ from "lodash";
@@ -14,9 +14,9 @@ import { NextRequest, NextResponse } from "next/server";
 export const GET = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
   try {
     const { id } = await params;
-  
+
     const order = await OrderRepository.findOne({ _id: new ObjectId(id) });
-  
+
     return NextResponse.json(order);
   } catch (error) {
     return handleError(error);
@@ -60,7 +60,7 @@ export const POST = async (req: NextRequest, { params }: { params: Promise<{ id:
       freightPrice,
       advancedPayment,
       description,
-    } = body as Order;
+    } = body as OrderServerType;
 
     const buyerFound = await BuyerRepository.findOne({ _id: new ObjectId(buyer) });
 
@@ -133,7 +133,7 @@ export const POST = async (req: NextRequest, { params }: { params: Promise<{ id:
     await OrderRepository.update({ _id: new ObjectId(id) }, newOrder);
 
     return NextResponse.json({ message: "Order updated successfully", debug });
-  
+
   } catch (error) {
     return handleError(error);
   }

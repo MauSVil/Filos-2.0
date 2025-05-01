@@ -1,8 +1,8 @@
 import { handleError } from "@/lib/handleError";
 import { OrderRepository } from "@/repositories/v2/OrderRepository";
-import { OrderModel } from "@/types/v2/Order.type";
 import { NextRequest, NextResponse } from "next/server";
 import MeiliSearch from "meilisearch";
+import { OrderServer } from "@/types/v2/Order/Server.type";
 
 const client = new MeiliSearch({
   host: process.env.MEILISEARCH_HOST!,
@@ -12,7 +12,7 @@ const client = new MeiliSearch({
 export const POST = async (req: NextRequest) => {
   try {
     const prebody = await req.json();
-    const body = await OrderModel.partial().parseAsync(prebody)
+    const body = await OrderServer.partial().parseAsync(prebody)
     const orders = await OrderRepository.find(body);
     return NextResponse.json({ orders });
   } catch (error) {
@@ -23,7 +23,7 @@ export const POST = async (req: NextRequest) => {
 export const GET = async (req: NextRequest) => {
   try {
     const { searchParams } = new URL(req.url);
-    
+
     const query = searchParams.get("query") || "";
     const limit = searchParams.get("limit") || "10";
     const page = searchParams.get("page") || "1";

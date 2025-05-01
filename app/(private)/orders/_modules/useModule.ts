@@ -1,11 +1,11 @@
 import { Meilisearch } from "@/types/Meilisearch";
-import { Order } from "@/types/v2/Order.type";
 import { useQuery } from "@tanstack/react-query"
 import { useDebounce } from "@uidotdev/usehooks";
 import ky from "ky";
 import { useEffect, useState } from "react"
 import { OrderDetailModal } from "../_modals/OrderDetail";
 import { BuyerClientType } from "@/types/v2/Buyer/Client.type";
+import { OrderClientType } from "@/types/v2/Order/Client.type";
 
 const orderStatuses = ["Pendiente", "Completado", "Cancelado"];
 
@@ -23,7 +23,7 @@ export const useModule = () => {
   const ordersQuery = useQuery({
     queryKey: ['orders', debouncedValue],
     queryFn: async () => {
-      const resp = await ky.get(`/api/v2/orders/search?limit=${pagination.pageSize}&page=${pagination.pageIndex + 1}&query=${debouncedValue}&filters=status=${status}`).json<Meilisearch<Order>>();
+      const resp = await ky.get(`/api/v2/orders/search?limit=${pagination.pageSize}&page=${pagination.pageIndex + 1}&query=${debouncedValue}&filters=status=${status}`).json<Meilisearch<OrderClientType>>();
       return resp
     }
   })
@@ -62,7 +62,7 @@ export const useModule = () => {
     window.open(url, "_blank");
   };
 
-  const openOrderDetail = async (order: Order) => {
+  const openOrderDetail = async (order: OrderClientType) => {
     try {
       await OrderDetailModal({ orderId: order._id.toString() });
       ordersQuery.refetch();

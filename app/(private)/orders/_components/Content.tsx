@@ -34,7 +34,7 @@ import {
 import { DataTable } from "@/components/DataTable";
 import DataTableColumnHeader from "@/components/DataTableHeader";
 import { useModule } from "../_modules/useModule";
-import { Order } from "@/types/v2/Order.type";
+import { OrderClientType } from "@/types/v2/Order/Client.type";
 
 export const statusTranslations: { [key: string]: string } = {
   retailPrice: "Semi-mayoreo",
@@ -42,7 +42,6 @@ export const statusTranslations: { [key: string]: string } = {
   webPagePrice: "Pagina web",
   specialPrice: "Especial",
 };
-
 
 const OrdersContent = () => {
   const { localData, methods, flags, store } = useModule();
@@ -52,7 +51,7 @@ const OrdersContent = () => {
 
   const router = useRouter();
 
-  const columns: ColumnDef<Order>[] = useMemo(
+  const columns: ColumnDef<OrderClientType>[] = useMemo(
     () =>
       [
         {
@@ -181,7 +180,7 @@ const OrdersContent = () => {
             </div>
           ),
         },
-      ] satisfies ColumnDef<Order>[],
+      ] satisfies ColumnDef<OrderClientType>[],
     [buyers],
   );
   const table = useReactTable({

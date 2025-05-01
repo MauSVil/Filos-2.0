@@ -1,11 +1,9 @@
 import {
   AlertDialog,
   AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogFooter,
 } from "@/components/ui/alert-dialog";
-import { Order } from "@/types/v2/Order.type";
 import { create, InstanceProps } from "react-modal-promise";
 import moment from "moment";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -20,6 +18,7 @@ import ky from "ky";
 import { useEffect, useMemo, useState } from "react";
 import { Product } from "@/types/v2/Product.type";
 import { toast } from "sonner";
+import { OrderClientType } from "@/types/v2/Order/Client.type";
 
 interface Props extends InstanceProps<any, any> {
   orderId: string;
@@ -219,10 +218,10 @@ export const OrderDetailModal = create(OrderDetail);
 const useModule = ({ orderId }: { orderId: string }) => {
   const [productsStore, setProductsStore] = useState<Record<string, Product>>({});
 
-  const orderQuery = useQuery<Order>({
+  const orderQuery = useQuery<OrderClientType>({
     queryKey: ["order", orderId],
     queryFn: async () => {
-      const resp = await ky.get(`/api/v2/orders/${orderId}`).json<Order>();
+      const resp = await ky.get(`/api/v2/orders/${orderId}`).json<OrderClientType>();
       return resp;
     },
     enabled: !!orderId,
@@ -245,8 +244,8 @@ const useModule = ({ orderId }: { orderId: string }) => {
 
   const editOrderMutation = useMutation({
     mutationKey: ["editOrder"],
-    mutationFn: async (data: Partial<Order>) => {
-      const resp = await ky.put(`/api/v2/orders/status`, { json: { _id: orderId, ...data } }).json<Order>();
+    mutationFn: async (data: Partial<OrderClientType>) => {
+      const resp = await ky.put(`/api/v2/orders/status`, { json: { _id: orderId, ...data } }).json<OrderClientType>();
       return resp;
     }
   })
@@ -336,7 +335,7 @@ const useModule = ({ orderId }: { orderId: string }) => {
 
   return {
     localData: {
-      order: orderQuery.data || ({} as Order),
+      order: orderQuery.data || ({} as OrderClientType),
     },
     store: {
       productsStore,

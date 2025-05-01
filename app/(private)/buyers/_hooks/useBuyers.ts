@@ -1,4 +1,4 @@
-import { Buyer } from "@/types/RepositoryTypes/Buyer";
+import { BuyerClientType } from "@/types/v2/Buyer/Client.type";
 import { useQuery } from "@tanstack/react-query";
 import ky from "ky";
 import { toast } from "sonner";
@@ -11,7 +11,7 @@ export const useBuyers = ({
   buyers?: string[];
   id?: string;
 }) => {
-  return useQuery<Buyer[]>({
+  return useQuery<BuyerClientType[]>({
     queryKey: ["buyers", { buyers, id }],
     retry: 0,
     queryFn: async () => {
@@ -22,7 +22,7 @@ export const useBuyers = ({
         };
         const resp = (await ky
           .post("/api/buyers/search", { json })
-          .json()) as Buyer[];
+          .json()) as BuyerClientType[];
 
         return resp;
       } catch (error) {

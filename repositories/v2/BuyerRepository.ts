@@ -1,5 +1,5 @@
 import clientPromise from "@/mongodb";
-import { Buyer } from "@/types/RepositoryTypes/Buyer";
+import { BuyerServerType } from "@/types/v2/Buyer/Server.type";
 import { Db, Filter } from "mongodb";
 
 let client;
@@ -10,15 +10,15 @@ const init = async () => {
 };
 
 export class BuyerRepository {
-  static async find(filter: Filter<Buyer>) {
+  static async find(filter: Filter<BuyerServerType>) {
     await init();
-    const buyers = await db.collection<Buyer>("buyers").find(filter).toArray();
+    const buyers = await db.collection<BuyerServerType>("buyers").find(filter).toArray();
     return buyers;
   }
 
-  static async findOne(filter: Filter<Buyer>) {
+  static async findOne(filter: Filter<BuyerServerType>) {
     await init();
-    const buyer = await db.collection<Buyer>("buyers").findOne(filter);
+    const buyer = await db.collection<BuyerServerType>("buyers").findOne(filter);
     return buyer;
   }
 }

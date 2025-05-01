@@ -5,7 +5,7 @@ import { useDebounce } from "@uidotdev/usehooks";
 import ky from "ky";
 import { useEffect, useState } from "react"
 import { OrderDetailModal } from "../_modals/OrderDetail";
-import { Buyer } from "@/types/RepositoryTypes/Buyer";
+import { BuyerClientType } from "@/types/v2/Buyer/Client.type";
 
 const orderStatuses = ["Pendiente", "Completado", "Cancelado"];
 
@@ -18,7 +18,7 @@ export const useModule = () => {
   const debouncedValue = useDebounce(q, 500);
 
   const [status, setStatus] = useState(orderStatuses[0]);
-  const [buyersStore, setBuyersStore] = useState<Record<string, Buyer>>({});
+  const [buyersStore, setBuyersStore] = useState<Record<string, BuyerClientType>>({});
 
   const ordersQuery = useQuery({
     queryKey: ['orders', debouncedValue],
@@ -31,7 +31,7 @@ export const useModule = () => {
   const buyersQuery = useQuery({
     queryKey: ['buyers'],
     queryFn: async () => {
-      const resp = await ky.post(`/api/v2/buyers/search`, { json: {} }).json<Buyer[]>();
+      const resp = await ky.post(`/api/v2/buyers/search`, { json: {} }).json<BuyerClientType[]>();
       return resp
     },
     enabled: !!ordersQuery.data?.hits.length,
@@ -39,7 +39,7 @@ export const useModule = () => {
 
   useEffect(() => {
     if (buyersQuery.data) {
-      const buyersMap: Record<string, Buyer> = {};
+      const buyersMap: Record<string, BuyerClientType> = {};
       buyersQuery.data.forEach((buyer) => {
         buyersMap[buyer._id.toString()] = buyer;
       });

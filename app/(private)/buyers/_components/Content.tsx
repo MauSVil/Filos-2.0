@@ -20,7 +20,7 @@ import { DataTable } from "@/components/DataTable";
 import DataTableColumnHeader from "@/components/DataTableHeader";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Buyer } from "@/types/RepositoryTypes/Buyer";
+import { BuyerClientType } from "@/types/v2/Buyer/Client.type";
 
 const BuyersContent = () => {
   const router = useRouter();
@@ -38,7 +38,7 @@ const BuyersContent = () => {
   const buyersQuery = useBuyers({});
   const buyers = useMemo(() => buyersQuery.data || [], [buyersQuery.data]);
 
-  const columns: ColumnDef<Buyer>[] = useMemo(
+  const columns: ColumnDef<BuyerClientType>[] = useMemo(
     () =>
       [
         {
@@ -77,7 +77,7 @@ const BuyersContent = () => {
           enableColumnFilter: true,
           sortingFn: "textCaseSensitive",
         },
-      ] satisfies ColumnDef<Buyer>[],
+      ] satisfies ColumnDef<BuyerClientType>[],
     [],
   );
 

@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import { useMemo } from "react";
 
 import { useBuyers } from "../../../_hooks/useBuyers";
-import { Buyer } from "@/types/RepositoryTypes/Buyer";
+import { BuyerClientType } from "@/types/v2/Buyer/Client.type";
 
 
 const BuyerGeneralPage = () => {
@@ -14,7 +14,7 @@ const BuyerGeneralPage = () => {
   const buyer = useMemo(
     () => buyerQuery?.data?.[0] || {},
     [buyerQuery.data],
-  ) as Buyer;
+  ) as BuyerClientType;
 
   return (
     <div className="flex flex-col w-full items-center py-4 gap-3">

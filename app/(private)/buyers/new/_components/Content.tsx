@@ -9,9 +9,9 @@ import { InputFormField } from "@/components/form/InputFormField";
 import { Form } from "@/components/form";
 import { Button } from "@/components/ui/button";
 import { SwitchFormField } from "@/components/form/SwitchFormField";
-import { BuyerInput, BuyerInputModel } from "@/types/RepositoryTypes/Buyer";
+import { BuyerInput, BuyerInputType } from "@/types/v2/Buyer/Base.type";
 
-const defaultValues: BuyerInput = {
+const defaultValues: BuyerInputType = {
   name: "",
   email: "",
   phone: "",
@@ -22,17 +22,17 @@ const defaultValues: BuyerInput = {
 const NewBuyersContent = () => {
   const mutation = useCreateBuyer();
 
-  const form = useForm<BuyerInput>({
+  const form = useForm<BuyerInputType>({
     defaultValues,
     mode: "onChange",
-    resolver: zodResolver(BuyerInputModel),
+    resolver: zodResolver(BuyerInput),
   });
 
   const { handleSubmit } = form;
 
-  const control = form.control as any as Control<BuyerInput>;
+  const control = form.control as any as Control<BuyerInputType>;
 
-  const onSubmit = (values: BuyerInput) => {
+  const onSubmit = (values: BuyerInputType) => {
     const formdata = new FormData();
 
     formdata.append("data", JSON.stringify(values));

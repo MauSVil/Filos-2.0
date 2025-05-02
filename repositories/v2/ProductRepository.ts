@@ -1,5 +1,5 @@
 import clientPromise from "@/mongodb";
-import { Product } from "@/types/v2/Product.type";
+import { ProductBaseWithIdType, ProductUpdateType } from "@/types/v2/Product/Base.type";
 import { Db, Filter } from "mongodb";
 
 let client;
@@ -10,21 +10,21 @@ const init = async () => {
 };
 
 export class ProductRepository {
-  static async findOne(filter: Filter<Product>) {
+  static async findOne(filter: Filter<ProductBaseWithIdType>) {
     await init();
-    const product = await db.collection<Product>("products").findOne(filter);
+    const product = await db.collection<ProductBaseWithIdType>("products").findOne(filter);
     return product;
   }
 
-  static async find(filter: Filter<Product>) {
+  static async find(filter: Filter<ProductBaseWithIdType>) {
     await init();
-    const products = await db.collection<Product>("products").find(filter).toArray();
+    const products = await db.collection<ProductBaseWithIdType>("products").find(filter).toArray();
     return products;
   }
 
-  static async updateOne(filter: Filter<Product>, update: Partial<Product>) {
+  static async updateOne(filter: Filter<ProductBaseWithIdType>, update: ProductUpdateType) {
     await init();
-    const result = await db.collection<Product>("products").updateOne(filter, { $set: update });
+    const result = await db.collection<ProductBaseWithIdType>("products").updateOne(filter, { $set: update });
     return result;
   }
 }

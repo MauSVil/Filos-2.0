@@ -3,7 +3,7 @@ import { BuyerRepository } from "@/repositories/v2/BuyerRepository";
 import { OrderRepository } from "@/repositories/v2/OrderRepository";
 import { ProductRepository } from "@/repositories/v2/ProductRepository";
 import { OrderBaseType, OrderInputType } from "@/types/v2/Order/Base.type";
-import { Product } from "@/types/v2/Product.type";
+import { ProductBaseType, ProductBaseWithIdType } from "@/types/v2/Product/Base.type";
 import ky from "ky";
 import _ from "lodash";
 import moment from "moment";
@@ -88,11 +88,11 @@ export const POST = async (req: NextRequest, { params }: { params: Promise<{ id:
     }
 
     const productsIds = Object.keys(body.products);
-    const products = await ProductRepository.find({ _id: { $in: productsIds } });
-    const productsMapped: { [key: string]: Product } = _.keyBy(
+    const products = await ProductRepository.find({ _id: { $in: productsIds.map(pI => new ObjectId(pI)) } });
+    const productsMapped: { [key: string]: ProductBaseWithIdType } = _.keyBy(
       products,
       "_id",
-    ) as { [key: string]: Product };
+    ) as { [key: string]: ProductBaseWithIdType };
     const productsParsed = Object.keys(body.products)
       .filter((key) => body.products[key].quantity > 0)
       .map((key) => {

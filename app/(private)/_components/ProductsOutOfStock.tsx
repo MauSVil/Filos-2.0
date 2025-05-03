@@ -163,7 +163,7 @@ const ProductsOutOfStock = () => {
   };
 
   return (
-    <Card className="lg:max-w-md" x-chunk="charts-01-chunk-0">
+    <Card className="col-span-3">
       <CardHeader className="space-y-0 pb-2 mb-2 flex flex-row items-center justify-between">
         <CardTitle className="text-2xl tabular-nums">
           Productos pendientes

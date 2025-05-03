@@ -8,6 +8,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -41,51 +42,79 @@ const HistoryMovements = () => {
     }
 
     return (
-      <>
-        {movementsHistory.slice(0, 3).map((movementHistory) => {
-          const isOpen = activeCollapsible === movementHistory._id;
-
-          return (
-            <Collapsible
-              key={movementHistory._id}
-              className="w-full space-y-2"
-              open={isOpen}
-              onOpenChange={(open) => {
-                setActiveCollapsible(open ? movementHistory._id || null : null);
-              }}
+      <Card className="col-span-6">
+        <CardHeader className="space-y-0 pb-2 mb-2 flex flex-row items-center justify-between">
+          <CardTitle className="text-2xl tabular-nums">
+            Productos pendientes
+          </CardTitle>
+          {/* <div className="flex gap-2">
+            <Button className="h-6 w-6" size={"icon"} variant={"outline"}>
+              <DownloadIcon className="h-3.5 w-3.5" />
+            </Button>
+            <Button
+              className="h-6 w-6"
+              disabled={!Object.values(changes).length}
+              size={"icon"}
+              variant={Object.values(changes).length > 0 ? "default" : "outline"}
+              onClick={handleUpdateProductsClick}
             >
-              <div className="flex flex-row justify-between items-center gap-7">
-                <div className="flex flex-col gap-1">
-                  <p className="text-sm font-medium text-default-500">
-                    {`Se hizo un movimiento de tipo ${movementHistory.type === "insert" ? "inserción" : "actualización"} de ${movementHistory.collection}`}
-                  </p>
-                  <CardDescription>
-                    {moment(movementHistory.createdAt)
-                      .tz("America/Mexico_City")
-                      .format("DD/MM/YYYY HH:mm:ss")}
-                  </CardDescription>
-                </div>
-                <CollapsibleTrigger asChild className="flex-1">
-                  <Button
-                    className="h-6 w-6 flex-1"
-                    size={"icon"}
-                    variant={"outline"}
-                  >
-                    <ChevronsUpDown className="h-4 w-4" />
-                    <span className="sr-only">Toggle</span>
-                  </Button>
-                </CollapsibleTrigger>
-              </div>
+              <SaveIcon className="h-3.5 w-3.5" />
+            </Button>
+          </div> */}
+        </CardHeader>
+        <CardContent>
+          {movementsHistory.slice(0, 3).map((movementHistory) => {
+            const isOpen = activeCollapsible === movementHistory._id;
 
-              <CollapsibleContent className="space-y-2">
-                <pre className="whitespace-pre-wrap break-all p-2 rounded-md max-h-24 overflow-y-auto text-sm">
-                  {JSON.stringify(movementHistory.values, null, 2)}
-                </pre>
-              </CollapsibleContent>
-            </Collapsible>
-          );
-        })}
-      </>
+            return (
+              <Collapsible
+                key={movementHistory._id}
+                className="w-full space-y-2"
+                open={isOpen}
+                onOpenChange={(open) => {
+                  setActiveCollapsible(open ? movementHistory._id || null : null);
+                }}
+              >
+                <div className="flex flex-row justify-between items-center gap-7">
+                  <div className="flex flex-col gap-1">
+                    <p className="text-sm font-medium text-default-500">
+                      {`Se hizo un movimiento de tipo ${movementHistory.type === "insert" ? "inserción" : "actualización"} de ${movementHistory.collection}`}
+                    </p>
+                    <CardDescription>
+                      {moment(movementHistory.createdAt)
+                        .tz("America/Mexico_City")
+                        .format("DD/MM/YYYY HH:mm:ss")}
+                    </CardDescription>
+                  </div>
+                  <CollapsibleTrigger asChild className="flex-1">
+                    <Button
+                      className="h-6 w-6 flex-1"
+                      size={"icon"}
+                      variant={"outline"}
+                    >
+                      <ChevronsUpDown className="h-4 w-4" />
+                      <span className="sr-only">Toggle</span>
+                    </Button>
+                  </CollapsibleTrigger>
+                </div>
+
+                <CollapsibleContent className="space-y-2">
+                  <pre className="whitespace-pre-wrap break-all p-2 rounded-md max-h-24 overflow-y-auto text-sm">
+                    {JSON.stringify(movementHistory.values, null, 2)}
+                  </pre>
+                </CollapsibleContent>
+              </Collapsible>
+            );
+          })}
+        </CardContent>
+        <CardFooter className="flex-col items-start gap-1">
+          <CardDescription>
+            La cantidad mostrada es la{" "}
+            <strong className="font-bold text-primary">cantidad total </strong>del
+            producto.
+          </CardDescription>
+        </CardFooter>
+      </Card>
     );
   }, [movementsHistory, movementsHistoryQuery.isLoading, activeCollapsible]);
 

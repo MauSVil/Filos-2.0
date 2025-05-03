@@ -102,7 +102,7 @@ const SalesPerMonth = () => {
   }, [salesPerMonth]);
 
   return (
-    <Card className="max-w-xs" x-chunk="charts-01-chunk-2">
+    <Card className="col-span-3">
       <CardHeader>
         <CardTitle>Ventas por mes ($)</CardTitle>
       </CardHeader>

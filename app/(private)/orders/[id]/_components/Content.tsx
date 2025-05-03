@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import ky, { HTTPError } from "ky";
 
-import { useOrder } from "../_hooks/useOrder";
 import Step0 from "../../new/_components/Steps/Step0";
 import Step1 from "../../new/_components/Steps/Step1";
 import Step2 from "../../new/_components/Steps/Step2";

@@ -6,6 +6,7 @@ import {
   Edit,
   File,
   ListFilter,
+  PlusCircle,
 } from "lucide-react";
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
@@ -213,7 +214,6 @@ const OrdersContent = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
-                  className="h-7 gap-1 text-sm"
                   size="sm"
                   variant="outline"
                 >
@@ -240,6 +240,15 @@ const OrdersContent = () => {
               <File className="h-3.5 w-3.5" />
               <span className="sr-only sm:not-sr-only">Exportar</span>
             </Button>
+            <Button
+              className="h-7 gap-1 text-sm"
+              size="sm"
+              variant="outline"
+              onClick={() => router.push("/orders/new")}
+            >
+              <PlusCircle className="h-3.5 w-3.5" />
+              <span className="sr-only sm:not-sr-only">Agregar</span>
+            </Button>
           </div>
         </div>
         <DataTable
@@ -247,6 +256,7 @@ const OrdersContent = () => {
           columns={columns}
           isLoading={flags.isLoading || flags.isRefetching}
           table={table}
+          totalHits={total}
         />
       </div>
     </div>

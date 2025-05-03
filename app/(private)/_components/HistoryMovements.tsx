@@ -42,27 +42,8 @@ const HistoryMovements = () => {
     }
 
     return (
-      <Card className="col-span-6">
-        <CardHeader className="space-y-0 pb-2 mb-2 flex flex-row items-center justify-between">
-          <CardTitle className="text-2xl tabular-nums">
-            Productos pendientes
-          </CardTitle>
-          {/* <div className="flex gap-2">
-            <Button className="h-6 w-6" size={"icon"} variant={"outline"}>
-              <DownloadIcon className="h-3.5 w-3.5" />
-            </Button>
-            <Button
-              className="h-6 w-6"
-              disabled={!Object.values(changes).length}
-              size={"icon"}
-              variant={Object.values(changes).length > 0 ? "default" : "outline"}
-              onClick={handleUpdateProductsClick}
-            >
-              <SaveIcon className="h-3.5 w-3.5" />
-            </Button>
-          </div> */}
-        </CardHeader>
-        <CardContent>
+      <Card className="flex flex-col w-full">
+        <CardContent className="p-3">
           {movementsHistory.slice(0, 3).map((movementHistory) => {
             const isOpen = activeCollapsible === movementHistory._id;
 
@@ -76,7 +57,7 @@ const HistoryMovements = () => {
                 }}
               >
                 <div className="flex flex-row justify-between items-center gap-7">
-                  <div className="flex flex-col gap-1">
+                  <div className="flex flex-col gap-1 flex-1">
                     <p className="text-sm font-medium text-default-500">
                       {`Se hizo un movimiento de tipo ${movementHistory.type === "insert" ? "inserción" : "actualización"} de ${movementHistory.collection}`}
                     </p>
@@ -86,9 +67,9 @@ const HistoryMovements = () => {
                         .format("DD/MM/YYYY HH:mm:ss")}
                     </CardDescription>
                   </div>
-                  <CollapsibleTrigger asChild className="flex-1">
+                  <CollapsibleTrigger asChild>
                     <Button
-                      className="h-6 w-6 flex-1"
+                      className="h-6 w-10"
                       size={"icon"}
                       variant={"outline"}
                     >
@@ -119,7 +100,7 @@ const HistoryMovements = () => {
   }, [movementsHistory, movementsHistoryQuery.isLoading, activeCollapsible]);
 
   return (
-    <Card className="flex flex-col lg:max-w-md" x-chunk="charts-01-chunk-1">
+    <Card className="flex flex-col col-span-6">
       <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2 [&>div]:flex-1">
         <CardTitle className="text-2xl tabular-nums">
           Ultimos movimientos

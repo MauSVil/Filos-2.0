@@ -16,9 +16,9 @@ import { AccordionItem } from "@radix-ui/react-accordion";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import ky from "ky";
 import { useEffect, useMemo, useState } from "react";
-import { Product } from "@/types/v2/Product.type";
 import { toast } from "sonner";
 import { OrderBaseType } from "@/types/v2/Order/Base.type";
+import { ProductBaseType } from "@/types/v2/Product/Base.type";
 
 interface Props extends InstanceProps<any, any> {
   orderId: string;
@@ -216,7 +216,7 @@ const OrderDetail = ({ orderId, onReject, onResolve, isOpen }: Props) => {
 export const OrderDetailModal = create(OrderDetail);
 
 const useModule = ({ orderId }: { orderId: string }) => {
-  const [productsStore, setProductsStore] = useState<Record<string, Product>>({});
+  const [productsStore, setProductsStore] = useState<Record<string, ProductBaseType>>({});
 
   const orderQuery = useQuery<OrderBaseType>({
     queryKey: ["order", orderId],
@@ -227,7 +227,7 @@ const useModule = ({ orderId }: { orderId: string }) => {
     enabled: !!orderId,
   })
 
-  const productsQuery = useQuery<Product[]>({
+  const productsQuery = useQuery<ProductBaseType[]>({
     queryKey: ["products", orderQuery.data?.products],
     queryFn: async () => {
       const resp = await ky.post("/api/v2/products/search", {
@@ -236,7 +236,7 @@ const useModule = ({ orderId }: { orderId: string }) => {
             $in: orderQuery.data?.products.map((p) => p.product),
           },
         },
-      }).json<Product[]>();
+      }).json<ProductBaseType[]>();
       return resp;
     },
     enabled: !!orderQuery.data,
@@ -255,7 +255,7 @@ const useModule = ({ orderId }: { orderId: string }) => {
       const productsMap = productsQuery.data.reduce((acc, product) => {
         acc[product._id?.toString()!] = product;
         return acc;
-      }, {} as Record<string, Product>);
+      }, {} as Record<string, ProductBaseType>);
       setProductsStore(productsMap);
     }
   }, [productsQuery.data]);

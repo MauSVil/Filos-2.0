@@ -6,16 +6,17 @@ import ky from "ky";
 import _ from "lodash";
 import moment from "moment-timezone";
 
-import { OrdersRepository } from "@/repositories/orders.repository";
-import { BuyersRepository } from "@/repositories/buyers.repository";
-import { ProductsRepository } from "@/repositories/products.repository";
 import { uploadImage } from "@/utils/aws/uploadImage";
 import { FileService } from "@/services/file.service";
+import { OrderRepository } from "@/repositories/v2/OrderRepository";
+import { BuyerRepository } from "@/repositories/v2/BuyerRepository";
+import { ProductRepository } from "@/repositories/v2/ProductRepository";
+import { ObjectId } from "mongodb";
 
 export const POST = async (req: NextRequest) => {
   try {
     const body = await req.json();
-    const order = await OrdersRepository.findOne({ id: body.id });
+    const order = await OrderRepository.findOne({ _id: new ObjectId(body.id) });
 
     if (!order) {
       return NextResponse.json(
@@ -41,7 +42,7 @@ export const POST = async (req: NextRequest) => {
       0,
     );
 
-    const buyerDocument = await BuyersRepository.findOne({ id: buyer });
+    const buyerDocument = await BuyerRepository.findOne({ _id: new ObjectId(buyer) });
 
     if (!buyerDocument) {
       return NextResponse.json(
@@ -57,7 +58,7 @@ export const POST = async (req: NextRequest) => {
     } = buyerDocument;
 
     const productsIds = products.map((product) => product.product.toString());
-    const productsFound = await ProductsRepository.find({ ids: productsIds });
+    const productsFound = await ProductRepository.find({ _id: { $in: productsIds.map(pi => new ObjectId(pi)) } });
     const productsMapped = _.keyBy(productsFound, "_id");
 
     const templatePath = path.join(
@@ -128,7 +129,7 @@ export const POST = async (req: NextRequest) => {
 
     const url = await uploadImage(`orderDocs/${body.id}.pdf`, buffer);
 
-    await OrdersRepository.updateOne(body.id, {
+    await OrderRepository.update({ _id: new ObjectId(body.id)}, {
       documents: {
         order: url,
       },

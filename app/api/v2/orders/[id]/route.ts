@@ -3,7 +3,7 @@ import { BuyerRepository } from "@/repositories/v2/BuyerRepository";
 import { OrderRepository } from "@/repositories/v2/OrderRepository";
 import { ProductRepository } from "@/repositories/v2/ProductRepository";
 import { OrderBaseType, OrderInputType } from "@/types/v2/Order/Base.type";
-import { ProductBaseType, ProductBaseWithIdType } from "@/types/v2/Product/Base.type";
+import { ProductBaseWithIdType } from "@/types/v2/Product/Base.type";
 import ky from "ky";
 import _ from "lodash";
 import moment from "moment";

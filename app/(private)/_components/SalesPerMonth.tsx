@@ -1,7 +1,8 @@
 import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import ky from "ky";
+import { toast } from "sonner";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
-
-import { useSalesPerMonth } from "../_hooks/useSalesPerMonth";
 
 import {
   ChartConfig,
@@ -16,43 +17,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
-type SalesData = {
-  [year: number]: {
-    [month: string]: number; // El total de ventas para cada mes
-  };
-};
-
-const salesData: SalesData = {
-  2023: {
-    January: 200,
-    February: 300,
-    March: 400,
-    April: 250,
-    May: 500,
-    June: 350,
-    July: 0,
-    August: 0,
-    September: 100,
-    October: 150,
-    November: 200,
-    December: 250,
-  },
-  2024: {
-    January: 300,
-    February: 400,
-    March: 500,
-    April: 300,
-    May: 600,
-    June: 450,
-    July: 0,
-    August: 0,
-    September: 200,
-    October: 250,
-    November: 300,
-    December: 350,
-  },
-};
 
 const months = [
   "January",
@@ -70,7 +34,22 @@ const months = [
 ];
 
 const SalesPerMonth = () => {
-  const salesPerMonthQuery = useSalesPerMonth();
+  const salesPerMonthQuery = useQuery<{ [year: number]: { [month: string]: number } }>({
+    queryKey: ["salesPerMonth"],
+    retry: 0,
+    queryFn: async () => {
+      try {
+        const resp = (await ky
+          .get("/api/statistics/dashboard/sales")
+          .json()) as { data: { [year: number]: { [month: string]: number } } };
+        return resp.data || {};
+      } catch (error) {
+        toast.error("An error occurred");
+        throw new Error("An error occurred");
+      }
+    },
+  });
+
   const salesPerMonth = useMemo(
     () => salesPerMonthQuery.data || {},
     [salesPerMonthQuery.data],
@@ -82,7 +61,6 @@ const SalesPerMonth = () => {
       ...Object.keys(salesPerMonth).reduce(
         (acc, year) => {
           acc[year] = salesPerMonth[parseInt(year)][month] || 0;
-
           return acc;
         },
         {} as Record<string, number>,
@@ -91,12 +69,11 @@ const SalesPerMonth = () => {
   }, [salesPerMonth]);
 
   const chartConfig = useMemo(() => {
-    return Object.keys(salesData).reduce((acc, year, index) => {
+    return Object.keys(salesPerMonth).reduce((acc, year, index) => {
       acc[year] = {
         label: year,
         color: `hsl(var(--chart-${index + 1}))`,
       };
-
       return acc;
     }, {} as ChartConfig);
   }, [salesPerMonth]);
@@ -128,13 +105,13 @@ const SalesPerMonth = () => {
               content={<ChartTooltipContent indicator="dot" />}
               cursor={false}
             />
-            {Object.keys(salesData).map((year) => (
+            {Object.keys(salesPerMonth).map((year, index) => (
               <Area
                 key={year}
                 dataKey={year}
-                fill={`var(--color-${year})`}
+                fill={`hsl(var(--chart-${index + 1}))`}
                 fillOpacity={0.4}
-                stroke={`var(--color-${year})`}
+                stroke={`hsl(var(--chart-${index + 1}))`}
                 type="natural"
               />
             ))}
@@ -148,7 +125,7 @@ const SalesPerMonth = () => {
               Comparación anual
             </div>
             <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              {Object.keys(salesData).join(" - ")}
+              {Object.keys(salesPerMonth).join(" - ")}
             </div>
           </div>
         </div>

@@ -11,7 +11,7 @@ import {
 } from "@tanstack/react-table";
 import numeral from "numeral";
 import Image from "next/image";
-import { ChevronDown, Edit, MinusIcon, Plus, PlusIcon, Trash } from "lucide-react";
+import { ChevronDown, Edit, MinusIcon, Plus, PlusIcon, Trash, PlusCircle, File } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
@@ -340,56 +340,54 @@ const ProductsContent = () => {
   });
 
   return (
-    <>
-      <div className="flex items-center justify-end mb-4">
-        <div className="flex items-center gap-2">
-          <Button
-            disabled={!Object.keys(productsToUpdate).length}
-            onClick={handleUpdateProductsClick}
-          >
-            Actualizar
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Button
-                variant="default"
-              >
-                Acciones
-                <ChevronDown className="w-4 h-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem
-                onClick={() => {
-                  router.push("/products/new");
-                }}
-              >
-                <div className="flex items-center gap-2">
-                  <Plus className="w-4 h-4" />
-                  Crear producto
-                </div>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                disabled={!table.getSelectedRowModel().rows.length}
-                onClick={handleNewCatalogClick}
-              >
-                <div className="flex items-center gap-2">
-                  <Plus className="w-4 h-4" />
-                  Crear catalogo
-                </div>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+    <div className="flex-1 items-start p-4">
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center">
+          <div className="ml-auto flex items-center gap-2">
+            <Button
+              disabled={!Object.keys(productsToUpdate).length}
+              onClick={handleUpdateProductsClick}
+              size="sm"
+              variant="outline"
+            >
+              Actualizar
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button size="sm" variant="outline">
+                  <PlusCircle className="h-3.5 w-3.5" />
+                  <span className="sr-only sm:not-sr-only">Catálogo</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem
+                  disabled={!table.getSelectedRowModel().rows.length}
+                  onClick={handleNewCatalogClick}
+                >
+                  Crear catálogo con seleccionados
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <Button
+              className="h-7 gap-1 text-sm"
+              size="sm"
+              variant="outline"
+              onClick={() => router.push("/products/new")}
+            >
+              <PlusCircle className="h-3.5 w-3.5" />
+              <span className="sr-only sm:not-sr-only">Agregar</span>
+            </Button>
+          </div>
         </div>
+        <DataTable
+          className="mb-4"
+          columns={columns}
+          isLoading={flags.isLoading}
+          table={table}
+          totalHits={total}
+        />
       </div>
-      <DataTable
-        className="mb-4"
-        columns={columns}
-        isLoading={flags.isLoading}
-        table={table}
-        totalHits={total}
-      />
-    </>
+    </div>
   );
 };
 

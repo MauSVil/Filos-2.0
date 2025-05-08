@@ -46,6 +46,21 @@ const ProductsOutOfStock = () => {
           filterFn: "auto",
           enableColumnFilter: true,
           sortingFn: "textCaseSensitive",
+          cell: (cellData) => (
+            <span
+              style={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                maxWidth: 200,
+                display: "inline-block",
+                verticalAlign: "bottom",
+              }}
+              title={cellData.getValue() as string}
+            >
+              {cellData.getValue() as string}
+            </span>
+          ),
         },
         {
           id: "Cantidad",

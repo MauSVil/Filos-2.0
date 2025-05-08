@@ -15,9 +15,6 @@ import { MovementHistory } from "@/types/RepositoryTypes/MovementHistory";
 import { Button } from "@/components/ui/button";
 
 const HistoryMovements = () => {
-  const [activeCollapsible, setActiveCollapsible] = useState<string | null>(
-    null,
-  );
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 3;
   const movementsHistoryQuery = useHistoryMovements();
@@ -46,11 +43,11 @@ const HistoryMovements = () => {
     }
 
     return (
-      <Card className="flex flex-col w-full">
-        <CardContent className="p-3">
+      <>
+        <CardContent className="flex-1 flex flex-col items-center gap-3 p-6 [&>div]:flex-1">
           {paginatedMovements.map((movementHistory) => {
             return (
-              <div key={movementHistory._id} className="mb-4 p-3 border rounded bg-muted/30">
+              <div key={movementHistory._id} className="w-full mb-4 p-3 border rounded bg-muted/30">
                 <div className="flex justify-between items-center mb-1">
                   <span className="font-semibold capitalize text-primary">
                     {movementHistory.type === "insert" ? "Alta" : "Actualización"}
@@ -79,7 +76,7 @@ const HistoryMovements = () => {
             </Button>
           </div>
         </CardFooter>
-      </Card>
+      </>
     );
   }, [movementsHistory, movementsHistoryQuery.isLoading, paginatedMovements, currentPage, totalPages]);
 
@@ -90,9 +87,7 @@ const HistoryMovements = () => {
           Ultimos movimientos
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col items-center gap-4 p-6 [&>div]:flex-1">
-        {returnContent()}
-      </CardContent>
+      {returnContent()}
     </Card>
   );
 };

@@ -122,7 +122,7 @@ const data = {
   reports: [
     {
       name: "Productos vendidos",
-      url: "#",
+      url: "products-sold",
       icon: IconDatabase,
     },
   ],

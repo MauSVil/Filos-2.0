@@ -103,7 +103,7 @@ const Content = () => {
               <Button
                 variant={"outline"}
                 className={cn(
-                  "w-[280px] justify-start text-left font-normal",
+                  "justify-start text-left font-normal",
                   !initDate && "text-muted-foreground"
                 )}
               >
@@ -128,7 +128,7 @@ const Content = () => {
               <Button
                 variant={"outline"}
                 className={cn(
-                  "w-[280px] justify-start text-left font-normal",
+                  "justify-start text-left font-normal",
                   !endDate && "text-muted-foreground"
                 )}
               >

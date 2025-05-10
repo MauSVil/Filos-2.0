@@ -10,7 +10,7 @@ export const useModule = () => {
   const productsSoldQuery = useQuery({
     queryKey: ["products-sold", initDate, endDate],
     queryFn: async () => {
-      const resp = await ky.get('/api/v2/reports/products-sold').json<Record<string, { id: string, product: string, quantity: number }>>()
+      const resp = await ky.post('/api/v2/reports/products-sold', { json: {initDate, endDate} }).json<Record<string, { id: string, product: string, quantity: number }>>()
       return resp
     },
     enabled: !!initDate && !!endDate,

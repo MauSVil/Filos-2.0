@@ -4,10 +4,13 @@ import _ from "lodash";
 import { ObjectId } from "mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
+  const body = await req.json();
+
   try {
-    const orders = await OrderRepository.find({ requestDate: { $gte: new Date("2024-01-01"), $lte: new Date("2024-12-31") } });
-    if (!orders.length) throw new Error("No se encontraron ordenes");
+    if (!body.initDate || !body.endDate) throw new Error("No se tienen los parametros correctos");
+
+    const orders = await OrderRepository.find({ requestDate: { $gte: new Date(body.initDate), $lte: new Date(body.endDate) } });
 
     let productsMap: { [key: string]: number } = {};
 

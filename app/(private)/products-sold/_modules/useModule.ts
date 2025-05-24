@@ -4,6 +4,8 @@ import moment from "moment";
 import { useState } from "react";
 
 export const useModule = () => {
+  const [page, setPage] = useState(1);
+
   const [initDate, setInitDate] = useState<Date | undefined>(moment().startOf('year').toDate());
   const [endDate, setEndDate] = useState<Date | undefined>(moment().endOf('year').toDate());
 
@@ -21,10 +23,12 @@ export const useModule = () => {
       productsSold: productsSoldQuery.data,
       initDate,
       endDate,
+      page,
     },
     methods: {
       setInitDate,
       setEndDate,
+      setPage,
     },
     flags: {
       isLoading: productsSoldQuery.isLoading,

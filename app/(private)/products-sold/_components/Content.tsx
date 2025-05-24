@@ -6,7 +6,7 @@ import { useModule } from "../_modules/useModule";
 import { useMemo } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { CalendarIcon, Download } from "lucide-react";
+import { CalendarIcon, ChevronLeft, ChevronRight, Download } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import moment from "moment";
@@ -15,8 +15,8 @@ import { Label } from "@/components/ui/label";
 const Content = () => {
   const { localData, flags, methods } = useModule();
 
-  const { initDate, endDate } = localData;
-  const { setInitDate, setEndDate } = methods;
+  const { initDate, endDate, page } = localData;
+  const { setInitDate, setEndDate, setPage } = methods;
 
   const tableBody = useMemo(() => {
     if (flags.isLoading || flags.isRefetching) {
@@ -52,6 +52,7 @@ const Content = () => {
 
     return Object.values(localData.productsSold ?? {})
     .sort((a, b) => b.quantity - a.quantity)
+    .slice((page - 1) * 10, page * 10)
     .map((product) => (
       <TableRow key={product.id}>
         <TableCell>{product.product}</TableCell>
@@ -59,7 +60,7 @@ const Content = () => {
       </TableRow>
     ))
 
-  }, [flags.isLoading, flags.isRefetching, flags.isError])
+  }, [flags.isLoading, flags.isRefetching, flags.isError, page])
 
   const content = useMemo(() => {
     if (!initDate || !endDate) return (
@@ -77,19 +78,41 @@ const Content = () => {
     }
 
     return (
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Nombre</TableHead>
-            <TableHead>Cantidad</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {tableBody}
-        </TableBody>
-      </Table>
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-2 mb-4 justify-end">
+          <Button
+            disabled={page === 1}
+            size={"sm"}
+            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+          >
+            <ChevronLeft size={14} />
+          </Button>
+          <span className="text-sm">
+            {`${page} / ${Math.ceil((Object.keys(localData.productsSold ?? {}).length || 0) / 10)}`}
+          </span>
+          <Button
+            disabled={Math.ceil((Object.keys(localData.productsSold ?? {}).length || 0) / 10) <= page}
+            form=""
+            size={"sm"}
+            onClick={() => setPage((prev) => prev + 1)}
+          >
+            <ChevronRight size={14} />
+          </Button>
+        </div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Nombre</TableHead>
+              <TableHead>Cantidad</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {tableBody}
+          </TableBody>
+        </Table>
+      </div>
     )
-  }, [initDate, endDate, flags.isLoading, flags.isRefetching, flags.isError, localData.productsSold])
+  }, [initDate, endDate, flags.isLoading, flags.isRefetching, flags.isError, localData.productsSold, page])
 
   return (
     <div className="flex flex-col gap-4">

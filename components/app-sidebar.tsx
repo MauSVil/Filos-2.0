@@ -8,8 +8,6 @@ import {
   IconDatabase,
   IconFileAi,
   IconFileDescription,
-  IconFileWord,
-  IconFolder,
   IconHelp,
   IconInnerShadowTop,
   IconListDetails,
@@ -124,6 +122,11 @@ const data = {
       name: "Productos vendidos",
       url: "products-sold",
       icon: IconDatabase,
+    },
+    {
+      name: "Compradores frecuentes",
+      url: "frequent-buyers",
+      icon: IconReport,
     },
   ],
 }

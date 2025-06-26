@@ -11,6 +11,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import moment from "moment";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 
 const Content = () => {
   const { localData, flags, methods } = useModule();
@@ -80,6 +81,9 @@ const Content = () => {
     return (
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-2 mb-4 justify-end">
+          <Badge className="text-sm font-semibold mr-5">
+            Total: {Object.keys(localData.productsSold ?? {}).length}
+          </Badge>
           <Button
             disabled={page === 1}
             size={"sm"}

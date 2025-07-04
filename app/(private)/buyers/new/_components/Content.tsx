@@ -9,7 +9,8 @@ import { InputFormField } from "@/components/form/InputFormField";
 import { Form } from "@/components/form";
 import { Button } from "@/components/ui/button";
 import { SwitchFormField } from "@/components/form/SwitchFormField";
-import { BuyerInput, BuyerInputType } from "@/types/v2/Buyer/Base.type";
+import { BuyerInputSchema, BuyerInputType } from "@/types/v2/Buyer/ClientSafeSchema";
+
 
 const defaultValues: BuyerInputType = {
   name: "",
@@ -25,7 +26,7 @@ const NewBuyersContent = () => {
   const form = useForm<BuyerInputType>({
     defaultValues,
     mode: "onChange",
-    resolver: zodResolver(BuyerInput),
+    resolver: zodResolver(BuyerInputSchema),
   });
 
   const { handleSubmit } = form;

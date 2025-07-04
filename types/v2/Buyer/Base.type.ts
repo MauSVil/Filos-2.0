@@ -1,10 +1,10 @@
-import { ObjectId } from "mongodb";
+// import { ObjectId } from "mongodb";
 import { z } from "zod";
 
 export const BuyerBase = z.object({
   _id: z.string(),
-  name: z.string(),
-  email: z.string().email().optional(),
+  name: z.string().min(1, "El nombre es requerido"),
+  email: z.string().email().or(z.literal("")),
   phone: z.coerce.string(),
   address: z.string(),
   isChain: z.boolean().default(false),
@@ -15,7 +15,7 @@ export const BuyerBase = z.object({
 export type BuyerBaseType = z.infer<typeof BuyerBase>;
 
 export const BuyerBaseWithId = BuyerBase.extend({
-  _id: z.instanceof(ObjectId),
+  // _id: z.instanceof(ObjectId),
 });
 export type BuyerBaseWithIdType = z.infer<typeof BuyerBaseWithId>;
 

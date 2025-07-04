@@ -14,6 +14,7 @@ import {
   IconReport,
   IconSearch,
   IconSettings,
+  IconShoppingBag,
 } from "@tabler/icons-react"
 
 import { NavReports } from "@/components/nav-reports"
@@ -45,6 +46,11 @@ const data = {
       title: "Productos",
       url: "/products",
       icon: IconListDetails,
+    },
+    {
+      title: 'Compradores',
+      url: "/buyers",
+      icon: IconShoppingBag,
     },
     {
       title: "Ordenes",

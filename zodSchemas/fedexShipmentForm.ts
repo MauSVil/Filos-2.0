@@ -1,10 +1,8 @@
 import { z } from "zod";
 
 export const FedexShipmentFormSchema = z.object({
-  // Order selection
   selectedOrders: z.array(z.string()).min(1, "Debe seleccionar al menos una orden"),
 
-  // Shipper information (sender)
   shipper: z.object({
     personName: z.string().min(1, "Nombre del remitente es requerido"),
     phoneNumber: z.string().min(1, "Teléfono del remitente es requerido"),
@@ -17,7 +15,6 @@ export const FedexShipmentFormSchema = z.object({
     }),
   }),
 
-  // Recipient information (will be populated from buyer data)
   recipient: z.object({
     personName: z.string().min(1, "Nombre del destinatario es requerido"),
     phoneNumber: z.string().min(1, "Teléfono del destinatario es requerido"),
@@ -30,24 +27,25 @@ export const FedexShipmentFormSchema = z.object({
     }),
   }),
 
-  // Shipping options
-  pickupType: z.enum(["DROPOFF_AT_FEDEX_LOCATION", "CONTACT_FEDEX_TO_SCHEDULE", "REQUEST_COURIER"], {
+  pickupType: z.enum(["DROPOFF_AT_FEDEX_LOCATION", "CONTACT_FEDEX_TO_SCHEDULE", "USE_SCHEDULED_PICKUP"], {
     required_error: "Tipo de recogida es requerido"
   }),
   serviceType: z.enum([
     "FEDEX_GROUND", "FEDEX_EXPRESS_SAVER", "FEDEX_2_DAY",
-    "STANDARD_OVERNIGHT", "PRIORITY_OVERNIGHT", "FIRST_OVERNIGHT"
+    "STANDARD_OVERNIGHT", "PRIORITY_OVERNIGHT", "FIRST_OVERNIGHT",
+    "FEDEX_NEXT_DAY_FREIGHT", "FEDEX_3_DAY_FREIGHT", "INTERNATIONAL_ECONOMY",
+    "INTERNATIONAL_PRIORITY", "EUROPE_FIRST_INTERNATIONAL_PRIORITY"
   ], {
     required_error: "Tipo de servicio es requerido"
   }),
   packagingType: z.enum([
-    "YOUR_PACKAGING", "FEDEX_ENVELOPE", "FEDEX_PAK",
-    "FEDEX_BOX", "FEDEX_10KG_BOX", "FEDEX_25KG_BOX"
+    "YOUR_PACKAGING", "FEDEX_ENVELOPE", "FEDEX_PAK", "FEDEX_BOX",
+    "FEDEX_10KG_BOX", "FEDEX_25KG_BOX", "FEDEX_TUBE",
+    "FEDEX_SMALL_BOX", "FEDEX_MEDIUM_BOX", "FEDEX_LARGE_BOX"
   ], {
     required_error: "Tipo de empaque es requerido"
   }),
 
-  // Package details
   packageDetails: z.object({
     weight: z.object({
       value: z.number().min(0.1, "Peso debe ser mayor a 0"),
@@ -61,12 +59,10 @@ export const FedexShipmentFormSchema = z.object({
     }),
   }),
 
-  // Payment
   paymentType: z.enum(["SENDER", "RECIPIENT", "THIRD_PARTY"], {
     required_error: "Tipo de pago es requerido"
   }),
 
-  // Label options
   labelOptions: z.object({
     labelFormatType: z.enum(["COMMON2D", "LABEL_DATA_ONLY"]),
     imageType: z.enum(["PDF", "PNG", "DPL", "EPL2", "ZPLII"]),
@@ -80,7 +76,7 @@ export type FedexShipmentForm = z.infer<typeof FedexShipmentFormSchema>;
 export const PICKUP_TYPE_OPTIONS = [
   { label: "Dejar en ubicación FedEx", value: "DROPOFF_AT_FEDEX_LOCATION" },
   { label: "Contactar FedEx para programar", value: "CONTACT_FEDEX_TO_SCHEDULE" },
-  { label: "Solicitar mensajero", value: "REQUEST_COURIER" },
+  { label: "Usar recogida programada", value: "USE_SCHEDULED_PICKUP" },
 ];
 
 export const SERVICE_TYPE_OPTIONS = [
@@ -90,6 +86,11 @@ export const SERVICE_TYPE_OPTIONS = [
   { label: "Standard Overnight", value: "STANDARD_OVERNIGHT" },
   { label: "Priority Overnight", value: "PRIORITY_OVERNIGHT" },
   { label: "First Overnight", value: "FIRST_OVERNIGHT" },
+  { label: "FedEx Next Day Freight", value: "FEDEX_NEXT_DAY_FREIGHT" },
+  { label: "FedEx 3 Day Freight", value: "FEDEX_3_DAY_FREIGHT" },
+  { label: "International Economy", value: "INTERNATIONAL_ECONOMY" },
+  { label: "International Priority", value: "INTERNATIONAL_PRIORITY" },
+  { label: "Europe First International Priority", value: "EUROPE_FIRST_INTERNATIONAL_PRIORITY" },
 ];
 
 export const PACKAGING_TYPE_OPTIONS = [
@@ -97,8 +98,12 @@ export const PACKAGING_TYPE_OPTIONS = [
   { label: "Sobre FedEx", value: "FEDEX_ENVELOPE" },
   { label: "Pak FedEx", value: "FEDEX_PAK" },
   { label: "Caja FedEx", value: "FEDEX_BOX" },
+  { label: "Caja FedEx pequeña", value: "FEDEX_SMALL_BOX" },
+  { label: "Caja FedEx mediana", value: "FEDEX_MEDIUM_BOX" },
+  { label: "Caja FedEx grande", value: "FEDEX_LARGE_BOX" },
   { label: "Caja FedEx 10kg", value: "FEDEX_10KG_BOX" },
   { label: "Caja FedEx 25kg", value: "FEDEX_25KG_BOX" },
+  { label: "Tubo FedEx", value: "FEDEX_TUBE" },
 ];
 
 export const PAYMENT_TYPE_OPTIONS = [

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -27,10 +27,11 @@ import {
   IMAGE_TYPE_OPTIONS,
   LABEL_STOCK_OPTIONS
 } from "@/zodSchemas/fedexShipmentForm";
-import { Order } from "@/types/RepositoryTypes/Order";
-import { Buyer } from "@/types/RepositoryTypes/Buyer";
 import { useQuery } from "@tanstack/react-query";
 import ky from "ky";
+import _ from "lodash";
+import { BuyerBaseType } from "@/types/v2/Buyer/Base.type";
+import { OrderBaseType } from "@/types/v2/Order/Base.type";
 
 type OrderOption = {
   label: string;
@@ -39,8 +40,6 @@ type OrderOption = {
 };
 
 const GuidesPage = () => {
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [selectedBuyer, setSelectedBuyer] = useState<Buyer | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -48,48 +47,9 @@ const GuidesPage = () => {
     store
   } = useModule();
 
-  const { orderOptions } = store;
-
-  const form = useForm<FedexShipmentForm>({
-    resolver: zodResolver(FedexShipmentFormSchema),
-    defaultValues: {
-      selectedOrders: [],
-      shipper: {
-        personName: "Mauricio Sanchez",
-        phoneNumber: "1234567890",
-        address: {
-          streetLines: ["123 Main Street"],
-          city: "Memphis",
-          stateOrProvinceCode: "TN",
-          postalCode: "38116",
-          countryCode: "US",
-        },
-      },
-      pickupType: "DROPOFF_AT_FEDEX_LOCATION",
-      serviceType: "FEDEX_GROUND",
-      packagingType: "YOUR_PACKAGING",
-      packageDetails: {
-        weight: {
-          value: 5,
-          units: "LB",
-        },
-        dimensions: {
-          length: 10,
-          width: 8,
-          height: 6,
-          units: "IN",
-        },
-      },
-      paymentType: "SENDER",
-      labelOptions: {
-        labelFormatType: "COMMON2D",
-        imageType: "PDF",
-        labelStockType: "PAPER_4X6",
-      },
-    },
-  });
-
-  const watchedOrders = form.watch("selectedOrders");
+  const { form, watchedOrders, selectedOrder, selectedBuyer } = localData;
+  const { orders } = store;
+  const { options } = orders;
 
   const onSubmit = async (data: FedexShipmentForm) => {
     setIsLoading(true);
@@ -166,7 +126,7 @@ const GuidesPage = () => {
                             )}
                           >
                             {field.value?.[0]
-                              ? orderOptions.find(
+                              ? options.find(
                                   (option: OrderOption) => option.value === field.value[0]
                                 )?.label
                               : "Selecciona una orden"}
@@ -180,7 +140,7 @@ const GuidesPage = () => {
                           <CommandList>
                             <CommandEmpty>No se encontró ninguna orden.</CommandEmpty>
                             <CommandGroup>
-                              {orderOptions.slice(0, 100).map((option: OrderOption) => (
+                              {options.slice(0, 100).map((option: OrderOption) => (
                                 <CommandItem
                                   value={option.label}
                                   key={option.value}
@@ -209,7 +169,7 @@ const GuidesPage = () => {
                 )}
               />
               
-              {selectedOrder && selectedBuyer && (
+              {selectedOrder && (
                 <div className="mt-4 p-4 bg-muted rounded-lg">
                   <h4 className="font-semibold mb-2">Información de la Orden</h4>
                   <div className="grid grid-cols-2 gap-4 text-sm">
@@ -217,13 +177,7 @@ const GuidesPage = () => {
                       <span className="font-medium">Orden:</span> {selectedOrder.name}
                     </div>
                     <div>
-                      <span className="font-medium">Cliente:</span> {selectedBuyer.name}
-                    </div>
-                    <div>
-                      <span className="font-medium">Teléfono:</span> {selectedBuyer.phone}
-                    </div>
-                    <div>
-                      <span className="font-medium">Email:</span> {selectedBuyer.email}
+                      <span className="font-medium">Productos:</span> {selectedOrder.products.length}
                     </div>
                   </div>
                 </div>
@@ -231,7 +185,6 @@ const GuidesPage = () => {
             </CardContent>
           </Card>
 
-          {/* Shipper Information */}
           <Card>
             <CardHeader>
               <CardTitle>Información del Remitente</CardTitle>
@@ -343,7 +296,6 @@ const GuidesPage = () => {
             </CardContent>
           </Card>
 
-          {/* Recipient Information */}
           {selectedBuyer && (
             <Card>
               <CardHeader>
@@ -446,7 +398,7 @@ const GuidesPage = () => {
                       <FormItem>
                         <FormLabel>Código de País</FormLabel>
                         <FormControl>
-                          <Input placeholder="US" {...field} disabled={isFormDisabled} />
+                          <Input placeholder="MX" {...field} disabled={isFormDisabled} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -457,7 +409,6 @@ const GuidesPage = () => {
             </Card>
           )}
 
-          {/* Shipping Options */}
           <Card>
             <CardHeader>
               <CardTitle>Opciones de Envío</CardTitle>
@@ -568,7 +519,6 @@ const GuidesPage = () => {
             </CardContent>
           </Card>
 
-          {/* Package Details */}
           <Card>
             <CardHeader>
               <CardTitle>Detalles del Paquete</CardTitle>
@@ -712,7 +662,6 @@ const GuidesPage = () => {
             </CardContent>
           </Card>
 
-          {/* Label Options */}
           <Card>
             <CardHeader>
               <CardTitle>Opciones de Etiqueta</CardTitle>
@@ -798,7 +747,6 @@ const GuidesPage = () => {
             </CardContent>
           </Card>
 
-          {/* Submit Button */}
           <div className="flex justify-end">
             <Button 
               type="submit" 
@@ -818,35 +766,119 @@ export default GuidesPage;
 
 
 const useModule = () => {
+  const [selectedOrder, setSelectedOrder] = useState<OrderBaseType | null>(null);
+  const [selectedBuyer, setSelectedBuyer] = useState<BuyerBaseType | null>(null);
+
+  const form = useForm<FedexShipmentForm>({
+    resolver: zodResolver(FedexShipmentFormSchema),
+    defaultValues: {
+      selectedOrders: [],
+      shipper: {
+        personName: "Mauricio Sanchez Rodriguez",
+        phoneNumber: "5535209307",
+        address: {
+          streetLines: ["Circuito Novelistas #24"],
+          city: "Ciudad Satelite",
+          stateOrProvinceCode: "MEX",
+          postalCode: "53100",
+          countryCode: "MX",
+        },
+      },
+      pickupType: "DROPOFF_AT_FEDEX_LOCATION",
+      serviceType: "FEDEX_GROUND",
+      packagingType: "YOUR_PACKAGING",
+      packageDetails: {
+        weight: {
+          value: 5,
+          units: "KG",
+        },
+        dimensions: {
+          length: 10,
+          width: 8,
+          height: 6,
+          units: "CM",
+        },
+      },
+      paymentType: "SENDER",
+      labelOptions: {
+        labelFormatType: "COMMON2D",
+        imageType: "PDF",
+        labelStockType: "PAPER_4X6",
+      },
+    },
+  });
+
+  const watchedOrders = form.watch("selectedOrders");
+
   const ordersQuery = useQuery({
     queryKey: ["orders"],
     queryFn: async () => {
-      const resp = await ky.post("/api/v2/orders/search", { json: { }}).json<{ orders: Order[] }>();
+      const resp = await ky.post("/api/v2/orders/search", { json: { }}).json<{ orders: OrderBaseType[] }>();
       return resp.orders;
     },
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
   })
+
+  const buyersQuery = useQuery({
+    queryKey: ["buyers"],
+    queryFn: async () => {
+      const resp = await ky.post("/api/v2/buyers/search", { json: {} }).json<BuyerBaseType[]>();
+      return resp;
+    },
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
   
   const orderOptions = useMemo((): OrderOption[] => {
     if (!ordersQuery.data) return [];
     
     return ordersQuery.data
-      .filter((order: Order) => order.name && order.buyer)
-      .map((order: Order): OrderOption => ({
+      .filter((order: OrderBaseType) => order.name && order.buyer)
+      .map((order: OrderBaseType): OrderOption => ({
         label: `${order.name} - ${order.buyer} (${order._id})`,
         value: order._id,
         searchTerm: `${order.name} ${order.buyer}`.toLowerCase(),
       }))
       .sort((a: OrderOption, b: OrderOption) => a.label.localeCompare(b.label));
   }, [ordersQuery.data]);
+
+  const mappedOrders = useMemo(() => {
+    return ordersQuery.data ? _.keyBy(ordersQuery.data, "_id") : {};
+  }, [ordersQuery.data]);
+
+  const mappedBuyers = useMemo(() => {
+    return buyersQuery.data ? _.keyBy(buyersQuery.data, "_id") : {};
+  }, [buyersQuery.data]);
+
+  useEffect(() => {
+    if (!watchedOrders || watchedOrders.length === 0) return;
+    const selectedOrderId = watchedOrders[0];
+    const selectedOrder = mappedOrders[selectedOrderId];
+    setSelectedOrder(selectedOrder || null);
+
+    const selectedBuyerId = selectedOrder?.buyer;
+    const selectedBuyer = selectedBuyerId ? mappedBuyers[selectedBuyerId] : null;
+    setSelectedBuyer(selectedBuyer || null);
+
+    form.setValue("recipient.personName", selectedBuyer?.name || "");
+    form.setValue("recipient.phoneNumber", selectedBuyer?.phone || "");
+
+  }, [watchedOrders]);
   
   return {
     localData: {
+      form,
+      watchedOrders,
       orders: ordersQuery.data || [],
+      selectedOrder,
+      selectedBuyer,
     },
     store: {
-      orderOptions,
+      orders: {
+        mapped: mappedOrders,
+        options: orderOptions,
+      }
     },
     flags: {
       isLoading: ordersQuery.isLoading,

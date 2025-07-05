@@ -11,8 +11,6 @@ import { Copy, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import numeral from "numeral";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Accordion, AccordionContent, AccordionTrigger } from "@/components/ui/accordion";
-import { AccordionItem } from "@radix-ui/react-accordion";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import ky from "ky";
 import { useEffect, useMemo, useState } from "react";
@@ -22,6 +20,13 @@ import { ProductBaseType } from "@/types/v2/Product/Base.type";
 
 interface Props extends InstanceProps<any, any> {
   orderId: string;
+}
+
+const orderTypeTranslations = {
+  retailPrice: "Semi-mayoreo",
+  wholesalePrice: "Mayoreo",
+  webPagePrice: "Pagina web",
+  specialPrice: "Especial",
 }
 
 const OrderDetail = ({ orderId, onReject, onResolve, isOpen }: Props) => {
@@ -65,150 +70,177 @@ const OrderDetail = ({ orderId, onReject, onResolve, isOpen }: Props) => {
     }
 
     return (
-      <ScrollArea className="h-[300px] w-full flex flex-col gap-2 mt-4">
-        <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-3 gap-4 pr-4">
-            <Button variant={"outline"} className="col-span-1" onClick={completeOrder}>
-              Completar
-            </Button>
-            <Button variant={"outline"} className="col-span-1" onClick={payOrder}>
-              Pagar
-            </Button>
-            <Button variant={"outline"} className="col-span-1 border-red-400" onClick={cancelOrder}>
-              Cancelar
-            </Button>
-            <Button variant={"outline"} className="col-span-3" onClick={() => handleGeneratePDF(order._id.toString())}>
-              Generar PDF
+      <div className="flex gap-8">
+        <div className="flex-1">
+          <h3 className="text-xl font-semibold mb-4">
+            Productos
+          </h3>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nombre</TableHead>
+                <TableHead>Cantidad</TableHead>
+                <TableHead>Total</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {order.products.map((p) => (
+                <TableRow key={p.product}>
+                  <TableCell className="text-sm font-normal text-muted-foreground">
+                    {`${productsStore?.[p.product]?.uniqId} - ${productsStore?.[p.product]?.name}` || "Producto no encontrado"}
+                  </TableCell>
+                  <TableCell className="text-sm font-normal text-muted-foreground">
+                    {p.quantity}
+                  </TableCell>
+                  <TableCell className="text-sm font-normal text-muted-foreground">
+                    {numeral(p.total).format("$0,0.00")}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+        <div className="flex-1">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xl font-semibold">
+              Resumen de la orden
+            </h3>
+            <Button 
+              size="sm" 
+              variant="ghost" 
+              className="h-8 px-2"
+              onClick={() => {
+                navigator.clipboard.writeText(order._id.toString());
+                toast.success("ID de orden copiado al portapapeles");
+              }}
+            >
+              <Copy className="h-4 w-4 mr-1" />
+              <span className="text-xs">Copiar ID</span>
             </Button>
           </div>
-          <div className="flex flex-col pr-4">
-            <Accordion type="multiple" className="w-full">
-              <AccordionItem value="details">
-                <AccordionTrigger>
-                  <h4 className="text-xl font-semibold mb-2">
-                    Detalles de la orden
-                  </h4>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="flex flex-col">
-                      <p className="text-base font-semibold">Precio total:</p>
-                      <p className="text-sm font-normal text-muted-foreground">{numeral(order.totalAmount).format("$0,0.00")}</p>
-                    </div>
-                    <div className="flex flex-col">
-                      <p className="text-base font-semibold">Flete:</p>
-                      <p className="text-sm font-normal text-muted-foreground">{numeral(order.freightPrice).format("$0,0.00")}</p>
-                    </div>
-                    <div className="flex flex-col">
-                      <p className="text-base font-semibold">Adelanto:</p>
-                      <p className="text-sm font-normal text-muted-foreground">{numeral(order.advancedPayment).format("$0,0.00")}</p>
-                    </div>
-                    <div className="flex flex-col">
-                      <p className="text-base font-semibold">Precio final:</p>
-                      <p className="text-sm font-normal text-muted-foreground">{numeral(order.finalAmount).format("$0,0.00")}</p>
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
           
-              <AccordionItem value="status">
-                <AccordionTrigger>
-                  <h4 className="text-xl font-semibold mb-2">
-                    Estatus
-                  </h4>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="flex flex-col">
-                      <p className="text-base font-semibold">Estatus:</p>
-                      <p className="text-sm font-normal text-muted-foreground">{order.status ?? '-'}</p>
-                    </div>
-                    <div className="flex flex-col">
-                      <p className="text-base font-semibold">Pagada:</p>
-                      <p className="text-sm font-normal text-muted-foreground">{order.paid ? "Sí" : "No"}</p>
-                    </div>
-                    <div className="flex flex-col">
-                      <p className="text-base font-semibold">Tipo de orden:</p>
-                      <p className="text-sm font-normal text-muted-foreground">{order.orderType ?? '-'}</p>
-                    </div>
-                    <div className="flex flex-col">
-                      <p className="text-base font-semibold">PDF:</p>
-                      <p className="text-sm font-normal text-muted-foreground">{order.pdfStatus ?? '-'}</p>
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
+          <div className="mb-6">
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              <Button variant="outline" onClick={completeOrder} className="w-full">
+                Completar Orden
+              </Button>
+              <Button variant="outline" onClick={payOrder} className="w-full">
+                Marcar como Pagada
+              </Button>
+              <Button variant="outline" onClick={() => handleGeneratePDF(order._id.toString())} className="w-full">
+                Generar PDF
+              </Button>
+              <Button variant="outline" onClick={cancelOrder} className="w-full border-red-400 text-red-400 hover:bg-red-400 hover:text-white">
+                Cancelar Orden
+              </Button>
+            </div>
+          </div>
 
-              <AccordionItem value="products">
-                <AccordionTrigger>
-                  <h4 className="text-xl font-semibold mb-2">
-                    Productos
-                  </h4>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <Table className="w-full">
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Nombre</TableHead>
-                        <TableHead>Cantidad</TableHead>
-                        <TableHead>Total</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {order.products.map((p) => (
-                        <TableRow key={p.product}>
-                          <TableCell className="text-sm font-normal text-muted-foreground">
-                            {`${productsStore?.[p.product]?.uniqId} - ${productsStore?.[p.product]?.name}` || "Producto no encontrado"}
-                          </TableCell>
-                          <TableCell className="text-sm font-normal text-muted-foreground">
-                            {p.quantity}
-                          </TableCell>
-                          <TableCell className="text-sm font-normal text-muted-foreground">
-                            {numeral(p.total).format("$0,0.00")}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
+          <div className="bg-slate-700/20 rounded-lg p-4 mb-6">
+            <h4 className="text-lg font-semibold mb-3 text-slate-200">Resumen Financiero</h4>
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-slate-300">Subtotal:</span>
+                <span className="font-semibold">{numeral(order.totalAmount || 0).format("$0,0.00")}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-slate-300">Flete:</span>
+                <span className="font-semibold">{numeral(order.freightPrice || 0).format("$0,0.00")}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-slate-300">Adelanto:</span>
+                <span className="font-semibold text-green-400">-{numeral(order.advancedPayment || 0).format("$0,0.00")}</span>
+              </div>
+              <div className="border-t border-slate-600 pt-2 mt-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-base font-semibold">Total Final:</span>
+                  <span className="text-lg font-bold text-blue-400">{numeral(order.finalAmount || 0).format("$0,0.00")}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <div className="bg-slate-700/20 rounded-lg p-4">
+              <h4 className="text-lg font-semibold mb-3 text-slate-200">Estado de la Orden</h4>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-slate-400 mb-1">Estado:</p>
+                  <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${
+                    order.status === 'Completado' ? 'bg-green-100 text-green-800' :
+                    order.status === 'Cancelado' ? 'bg-red-100 text-red-800' :
+                    'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {order.status || 'Pendiente'}
+                  </span>
+                </div>
+                <div>
+                  <p className="text-sm text-slate-400 mb-1">Pagado:</p>
+                  <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${
+                    order.paid ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                  }`}>
+                    {order.paid ? 'Sí' : 'No'}
+                  </span>
+                </div>
+                <div>
+                  <p className="text-sm text-slate-400 mb-1">Tipo de Orden:</p>
+                  <p className="text-sm font-medium">{orderTypeTranslations[order.orderType] || 'N/A'}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-slate-400 mb-1">Estado PDF:</p>
+                  <p className="text-sm font-medium">{order.pdfStatus || 'No generado'}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-slate-700/20 rounded-lg p-4">
+              <h4 className="text-lg font-semibold mb-3 text-slate-200">Resumen de Productos</h4>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-slate-400 mb-1">Total de Productos:</p>
+                  <p className="text-lg font-bold">{order.products?.length || 0}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-slate-400 mb-1">Cantidad Total:</p>
+                  <p className="text-lg font-bold">
+                    {order.products?.reduce((total, product) => total + (product.quantity || 0), 0) || 0}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-slate-700/20 rounded-lg p-4">
+              <h4 className="text-lg font-semibold mb-3 text-slate-200">Fechas Importantes</h4>
+              <div className="space-y-2">
+                <div>
+                  <p className="text-sm text-slate-400 mb-1">Fecha de Solicitud:</p>
+                  <p className="text-sm font-medium">{moment(order.requestDate).format("DD/MM/YYYY HH:mm")}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-slate-400 mb-1">Fecha Estimada:</p>
+                  <p className="text-sm font-medium">{moment(order.dueDate).format("DD/MM/YYYY HH:mm")}</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </ScrollArea>
+      </div>
     )
   }, [order, isLoading, isError, isRefetching, productsStore]);
 
   return (
-    <AlertDialog open={isOpen} onOpenChange={(open) => !open}>
-      <AlertDialogContent className="max-w-4xl py-8 px-10">
-        <div className="w-full h-full flex flex-col">
-          <div className="flex items-center justify-between">
-            <h3 className="text-2xl font-semibold m-0 p-0">
-              Orden
-            </h3>
-            <div className="flex items-center gap-2">
-              <p className="text-sm font-normal m-0 p-0">{order?._id?.toString()}</p>
-              <Button size={"icon"} variant="ghost" className="h-6 w-6">
-                <Copy className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-          <div className="flex items-center justify-between gap-2">
-            <p className="text-sm font-normal text-muted-foreground">
-              Creada el {moment(order?.requestDate).format("DD/MM/YYYY HH:mm")}
-            </p>
-            <p className="text-sm font-normal text-muted-foreground">
-              La fecha estimada es {moment(order?.dueDate).format("DD/MM/YYYY HH:mm")}
-            </p>
-          </div>
-          {content}
+    <AlertDialog open={isOpen} onOpenChange={(open) => !open && onResolve(order)}>
+      <AlertDialogContent className="max-w-6xl py-8 px-10">
+        <div className="bg-slate-800/30 rounded-lg p-6">
+          <ScrollArea className="h-[600px] w-full pr-6">
+            {content}
+          </ScrollArea>
         </div>
-
-        <AlertDialogFooter className="mt-6">
+        <AlertDialogFooter className="mt-2">
           <AlertDialogAction onClick={() => onResolve(order)}>Cerrar</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
+
     </AlertDialog>
   );
 };

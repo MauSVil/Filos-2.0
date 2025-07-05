@@ -34,8 +34,6 @@ const getAccessToken = async () => {
 };
 
 const createShipment = async (accessToken: string, ordersFound: Order[]) => {
-  console.log(ordersFound, ordersFound.length);
-
   const payload = {
     labelResponseOptions: "LABEL",
     requestedShipment: {

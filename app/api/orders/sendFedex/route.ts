@@ -33,63 +33,63 @@ const getAccessToken = async () => {
   return data.access_token;
 };
 
-const createShipment = async (accessToken: string, ordersFound: Order[]) => {
+const createShipment = async (accessToken: string, ordersFound: Order[], formData: any) => {
   const payload = {
     labelResponseOptions: "LABEL",
     requestedShipment: {
       shipper: {
         contact: {
-          personName: "Mauricio Sanchez",
-          phoneNumber: "1234567890",
+          personName: formData.shipper.personName,
+          phoneNumber: formData.shipper.phoneNumber,
         },
         address: {
-          streetLines: ["123 Main Street"],
-          city: "Memphis",
-          stateOrProvinceCode: "TN",
-          postalCode: "38116",
-          countryCode: "US",
+          streetLines: formData.shipper.address.streetLines,
+          city: formData.shipper.address.city,
+          stateOrProvinceCode: formData.shipper.address.stateOrProvinceCode,
+          postalCode: formData.shipper.address.postalCode,
+          countryCode: formData.shipper.address.countryCode,
         },
       },
-      recipients: ordersFound.map((order) => ({
+      recipients: [{
         contact: {
-          personName: "Jane Smith",
-          phoneNumber: "0987654321",
+          personName: formData.recipient.personName,
+          phoneNumber: formData.recipient.phoneNumber,
         },
         address: {
-          streetLines: ["456 Oak Avenue"],
-          city: "Atlanta",
-          stateOrProvinceCode: "GA",
-          postalCode: "30301",
-          countryCode: "US",
+          streetLines: formData.recipient.address.streetLines,
+          city: formData.recipient.address.city,
+          stateOrProvinceCode: formData.recipient.address.stateOrProvinceCode,
+          postalCode: formData.recipient.address.postalCode,
+          countryCode: formData.recipient.address.countryCode,
         },
-      })),
-      pickupType: "DROPOFF_AT_FEDEX_LOCATION",
-      serviceType: "FEDEX_GROUND",
-      packagingType: "YOUR_PACKAGING",
+      }],
+      pickupType: formData.pickupType,
+      serviceType: formData.serviceType,
+      packagingType: formData.packagingType,
       shippingChargesPayment: {
-        paymentType: "SENDER",
+        paymentType: formData.paymentType,
       },
       labelSpecification: {
-        labelFormatType: "COMMON2D",
-        imageType: "PDF",
-        labelStockType: "PAPER_4X6",
+        labelFormatType: formData.labelOptions.labelFormatType,
+        imageType: formData.labelOptions.imageType,
+        labelStockType: formData.labelOptions.labelStockType,
       },
       requestedPackageLineItems: ordersFound.map((order) => ({
         groupPackageCount: 1,
         weight: {
-          units: "LB",
-          value: 5, // Ajusta dinámicamente el peso si es necesario.
+          units: formData.packageDetails.weight.units,
+          value: formData.packageDetails.weight.value,
         },
         dimensions: {
-          length: 10,
-          width: 8,
-          height: 6,
-          units: "IN",
+          length: formData.packageDetails.dimensions.length,
+          width: formData.packageDetails.dimensions.width,
+          height: formData.packageDetails.dimensions.height,
+          units: formData.packageDetails.dimensions.units,
         },
       })),
     },
     accountNumber: {
-      value: "740561073",
+      value: "740561073", // This could also be made configurable
     },
   };
 
@@ -128,13 +128,13 @@ const createShipment = async (accessToken: string, ordersFound: Order[]) => {
 export const POST = async (req: NextRequest) => {
   try {
     const body = await req.json();
-    const { orders } = body;
+    const { orders, ...formData } = body;
 
     const ordersFound = await OrdersRepository.find({ ids: orders });
 
     const accessToken = await getAccessToken();
 
-    await createShipment(accessToken, ordersFound);
+    await createShipment(accessToken, ordersFound, formData);
 
     return NextResponse.json({ message: "Orders sent to Fedex" });
   } catch (error) {

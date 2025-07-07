@@ -5,7 +5,7 @@ export const FedexShipmentFormSchema = z.object({
 
   shipper: z.object({
     personName: z.string().min(1, "Nombre del remitente es requerido"),
-    phoneNumber: z.string().min(1, "Teléfono del remitente es requerido"),
+    phoneNumber: z.coerce.string().min(1, "Teléfono del remitente es requerido"),
     address: z.object({
       streetLines: z.array(z.string()).min(1, "Dirección es requerida"),
       city: z.string().min(1, "Ciudad es requerida"),
@@ -17,7 +17,7 @@ export const FedexShipmentFormSchema = z.object({
 
   recipient: z.object({
     personName: z.string().min(1, "Nombre del destinatario es requerido"),
-    phoneNumber: z.string().min(1, "Teléfono del destinatario es requerido"),
+    phoneNumber: z.coerce.string().min(1, "Teléfono del destinatario es requerido"),
     address: z.object({
       streetLines: z.array(z.string()).min(1, "Dirección es requerida"),
       city: z.string().min(1, "Ciudad es requerida"),

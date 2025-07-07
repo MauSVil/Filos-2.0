@@ -27,7 +27,7 @@ import {
   IMAGE_TYPE_OPTIONS,
   LABEL_STOCK_OPTIONS
 } from "@/zodSchemas/fedexShipmentForm";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import ky from "ky";
 import _ from "lodash";
 import { BuyerBaseType } from "@/types/v2/Buyer/Base.type";
@@ -40,52 +40,17 @@ type OrderOption = {
 };
 
 const GuidesPage = () => {
-  const [isLoading, setIsLoading] = useState(false);
-
   const {
     localData,
-    store
+    store,
+    methods,
+    flags
   } = useModule();
 
   const { form, watchedOrders, selectedOrder, selectedBuyer } = localData;
   const { orders } = store;
   const { options } = orders;
-
-  const onSubmit = async (data: FedexShipmentForm) => {
-    setIsLoading(true);
-    try {
-      const response = await fetch("/api/orders/sendFedex", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          orders: data.selectedOrders,
-          shipper: data.shipper,
-          recipient: data.recipient,
-          pickupType: data.pickupType,
-          serviceType: data.serviceType,
-          packagingType: data.packagingType,
-          packageDetails: data.packageDetails,
-          paymentType: data.paymentType,
-          labelOptions: data.labelOptions,
-        }),
-      });
-
-      if (response.ok) {
-        toast.success("Guía de envío creada exitosamente");
-        form.reset();
-      } else {
-        const error = await response.json();
-        toast.error(error.error || "Error al crear la guía de envío");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      toast.error("Error al procesar la solicitud");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { isMethodLoading } = flags;
 
   const isFormDisabled = watchedOrders.length === 0;
 
@@ -99,7 +64,7 @@ const GuidesPage = () => {
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit((data) => methods.generateFedexShipment(data))} className="space-y-6">
           <Card>
             <CardHeader>
               <CardTitle>Selección de Orden</CardTitle>
@@ -750,10 +715,10 @@ const GuidesPage = () => {
           <div className="flex justify-end">
             <Button 
               type="submit" 
-              disabled={isLoading || isFormDisabled}
+              disabled={isMethodLoading || isFormDisabled}
               className="min-w-[200px]"
             >
-              {isLoading ? "Creando guía..." : "Crear Guía de Envío"}
+              {isMethodLoading ? "Creando guía..." : "Crear Guía de Envío"}
             </Button>
           </div>
         </form>
@@ -768,6 +733,34 @@ export default GuidesPage;
 const useModule = () => {
   const [selectedOrder, setSelectedOrder] = useState<OrderBaseType | null>(null);
   const [selectedBuyer, setSelectedBuyer] = useState<BuyerBaseType | null>(null);
+
+  const downloadLabelPDF = (encodedLabel: string, trackingNumber: string) => {
+    try {
+      const byteCharacters = atob(encodedLabel);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: 'application/pdf' });
+
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `fedex_label_${trackingNumber}.pdf`;
+      
+      document.body.appendChild(link);
+      link.click();
+      
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      toast.success("Etiqueta descargada exitosamente");
+    } catch (error) {
+      console.error('Error downloading label:', error);
+      toast.error("Error al descargar la etiqueta");
+    }
+  };
 
   const form = useForm<FedexShipmentForm>({
     resolver: zodResolver(FedexShipmentFormSchema),
@@ -785,7 +778,7 @@ const useModule = () => {
         },
       },
       pickupType: "DROPOFF_AT_FEDEX_LOCATION",
-      serviceType: "FEDEX_GROUND",
+      serviceType: "FEDEX_EXPRESS_SAVER",
       packagingType: "YOUR_PACKAGING",
       packageDetails: {
         weight: {
@@ -809,6 +802,37 @@ const useModule = () => {
   });
 
   const watchedOrders = form.watch("selectedOrders");
+
+  const generateFedexMutation = useMutation({
+    mutationKey: ["generateFedexShipment"],
+    mutationFn: async (data: FedexShipmentForm) => {
+      const resp = await ky.post("/api/orders/sendFedex", {
+        json: data
+      }).json();
+      return resp;
+    },
+    onError: (error) => {
+      toast.error("Error al crear la guía de envío. Por favor, intenta nuevamente.");
+    },
+    onSuccess: (resp: any) => {
+      console.log({ resp });
+      
+      // Extract the label data from the response
+      if (resp.output?.transactionShipments?.[0]?.pieceResponses?.[0]?.packageDocuments?.[0]?.encodedLabel) {
+        const encodedLabel = resp.output.transactionShipments[0].pieceResponses[0].packageDocuments[0].encodedLabel;
+        const trackingNumber = resp.output.transactionShipments[0].masterTrackingNumber;
+        
+        // Create and download the PDF
+        downloadLabelPDF(encodedLabel, trackingNumber);
+        
+        toast.success(`Guía de envío creada exitosamente. Número de seguimiento: ${trackingNumber}`);
+      } else {
+        toast.success("Guía de envío creada exitosamente.");
+      }
+      
+      form.reset();
+    }
+  })
 
   const ordersQuery = useQuery({
     queryKey: ["orders"],
@@ -882,9 +906,11 @@ const useModule = () => {
     },
     flags: {
       isLoading: ordersQuery.isLoading,
+      isMethodLoading: generateFedexMutation.isPending,
     },
     methods: {
-
+      generateFedexShipment: generateFedexMutation.mutateAsync,
+      downloadLabelPDF,
     }
   }
 }

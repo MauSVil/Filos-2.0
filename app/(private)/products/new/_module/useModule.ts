@@ -41,6 +41,9 @@ export const useModule = () => {
   const image = watch("image");
   const uniqId = watch("uniqId");
 
+  const specialPriceWatch = watch("specialPrice");
+  const specialPriceDebounced = useDebounce(specialPriceWatch, 500);
+
   const debouncedUniqId = useDebounce(uniqId, 500);
 
   const newProductMutation = useMutation({
@@ -80,6 +83,11 @@ export const useModule = () => {
       form.setValue("baseId", "");
     }
   }, [debouncedUniqId]);
+
+  useEffect(() => {
+    form.setValue('retailPrice', specialPriceDebounced + 50);
+    form.setValue('wholesalePrice', specialPriceDebounced + 40);
+  }, [specialPriceDebounced]);
 
   const submit = handleSubmit(async (data) => {
     await newProductMutation.mutateAsync(data);

@@ -88,7 +88,7 @@ const ProductForm = ({ form, isLoading, submit, image, file }: Props) => {
               labelClassName="text-green-400"
               name="specialPrice"
               type="number"
-              valueModifierOnChange={(value) => Number(value)}
+              valueModifierOnChange={(value) => value === "" ? 0 : Number(value)}
             />
             <InputFormField
               className="flex-1"
@@ -101,7 +101,7 @@ const ProductForm = ({ form, isLoading, submit, image, file }: Props) => {
               labelClassName="text-purple-400"
               name="wholesalePrice"
               type="number"
-              valueModifierOnChange={(value) => Number(value)}
+              valueModifierOnChange={(value) => value === "" ? 0 : Number(value)}
             />
           </div>
 
@@ -117,7 +117,7 @@ const ProductForm = ({ form, isLoading, submit, image, file }: Props) => {
               labelClassName="text-yellow-400"
               name="retailPrice"
               type="number"
-              valueModifierOnChange={(value) => Number(value)}
+              valueModifierOnChange={(value) => value === "" ? 0 : Number(value)}
             />
 
             <InputFormField
@@ -131,7 +131,7 @@ const ProductForm = ({ form, isLoading, submit, image, file }: Props) => {
               labelClassName="text-red-400"
               name="webPagePrice"
               type="number"
-              valueModifierOnChange={(value) => Number(value)}
+              valueModifierOnChange={(value) => value === "" ? 0 : Number(value)}
             />
           </div>
 
@@ -144,7 +144,7 @@ const ProductForm = ({ form, isLoading, submit, image, file }: Props) => {
             label="Cantidad"
             name="quantity"
             type="number"
-            valueModifierOnChange={(value) => Number(value)}
+            valueModifierOnChange={(value) => value === "" ? 0 : Number(value)}
           />
         </div>
         <div className="flex-col gap-4 w-1/4">

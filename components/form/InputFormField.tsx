@@ -57,7 +57,13 @@ export const InputFormField = <T extends FieldValues>(
               placeholder={placeholder}
               type={type}
               {...rest}
-              value={type === "file" ? "" : field.value}
+              value={
+                type === "file" 
+                  ? "" 
+                  : type === "number" && field.value === 0 
+                    ? "" 
+                    : (field.value ?? "")
+              }
               onChange={(e) => {
                 if (type !== "file") {
                   const value = e.target.value;

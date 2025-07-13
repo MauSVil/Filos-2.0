@@ -70,7 +70,17 @@ const ProductForm = ({ form, isLoading, submit, image, file }: Props) => {
               name: "size",
             }}
             emptyLabel="No hay tallas"
-            items={[{ label: "Unitalla", value: "UNI" }]}
+            items={[
+              { label: "Unitalla", value: "UNI" },
+              { label: "Chica", value: "Chica" },
+              { label: "Mediana", value: "Mediana" },
+              { label: "Grande", value: "Grande" },
+              { label: "Extra Grande", value: "Extra Grande" },
+              { label: "Niño Talla 4", value: "Niño Talla 4" },
+              { label: "Niño Talla 6", value: "Niño Talla 6" },
+              { label: "Niño Talla 8", value: "Niño Talla 8" },
+              { label: "Niño Talla 10", value: "Niño Talla 10" },
+            ]}
             label="Talla"
             placeholder="Selecciona una talla..."
             searchLabel="Buscar una talla..."

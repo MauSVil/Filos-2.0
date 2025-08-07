@@ -44,7 +44,7 @@ export const PUT = async (
       const arrayBuffer = await image.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
 
-      url = await FileService.uploadFile('products', id, buffer, 'image/png');
+      url = await FileService.uploadFile('products', id, buffer, 'image/png', true);
       dataVerified.image = url;
     }
 

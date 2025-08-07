@@ -59,7 +59,7 @@ export const POST = async (req: NextRequest) => {
       const arrayBuffer = await image.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
 
-      url = await FileService.uploadFile('products', insertedId, buffer, 'image/png');
+      url = await FileService.uploadFile('products', insertedId, buffer, 'image/png', false);
 
     } catch (error) {
       if (error instanceof Error) {

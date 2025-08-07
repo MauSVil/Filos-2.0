@@ -27,7 +27,7 @@ const init = async () => {
       return limit(async () => {
         const resp = await ky.get(image).arrayBuffer();
         const buffer = Buffer.from(resp);
-        const url = await FileService.uploadFile("products", id, buffer, "image/png");
+        const url = await FileService.uploadFile("products", id, buffer, "image/png", true);
         await ProductRepository.updateOne({ _id: new ObjectId(id) }, { image: url });
       });
     });

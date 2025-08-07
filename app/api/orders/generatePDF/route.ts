@@ -122,7 +122,7 @@ export const POST = async (req: NextRequest) => {
     const pdfBuffer = await pdfResponse.arrayBuffer();
     const buffer = Buffer.from(pdfBuffer);
 
-    try { await FileService.uploadFile('orders', body.id, buffer, 'application/pdf') }
+    try { await FileService.uploadFile('orders', body.id, buffer, 'application/pdf', true) }
     catch { console.error('Error uploading file to Minio') }
 
     const url = await uploadImage(`orderDocs/${body.id}.pdf`, buffer);

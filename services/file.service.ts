@@ -10,21 +10,24 @@ export class FileService {
     secretKey: process.env.MINIO_SECRET_KEY!,
   });
 
-  static async uploadFile(bucketName: string, objectName: string, fileBuffer: Buffer, mimeType: string): Promise<string> {
+  static async uploadFile(bucketName: string, objectName: string, fileBuffer: Buffer, mimeType: string, overwrite: boolean = true): Promise<string> {
     const exists = await this.minioClient.bucketExists(bucketName);
     if (!exists) {
       await this.minioClient.makeBucket(bucketName);
     }
 
-    // Check if the file already exists
-    try {
-      await this.minioClient.statObject(bucketName, objectName);
-      console.log(`File ${objectName} already exists in bucket ${bucketName}.`);
-      return `https://minio.mausvil.dev/${bucketName}/${objectName}`;
-    } catch (err) {
-      console.log(`File ${objectName} does not exist in bucket ${bucketName}. Proceeding to upload.`);
+    // If overwrite is false, check if file exists and return existing URL
+    if (!overwrite) {
+      try {
+        await this.minioClient.statObject(bucketName, objectName);
+        console.log(`File ${objectName} already exists in bucket ${bucketName}.`);
+        return `https://minio.mausvil.dev/${bucketName}/${objectName}`;
+      } catch (err) {
+        console.log(`File ${objectName} does not exist in bucket ${bucketName}. Proceeding to upload.`);
+      }
     }
 
+    // Upload the file (will overwrite if exists when overwrite is true)
     await this.minioClient.putObject(bucketName, objectName, fileBuffer, fileBuffer.length, {
       'Content-Type': mimeType,
     });

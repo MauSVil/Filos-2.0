@@ -136,3 +136,15 @@ types/
 - Socket connection managed via React Context
 - Events emitted for inventory changes and order updates
 - Connection state tracking for UI feedback
+
+### UI/UX Design Patterns
+- **Card-based Layout**: All forms use Card components for organized sections
+- **Dark Mode Only**: Platform exclusively uses dark mode with proper color tokens and contrast ratios
+- **Professional Headers**: Page headers include breadcrumbs, icons, and clear hierarchy
+- **Form Organization**: 
+  - Basic information (name, IDs, color, size, quantity) in first card
+  - Pricing information with visual indicators and automatic calculations in second card
+  - Image upload with preview in dedicated sidebar card
+- **Responsive Design**: Grid layouts that adapt to different screen sizes
+- **Visual Feedback**: Loading states, badges for pricing relationships, proper form validation
+- **Navigation**: Breadcrumbs, back buttons, and cancel functionality for better UX

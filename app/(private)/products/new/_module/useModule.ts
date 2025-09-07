@@ -101,5 +101,6 @@ export const useModule = () => {
     methods: {
       submit,
     },
+    isLoading: newProductMutation.isPending,
   };
 };

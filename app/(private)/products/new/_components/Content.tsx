@@ -1,18 +1,25 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useModule } from "../_module/useModule";
 
 import ProductForm from "@/components/shared/ProductForm";
 
 const Content = () => {
-  const { form, localStore, methods } = useModule();
+  const router = useRouter();
+  const { form, localStore, methods, isLoading } = useModule();
+
+  const handleCancel = () => {
+    router.push("/products");
+  };
 
   return (
     <ProductForm
       form={form}
       image={localStore.image as File}
-      isLoading={false}
+      isLoading={isLoading}
       submit={methods.submit}
+      onCancel={handleCancel}
     />
   );
 };

@@ -10,16 +10,16 @@ import Content from "./_components/Content";
 const NewProductPage = () => {
   return (
     <>
-      <div className="flex items-center gap-4 mb-3">
-        <Button variant="ghost" size="sm" asChild>
+      <div className="mb-2">
+        <Button variant="ghost" size="sm" asChild className="mb-2">
           <Link href="/products">
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-4 w-4 mr-2" />
             Regresar
           </Link>
         </Button>
       </div>
       
-      <div className="flex items-center gap-3 mb-3">
+      <div className="flex items-center gap-3 mb-6">
         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-800">
           <Package className="h-5 w-5 text-gray-400" />
         </div>

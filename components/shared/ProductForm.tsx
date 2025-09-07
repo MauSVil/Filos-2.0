@@ -228,41 +228,6 @@ const ProductForm = ({ form, isLoading, submit, onCancel, image, file, onImageCh
                   <p className="text-xs text-gray-400">Precio público en línea</p>
                 </div>
               </div>
-
-              {(specialPrice > 0 || retailPrice > 0 || wholesalePrice > 0 || webPagePrice > 0) && (
-                <>
-                  <Separator />
-                  <div className="bg-gray-800/30 p-4 rounded-lg">
-                    <h4 className="font-medium mb-2 text-gray-100">Resumen de Precios</h4>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
-                      {specialPrice > 0 && (
-                        <div className="text-green-400">
-                          <span className="block font-medium">Especial</span>
-                          <span>${specialPrice}</span>
-                        </div>
-                      )}
-                      {wholesalePrice > 0 && (
-                        <div className="text-purple-400">
-                          <span className="block font-medium">Mayoreo</span>
-                          <span>${wholesalePrice}</span>
-                        </div>
-                      )}
-                      {retailPrice > 0 && (
-                        <div className="text-yellow-400">
-                          <span className="block font-medium">Semi-mayoreo</span>
-                          <span>${retailPrice}</span>
-                        </div>
-                      )}
-                      {webPagePrice > 0 && (
-                        <div className="text-red-400">
-                          <span className="block font-medium">Web</span>
-                          <span>${webPagePrice}</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </>
-              )}
             </CardContent>
           </Card>
         </div>

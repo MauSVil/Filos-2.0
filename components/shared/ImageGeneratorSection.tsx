@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Wand2, Upload, RefreshCw, Check, X, User, Heart, Shirt } from "lucide-react";
+import { Wand2, Upload, RefreshCw, Check, X, User, Heart, Shirt, Image as ImageIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -53,6 +53,7 @@ const ImageGeneratorSection = ({
   const [imageHistory, setImageHistory] = useState<GeneratedImageData[]>([]);
   const [selectedHistoryImage, setSelectedHistoryImage] = useState<GeneratedImageData | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
+  const [isUploadDragOver, setIsUploadDragOver] = useState(false);
 
   // Update custom prompt when selected prompt type changes
   useEffect(() => {
@@ -92,12 +93,39 @@ const ImageGeneratorSection = ({
     input.click();
   };
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
+  const handleUploadDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsUploadDragOver(true);
+  };
+
+  const handleUploadDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsUploadDragOver(false);
+  };
+
+  const handleUploadDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsUploadDragOver(false);
+    
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith('image/')) {
       onImageUploaded(file);
       setMode("upload");
     }
+  };
+
+  const handleUploadDropzoneClick = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        onImageUploaded(file);
+        setMode("upload");
+      }
+    };
+    input.click();
   };
 
   const generateImage = async () => {
@@ -205,19 +233,77 @@ const ImageGeneratorSection = ({
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        {mode === "upload" && (
-          <>
-            <div>
-              <label className="block text-sm font-medium mb-2">Seleccionar Imagen</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                disabled={disabled}
-                className="block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-muted file:text-foreground hover:file:bg-muted/80 file:cursor-pointer cursor-pointer"
-              />
+        {mode === "upload" && !currentImage && (
+          <div
+            onClick={handleUploadDropzoneClick}
+            onDragOver={handleUploadDragOver}
+            onDragLeave={handleUploadDragLeave}
+            onDrop={handleUploadDrop}
+            className={`
+              relative cursor-pointer rounded-xl border-2 border-dashed transition-all duration-200 p-8
+              ${isUploadDragOver 
+                ? 'border-primary bg-primary/5' 
+                : 'border-border hover:border-primary/50 hover:bg-muted/20'
+              }
+              ${disabled ? 'pointer-events-none opacity-50' : ''}
+            `}
+          >
+            <div className="flex flex-col items-center justify-center text-center space-y-3">
+              <div className="relative">
+                <ImageIcon className="h-12 w-12 text-muted-foreground" strokeWidth={1} />
+                <div className="absolute -bottom-1 -right-1 bg-primary/10 rounded-full p-1">
+                  <Upload className="h-3 w-3 text-primary" />
+                </div>
+              </div>
+              
+              <div className="space-y-1">
+                <p className="text-sm font-medium">
+                  {isUploadDragOver ? 'Suelta la imagen aquí' : 'Arrastra tu imagen o haz clic'}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Sube una imagen del producto terminado
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  PNG, JPG hasta 10MB
+                </p>
+              </div>
             </div>
-          </>
+          </div>
+        )}
+
+        {mode === "upload" && currentImage && (
+          <div className="space-y-3">
+            <div className="relative rounded-xl overflow-hidden border-2 border-border">
+              <img
+                src={typeof currentImage === 'string' ? currentImage : URL.createObjectURL(currentImage)}
+                alt="Imagen del producto"
+                className="w-full h-32 object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <div className="absolute bottom-3 left-3 right-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-green-400" />
+                    <span className="text-sm text-white font-medium truncate">
+                      {typeof currentImage === 'string' ? 'Imagen actual' : currentImage.name}
+                    </span>
+                  </div>
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleUploadDropzoneClick();
+                    }}
+                    size="sm"
+                    variant="secondary"
+                    className="h-6 px-2 text-xs"
+                    disabled={disabled}
+                  >
+                    Cambiar
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
 
         {mode === "generate" && !showPreview && (
@@ -451,39 +537,6 @@ const ImageGeneratorSection = ({
           </>
         )}
 
-        {/* Current Image Preview */}
-        {(currentImage && mode === "upload") && (
-          <>
-            <Separator />
-            <div className="space-y-3">
-              <div className="aspect-square relative bg-muted/30 rounded-lg overflow-hidden border-2 border-dashed border-border">
-                <img
-                  alt="Vista previa del producto"
-                  className="w-full h-full object-cover"
-                  src={typeof currentImage === 'string' ? currentImage : URL.createObjectURL(currentImage)}
-                />
-              </div>
-              <div className="text-center">
-                <p className="text-sm text-gray-400">Vista previa</p>
-                <p className="text-xs text-gray-500">
-                  {typeof currentImage === 'string' ? "Imagen actual" : currentImage.name}
-                </p>
-              </div>
-            </div>
-          </>
-        )}
-
-        {!currentImage && mode === "upload" && (
-          <div className="aspect-square border-2 border-dashed border-border rounded-lg flex flex-col items-center justify-center text-muted-foreground">
-            <Upload className="h-12 w-12 mb-2" />
-            <p className="text-sm text-center">
-              No hay imagen seleccionada
-            </p>
-            <p className="text-xs text-center mt-1">
-              Selecciona una imagen para ver la vista previa
-            </p>
-          </div>
-        )}
       </CardContent>
     </Card>
   );

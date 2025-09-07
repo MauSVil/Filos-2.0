@@ -25,7 +25,7 @@ export const POST = async (req: NextRequest) => {
       
       if (!imageFile) {
         return NextResponse.json(
-          { error: "No image provided" },
+          { error: "No se proporcionó imagen" },
           { status: 400 }
         );
       }
@@ -48,7 +48,7 @@ export const POST = async (req: NextRequest) => {
       
       if (!fullImageData) {
         return NextResponse.json(
-          { error: "Image is required" },
+          { error: "La imagen es obligatoria" },
           { status: 400 }
         );
       }
@@ -75,10 +75,10 @@ export const POST = async (req: NextRequest) => {
       );
     }
 
-    // Enhance the prompt to ensure image generation
-    const enhancedPrompt = customPrompt.includes("generate") || customPrompt.includes("create") || customPrompt.includes("produce")
+    // Mejorar el prompt para asegurar la generación de imágenes
+    const enhancedPrompt = customPrompt.includes("generar") || customPrompt.includes("crear") || customPrompt.includes("producir") || customPrompt.includes("generate") || customPrompt.includes("create") || customPrompt.includes("produce")
       ? customPrompt
-      : `${customPrompt} Please generate and create a new image based on this request.`;
+      : `${customPrompt} Por favor genera y crea una nueva imagen basada en esta solicitud.`;
 
     // Create the prompt array with text and image
     const prompt = [
@@ -101,7 +101,7 @@ export const POST = async (req: NextRequest) => {
     
     if (!result) {
       return NextResponse.json(
-        { error: "No response from Gemini" },
+        { error: "No hay respuesta de Gemini" },
         { status: 500 }
       );
     }
@@ -139,7 +139,7 @@ export const POST = async (req: NextRequest) => {
         responsePartsCount: result.content?.parts?.length || 0,
         imageGenerationAttempted: true,
         ...((!hasImages) && { 
-          warning: "No images were generated. The model may have interpreted this as a text-only request. Try rephrasing your prompt to explicitly request image generation." 
+          warning: "No se generaron imágenes. El modelo pudo haber interpretado esto como una solicitud solo de texto. Intenta reformular tu prompt para solicitar explícitamente la generación de imágenes." 
         })
       },
     };
@@ -151,8 +151,8 @@ export const POST = async (req: NextRequest) => {
     
     return NextResponse.json(
       {
-        error: "Internal server error",
-        details: error instanceof Error ? error.message : "Unknown error",
+        error: "Error interno del servidor",
+        details: error instanceof Error ? error.message : "Error desconocido",
       },
       { status: 500 }
     );

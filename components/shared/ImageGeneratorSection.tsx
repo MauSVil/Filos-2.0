@@ -1,13 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Wand2, Upload, RefreshCw, Check, X, User, Heart } from "lucide-react";
+import { Wand2, Upload, RefreshCw, Check, X, User, Heart, Shirt } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { InputFormField } from "@/components/form/InputFormField";
 
 interface ImageGeneratorSectionProps {
   onImageGenerated: (image: File) => void;
@@ -29,7 +28,7 @@ interface GeneratedImageData {
 const PROMPT_TEMPLATES = {
   mujer: "Haz que una mujer joven use el suéter que esté en la imagen, postura confiada, en un ambiente aleatorio y bien iluminado, foto profesional de producto",
   hombre: "Haz que un hombre joven atlético use el suéter que esté en la imagen, postura confiada, en un ambiente aleatorio y bien iluminado, foto profesional de producto",
-  mascota: "Haz que una mascota adorable (perro o gato) use un suéter para mascotas, pose tierna y natural, en un ambiente acogedor y bien iluminado, foto profesional de producto"
+  mascota: "Haz que una mascota adorable (perro o gato) use el suéter que esté en la imagen, pose tierna y natural, en un ambiente acogedor y bien iluminado, foto profesional de producto"
 };
 
 const PROMPT_LABELS = {
@@ -53,17 +52,44 @@ const ImageGeneratorSection = ({
   const [customPrompt, setCustomPrompt] = useState<string>(PROMPT_TEMPLATES["mujer"]);
   const [imageHistory, setImageHistory] = useState<GeneratedImageData[]>([]);
   const [selectedHistoryImage, setSelectedHistoryImage] = useState<GeneratedImageData | null>(null);
+  const [isDragOver, setIsDragOver] = useState(false);
 
   // Update custom prompt when selected prompt type changes
   useEffect(() => {
     setCustomPrompt(PROMPT_TEMPLATES[selectedPrompt]);
   }, [selectedPrompt]);
 
-  const handleSweaterUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith('image/')) {
       setSweaterImage(file);
     }
+  };
+
+  const handleDropzoneClick = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        setSweaterImage(file);
+      }
+    };
+    input.click();
   };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -198,19 +224,75 @@ const ImageGeneratorSection = ({
           <>
             <div className="space-y-3">
               <div>
-                <label className="block text-sm font-medium mb-2">1. Subir imagen del suéter estirado</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleSweaterUpload}
-                  disabled={disabled || isGenerating}
-                  className="block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-muted file:text-foreground hover:file:bg-muted/80 file:cursor-pointer cursor-pointer"
-                />
-                {sweaterImage && (
-                  <div className="mt-3 p-3 bg-muted/50 rounded-lg">
-                    <div className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-400" />
-                      <span className="text-sm text-green-400">Imagen cargada: {sweaterImage.name}</span>
+                <label className="block text-sm font-medium mb-3">1. Subir imagen del suéter estirado</label>
+                
+                {!sweaterImage ? (
+                  <div
+                    onClick={handleDropzoneClick}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                    className={`
+                      relative cursor-pointer rounded-xl border-2 border-dashed transition-all duration-200 p-8
+                      ${isDragOver 
+                        ? 'border-primary bg-primary/5' 
+                        : 'border-border hover:border-primary/50 hover:bg-muted/20'
+                      }
+                      ${disabled || isGenerating ? 'pointer-events-none opacity-50' : ''}
+                    `}
+                  >
+                    <div className="flex flex-col items-center justify-center text-center space-y-3">
+                      <div className="relative">
+                        <Shirt className="h-12 w-12 text-muted-foreground" strokeWidth={1} />
+                        <div className="absolute -bottom-1 -right-1 bg-primary/10 rounded-full p-1">
+                          <Upload className="h-3 w-3 text-primary" />
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-1">
+                        <p className="text-sm font-medium">
+                          {isDragOver ? 'Suelta la imagen aquí' : 'Arrastra tu imagen o haz clic'}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Sube una imagen del suéter completamente estirado
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          PNG, JPG hasta 10MB
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <div className="relative rounded-xl overflow-hidden border-2 border-border">
+                      <img
+                        src={URL.createObjectURL(sweaterImage)}
+                        alt="Suéter cargado"
+                        className="w-full h-32 object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                      <div className="absolute bottom-3 left-3 right-3">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Check className="h-4 w-4 text-green-400" />
+                            <span className="text-sm text-white font-medium truncate">
+                              {sweaterImage.name}
+                            </span>
+                          </div>
+                          <Button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSweaterImage(null);
+                            }}
+                            size="sm"
+                            variant="secondary"
+                            className="h-6 px-2 text-xs"
+                            disabled={disabled || isGenerating}
+                          >
+                            Cambiar
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}

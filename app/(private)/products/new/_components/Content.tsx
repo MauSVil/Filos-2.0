@@ -20,6 +20,7 @@ const Content = () => {
       isLoading={isLoading}
       submit={methods.submit}
       onCancel={handleCancel}
+      onImageChange={methods.handleImageChange}
     />
   );
 };

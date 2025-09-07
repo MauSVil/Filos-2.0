@@ -93,6 +93,10 @@ export const useModule = () => {
     await newProductMutation.mutateAsync(data);
   });
 
+  const handleImageChange = (newImage: File) => {
+    form.setValue("image", newImage);
+  };
+
   return {
     form,
     localStore: {
@@ -100,6 +104,7 @@ export const useModule = () => {
     },
     methods: {
       submit,
+      handleImageChange,
     },
     isLoading: newProductMutation.isPending,
   };

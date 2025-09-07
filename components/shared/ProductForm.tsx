@@ -1,7 +1,7 @@
 "use client";
 
 import { UseFormReturn } from "react-hook-form";
-import { Package, DollarSign, Image as ImageIcon, Tag, Palette } from "lucide-react";
+import { Package, DollarSign } from "lucide-react";
 
 import { InputFormField } from "../form/InputFormField";
 import { ComboboxFormField } from "../form/ComboboxField";
@@ -10,6 +10,7 @@ import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
+import ImageGeneratorSection from "./ImageGeneratorSection";
 
 import { ProductInputClient } from "@/types/RepositoryTypes/Product.client";
 
@@ -20,9 +21,10 @@ interface Props {
   onCancel?: () => void;
   image?: File;
   file?: string;
+  onImageChange?: (image: File) => void;
 }
 
-const ProductForm = ({ form, isLoading, submit, onCancel, image, file }: Props) => {
+const ProductForm = ({ form, isLoading, submit, onCancel, image, file, onImageChange }: Props) => {
   const { control, watch } = form;
   const specialPrice = watch("specialPrice");
   const retailPrice = watch("retailPrice");
@@ -31,9 +33,9 @@ const ProductForm = ({ form, isLoading, submit, onCancel, image, file }: Props) 
 
   return (
     <Form {...form}>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Main Product Information */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="space-y-6">
           {/* Basic Information Card */}
           <Card>
             <CardHeader>
@@ -265,60 +267,14 @@ const ProductForm = ({ form, isLoading, submit, onCancel, image, file }: Props) 
           </Card>
         </div>
 
-        {/* Image Upload Card */}
-        <div className="lg:col-span-1">
-          <Card className="h-fit">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <ImageIcon className="h-5 w-5 text-gray-400" />
-                Imagen del Producto
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <InputFormField
-                controllerProps={{
-                  control,
-                  name: "image",
-                }}
-                disabled={isLoading}
-                label="Seleccionar Imagen"
-                name="image"
-                type="file"
-                accept="image/*"
-              />
-              
-              {(file || image) && (
-                <div className="space-y-3">
-                  <Separator />
-                  <div className="aspect-square relative bg-gray-800 rounded-lg overflow-hidden border-2 border-dashed border-gray-700">
-                    <img
-                      alt="Vista previa del producto"
-                      className="w-full h-full object-cover"
-                      src={image ? URL.createObjectURL(image) : file}
-                    />
-                  </div>
-                  <div className="text-center">
-                    <p className="text-sm text-gray-400">Vista previa</p>
-                    <p className="text-xs text-gray-500">
-                      {image ? image.name : "Imagen actual"}
-                    </p>
-                  </div>
-                </div>
-              )}
-              
-              {!file && !image && (
-                <div className="aspect-square border-2 border-dashed border-gray-700 rounded-lg flex flex-col items-center justify-center text-gray-500">
-                  <ImageIcon className="h-12 w-12 mb-2" />
-                  <p className="text-sm text-center">
-                    No hay imagen seleccionada
-                  </p>
-                  <p className="text-xs text-center mt-1">
-                    Selecciona una imagen para ver la vista previa
-                  </p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+        {/* Image Generator/Upload Card */}
+        <div>
+          <ImageGeneratorSection
+            onImageGenerated={onImageChange || (() => {})}
+            onImageUploaded={onImageChange || (() => {})}
+            currentImage={image || file}
+            disabled={isLoading}
+          />
         </div>
       </div>
 

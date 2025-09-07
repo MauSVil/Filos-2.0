@@ -101,6 +101,36 @@ const ProductsContent = () => {
           },
         },
         {
+          id: "Acciones",
+          header: "Acciones",
+          cell: (cellData) => (
+            <div className="flex items-center gap-1">
+              <Button
+                className="h-7 w-7 cursor-pointer"
+                size="icon"
+                variant="ghost"
+                onClick={() => {
+                  router.push(`/products/${cellData.row.original._id}`);
+                }}
+                title="Editar producto"
+              >
+                <Edit className="h-3.5 w-3.5" />
+              </Button>
+              <Button
+                className="h-7 w-7 cursor-pointer"
+                size="icon"
+                variant="ghost"
+                onClick={() => {
+                  methods.deleteProduct(cellData.row.original._id);
+                }}
+                title="Eliminar producto"
+              >
+                <Trash className="h-3.5 w-3.5 text-red-400" />
+              </Button>
+            </div>
+          ),
+        },
+        {
           id: "Modelo",
           header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Modelo" />
@@ -299,34 +329,6 @@ const ProductsContent = () => {
           filterFn: "auto",
           enableColumnFilter: true,
           sortingFn: "textCaseSensitive",
-        },
-        {
-          id: "Acciones",
-          header: "Acciones",
-          cell: (cellData) => (
-            <div className="flex items-center gap-2">
-              <Button
-                className="h-6 w-6 cursor-pointer"
-                size="icon"
-                variant="outline"
-                onClick={() => {
-                  router.push(`/products/${cellData.row.original._id}`);
-                }}
-              >
-                <Edit className="h-3.5 w-3.5" />
-              </Button>
-              <Button
-                className="h-6 w-6 cursor-pointer"
-                size="icon"
-                variant="outline"
-                onClick={() => {
-                  methods.deleteProduct(cellData.row.original._id);
-                }}
-              >
-                <Trash className="h-3.5 w-3.5" />
-              </Button>
-            </div>
-          ),
         },
       ] satisfies ColumnDef<Product>[],
     [productsToUpdate],

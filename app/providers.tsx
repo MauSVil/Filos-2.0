@@ -10,7 +10,6 @@ import { Toaster } from "sonner";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme-provider";
-import { SocketProvider } from "@/contexts/socketContext";
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -25,16 +24,14 @@ export function Providers({ children }: ProvidersProps) {
       attribute="class"
       defaultTheme="dark"
     >
-      <SocketProvider>
-        <TooltipProvider>
-          <Toaster richColors />
-          <QueryClientProvider client={queryClient}>
-            <ReactQueryDevtools initialIsOpen={false} />
-            <ModalContainer />
-            {children}
-          </QueryClientProvider>
-        </TooltipProvider>
-      </SocketProvider>
+      <TooltipProvider>
+        <Toaster richColors />
+        <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools initialIsOpen={false} />
+          <ModalContainer />
+          {children}
+        </QueryClientProvider>
+      </TooltipProvider>
     </ThemeProvider>
   );
 }

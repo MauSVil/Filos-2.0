@@ -122,17 +122,17 @@ export default function NanoBananaPage() {
   };
 
   return (
-    <div className="h-full flex flex-col bg-slate-50 dark:bg-slate-900">
+    <div className="h-full flex flex-col bg-background">
       {/* Header */}
-      <div className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-4">
+      <div className="bg-card border-b border-border p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-slate-900 dark:bg-slate-700 rounded-lg">
-              <Sparkles className="h-5 w-5 text-white" />
+            <div className="p-2 bg-primary rounded-lg">
+              <Sparkles className="h-5 w-5 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-slate-900 dark:text-white">Nano-Banana IA</h1>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
+              <h1 className="text-xl font-bold text-card-foreground">Nano-Banana IA</h1>
+              <p className="text-sm text-muted-foreground">
                 Generador de imágenes con inteligencia artificial
               </p>
             </div>
@@ -154,11 +154,11 @@ export default function NanoBananaPage() {
         <div className="h-full grid grid-cols-1 lg:grid-cols-5 gap-0">
           
           {/* Input Panel */}
-          <div className="lg:col-span-2 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col">
-            <div className="p-4 border-b border-slate-200 dark:border-slate-700">
+          <div className="lg:col-span-2 bg-card border-r border-border flex flex-col">
+            <div className="p-4 border-b border-border">
               <div className="flex items-center gap-2">
-                <Upload className="h-4 w-4 text-slate-600 dark:text-slate-400" />
-                <h2 className="font-semibold text-slate-900 dark:text-white">Configuración</h2>
+                <Upload className="h-4 w-4 text-muted-foreground" />
+                <h2 className="font-semibold text-card-foreground">Configuración</h2>
               </div>
             </div>
             
@@ -179,8 +179,8 @@ export default function NanoBananaPage() {
                 
                 <div
                   onClick={handleUploadClick}
-                  className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-all hover:border-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700/50 ${
-                    imagePreview ? 'border-slate-400 bg-slate-50 dark:bg-slate-700/30' : 'border-slate-300 dark:border-slate-600'
+                  className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-all hover:border-primary hover:bg-accent ${
+                    imagePreview ? 'border-primary bg-accent' : 'border-border'
                   }`}
                 >
                   {imagePreview ? (
@@ -192,20 +192,20 @@ export default function NanoBananaPage() {
                         height={120}
                         className="mx-auto rounded-lg object-cover shadow-sm"
                       />
-                      <p className="text-xs text-slate-600 dark:text-slate-400">
+                      <p className="text-xs text-muted-foreground">
                         {selectedImage?.name} • {Math.round((selectedImage?.size || 0) / 1024)}KB
                       </p>
-                      <p className="text-xs text-slate-600 dark:text-slate-400">
+                      <p className="text-xs text-muted-foreground">
                         Clic para cambiar
                       </p>
                     </div>
                   ) : (
                     <div className="py-6">
-                      <ImageIcon className="h-8 w-8 mx-auto text-slate-400 mb-2" />
-                      <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">
+                      <ImageIcon className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
+                      <p className="text-sm text-muted-foreground mb-1">
                         Sube tu imagen
                       </p>
-                      <p className="text-xs text-slate-500 dark:text-slate-500">
+                      <p className="text-xs text-muted-foreground">
                         JPG, PNG, WebP, GIF • Máx 20MB
                       </p>
                     </div>
@@ -229,9 +229,9 @@ export default function NanoBananaPage() {
                   className="resize-none text-sm"
                   required
                 />
-                <div className="flex items-start gap-2 p-3 bg-slate-100 dark:bg-slate-700/50 rounded-lg">
-                  <Info className="h-4 w-4 text-slate-600 dark:text-slate-400 mt-0.5 flex-shrink-0" />
-                  <p className="text-xs text-slate-700 dark:text-slate-300">
+                <div className="flex items-start gap-2 p-3 bg-muted rounded-lg">
+                  <Info className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                  <p className="text-xs text-muted-foreground">
                     Sé específico sobre el estilo, colores, elementos y transformaciones que deseas aplicar
                   </p>
                 </div>
@@ -252,7 +252,7 @@ export default function NanoBananaPage() {
               <Button
                 onClick={handleSubmit}
                 disabled={!selectedImage || !prompt.trim() || isLoading}
-                className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600 text-white shadow-lg"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
                 size="lg"
               >
                 {isLoading ? (
@@ -271,12 +271,12 @@ export default function NanoBananaPage() {
           </div>
 
           {/* Results Panel */}
-          <div className="lg:col-span-3 bg-slate-50 dark:bg-slate-900 flex flex-col">
-            <div className="p-4 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+          <div className="lg:col-span-3 bg-background flex flex-col">
+            <div className="p-4 bg-card border-b border-border">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <ImageIcon className="h-4 w-4 text-slate-600 dark:text-slate-400" />
-                  <h2 className="font-semibold text-slate-900 dark:text-white">Resultado</h2>
+                  <ImageIcon className="h-4 w-4 text-muted-foreground" />
+                  <h2 className="font-semibold text-card-foreground">Resultado</h2>
                 </div>
                 {response && (
                   <div className="flex items-center gap-1 text-xs text-slate-500">
@@ -292,12 +292,12 @@ export default function NanoBananaPage() {
                 <div className="h-full flex items-center justify-center">
                   <div className="text-center space-y-4">
                     <div className="relative">
-                      <div className="w-16 h-16 border-4 border-slate-200 dark:border-slate-700 rounded-full animate-pulse"></div>
-                      <Sparkles className="h-8 w-8 text-slate-600 dark:text-slate-400 absolute inset-0 m-auto animate-bounce" />
+                      <div className="w-16 h-16 border-4 border-border rounded-full animate-pulse"></div>
+                      <Sparkles className="h-8 w-8 text-muted-foreground absolute inset-0 m-auto animate-bounce" />
                     </div>
                     <div>
-                      <p className="font-medium text-slate-900 dark:text-white">Generando tu imagen...</p>
-                      <p className="text-sm text-slate-600 dark:text-slate-400">Esto puede tomar unos segundos</p>
+                      <p className="font-medium text-foreground">Generando tu imagen...</p>
+                      <p className="text-sm text-muted-foreground">Esto puede tomar unos segundos</p>
                     </div>
                   </div>
                 </div>
@@ -318,7 +318,7 @@ export default function NanoBananaPage() {
                   {response.hasGeneratedImages && response.generatedImages.length > 0 ? (
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <h3 className="font-semibold text-slate-900 dark:text-white">
+                        <h3 className="font-semibold text-foreground">
                           Imágenes Generadas ({response.generatedImages.length})
                         </h3>
                       </div>
@@ -332,7 +332,7 @@ export default function NanoBananaPage() {
                                 alt={`Imagen generada ${index + 1}`}
                                 width={600}
                                 height={400}
-                                className="w-full h-auto object-contain bg-white dark:bg-slate-100"
+                                className="w-full h-auto object-contain bg-muted"
                               />
                               <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <Button
@@ -351,7 +351,7 @@ export default function NanoBananaPage() {
                       </div>
                     </div>
                   ) : !response.hasGeneratedImages && (
-                    <div className="text-center py-8 text-slate-500 dark:text-slate-400">
+                    <div className="text-center py-8 text-muted-foreground">
                       <ImageIcon className="h-12 w-12 mx-auto mb-3 opacity-50" />
                       <p>No se generaron imágenes en esta respuesta</p>
                     </div>
@@ -364,7 +364,7 @@ export default function NanoBananaPage() {
                         <CardTitle className="text-base">Descripción de IA</CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <p className="text-sm text-slate-700 dark:text-slate-300 whitespace-pre-wrap leading-relaxed">
+                        <p className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">
                           {response.textResponse}
                         </p>
                       </CardContent>
@@ -391,15 +391,15 @@ export default function NanoBananaPage() {
                       {response.originalPrompt && (
                         <div className="space-y-2">
                           <span className="text-xs text-slate-500">Prompt original:</span>
-                          <div className="p-2 bg-slate-100 dark:bg-slate-800 rounded text-xs">
+                          <div className="p-2 bg-muted rounded text-xs">
                             {response.originalPrompt}
                           </div>
                         </div>
                       )}
                       
                       <div className="space-y-2">
-                        <span className="text-xs text-slate-500">Prompt mejorado:</span>
-                        <div className="p-2 bg-slate-100 dark:bg-slate-700 rounded text-xs">
+                        <span className="text-xs text-muted-foreground">Prompt mejorado:</span>
+                        <div className="p-2 bg-muted rounded text-xs">
                           {response.prompt}
                         </div>
                       </div>
@@ -409,14 +409,14 @@ export default function NanoBananaPage() {
               ) : (
                 <div className="h-full flex items-center justify-center text-center">
                   <div className="space-y-3">
-                    <div className="w-16 h-16 bg-slate-200 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto">
-                      <ImageIcon className="h-8 w-8 text-slate-400" />
+                    <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto">
+                      <ImageIcon className="h-8 w-8 text-muted-foreground" />
                     </div>
                     <div>
-                      <p className="font-medium text-slate-600 dark:text-slate-400">
+                      <p className="font-medium text-muted-foreground">
                         Sube una imagen y describe la transformación
                       </p>
-                      <p className="text-sm text-slate-500 dark:text-slate-500">
+                      <p className="text-sm text-muted-foreground">
                         El resultado aparecerá aquí
                       </p>
                     </div>

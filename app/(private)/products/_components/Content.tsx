@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
   ColumnDef,
   getCoreRowModel,
@@ -11,7 +11,7 @@ import {
 } from "@tanstack/react-table";
 import numeral from "numeral";
 import Image from "next/image";
-import { ChevronDown, Edit, MinusIcon, Plus, PlusIcon, Trash, PlusCircle, File } from "lucide-react";
+import { Edit, MinusIcon, PlusIcon, Trash, PlusCircle, File, Package, Download, ImageIcon, Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
@@ -21,14 +21,17 @@ import { DataTable } from "@/components/DataTable";
 import { Product } from "@/types/RepositoryTypes/Product";
 import { cn } from "@/lib/utils";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { useModule } from "../_module/useModule";
 
 const ProductsContent = () => {
   const { methods, localData, flags } = useModule();
-  const { handleImageClick, handleNewCatalogClick, handleUpdateProductsClick, setPagination, setColumnVisibility, setColumnFilters, setGlobalFilter, setSorting, setRowSelection, setProductsToUpdate } = methods;
+  const { handleNewCatalogClick, handleUpdateProductsClick, setPagination, setColumnVisibility, setColumnFilters, setGlobalFilter, setSorting, setRowSelection, setProductsToUpdate } = methods;
   const { products, sorting, columnFilters, columnVisibility, pagination, rowSelection, productsToUpdate, total } = localData;
 
   const router = useRouter();
+  const [previewImage, setPreviewImage] = useState<{ url: string; product: Product } | null>(null);
 
   const columns: ColumnDef<Product>[] = useMemo(
     () =>
@@ -64,16 +67,36 @@ const ProductsContent = () => {
           ),
           accessorKey: "image",
           cell: (cellData) => {
-            console.log({ image: cellData.row.original.image });
+            const product = cellData.row.original;
+            const hasValidImage = product.image && product.image !== 'undefined' && product.image !== '/';
+            
             return (
-              <Image
-                alt="image"
-                className="rounded-medium cursor-pointer"
-                height={50}
-                src={cellData.row.original.image !== 'undefined' ? cellData.row.original.image! : '/'}
-                width={50}
-                onClick={() => handleImageClick(cellData.row.original.image!)}
-              />
+              <div className="flex items-center p-2">
+                {hasValidImage ? (
+                  <div 
+                    className="relative group cursor-pointer"
+                    onClick={() => setPreviewImage({ url: product.image!, product })}
+                  >
+                    <div className="relative w-16 h-12 rounded-md overflow-hidden border border-border/50 group-hover:border-primary/50 transition-all duration-200 group-hover:shadow-md">
+                      <Image
+                        alt={`Imagen de ${product.name}`}
+                        className="w-full h-full object-cover"
+                        height={48}
+                        width={64}
+                        src={product.image!}
+                        unoptimized
+                      />
+                    </div>
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-md">
+                      <Eye className="h-3 w-3 text-white" />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="w-16 h-12 rounded-md border border-dashed border-border/50 flex items-center justify-center bg-muted/30">
+                    <ImageIcon className="h-3 w-3 text-muted-foreground" />
+                  </div>
+                )}
+              </div>
             );
           },
         },
@@ -340,23 +363,65 @@ const ProductsContent = () => {
   });
 
   return (
-    <div className="flex-1 items-start p-4">
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center">
-          <div className="ml-auto flex items-center gap-2">
+    <div className="min-h-screen bg-background">
+      {/* Breadcrumbs */}
+      <div className="mb-4">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbPage>Productos</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
+
+      {/* Page Header */}
+      <div className="mb-8">
+        <div className="flex items-start justify-between">
+          <div className="flex items-start gap-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 border border-primary/20">
+              <Package className="h-6 w-6 text-primary" />
+            </div>
+            <div className="flex-1">
+              <h1 className="text-3xl font-bold tracking-tight mb-2">Gestión de Productos</h1>
+              <p className="text-muted-foreground text-lg">
+                Administra tu inventario, precios y disponibilidad de productos
+              </p>
+            </div>
+          </div>
+          
+          <Button
+            onClick={() => router.push("/products/new")}
+            size="default"
+            className="gap-2"
+          >
+            <PlusCircle className="h-4 w-4" />
+            Nuevo Producto
+          </Button>
+        </div>
+      </div>
+
+      {/* Toolbar */}
+      <div className="bg-card border rounded-lg p-4 mb-6">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
             <Button
               disabled={!Object.keys(productsToUpdate).length}
               onClick={handleUpdateProductsClick}
-              size="sm"
-              variant="outline"
+              variant="secondary"
+              className="gap-2"
             >
-              Actualizar
+              <Download className="h-4 w-4" />
+              Actualizar ({Object.keys(productsToUpdate).length})
             </Button>
+          </div>
+          
+          <div className="flex items-center gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button size="sm" variant="outline">
-                  <PlusCircle className="h-3.5 w-3.5" />
-                  <span className="sr-only sm:not-sr-only">Catálogo</span>
+                <Button variant="outline" className="gap-2">
+                  <File className="h-4 w-4" />
+                  Catálogo
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -364,29 +429,141 @@ const ProductsContent = () => {
                   disabled={!table.getSelectedRowModel().rows.length}
                   onClick={handleNewCatalogClick}
                 >
-                  Crear catálogo con seleccionados
+                  <File className="h-4 w-4 mr-2" />
+                  Crear catálogo con seleccionados ({table.getSelectedRowModel().rows.length})
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <Button
-              className="h-7 gap-1 text-sm"
-              size="sm"
-              variant="outline"
-              onClick={() => router.push("/products/new")}
-            >
-              <PlusCircle className="h-3.5 w-3.5" />
-              <span className="sr-only sm:not-sr-only">Agregar</span>
-            </Button>
           </div>
         </div>
+      </div>
+
+      {/* Data Table */}
+      <div className="bg-card border rounded-lg">
         <DataTable
-          className="mb-4"
           columns={columns}
           isLoading={flags.isLoading}
           table={table}
           totalHits={total}
         />
       </div>
+
+      {/* Image Preview Modal */}
+      <Dialog open={!!previewImage} onOpenChange={() => setPreviewImage(null)}>
+        <DialogContent className="max-w-5xl max-h-[90vh] overflow-hidden">
+          {previewImage && (
+            <>
+              <DialogHeader className="pb-4">
+                <DialogTitle className="flex items-center gap-3 text-xl">
+                  <Package className="h-6 w-6 text-primary" />
+                  {previewImage.product.name}
+                </DialogTitle>
+              </DialogHeader>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Image Section */}
+                <div className="lg:col-span-2">
+                  <div className="relative aspect-square rounded-lg overflow-hidden border bg-muted/30">
+                    <Image
+                      alt={`Vista completa de ${previewImage.product.name}`}
+                      className="w-full h-full object-contain"
+                      height={600}
+                      width={600}
+                      src={previewImage.url}
+                      unoptimized
+                      priority
+                    />
+                  </div>
+                </div>
+
+                {/* Product Details Section */}
+                <div className="space-y-6">
+                  {/* Basic Info */}
+                  <div className="space-y-4">
+                    <h3 className="font-semibold text-lg border-b border-border pb-2">Información del Producto</h3>
+                    
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Modelo:</span>
+                        <span className="font-medium">{previewImage.product.uniqId}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Color:</span>
+                        <span className="font-medium">{previewImage.product.color}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Talla:</span>
+                        <span className="font-medium">{previewImage.product.size}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Stock:</span>
+                        <span className={cn("font-semibold", {
+                          "text-red-400": previewImage.product.quantity === 0,
+                          "text-orange-400": previewImage.product.quantity > 0 && previewImage.product.quantity <= 5,
+                          "text-green-400": previewImage.product.quantity > 5
+                        })}>{previewImage.product.quantity} unidades</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Pricing */}
+                  <div className="space-y-4">
+                    <h3 className="font-semibold text-lg border-b border-border pb-2">Precios</h3>
+                    
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center p-3 bg-green-500/10 rounded-lg border border-green-500/20">
+                        <span className="text-green-400 font-medium">Precio Especial</span>
+                        <span className="text-green-400 font-bold text-lg">
+                          {numeral(previewImage.product.specialPrice).format("$0,0.00")}
+                        </span>
+                      </div>
+                      
+                      <div className="flex justify-between items-center p-3 bg-purple-500/10 rounded-lg border border-purple-500/20">
+                        <span className="text-purple-400 font-medium">Precio Mayoreo</span>
+                        <span className="text-purple-400 font-bold text-lg">
+                          {numeral(previewImage.product.wholesalePrice).format("$0,0.00")}
+                        </span>
+                      </div>
+                      
+                      <div className="flex justify-between items-center p-3 bg-yellow-500/10 rounded-lg border border-yellow-500/20">
+                        <span className="text-yellow-400 font-medium">Semi-mayoreo</span>
+                        <span className="text-yellow-400 font-bold text-lg">
+                          {numeral(previewImage.product.retailPrice).format("$0,0.00")}
+                        </span>
+                      </div>
+                      
+                      <div className="flex justify-between items-center p-3 bg-red-500/10 rounded-lg border border-red-500/20">
+                        <span className="text-red-400 font-medium">Página Web</span>
+                        <span className="text-red-400 font-bold text-lg">
+                          {numeral(previewImage.product.webPagePrice).format("$0,0.00")}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex flex-col gap-3 pt-4">
+                    <Button
+                      onClick={() => router.push(`/products/${previewImage.product._id}`)}
+                      className="w-full"
+                    >
+                      <Edit className="h-4 w-4 mr-2" />
+                      Editar Producto
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => setPreviewImage(null)}
+                      className="w-full"
+                    >
+                      Cerrar
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

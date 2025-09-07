@@ -26,10 +26,10 @@ No test commands are currently configured. Tests should be added to the project.
 - **UI**: React 19, TypeScript, Tailwind CSS
 - **Components**: Radix UI + Shadcn/ui
 - **State Management**: TanStack Query v5
-- **Database**: MongoDB with Mongoose ODM
+- **Database**: MongoDB with native driver
 - **Search**: Meilisearch
 - **Real-time**: Socket.io
-- **Storage**: AWS S3 + MinIO
+- **Storage**: MinIO (S3-compatible)
 - **File Processing**: ExcelJS, PDFKit, JSZip
 
 ### Directory Structure
@@ -47,105 +47,92 @@ app/
 │   ├── products/
 │   ├── orders/
 │   ├── buyers/
-│   └── shipments/
+│   └── v2/            # New API version
 └── layout.tsx         # Root layout with providers
 
-lib/
-├── repositories/      # Data access layer
-│   ├── v1/           # Legacy repository implementations
-│   └── v2/           # New repository implementations
-├── models/           # MongoDB/Mongoose models
-├── controllers/      # Business logic controllers
-├── services/         # External service integrations
-├── utils/            # Utility functions
-└── schemas/          # Zod validation schemas
+repositories/
+├── v2/                # New repository implementations
+│   ├── ProductRepository.ts
+│   ├── OrderRepository.ts
+│   └── BuyerRepository.ts
+└── [legacy]/          # Legacy repository files
 
-components/
-├── ui/               # Shadcn/ui components
-├── forms/            # Form components
-├── tables/           # Data table components
-└── filters/          # Filter components
+types/
+├── RepositoryTypes/   # Legacy type definitions
+└── v2/               # New type definitions with Zod schemas
 ```
 
 ### Key Patterns
 
-1. **Repository Pattern**: All data access goes through repositories (v1 legacy, v2 new implementation)
-   - Example: `lib/repositories/v2/products-repository.ts`
+1. **Repository Pattern**: Data access through repository classes
+   - Legacy: `repositories/products.repository.ts`
+   - New: `repositories/v2/ProductRepository.ts`
 
-2. **Controller Pattern**: Business logic separated from routes
-   - Example: `lib/controllers/products-controller.ts`
+2. **Type Safety**: Zod validation schemas in types directory
+   - Legacy types: `types/RepositoryTypes/Product.ts`
+   - New types: `types/v2/Product/Base.type.ts`
 
-3. **Type Safety**: Comprehensive TypeScript with Zod schemas
-   - Product schemas: `lib/schemas/products-schemas.ts`
-   - Order schemas: `lib/schemas/orders-schemas.ts`
+3. **API Structure**:
+   - **v1 API**: Legacy endpoints at `/api/[resource]`
+   - **v2 API**: New endpoints at `/api/v2/[resource]`
 
-4. **Server Components**: Extensive use of React Server Components for data fetching
-   - Use `import { searchParams } from 'next/navigation'` for query params
-   - Server actions for mutations
+4. **Authentication**: JWT-based with middleware protection
+   - Middleware: `middleware.ts` using stacked middlewares
+   - Auth logic: `middlewares/frontAuth.ts`
 
-5. **Real-time Updates**: Socket.io integration for live notifications
-   - Connection: `lib/services/socket-service.ts`
-   - Events: order updates, inventory changes
+5. **File Storage**: MinIO integration via FileService
+   - Service: `services/file.service.ts`
+   - Supports bucket management and ZIP creation
 
-### API Structure
+6. **Real-time Features**: Socket.io integration
+   - Context: `contexts/socketContext.tsx`
+   - Connection: `app/(private)/_socket.ts`
 
-- **v1 API**: Legacy endpoints at `/api/[resource]`
-- **v2 API**: New endpoints at `/api/v2/[resource]`
-- Both versions coexist for backward compatibility
+### Database Integration
 
-### Database Models
+- **MongoDB**: Native MongoDB driver (not Mongoose)
+- **Connection**: `mongodb/index.ts` with global connection handling
+- **Environment**: Uses "test" database by default
+- **Pattern**: Repository classes handle collection operations
 
-Key models with relationships:
-- **Product**: Main product with variants (color, size, price tiers)
-- **Order**: Orders with line items, shipping, and status tracking
-- **Buyer**: Customer information and order history
-- **Supplier**: Product suppliers
-- **Shipment**: FedEx shipping integration
+### File Processing
 
-### Authentication & Security
-
-- JWT-based authentication with middleware protection
-- Protected routes under `(private)` route group
-- API routes use auth middleware from `lib/middleware/auth.ts`
-
-### File Storage
-
-Dual storage system:
-- **AWS S3**: Production file storage
-- **MinIO**: Local/development file storage
-- Configured via `lib/services/storage-service.ts`
-
-### Search Implementation
-
-Meilisearch integration for fast product search:
-- Index management: `lib/services/meilisearch-service.ts`
-- Search filters and facets support
+- **MinIO Storage**: S3-compatible object storage
+- **File Types**: Images (PNG), Excel, PDF, ZIP archives
+- **Upload Pattern**: Files uploaded to buckets with unique object names
+- **URL Structure**: `https://minio.mausvil.dev/{bucket}/{object}`
 
 ## Important Considerations
 
-1. **Dual Repository System**: When modifying data access, check both v1 and v2 repositories
-2. **Real-time Features**: Socket.io events must be emitted for inventory/order updates
-3. **File Processing**: Heavy file operations (Excel, PDF) should be handled asynchronously
-4. **Environment Variables**: Required for MongoDB, AWS, MinIO, JWT, and Meilisearch
-5. **Type Safety**: Always use Zod schemas for validation and TypeScript types
-6. **Server vs Client**: Prefer server components and actions for data operations
-7. **Image Handling**: Product images stored in S3/MinIO with CDN URLs
+1. **Dual Repository System**: Both legacy and v2 repository patterns coexist
+2. **Environment Variables**: Required for MongoDB, MinIO, JWT configuration
+3. **TypeScript**: Comprehensive type safety with Zod validation
+4. **Route Groups**: Uses Next.js route groups `(private)` and `(public)`
+5. **Middleware Stack**: Composable middleware pattern in `middlewares/stackHandler.ts`
+6. **Real-time Updates**: Socket.io events for inventory/order changes
+7. **Error Handling**: Structured error responses with dev/user messages
 
-## Common Tasks
+## Common Development Patterns
 
-### Adding a New Product Feature
-1. Update schema in `lib/schemas/products-schemas.ts`
-2. Modify model in `lib/models/Product.ts`
-3. Update repository methods in `lib/repositories/v2/products-repository.ts`
-4. Add controller logic in `lib/controllers/products-controller.ts`
-5. Update UI components in `app/(private)/products/`
+### Adding New API Endpoints
+1. Create route in appropriate `api/` directory (v1 or v2)
+2. Use repository pattern for data access
+3. Implement Zod validation for request/response
+4. Add proper error handling with structured responses
 
-### Working with Orders
-1. Order flow: Draft → Confirmed → Shipped → Delivered
-2. PDF generation for invoices via `lib/services/pdf-service.ts`
-3. FedEx integration for shipping labels
+### Working with Products
+- Product schema: Complex with baseId, uniqId, color, size variants
+- Pricing tiers: webPage, wholesale, retail, special prices
+- Image handling: Uploaded to MinIO with automatic URL generation
+- Search: Meilisearch integration for fast product search
 
-### Database Operations
-- Always use repositories, never direct model access in routes
-- Use transactions for multi-document operations
-- Implement proper error handling with try-catch blocks
+### File Operations
+- Use `FileService` for all file uploads
+- Support for overwrite/no-overwrite patterns
+- ZIP generation for bulk document handling
+- Bucket-based organization (products, orders, etc.)
+
+### Real-time Features
+- Socket connection managed via React Context
+- Events emitted for inventory changes and order updates
+- Connection state tracking for UI feedback

@@ -1,0 +1,7 @@
+export const AUTO_COLLAPSE_PAGES = [
+  "/ai/nano-banana",
+];
+
+export function shouldAutoCollapsePage(pathname: string): boolean {
+  return AUTO_COLLAPSE_PAGES.some(page => pathname.includes(page));
+}

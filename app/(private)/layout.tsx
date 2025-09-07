@@ -1,13 +1,11 @@
 import { AppSidebar } from "@/components/app-sidebar"
 import { SiteHeader } from "@/components/site-header"
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@/components/ui/sidebar"
+import { SidebarInset } from "@/components/ui/sidebar"
+import { SidebarProviderWithAutoCollapse } from "@/components/sidebar-provider-with-auto-collapse"
 
 export default function Page({ children }: { children: React.ReactNode }) {
   return (
-    <SidebarProvider
+    <SidebarProviderWithAutoCollapse
       style={
         {
           "--sidebar-width": "calc(var(--spacing) * 72)",
@@ -26,6 +24,6 @@ export default function Page({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </SidebarInset>
-    </SidebarProvider>
+    </SidebarProviderWithAutoCollapse>
   )
 }

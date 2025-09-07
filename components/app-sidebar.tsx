@@ -21,6 +21,7 @@ import {
 import { NavReports } from "@/components/nav-reports"
 import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
+import { NavAI } from "@/components/nav-ai"
 import {
   Sidebar,
   SidebarContent,
@@ -64,52 +65,11 @@ const data = {
       icon: IconFileBarcode,
     }
   ],
-  navClouds: [
+  navAI: [
     {
-      title: "Capture",
-      icon: IconCamera,
-      isActive: true,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Proposal",
-      icon: IconFileDescription,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Prompts",
+      title: "Nano-Banana IA",
       icon: IconFileAi,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
+      url: "/ai/nano-banana",
     },
   ],
   navSecondary: [
@@ -163,6 +123,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
+        <NavAI items={data.navAI} />
         <NavReports items={data.reports} />
       </SidebarContent>
       <SidebarFooter>

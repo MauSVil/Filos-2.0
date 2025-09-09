@@ -1,10 +1,19 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { ContactsRepository } from "@/repositories/contacts.repository";
 
-export const GET = async () => {
+export const GET = async (request: NextRequest) => {
   try {
-    const contacts = await ContactsRepository.find();
+    const { searchParams } = new URL(request.url);
+    const limit = searchParams.get("limit");
+    const offset = searchParams.get("offset");
+
+    const filter = {
+      ...(limit && { limit: parseInt(limit, 10) }),
+      ...(offset && { offset: parseInt(offset, 10) }),
+    };
+
+    const contacts = await ContactsRepository.find(filter);
 
     return NextResponse.json({ data: contacts });
   } catch (error) {

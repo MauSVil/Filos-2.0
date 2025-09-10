@@ -9,7 +9,7 @@ export const PUT = async (
     const { userId } = await params;
     const body = await request.json();
 
-    console.log({ userId });
+    console.log({ userId, body });
 
     await UserRepository.updateOne({ _id: userId }, body);
 

@@ -29,4 +29,10 @@ export class UserRepository {
     const result = await db.collection<MongoUser>(collectionName).insertOne(user);
     return result;
   }
+
+  static async updateOne(filter: Filter<MongoUser>, update: Partial<MongoUser>) {
+    await init();
+    const result = await db.collection<MongoUser>(collectionName).updateOne(filter, { $set: update });
+    return result;
+  }
 }

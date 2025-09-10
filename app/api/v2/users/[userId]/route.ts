@@ -1,3 +1,4 @@
+import { UserRepository } from "@/repositories/v2/UserRepository";
 import { NextRequest, NextResponse } from "next/server";
 
 export const PUT = async (
@@ -7,6 +8,10 @@ export const PUT = async (
   try {
     const { userId } = await params;
     const body = await request.json();
+
+    console.log({ userId });
+
+    await UserRepository.updateOne({ _id: userId }, body);
 
     return NextResponse.json({ message: `Usuario ${userId} actualizado correctamente` }, { status: 200 });
   } catch (error) {

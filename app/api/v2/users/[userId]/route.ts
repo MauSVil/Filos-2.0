@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const PUT = async (
     request: NextRequest,
-    { params }: { params: { userId: string } }
+    { params }: { params: Promise<{ userId: string }> }
   ) => {
   try {
-    const { userId } = params;
+    const { userId } = await params;
     const body = await request.json();
 
     return NextResponse.json({ message: `Usuario ${userId} actualizado correctamente` }, { status: 200 });

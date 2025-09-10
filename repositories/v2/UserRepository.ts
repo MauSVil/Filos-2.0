@@ -32,7 +32,13 @@ export class UserRepository {
 
   static async updateOne(filter: Filter<MongoUser>, update: Partial<MongoUser>) {
     await init();
-    const result = await db.collection<MongoUser>(collectionName).updateOne(filter, { $set: update });
+    let parsedFilter = {};
+    if (filter._id) {
+      const { ObjectId } = await import("mongodb");
+      parsedFilter = { _id: new ObjectId(filter._id as string) };
+    }
+
+    const result = await db.collection<MongoUser>(collectionName).updateOne(parsedFilter, { $set: update });
     return result;
   }
 }

@@ -35,7 +35,7 @@ export const POST = async (req: NextRequest) => {
       maxAge: 60 * 60 * 24 * 7,
     });
 
-    return NextResponse.json({ message: "Se inicio sesion correctamente", token });
+    return NextResponse.json({ message: "Se inicio sesion correctamente", token, user: myUser });
   } catch (error) {
     console.log(error, "error");
 

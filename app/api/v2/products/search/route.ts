@@ -21,8 +21,6 @@ export const POST = async (req: NextRequest) => {
       filters._id = { $in: _id.$in.map((id: string) => new ObjectId(id)) };
     }
 
-    console.log({ filters });
-
     const products = await ProductRepository.find(filters);
     return NextResponse.json(products);
   } catch (error) {

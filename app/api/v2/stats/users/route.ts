@@ -4,7 +4,7 @@ import { MongoUser } from "@/types/RepositoryTypes/User";
 
 export const GET = async (req: NextRequest) => {
   try {
-    const users = await UserRepository.find({ deletedAt: { $exists: false } });
+    const users = await UserRepository.find({ $or: [{ deletedAt: null }, { deletedAt: { $exists: false } }] });
 
     const roleDistribution: Record<string, number> = {};
     users.forEach((user: MongoUser) => {
@@ -14,7 +14,7 @@ export const GET = async (req: NextRequest) => {
     });
 
     const totalUsers = users.length;
-    const deletedUsers = await UserRepository.count({ deletedAt: { $exists: true } });
+    const deletedUsers = await UserRepository.count({ deletedAt: { $ne: null } });
 
     const userCreationByMonth: Record<string, number> = {};
     users.forEach((user: MongoUser) => {

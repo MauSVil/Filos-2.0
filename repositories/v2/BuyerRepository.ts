@@ -21,4 +21,10 @@ export class BuyerRepository {
     const buyer = await db.collection<BuyerBaseWithIdType>("buyers").findOne(filter);
     return buyer;
   }
+
+  static async count(filter: Filter<BuyerBaseWithIdType>) {
+    await init();
+    const count = await db.collection<BuyerBaseWithIdType>("buyers").countDocuments(filter);
+    return count;
+  }
 }

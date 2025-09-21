@@ -41,4 +41,10 @@ export class UserRepository {
     const result = await db.collection<MongoUser>(collectionName).updateOne(parsedFilter, { $set: update });
     return result;
   }
+
+  static async count(filter: Filter<MongoUser>) {
+    await init();
+    const count = await db.collection<MongoUser>(collectionName).countDocuments(filter);
+    return count;
+  }
 }

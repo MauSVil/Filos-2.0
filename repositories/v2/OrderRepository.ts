@@ -32,4 +32,26 @@ export class OrderRepository {
     );
     return updatedOrder;
   }
+
+  static async count(filter: Filter<OrderBaseWithIdType>) {
+    await init();
+    const count = await db.collection<OrderBaseWithIdType>("orders").countDocuments(filter);
+    return count;
+  }
+
+  static async findWithOptions(filter: Filter<OrderBaseWithIdType>, options?: { limit?: number; sort?: any }) {
+    await init();
+    let query = db.collection<OrderBaseWithIdType>("orders").find(filter);
+
+    if (options?.sort) {
+      query = query.sort(options.sort);
+    }
+
+    if (options?.limit) {
+      query = query.limit(options.limit);
+    }
+
+    const orders = await query.toArray();
+    return orders;
+  }
 }

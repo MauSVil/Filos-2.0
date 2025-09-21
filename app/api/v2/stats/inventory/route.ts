@@ -8,7 +8,7 @@ export const GET = async (req: NextRequest) => {
     const lowStockThreshold = parseInt(searchParams.get("lowStockThreshold") || "10");
     const includeDeleted = searchParams.get("includeDeleted") === "true";
 
-    const baseFilter = includeDeleted ? {} : { deleted_at: null };
+    const baseFilter = includeDeleted ? {} : { $or: [{ deleted_at: null }, { deleted_at: { $exists: false } }] };
 
     const [
       totalProducts,
@@ -19,8 +19,8 @@ export const GET = async (req: NextRequest) => {
       products
     ] = await Promise.all([
       ProductRepository.count({}),
-      ProductRepository.count({ deleted_at: null }),
-      ProductRepository.count({ deleted_at: { $ne: null } }),
+      ProductRepository.count({ $or: [{ deleted_at: null }, { deleted_at: { $exists: false } }] }),
+      ProductRepository.count({ deleted_at: { $ne: null, $exists: true } }),
       ProductRepository.count({ ...baseFilter, quantity: { $lte: 0 } }),
       ProductRepository.count({
         ...baseFilter,

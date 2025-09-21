@@ -11,7 +11,7 @@ export const GET = async (req: NextRequest) => {
     const dateRangeEnd = searchParams.get("dateRangeEnd");
     const limit = parseInt(searchParams.get("limit") || "10");
 
-    const products = await ProductRepository.find({ deleted_at: null });
+    const products = await ProductRepository.find({ $or: [{ deleted_at: null }, { deleted_at: { $exists: false } }] });
 
     const dateFilter = dateRangeStart && dateRangeEnd ? {
       requestDate: {

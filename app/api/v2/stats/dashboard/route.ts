@@ -29,23 +29,23 @@ export const GET = async (req: NextRequest) => {
       totalUsers,
       recentOrders
     ] = await Promise.all([
-      ProductRepository.count({ deleted_at: null }),
+      ProductRepository.count({ $or: [{ deleted_at: null }, { deleted_at: { $exists: false } }] }),
 
       ProductRepository.findWithOptions({
-        deleted_at: null,
+        $or: [{ deleted_at: null }, { deleted_at: { $exists: false } }],
         quantity: { $gt: 0, $lte: lowStockThreshold }
       }, { limit: 10 }),
 
       ProductRepository.count({
-        deleted_at: null,
+        $or: [{ deleted_at: null }, { deleted_at: { $exists: false } }],
         quantity: { $lte: 0 }
       }),
 
       OrderRepository.find(dateFilter),
 
-      BuyerRepository.count({ $or: [{ deletedAt: null }, { deletedAt: { $exists: false } }] }),
+      BuyerRepository.count({ deletedAt: { $exists: false } }),
 
-      UserRepository.count({ $or: [{ deletedAt: null }, { deletedAt: { $exists: false } }] }),
+      UserRepository.count({ deletedAt: { $exists: false } }),
 
       OrderRepository.findWithOptions(
         {},

@@ -34,6 +34,7 @@ export const ProductModel = z.object({
     .min(1, "El campo size es requerido"),
   deleted_at: z.union([z.null(), z.coerce.date()]).optional(),
   image: z.string().optional(),
+  minioImage: z.string().optional(),
   updated_at: z.coerce.date().optional(),
 });
 

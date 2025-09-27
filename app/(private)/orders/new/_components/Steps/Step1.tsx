@@ -104,9 +104,9 @@ const Step1 = ({ order, type }: { order?: OrderBaseType; type: "new" | "edit" })
                 alt="image"
                 className="rounded-medium cursor-pointer"
                 height={50}
-                src={cellData.row.original.image!}
+                src={cellData.row.original.minioImage!}
                 width={50}
-                onClick={() => handleImageClick(cellData.row.original.image!)}
+                onClick={() => handleImageClick(cellData.row.original.minioImage!)}
               />
             );
           },

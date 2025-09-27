@@ -6,7 +6,7 @@ export const useEditPrice = (inputVal: string) => {
     queryKey: ["products", "editPrices", inputVal],
     queryFn: async () => {
       const response = (await ky
-        .get(`/api/products/search?q=${inputVal}`)
+        .get(`/api/v2/products/search?q=${inputVal}`)
         .json()) as { data: { hits: any[] } };
 
       return response.data.hits || [];

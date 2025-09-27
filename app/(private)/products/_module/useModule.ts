@@ -26,7 +26,7 @@ export const useModule = () => {
     queryKey: ["products", pagination.pageIndex],
     queryFn: async () => {
       const resp = (await ky
-        .get(`/api/products/search?limit=${pagination.pageSize}&page=${pagination.pageIndex + 1}&query="${globalFilter}"`)
+        .get(`/api/v2/products/search?limit=${pagination.pageSize}&page=${pagination.pageIndex + 1}&query="${globalFilter}"`)
         .json<MeiliSearchProduct>());
 
       return resp;

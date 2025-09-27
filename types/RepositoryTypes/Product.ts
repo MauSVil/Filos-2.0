@@ -68,6 +68,7 @@ export const ProductInputModel = z.object({
   retailPrice: z.coerce.number(),
   webPagePrice: z.coerce.number(),
   image: z.string().optional(),
+  minioImage: z.string().optional(),
   updated_at: z.coerce.date().optional(),
   deleted_at: z.union([z.null(), z.coerce.date()]).optional(),
   created_at: z.coerce.date().optional(),

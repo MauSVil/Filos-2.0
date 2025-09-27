@@ -45,10 +45,12 @@ export const PUT = async (
       const buffer = Buffer.from(arrayBuffer);
 
       url = await FileService.uploadFile('products', id, buffer, 'image/png', true);
+      dataVerified.image = url;
       dataVerified.minioImage = url;
     }
 
     if (image && typeof image === "string" && image !== 'undefined') {
+      dataVerified.image = image;
       dataVerified.minioImage = image;
     }
   } catch (error) {

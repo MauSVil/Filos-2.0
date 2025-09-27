@@ -68,14 +68,14 @@ const ProductsContent = () => {
           accessorKey: "image",
           cell: (cellData) => {
             const product = cellData.row.original;
-            const hasValidImage = product.image && product.image !== 'undefined' && product.image !== '/';
+            const hasValidImage = product.minioImage && product.minioImage !== 'undefined' && product.minioImage !== '/';
             
             return (
               <div className="flex items-center p-2">
                 {hasValidImage ? (
                   <div 
                     className="relative group cursor-pointer"
-                    onClick={() => setPreviewImage({ url: product.image!, product })}
+                    onClick={() => setPreviewImage({ url: product.minioImage!, product })}
                   >
                     <div className="relative w-16 h-12 rounded-md overflow-hidden border border-border/50 group-hover:border-primary/50 transition-all duration-200 group-hover:shadow-md">
                       <Image
@@ -83,7 +83,7 @@ const ProductsContent = () => {
                         className="w-full h-full object-cover"
                         height={48}
                         width={64}
-                        src={product.image!}
+                        src={product.minioImage!}
                         unoptimized
                       />
                     </div>

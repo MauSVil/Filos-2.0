@@ -78,7 +78,7 @@ export const POST = async (req: NextRequest) => {
       .map((productObj) => {
         return {
           quantity: productObj.quantity,
-          image: productsMapped[productObj.product].image,
+          image: productsMapped[productObj.product].minioImage,
           color: productsMapped[productObj.product].color,
           uniqId: productsMapped[productObj.product].uniqId,
           size: productsMapped[productObj.product].size,

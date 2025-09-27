@@ -14,6 +14,7 @@ export const ProductBase = z.object({
   quantity: z.coerce.number(),
   size: z.string(),
   image: z.string().url(),
+  minioImage: z.string().url().optional(),
   updated_at: z.coerce.date(),
   deleted_at: z.coerce.date().nullable(),
 });

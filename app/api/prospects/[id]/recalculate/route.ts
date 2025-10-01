@@ -4,10 +4,11 @@ import { ProspectRepository } from "@/repositories/prospect.repository";
 
 export const POST = async (
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) => {
   try {
-    const prospect = await ProspectRepository.recalculateById(params.id);
+    const { id } = await params;
+    const prospect = await ProspectRepository.recalculateById(id);
 
     if (!prospect) {
       return NextResponse.json(

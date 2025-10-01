@@ -15,7 +15,8 @@ import {
   IconSearch,
   IconSettings,
   IconShoppingBag,
-  IconFileBarcode
+  IconFileBarcode,
+  IconCalculator
 } from "@tabler/icons-react"
 
 import { NavReports } from "@/components/nav-reports"
@@ -63,6 +64,11 @@ const data = {
       title: 'Generador de Guias',
       url: "/guides",
       icon: IconFileBarcode,
+    },
+    {
+      title: 'Calculadora de Costos',
+      url: "/calculator",
+      icon: IconCalculator,
     }
   ],
   navAI: [

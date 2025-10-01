@@ -9,10 +9,11 @@ import {
 
 export const GET = async (
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) => {
   try {
-    const prospect = await ProspectRepository.findOne({ id: params.id });
+    const { id } = await params;
+    const prospect = await ProspectRepository.findOne({ id });
 
     if (!prospect) {
       return NextResponse.json(
@@ -39,13 +40,14 @@ export const GET = async (
 
 export const PUT = async (
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) => {
   try {
+    const { id } = await params;
     const body = await req.json();
     const data: Partial<ProspectInput> = await ProspectInputModel.partial().parseAsync(body);
 
-    const prospect = await ProspectRepository.update(params.id, data);
+    const prospect = await ProspectRepository.update(id, data);
 
     if (!prospect) {
       return NextResponse.json(
@@ -76,10 +78,11 @@ export const PUT = async (
 
 export const DELETE = async (
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) => {
   try {
-    const deleted = await ProspectRepository.delete(params.id);
+    const { id } = await params;
+    const deleted = await ProspectRepository.delete(id);
 
     if (!deleted) {
       return NextResponse.json(

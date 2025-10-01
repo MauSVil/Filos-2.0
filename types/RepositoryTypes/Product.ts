@@ -32,6 +32,8 @@ export const ProductModel = z.object({
   size: z
     .string({ message: "El campo size es requerido" })
     .min(1, "El campo size es requerido"),
+  sweaterWeight: z.coerce.number().optional(),
+  sweaterWaste: z.coerce.number().optional(),
   deleted_at: z.union([z.null(), z.coerce.date()]).optional(),
   image: z.string().optional(),
   minioImage: z.string().optional(),

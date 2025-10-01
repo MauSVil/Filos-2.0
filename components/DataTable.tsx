@@ -31,6 +31,7 @@ interface DataTableProps<TData> {
   isFooterVisible?: boolean;
   style?: CSSProperties;
   emptyText?: string;
+  emptyMessage?: string;
   isLoading?: boolean;
   loadingText?: string;
   disabled?: boolean;

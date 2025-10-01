@@ -1,4 +1,5 @@
 import { FieldValues, UseControllerProps } from "react-hook-form";
+import { useEffect, useState } from "react";
 
 import {
   FormControl,
@@ -18,6 +19,7 @@ export interface NextUIInputFormFieldProps<T extends FieldValues>
   label?: string;
   valueModifierOnChange?: (value: string) => any;
   labelClassName?: string;
+  debounceMs?: number; // Add debounce prop
 }
 
 export const InputFormField = <T extends FieldValues>(
@@ -32,56 +34,84 @@ export const InputFormField = <T extends FieldValues>(
     className,
     valueModifierOnChange,
     labelClassName,
+    debounceMs,
     ...rest
   } = props;
 
   return (
     <FormField
       {...controllerProps}
-      render={({ field }) => (
-        <FormItem className={className} hidden={hidden}>
-          <div className="flex gap-2">
-            <FormLabel
-              className={cn("text-white", {
-                [labelClassName!]: labelClassName,
-              })}
-            >
-              {label}
-            </FormLabel>
-            <FormMessage className="text-red-400 text-xs" />
-          </div>
-          <FormControl>
-            <Input
-              {...field}
-              className={className}
-              placeholder={placeholder}
-              type={type}
-              {...rest}
-              value={
-                type === "file" 
-                  ? "" 
-                  : type === "number" && field.value === 0 
-                    ? "" 
-                    : (field.value ?? "")
-              }
-              onChange={(e) => {
-                if (type !== "file") {
-                  const value = e.target.value;
+      render={({ field }) => {
+        const [localValue, setLocalValue] = useState(field.value);
 
-                  if (valueModifierOnChange) {
-                    field.onChange(valueModifierOnChange(value));
-                  } else {
-                    field.onChange(value);
-                  }
+        // Sync local value when field value changes externally
+        useEffect(() => {
+          setLocalValue(field.value);
+        }, [field.value]);
+
+        // Debounce handler
+        useEffect(() => {
+          if (!debounceMs) return;
+
+          const handler = setTimeout(() => {
+            if (localValue !== field.value) {
+              field.onChange(localValue);
+            }
+          }, debounceMs);
+
+          return () => clearTimeout(handler);
+        }, [localValue, debounceMs, field]);
+
+        const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+          if (type === "file") {
+            field.onChange(e.target.files?.[0]);
+            return;
+          }
+
+          const value = e.target.value;
+          const processedValue = valueModifierOnChange ? valueModifierOnChange(value) : value;
+
+          if (debounceMs) {
+            // Update local state immediately for responsive UI
+            setLocalValue(processedValue);
+          } else {
+            // Update form state immediately if no debounce
+            field.onChange(processedValue);
+          }
+        };
+
+        return (
+          <FormItem className={className} hidden={hidden}>
+            <div className="flex gap-2">
+              <FormLabel
+                className={cn("text-white", {
+                  [labelClassName!]: labelClassName,
+                })}
+              >
+                {label}
+              </FormLabel>
+              <FormMessage className="text-red-400 text-xs" />
+            </div>
+            <FormControl>
+              <Input
+                {...field}
+                className={className}
+                placeholder={placeholder}
+                type={type}
+                {...rest}
+                value={
+                  type === "file"
+                    ? ""
+                    : type === "number" && (debounceMs ? localValue : field.value) === 0
+                      ? ""
+                      : (debounceMs ? (localValue ?? "") : (field.value ?? ""))
                 }
-                if (type === "file") {
-                  field.onChange(e.target.files?.[0]);
-                }
-              }}
-            />
-          </FormControl>
-        </FormItem>
-      )}
+                onChange={handleChange}
+              />
+            </FormControl>
+          </FormItem>
+        );
+      }}
     />
   );
 };

@@ -72,8 +72,10 @@ export class ThreadPriceRepository {
     const data = await ThreadPriceInputModel.parse(input);
     const now = new Date();
 
+    const { _id, ...threadPriceData } = data;
+
     const threadPrice = {
-      ...data,
+      ...threadPriceData,
       created_at: now,
       updated_at: now,
     };

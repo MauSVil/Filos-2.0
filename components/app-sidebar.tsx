@@ -22,6 +22,7 @@ import { NavReports } from "@/components/nav-reports"
 import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
 import { NavAI } from "@/components/nav-ai"
+import { NavSecondary } from "@/components/nav-secondary"
 import {
   Sidebar,
   SidebarContent,
@@ -74,20 +75,10 @@ const data = {
   ],
   navSecondary: [
     {
-      title: "Settings",
-      url: "#",
+      title: "Configuración",
+      url: "/settings",
       icon: IconSettings,
-    },
-    {
-      title: "Get Help",
-      url: "#",
-      icon: IconHelp,
-    },
-    {
-      title: "Search",
-      url: "#",
-      icon: IconSearch,
-    },
+    }
   ],
   reports: [
     {
@@ -125,6 +116,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
         <NavAI items={data.navAI} />
         <NavReports items={data.reports} />
+        <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

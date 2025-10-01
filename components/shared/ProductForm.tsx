@@ -27,9 +27,6 @@ interface Props {
 const ProductForm = ({ form, isLoading, submit, onCancel, image, file, onImageChange }: Props) => {
   const { control, watch } = form;
   const specialPrice = watch("specialPrice");
-  const retailPrice = watch("retailPrice");
-  const wholesalePrice = watch("wholesalePrice");
-  const webPagePrice = watch("webPagePrice");
 
   return (
     <Form {...form}>
@@ -129,6 +126,39 @@ const ProductForm = ({ form, isLoading, submit, onCancel, image, file, onImageCh
                 placeholder="0"
                 valueModifierOnChange={(value) => value === "" ? 0 : Number(value)}
               />
+
+              <Separator className="my-4" />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <InputFormField
+                  controllerProps={{
+                    control,
+                    name: "sweaterWeight",
+                  }}
+                  disabled={isLoading}
+                  label="Peso del Suéter (gr)"
+                  name="sweaterWeight"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  placeholder="0.00"
+                  valueModifierOnChange={(value) => value === "" ? 0 : Number(value)}
+                />
+                <InputFormField
+                  controllerProps={{
+                    control,
+                    name: "sweaterWaste",
+                  }}
+                  disabled={isLoading}
+                  label="Desperdicio (gr)"
+                  name="sweaterWaste"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  placeholder="0.00"
+                  valueModifierOnChange={(value) => value === "" ? 0 : Number(value)}
+                />
+              </div>
             </CardContent>
           </Card>
 

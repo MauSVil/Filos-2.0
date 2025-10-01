@@ -68,6 +68,8 @@ export const ProductInputModel = z.object({
   wholesalePrice: z.coerce.number(),
   retailPrice: z.coerce.number(),
   webPagePrice: z.coerce.number(),
+  sweaterWeight: z.coerce.number().optional(),
+  sweaterWaste: z.coerce.number().optional(),
   image: z.string().optional(),
   minioImage: z.string().optional(),
   updated_at: z.coerce.date().optional(),

@@ -105,7 +105,7 @@ export const POST = async (req: NextRequest) => {
       totalAmount,
       freightPrice,
       advancedPayment,
-      superTotal: finalAmount - advancedPayment,
+      superTotal: totalAmount + freightPrice - advancedPayment,
     };
 
     const formData = new FormData();

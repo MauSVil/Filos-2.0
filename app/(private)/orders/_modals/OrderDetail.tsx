@@ -105,9 +105,9 @@ const OrderDetail = ({ orderId, onReject, onResolve, isOpen }: Props) => {
             <h3 className="text-xl font-semibold">
               Resumen de la orden
             </h3>
-            <Button 
-              size="sm" 
-              variant="ghost" 
+            <Button
+              size="sm"
+              variant="ghost"
               className="h-8 px-2"
               onClick={() => {
                 navigator.clipboard.writeText(order._id.toString());
@@ -118,7 +118,7 @@ const OrderDetail = ({ orderId, onReject, onResolve, isOpen }: Props) => {
               <span className="text-xs">Copiar ID</span>
             </Button>
           </div>
-          
+
           <div className="mb-6">
             <div className="grid grid-cols-2 gap-3 mb-4">
               <Button variant="outline" onClick={completeOrder} className="w-full">
@@ -230,13 +230,13 @@ const OrderDetail = ({ orderId, onReject, onResolve, isOpen }: Props) => {
 
   return (
     <AlertDialog open={isOpen} onOpenChange={(open) => !open && onResolve(order)}>
-      <AlertDialogContent className="max-w-6xl py-8 px-10">
-        <div className="bg-slate-800/30 rounded-lg p-6">
-          <ScrollArea className="h-[600px] w-full pr-6">
+      <AlertDialogContent className="max-w-6xl max-h-[90vh]">
+        <ScrollArea className="max-h-[calc(90vh-140px)] w-full">
+          <div className="p-6">
             {content}
-          </ScrollArea>
-        </div>
-        <AlertDialogFooter className="mt-2">
+          </div>
+        </ScrollArea>
+        <AlertDialogFooter>
           <AlertDialogAction onClick={() => onResolve(order)}>Cerrar</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

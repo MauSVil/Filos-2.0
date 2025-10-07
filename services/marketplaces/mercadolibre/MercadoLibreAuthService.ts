@@ -49,6 +49,8 @@ export class MercadoLibreAuthService {
       response_type: 'code',
       client_id: this.CLIENT_ID,
       redirect_uri: this.REDIRECT_URI,
+      // Scopes necesarios para crear y gestionar publicaciones
+      scope: 'offline_access read write',
       ...(state && { state }),
     });
 

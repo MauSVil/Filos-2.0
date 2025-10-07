@@ -12,18 +12,22 @@ export async function GET(request: NextRequest) {
     const code = searchParams.get('code');
     const error = searchParams.get('error');
 
+    // Detectar el dominio desde la URL del request
+    const requestUrl = new URL(request.url);
+    const baseUrl = `${requestUrl.protocol}//${requestUrl.host}`;
+
     // Si el usuario rechazó la autorización
     if (error) {
       console.error('OAuth authorization error:', error);
       return NextResponse.redirect(
-        new URL('/marketplaces?error=authorization_denied', request.url)
+        `${baseUrl}/marketplaces?error=authorization_denied`
       );
     }
 
     // Verificar que tenemos el código
     if (!code) {
       return NextResponse.redirect(
-        new URL('/marketplaces?error=missing_code', request.url)
+        `${baseUrl}/marketplaces?error=missing_code`
       );
     }
 
@@ -46,13 +50,16 @@ export async function GET(request: NextRequest) {
 
     // Redirigir al dashboard con éxito
     return NextResponse.redirect(
-      new URL('/marketplaces?connected=true', request.url)
+      `${baseUrl}/marketplaces?connected=true`
     );
   } catch (error) {
     console.error('OAuth callback error:', error);
 
+    // Detectar el dominio desde la URL del request
+    const requestUrl = new URL(request.url);
+    const baseUrl = `${requestUrl.protocol}//${requestUrl.host}`;
     return NextResponse.redirect(
-      new URL('/marketplaces?error=callback_failed', request.url)
+      `${baseUrl}/marketplaces?error=callback_failed`
     );
   }
 }

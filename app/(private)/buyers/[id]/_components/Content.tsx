@@ -1,11 +1,13 @@
 "use client";
 
-import { Control, useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { useForm, Control } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Users, Save, X, Building2, User, UserPlus } from "lucide-react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import ky from "ky";
 import { useRouter } from "next/navigation";
-
-import { useCreateBuyer } from "../../_hooks/useCreateBuyer";
+import { toast } from "sonner";
+import { Users, Save, X, Building2, User } from "lucide-react";
 
 import { InputFormField } from "@/components/form/InputFormField";
 import { Form } from "@/components/form";
@@ -13,39 +15,36 @@ import { Button } from "@/components/ui/button";
 import { SwitchFormField } from "@/components/form/SwitchFormField";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbLink } from "@/components/ui/breadcrumb";
+import { Skeleton } from "@/components/ui/skeleton";
+import { BuyerBaseType } from "@/types/v2/Buyer/Base.type";
 import { BuyerInputSchema, BuyerInputType } from "@/types/v2/Buyer/ClientSafeSchema";
+import { SerializedError } from "@/types/Chat";
 
+interface EditBuyerContentProps {
+  id: string;
+}
 
-const defaultValues: BuyerInputType = {
-  name: "",
-  email: "",
-  phone: "",
-  address: "",
-  isChain: false,
-};
+const EditBuyerContent = ({ id }: EditBuyerContentProps) => {
+  const { localData, methods, flags } = useModule(id);
+  const { form, control, buyer } = localData;
+  const { handleSubmit, onSubmit, handleCancel } = methods;
+  const { isLoading, isUpdating } = flags;
 
-const NewBuyersContent = () => {
-  const router = useRouter();
-  const mutation = useCreateBuyer();
-
-  const form = useForm<BuyerInputType>({
-    defaultValues,
-    mode: "onChange",
-    resolver: zodResolver(BuyerInputSchema),
-  });
-
-  const { handleSubmit } = form;
-  const control = form.control as any as Control<BuyerInputType>;
-
-  const onSubmit = (values: BuyerInputType) => {
-    const formdata = new FormData();
-    formdata.append("data", JSON.stringify(values));
-    mutation.mutate(formdata);
-  };
-
-  const handleCancel = () => {
-    router.push("/buyers");
-  };
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="mb-4">
+          <Skeleton className="h-6 w-48" />
+        </div>
+        <div className="mb-8">
+          <Skeleton className="h-12 w-full" />
+        </div>
+        <div className="grid grid-cols-1 gap-6">
+          <Skeleton className="h-96 w-full" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -58,7 +57,7 @@ const NewBuyersContent = () => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Nuevo</BreadcrumbPage>
+              <BreadcrumbPage>Editar</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -68,14 +67,14 @@ const NewBuyersContent = () => {
       <div className="mb-8">
         <div className="flex items-start gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 border border-primary/20">
-            <UserPlus className="h-6 w-6 text-primary" />
+            <Users className="h-6 w-6 text-primary" />
           </div>
           <div className="flex-1">
             <h1 className="text-3xl font-bold tracking-tight mb-2">
-              Nuevo Comprador
+              Editar Comprador
             </h1>
             <p className="text-muted-foreground text-lg">
-              Agrega un nuevo cliente a tu cartera
+              {buyer?.name || "Cargando..."}
             </p>
           </div>
         </div>
@@ -105,7 +104,7 @@ const NewBuyersContent = () => {
                 label="Nombre del Comprador"
                 name="name"
                 placeholder="Ej. Juan Pérez"
-                disabled={mutation.isPending}
+                disabled={isUpdating}
               />
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -118,7 +117,7 @@ const NewBuyersContent = () => {
                   name="email"
                   type="email"
                   placeholder="ejemplo@correo.com"
-                  disabled={mutation.isPending}
+                  disabled={isUpdating}
                 />
 
                 <InputFormField
@@ -129,7 +128,7 @@ const NewBuyersContent = () => {
                   label="Teléfono"
                   name="phone"
                   placeholder="Ej. 5512345678"
-                  disabled={mutation.isPending}
+                  disabled={isUpdating}
                 />
               </div>
 
@@ -141,7 +140,7 @@ const NewBuyersContent = () => {
                 label="Dirección"
                 name="address"
                 placeholder="Ej. Calle Principal #123, Col. Centro"
-                disabled={mutation.isPending}
+                disabled={isUpdating}
               />
             </CardContent>
           </Card>
@@ -170,7 +169,7 @@ const NewBuyersContent = () => {
                     name: "isChain",
                   }}
                   name="isChain"
-                  disabled={mutation.isPending}
+                  disabled={isUpdating}
                 />
               </div>
             </CardContent>
@@ -182,7 +181,7 @@ const NewBuyersContent = () => {
               type="button"
               variant="outline"
               onClick={handleCancel}
-              disabled={mutation.isPending}
+              disabled={isUpdating}
               className="gap-2"
             >
               <X className="h-4 w-4" />
@@ -190,11 +189,11 @@ const NewBuyersContent = () => {
             </Button>
             <Button
               type="submit"
-              disabled={mutation.isPending}
+              disabled={isUpdating}
               className="gap-2"
             >
               <Save className="h-4 w-4" />
-              {mutation.isPending ? "Guardando..." : "Crear Comprador"}
+              {isUpdating ? "Guardando..." : "Guardar Cambios"}
             </Button>
           </div>
         </form>
@@ -203,4 +202,108 @@ const NewBuyersContent = () => {
   );
 };
 
-export default NewBuyersContent;
+export default EditBuyerContent;
+
+const defaultValues: BuyerInputType = {
+  name: "",
+  email: "",
+  phone: "",
+  address: "",
+  isChain: false,
+};
+
+const useModule = (id: string) => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  // Query to fetch buyer data
+  const buyerQuery = useQuery<BuyerBaseType>({
+    queryKey: ["buyer", id],
+    retry: 0,
+    enabled: !!id,
+    queryFn: async () => {
+      try {
+        const resp = (await ky
+          .get(`/api/v2/buyers/${id}`)
+          .json()) as BuyerBaseType;
+
+        return resp;
+      } catch (error) {
+        toast.error("Error al cargar el comprador");
+        throw new Error("Error al cargar el comprador");
+      }
+    },
+  });
+
+  // Form setup
+  const form = useForm<BuyerInputType>({
+    defaultValues,
+    mode: "onChange",
+    resolver: zodResolver(BuyerInputSchema),
+  });
+
+  const { handleSubmit, reset } = form;
+  const control = form.control as any as Control<BuyerInputType>;
+
+  // Update form when buyer data is loaded
+  useEffect(() => {
+    if (buyerQuery.data) {
+      reset({
+        name: buyerQuery.data.name,
+        email: buyerQuery.data.email,
+        phone: buyerQuery.data.phone,
+        address: buyerQuery.data.address,
+        isChain: buyerQuery.data.isChain,
+      });
+    }
+  }, [buyerQuery.data, reset]);
+
+  // Mutation to update buyer
+  const updateMutation = useMutation<{}, SerializedError, FormData>({
+    mutationFn: async (requestData: FormData) => {
+      const response = await ky.put(`/api/v2/buyers/${id}`, { body: requestData });
+      const result = (await response.json()) as any;
+
+      return result;
+    },
+    onSuccess: () => {
+      toast.success("Comprador actualizado correctamente");
+      queryClient.invalidateQueries({ queryKey: ["buyer", id] });
+      queryClient.invalidateQueries({ queryKey: ["buyers"] });
+      router.push("/buyers");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  // Submit handler
+  const onSubmit = (values: BuyerInputType) => {
+    const formdata = new FormData();
+    formdata.append("data", JSON.stringify(values));
+    updateMutation.mutate(formdata);
+  };
+
+  // Cancel handler
+  const handleCancel = () => {
+    router.push("/buyers");
+  };
+
+  return {
+    localData: {
+      buyer: buyerQuery.data,
+      form,
+      control,
+    },
+    methods: {
+      handleSubmit,
+      onSubmit,
+      handleCancel,
+    },
+    flags: {
+      isLoading: buyerQuery.isLoading,
+      isError: buyerQuery.isError,
+      isUpdating: updateMutation.isPending,
+    },
+  };
+};

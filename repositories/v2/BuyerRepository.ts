@@ -1,6 +1,7 @@
 import clientPromise from "@/mongodb";
-import { BuyerBaseWithIdType } from "@/types/v2/Buyer/Base.type";
-import { Db, Filter } from "mongodb";
+import { BuyerBaseWithIdType, BuyerInputType } from "@/types/v2/Buyer/Base.type";
+import { Db, Filter, ObjectId } from "mongodb";
+import moment from "moment-timezone";
 
 let client;
 let db: Db;
@@ -26,5 +27,32 @@ export class BuyerRepository {
     await init();
     const count = await db.collection<BuyerBaseWithIdType>("buyers").countDocuments(filter);
     return count;
+  }
+
+  static async insertOne(input: BuyerInputType) {
+    await init();
+    const now = moment().tz("America/Mexico_City").toDate();
+    const buyerData = {
+      ...input,
+      createdAt: now,
+      updatedAt: now,
+      deletedAt: undefined,
+    };
+    const result = await db.collection("buyers").insertOne(buyerData);
+    return result;
+  }
+
+  static async updateOne(id: string, input: Partial<BuyerInputType>) {
+    await init();
+    const now = moment().tz("America/Mexico_City").toDate();
+    const updateData = {
+      ...input,
+      updatedAt: now,
+    };
+    const result = await db.collection("buyers").updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updateData }
+    );
+    return result;
   }
 }

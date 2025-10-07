@@ -12,8 +12,8 @@ export const POST = async (req: NextRequest) => {
 
     if (!buyerId) {
       return NextResponse.json(
-        { error: "No se pasaron los argumentos correctos" },
-        { status: 404 },
+        { error: "El parámetro buyerId es requerido" },
+        { status: 400 },
       );
     }
 

@@ -16,7 +16,8 @@ import {
   IconSettings,
   IconShoppingBag,
   IconFileBarcode,
-  IconCalculator
+  IconCalculator,
+  IconTrendingUp
 } from "@tabler/icons-react"
 
 import { NavReports } from "@/components/nav-reports"
@@ -77,6 +78,11 @@ const data = {
       title: "Nano-Banana IA",
       icon: IconFileAi,
       url: "/ai/nano-banana",
+    },
+    {
+      title: "Tendencias de Moda",
+      icon: IconTrendingUp,
+      url: "/trends",
     },
   ],
   navSecondary: [

@@ -79,7 +79,7 @@ export const ConnectionCard = () => {
             </ul>
           </div>
 
-          <Button onClick={methods.connect} size="lg" className="w-full">
+          <Button onClick={() => methods.connect()} size="lg" className="w-full">
             <ExternalLink className="mr-2 h-4 w-4" />
             Conectar con MercadoLibre
           </Button>

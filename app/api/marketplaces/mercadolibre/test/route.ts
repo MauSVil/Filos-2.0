@@ -132,7 +132,7 @@ export async function GET() {
 
     // Calcular días restantes
     const now = new Date();
-    const expiresAt = new Date(testUser.expiresAt);
+    const expiresAt = new Date((testUser as any).expiresAt);
     const daysRemaining = Math.floor((expiresAt.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
 
     console.log(`✅ Sandbox active: ${testUser.nickname}, ${daysRemaining} days remaining`);
@@ -141,10 +141,10 @@ export async function GET() {
       success: true,
       data: {
         hasSandbox: true,
-        userId: testUser.userId,
+        userId: (testUser as any).userId,
         nickname: testUser.nickname,
-        createdAt: testUser.createdAt,
-        expiresAt: testUser.expiresAt,
+        createdAt: (testUser as any).createdAt,
+        expiresAt: (testUser as any).expiresAt,
         daysRemaining,
       },
     });

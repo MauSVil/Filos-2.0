@@ -8,10 +8,10 @@ import clientPromise from '@/mongodb';
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { listingId: string } }
+  context: { params: Promise<{ listingId: string }> }
 ) {
   try {
-    const { listingId } = params;
+    const { listingId } = await context.params;
 
     if (!listingId) {
       return NextResponse.json(

@@ -96,7 +96,7 @@ export class MercadoLibreTestService {
 
     try {
       // Obtener el access token de la cuenta real (creadora)
-      const realAccountToken = await MercadoLibreAuthService.getValidCredentials(false);
+      const realAccountToken = await MercadoLibreAuthService.getValidCredentials();
 
       // Guardar "credenciales" sandbox que realmente apuntan al token de la cuenta real
       // pero marcan que las peticiones deben incluir ?user_id={test_user_id}

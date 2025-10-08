@@ -17,8 +17,7 @@ import {
   IconShoppingBag,
   IconFileBarcode,
   IconCalculator,
-  IconTrendingUp,
-  IconShoppingCart
+  IconTrendingUp
 } from "@tabler/icons-react"
 
 import { NavReports } from "@/components/nav-reports"
@@ -72,11 +71,6 @@ const data = {
       title: 'Prospectos',
       url: "/prospects",
       icon: IconCalculator,
-    },
-    {
-      title: 'Marketplaces',
-      url: "/marketplaces",
-      icon: IconShoppingCart,
     }
   ],
   navAI: [

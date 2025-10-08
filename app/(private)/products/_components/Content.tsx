@@ -12,7 +12,6 @@ import {
 import numeral from "numeral";
 import Image from "next/image";
 import { Edit, MinusIcon, PlusIcon, Trash, PlusCircle, File, Package, Download, ImageIcon, Eye } from "lucide-react";
-import { PublishToMercadoLibreButton } from "./PublishToMercadoLibreButton";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
@@ -330,20 +329,6 @@ const ProductsContent = () => {
           filterFn: "auto",
           enableColumnFilter: true,
           sortingFn: "textCaseSensitive",
-        },
-        {
-          id: "Marketplaces",
-          header: "Marketplaces",
-          cell: ({ row }) => {
-            const product = row.original;
-            return (
-              <div className="flex items-center gap-2">
-                <PublishToMercadoLibreButton product={product} />
-              </div>
-            );
-          },
-          enableSorting: false,
-          enableColumnFilter: false,
         },
       ] satisfies ColumnDef<Product>[],
     [productsToUpdate],

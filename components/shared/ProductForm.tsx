@@ -95,6 +95,7 @@ const ProductForm = ({ form, isLoading, submit, onCancel, image, file, onImageCh
                   emptyLabel="No hay tallas disponibles"
                   items={[
                     { label: "Unitalla", value: "UNI" },
+                    { label: "Extra Chica", value: "Extra Chica" },
                     { label: "Chica", value: "Chica" },
                     { label: "Mediana", value: "Mediana" },
                     { label: "Grande", value: "Grande" },

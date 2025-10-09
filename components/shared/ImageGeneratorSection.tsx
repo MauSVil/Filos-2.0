@@ -75,6 +75,27 @@ const ImageGeneratorSection = ({
     setCustomPrompt(PROMPT_TEMPLATES[selectedPrompt]);
   }, [selectedPrompt]);
 
+  // If currentImage exists and we're in generate mode, convert it to a File for the sweater image
+  useEffect(() => {
+    if (mode === "generate" && currentImage && !sweaterImage) {
+      if (typeof currentImage === 'string') {
+        // It's a URL, fetch and convert to File
+        fetch(currentImage)
+          .then(res => res.blob())
+          .then(blob => {
+            const file = new File([blob], 'current-product-image.png', { type: blob.type || 'image/png' });
+            setSweaterImage(file);
+          })
+          .catch(err => {
+            console.error('Error loading current image:', err);
+          });
+      } else {
+        // It's already a File
+        setSweaterImage(currentImage);
+      }
+    }
+  }, [mode, currentImage]);
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragOver(true);

@@ -78,7 +78,7 @@ export const POST = async (req: NextRequest) => {
     }
 
     try {
-      await ProductsRepository.updateOne({ _id: insertedId, image: url });
+      await ProductsRepository.updateOne({ _id: insertedId, image: url, minioImage: url });
     } catch (error) {
       if (error instanceof Error) {
         return NextResponse.json(

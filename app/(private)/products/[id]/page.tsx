@@ -14,6 +14,7 @@ const ProductIdPage = () => {
       image={localStore.image as any}
       isLoading={flags.isLoading}
       submit={methods.submit}
+      onImageChange={methods.handleImageChange}
     />
   );
 };

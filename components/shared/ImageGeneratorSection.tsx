@@ -13,6 +13,8 @@ interface ImageGeneratorSectionProps {
   onImageUploaded: (image: File) => void;
   currentImage?: File | string;
   disabled?: boolean;
+  mode?: "upload" | "generate";
+  onModeChange?: (mode: "upload" | "generate") => void;
 }
 
 type PromptType = "mujer" | "hombre" | "mascota";
@@ -23,6 +25,7 @@ interface GeneratedImageData {
   promptType: PromptType;
   customPrompt: string;
   timestamp: number;
+  mimeType: string;
 }
 
 const PROMPT_TEMPLATES = {
@@ -37,16 +40,28 @@ const PROMPT_LABELS = {
   mascota: { label: "Mascota", icon: Heart, color: "text-green-400" }
 };
 
-const ImageGeneratorSection = ({ 
-  onImageGenerated, 
-  onImageUploaded, 
-  currentImage, 
-  disabled = false 
+const ImageGeneratorSection = ({
+  onImageGenerated,
+  onImageUploaded,
+  currentImage,
+  disabled = false,
+  mode: externalMode,
+  onModeChange
 }: ImageGeneratorSectionProps) => {
-  const [mode, setMode] = useState<"upload" | "generate">("upload");
+  const [internalMode, setInternalMode] = useState<"upload" | "generate">("upload");
+  const mode = externalMode !== undefined ? externalMode : internalMode;
+
+  const handleModeChange = (newMode: "upload" | "generate") => {
+    if (onModeChange) {
+      onModeChange(newMode);
+    } else {
+      setInternalMode(newMode);
+    }
+  };
   const [selectedPrompt, setSelectedPrompt] = useState<PromptType>("mujer");
   const [sweaterImage, setSweaterImage] = useState<File | null>(null);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+  const [generatedImageMimeType, setGeneratedImageMimeType] = useState<string>('image/png');
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [customPrompt, setCustomPrompt] = useState<string>(PROMPT_TEMPLATES["mujer"]);
@@ -106,11 +121,11 @@ const ImageGeneratorSection = ({
   const handleUploadDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsUploadDragOver(false);
-    
+
     const file = e.dataTransfer.files?.[0];
     if (file && file.type.startsWith('image/')) {
       onImageUploaded(file);
-      setMode("upload");
+      handleModeChange("upload");
     }
   };
 
@@ -122,7 +137,7 @@ const ImageGeneratorSection = ({
       const file = (e.target as HTMLInputElement).files?.[0];
       if (file) {
         onImageUploaded(file);
-        setMode("upload");
+        handleModeChange("upload");
       }
     };
     input.click();
@@ -147,14 +162,15 @@ const ImageGeneratorSection = ({
       if (result.success && result.generatedImages.length > 0) {
         const imageData = result.generatedImages[0];
         const base64Image = `data:${imageData.mimeType};base64,${imageData.data}`;
-        
+
         // Create new image data object
         const newImageData: GeneratedImageData = {
           id: `generated-${Date.now()}`,
           imageUrl: base64Image,
           promptType: selectedPrompt,
           customPrompt: customPrompt,
-          timestamp: Date.now()
+          timestamp: Date.now(),
+          mimeType: imageData.mimeType || 'image/png'
         };
 
         // Update history (keep only last 3 images)
@@ -165,6 +181,7 @@ const ImageGeneratorSection = ({
 
         // Set as current generated image and selected
         setGeneratedImage(base64Image);
+        setGeneratedImageMimeType(imageData.mimeType || 'image/png');
         setSelectedHistoryImage(newImageData);
         setShowPreview(true);
       } else {
@@ -183,15 +200,21 @@ const ImageGeneratorSection = ({
 
   const acceptGeneratedImage = () => {
     const imageToAccept = selectedHistoryImage?.imageUrl || generatedImage;
+    const mimeTypeToUse = selectedHistoryImage?.mimeType || generatedImageMimeType;
+
     if (imageToAccept) {
       // Convert base64 to File
       fetch(imageToAccept)
         .then(res => res.blob())
         .then(blob => {
-          const file = new File([blob], `generated-product-${Date.now()}.png`, { type: 'image/png' });
+          // Extract file extension from MIME type
+          const extension = mimeTypeToUse.split('/')[1] || 'png';
+          const file = new File([blob], `generated-product-${Date.now()}.${extension}`, { type: mimeTypeToUse });
           onImageGenerated(file);
           setShowPreview(false);
           setSelectedHistoryImage(null);
+          // Switch to upload mode to show the selected image
+          handleModeChange("upload");
         });
     }
   };
@@ -213,7 +236,7 @@ const ImageGeneratorSection = ({
           <Button
             variant={mode === "upload" ? "default" : "outline"}
             size="sm"
-            onClick={() => setMode("upload")}
+            onClick={() => handleModeChange("upload")}
             disabled={disabled}
             className="flex-1"
           >
@@ -223,7 +246,7 @@ const ImageGeneratorSection = ({
           <Button
             variant={mode === "generate" ? "default" : "outline"}
             size="sm"
-            onClick={() => setMode("generate")}
+            onClick={() => handleModeChange("generate")}
             disabled={disabled}
             className="flex-1"
           >

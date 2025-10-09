@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";
 import ky from "ky";
 import { useParams, useRouter } from "next/navigation";
@@ -30,8 +30,10 @@ const defaultValues: ProductInputClient = {
 
 export const useModule = () => {
   const [file, setFile] = useState<string>();
+  const [imageFile, setImageFile] = useState<File | undefined>();
 
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const params = useParams();
   const id = params.id;
@@ -78,7 +80,14 @@ export const useModule = () => {
         size: productQuery.data.data[0].size,
       });
 
-      setFile(productQuery.data.data[0].image);
+      // Add cache buster to existing image URL
+      const imageUrl = productQuery.data.data[0].image;
+      if (imageUrl) {
+        const cacheBustedUrl = imageUrl.includes('?')
+          ? `${imageUrl}&t=${Date.now()}`
+          : `${imageUrl}?t=${Date.now()}`;
+        setFile(cacheBustedUrl);
+      }
     }
   }, [productQuery.data]);
 
@@ -96,21 +105,42 @@ export const useModule = () => {
       const formData = new FormData();
       const { image, ...rest } = data;
 
-      formData.append("image", data.image as File);
-      formData.append("data", JSON.stringify(rest));
-      const respData = await ky
-        .put(`/api/products/${id}`, {
-          body: formData,
-        })
-        .json();
+      console.log('[editProductMutation] Image to upload:', {
+        hasImage: !!image,
+        isFile: image instanceof File,
+        type: image instanceof File ? image.type : typeof image,
+        name: image instanceof File ? image.name : 'N/A'
+      });
 
-      return respData;
+      // Only append image if it's a File object
+      if (image && image instanceof File) {
+        formData.append("image", image);
+      }
+      formData.append("data", JSON.stringify(rest));
+
+      try {
+        const respData = await ky
+          .put(`/api/products/${id}`, {
+            body: formData,
+            timeout: 60000, // 60 seconds timeout for large AI images
+          })
+          .json();
+
+        console.log('[editProductMutation] Success response:', respData);
+        return respData;
+      } catch (error) {
+        console.error('[editProductMutation] Request failed:', error);
+        throw error;
+      }
     },
     onSuccess: () => {
+      // Invalidate products queries to refetch the list with updated images
+      queryClient.invalidateQueries({ queryKey: ["products"] });
       toast.success("Se edito el producto correctamente");
       router.push("/products");
     },
     onError: (err) => {
+      console.error('[editProductMutation] Error:', err);
       toast.error("Hubo un error al editar el producto");
     },
   });
@@ -120,16 +150,27 @@ export const useModule = () => {
     editProductMutation.mutate(data);
   });
 
+  const handleImageChange = (newImage: File) => {
+    console.log('[handleImageChange] New image:', {
+      name: newImage.name,
+      type: newImage.type,
+      size: newImage.size
+    });
+    setImageFile(newImage);
+    form.setValue("image", newImage as any);
+  };
+
   return {
     form,
     localStore: {
       product: productQuery.data?.data[0],
       file,
-      image,
+      image: imageFile,
     },
     methods: {
       setFile,
       submit,
+      handleImageChange,
     },
     flags: {
       isLoading: productQuery.isLoading,

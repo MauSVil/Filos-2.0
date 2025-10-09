@@ -59,7 +59,9 @@ export const POST = async (req: NextRequest) => {
       const arrayBuffer = await image.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
 
-      url = await FileService.uploadFile('products', insertedId, buffer, 'image/png', false);
+      // Use the actual MIME type from the uploaded file
+      const mimeType = image.type || 'image/png';
+      url = await FileService.uploadFile('products', insertedId, buffer, mimeType, false);
 
     } catch (error) {
       if (error instanceof Error) {

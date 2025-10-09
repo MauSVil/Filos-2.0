@@ -13,6 +13,9 @@ export const PUT = async (
 ) => {
   let dataVerified: ProductInput;
   const { id } = await params.params;
+
+  console.log('[PUT /api/products/[id]] Starting request for id:', id);
+
   const formData = await req.formData();
 
   if (!id) throw new Error("Product ID is required");
@@ -41,10 +44,21 @@ export const PUT = async (
     const image = formData.get("image") as File | string;
 
     if (image && typeof image !== "string") {
+      console.log('[PUT /api/products/[id]] Uploading image:', {
+        name: image.name,
+        type: image.type,
+        size: image.size
+      });
+
       const arrayBuffer = await image.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
 
-      url = await FileService.uploadFile('products', id, buffer, 'image/png', true);
+      // Use the actual MIME type from the uploaded file
+      const mimeType = image.type || 'image/png';
+      url = await FileService.uploadFile('products', id, buffer, mimeType, true);
+
+      console.log('[PUT /api/products/[id]] Image uploaded successfully:', url);
+
       dataVerified.image = url;
       dataVerified.minioImage = url;
     }
@@ -54,6 +68,7 @@ export const PUT = async (
       dataVerified.minioImage = image;
     }
   } catch (error) {
+    console.error('[PUT /api/products/[id]] Image upload error:', error);
     if (error instanceof Error) {
       return NextResponse.json(
         { error: "Ha ocurrido un problema P.2", devError: error.message },
@@ -73,11 +88,14 @@ export const PUT = async (
       ...dataVerified,
     });
 
+    console.log('[PUT /api/products/[id]] Product updated successfully');
+
     return NextResponse.json(
       { message: "Product updated successfully" },
       { status: 200 },
     );
   } catch (error) {
+    console.error('[PUT /api/products/[id]] Database update error:', error);
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }

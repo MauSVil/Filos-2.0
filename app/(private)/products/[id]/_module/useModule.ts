@@ -78,6 +78,8 @@ export const useModule = () => {
         specialPrice: productQuery.data.data[0].specialPrice,
         quantity: productQuery.data.data[0].quantity,
         size: productQuery.data.data[0].size,
+        sweaterWaste: productQuery.data.data[0].sweaterWaste,
+        sweaterWeight: productQuery.data.data[0].sweaterWeight,
       });
 
       // Add cache buster to existing image URL
@@ -105,14 +107,6 @@ export const useModule = () => {
       const formData = new FormData();
       const { image, ...rest } = data;
 
-      console.log('[editProductMutation] Image to upload:', {
-        hasImage: !!image,
-        isFile: image instanceof File,
-        type: image instanceof File ? image.type : typeof image,
-        name: image instanceof File ? image.name : 'N/A'
-      });
-
-      // Only append image if it's a File object
       if (image && image instanceof File) {
         formData.append("image", image);
       }

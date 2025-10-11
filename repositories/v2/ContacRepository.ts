@@ -14,7 +14,12 @@ const collectionName = "whatsapp-contacts";
 export class ContactRepository {
   static async findOne(filter: Filter<Contact>) {
     await init();
-    const contact = await db.collection<Contact>(collectionName).findOne(filter);
+    let parsedFilter = {};
+    if (filter._id) {
+      const { ObjectId } = await import("mongodb");
+      parsedFilter = { _id: new ObjectId(filter._id as string) };
+    }
+    const contact = await db.collection<Contact>(collectionName).findOne(parsedFilter);
     return contact;
   }
 

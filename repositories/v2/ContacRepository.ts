@@ -19,7 +19,9 @@ export class ContactRepository {
       const { ObjectId } = await import("mongodb");
       parsedFilter = { _id: new ObjectId(filter._id as string) };
     }
-    const contact = await db.collection<Contact>(collectionName).findOne(parsedFilter);
+    const contact = await db.collection<Contact>(collectionName).findOne({
+      ...filter, ...parsedFilter
+    });
     return contact;
   }
 
@@ -43,7 +45,7 @@ export class ContactRepository {
       parsedFilter = { _id: new ObjectId(filter._id as string) };
     }
 
-    const result = await db.collection<Contact>(collectionName).updateOne(parsedFilter, { $set: update });
+    const result = await db.collection<Contact>(collectionName).updateOne({ ...filter, ...parsedFilter }, { $set: update });
     return result;
   }
 

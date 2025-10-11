@@ -1,4 +1,4 @@
-import { ContactRepository } from "@/repositories/v2/ContacRepository";
+import { ContactRepository } from "@/repositories/v2/ContactRepository";
 import { NextRequest, NextResponse } from "next/server";
 
 

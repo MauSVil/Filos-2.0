@@ -58,12 +58,12 @@ export const PUT = async (req: NextRequest) => {
       );
     }
 
-    if (prevOrder?.advancedPayment || 0 > 0) {
-      return NextResponse.json(
-        { error: "No se puede editar una orden con anticipo" },
-        { status: 400 },
-      );
-    }
+    // if (prevOrder?.advancedPayment || 0 > 0) {
+    //   return NextResponse.json(
+    //     { error: "No se puede editar una orden con anticipo" },
+    //     { status: 400 },
+    //   );
+    // }
 
     const {
       name,

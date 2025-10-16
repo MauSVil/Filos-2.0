@@ -1,76 +1,147 @@
 'use client';
 
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { TrendDocument } from '@/types/v2/Trend.type';
+import ky from 'ky';
+
+// Tipos basados en la estructura de MongoDB trends_results
+interface ProductImage {
+  url: string;
+  thumbnail: string;
+  title: string;
+  source: string;
+  price?: string;
+  shop?: string;
+  rating?: number;
+  reviews?: number;
+  position?: number;
+}
+
+interface TermWithImages {
+  query: string;
+  value: number; // Interés 0-100
+  type: 'top' | 'rising';
+  growth?: string;
+  images: ProductImage[];
+}
+
+interface ImageStats {
+  totalTermsSearched: number;
+  totalImagesFound: number;
+  termsWithImages: number;
+  termsWithoutImages: number;
+}
+
+interface RelatedQuery {
+  query: string;
+  value: number;
+  type: 'top' | 'rising';
+  growth?: string;
+}
+
+interface TrendAnalysis {
+  _id: string;
+  date: string; // YYYY-MM-DD
+  timestamp: string; // ISO 8601
+  category: string; // "suéteres"
+  topTermsWithImages: TermWithImages[];
+  imageStats: ImageStats;
+  trendingSearches?: any[];
+  relatedQueries: {
+    top: RelatedQuery[];
+    rising: RelatedQuery[];
+  };
+  metadata?: {
+    searchesUsed: number;
+    generatedAt: Date;
+  };
+}
+
+interface TrendListItem {
+  _id: string;
+  date: string;
+  timestamp: string;
+  category: string;
+  imageStats: ImageStats;
+}
 
 export const useModule = () => {
-  const queryClient = useQueryClient();
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [selectedTrendId, setSelectedTrendId] = useState<string | null>(null);
 
-  // Fetch latest trends
-  const {
-    data: trendsData,
-    isLoading,
-    isError,
-    error,
-    refetch,
-  } = useQuery({
-    queryKey: ['trends', 'latest'],
+  // Query 1: Lista de todos los análisis (metadatos)
+  const trendsListQuery = useQuery<{ success: boolean; data: TrendListItem[]; count: number }>({
+    queryKey: ['trends', 'list'],
     queryFn: async () => {
-      const response = await fetch('/api/trends/latest');
-      if (!response.ok) {
-        throw new Error('Failed to fetch trends');
-      }
-      const result = await response.json();
-      return result.data as TrendDocument;
+      return await ky.get('/api/trends').json();
     },
-    staleTime: 1000 * 60 * 30, // 30 minutos
+    staleTime: 1000 * 60 * 5, // 5 minutos
   });
 
-  // Generate new trends mutation
-  const generateMutation = useMutation({
-    mutationFn: async () => {
-      setIsGenerating(true);
-      const response = await fetch('/api/trends/generate', {
-        method: 'POST',
-      });
-      if (!response.ok) {
-        throw new Error('Failed to generate trends');
-      }
-      const result = await response.json();
-      return result.data as TrendDocument;
+  // Query 2: Detalles de un análisis específico
+  const trendDetailsQuery = useQuery<{ success: boolean; data: TrendAnalysis }>({
+    queryKey: ['trends', 'detail', selectedTrendId],
+    queryFn: async () => {
+      if (!selectedTrendId) throw new Error('No trend selected');
+      return await ky.get(`/api/trends/${selectedTrendId}`).json();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['trends'] });
-      setIsGenerating(false);
-    },
-    onError: () => {
-      setIsGenerating(false);
-    },
+    enabled: !!selectedTrendId,
+    staleTime: 1000 * 60 * 10, // 10 minutos
   });
 
-  const handleGenerateTrends = () => {
-    generateMutation.mutate();
+  // Query 3: Estadísticas generales
+  const statsQuery = useQuery<{
+    success: boolean;
+    data: {
+      totalAnalyses: number;
+      firstAnalysis: string | null;
+      latestAnalysis: string | null;
+      totalImages: number;
+      totalTerms: number;
+      averageImagesPerAnalysis: number;
+    };
+  }>({
+    queryKey: ['trends', 'stats'],
+    queryFn: async () => {
+      return await ky.get('/api/trends/stats').json();
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutos
+  });
+
+  // Métodos
+  const handleSelectTrend = (trendId: string) => {
+    setSelectedTrendId(trendId);
+  };
+
+  const handleClearSelection = () => {
+    setSelectedTrendId(null);
   };
 
   const handleRefresh = () => {
-    refetch();
+    trendsListQuery.refetch();
+    if (selectedTrendId) {
+      trendDetailsQuery.refetch();
+    }
+    statsQuery.refetch();
   };
 
   return {
     localData: {
-      trends: trendsData,
+      trendsList: trendsListQuery.data?.data || [],
+      selectedTrend: trendDetailsQuery.data?.data || null,
+      selectedTrendId,
+      stats: statsQuery.data?.data || null,
     },
     flags: {
-      isLoading: isLoading || isGenerating,
-      isError,
-      isGenerating,
+      isLoadingList: trendsListQuery.isLoading,
+      isLoadingDetails: trendDetailsQuery.isLoading,
+      isLoadingStats: statsQuery.isLoading,
+      isError: trendsListQuery.isError || trendDetailsQuery.isError || statsQuery.isError,
+      hasSelection: !!selectedTrendId,
     },
     methods: {
-      generateTrends: handleGenerateTrends,
+      selectTrend: handleSelectTrend,
+      clearSelection: handleClearSelection,
       refresh: handleRefresh,
     },
-    error,
   };
 };

@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import Content from './_components/Content';
 
 export const metadata: Metadata = {
-  title: "Tendencias de Moda",
-  description: "Descubrimiento de tendencias en suéteres",
+  title: "Tendencias de Suéteres",
+  description: "Análisis de tendencias de suéteres en México",
 };
 
 const TrendsPage = () => {

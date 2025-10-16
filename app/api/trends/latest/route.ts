@@ -1,22 +1,40 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import clientPromise from '@/mongodb';
-import { TrendAggregatorService } from '@/services/trends/TrendAggregatorService';
 
 /**
  * GET /api/trends/latest
- * Obtiene el último análisis de tendencias disponible
- * Si no hay uno reciente (< 24h), genera uno nuevo
+ * Obtiene el análisis de tendencias más reciente
+ *
+ * Response:
+ * {
+ *   success: true,
+ *   data: {
+ *     date: "2025-10-16",
+ *     timestamp: "2025-10-16T02:23:14.756Z",
+ *     category: "suéteres",
+ *     topTermsWithImages: [...],
+ *     imageStats: {...},
+ *     trendingSearches: [...],
+ *     relatedQueries: {...}
+ *   }
+ * }
  */
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const client = await clientPromise;
     const db = client.db('test');
-    const aggregatorService = new TrendAggregatorService(db);
+    const collection = db.collection('trends_results');
 
-    // Intentar obtener tendencias existentes o generar nuevas
-    const trends = await aggregatorService.getTrendsOrGenerate();
+    // Obtener el más reciente ordenando por fecha descendente
+    const trend = await collection.findOne(
+      {},
+      {
+        projection: { _id: 0 },
+        sort: { date: -1 }
+      }
+    );
 
-    if (!trends) {
+    if (!trend) {
       return NextResponse.json(
         {
           success: false,
@@ -31,10 +49,10 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      data: trends,
+      data: trend,
     });
   } catch (error) {
-    console.error('Error fetching latest trends:', error);
+    console.error('Error fetching latest trend:', error);
 
     return NextResponse.json(
       {

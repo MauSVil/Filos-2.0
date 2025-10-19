@@ -1,7 +1,7 @@
 "use client";
 
 import { UseFormReturn, useFieldArray, useWatch } from "react-hook-form";
-import { Plus, Trash2, DollarSign, Calculator, Package, Settings as SettingsIcon, AlertTriangle, ExternalLink } from "lucide-react";
+import { Plus, Trash2, Calculator, Package, Settings as SettingsIcon, AlertTriangle, ExternalLink } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import { useMemo } from "react";
 import Link from "next/link";
@@ -12,18 +12,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { FormItem, FormLabel } from "@/components/ui/form";
 
 import { ProspectInput } from "@/types/RepositoryTypes/Prospect";
-import { Product } from "@/types/RepositoryTypes/Product";
 import ProductSelector from "./ProductSelector";
 
 interface Props {
@@ -32,7 +24,7 @@ interface Props {
 }
 
 const ProspectForm = ({ form, isLoading }: Props) => {
-  const { control, watch } = form;
+  const { control } = form;
 
   const { fields: conceptFields, append: appendConcept, remove: removeConcept } = useFieldArray({
     control,
@@ -62,37 +54,48 @@ const ProspectForm = ({ form, isLoading }: Props) => {
     });
   }, [watchedSweaters, watchedSettings]);
 
+  // Calculate total number of sweaters
+  const totalSweaterQuantity = useMemo(() => {
+    return watchedSweaters.reduce((sum, sweater) => {
+      return sum + (sweater?.quantity || 0);
+    }, 0);
+  }, [watchedSweaters]);
+
   // Calculate total costs using pre-calculated thread costs
   const { totalThreadCost, conceptCosts, totalMinimumCost } = useMemo(() => {
     // 1. Sum thread costs
     const threadTotal: number = sweaterThreadCosts.reduce((sum: number, cost) => sum + (cost || 0), 0);
 
     // 2. Calculate concept costs
-    const concepts: Array<{ name: string; amount: number }> = [];
+    const concepts: Array<{ name: string; amount: number; baseValue: number }> = [];
     let runningTotal: number = threadTotal;
 
     for (const concept of watchedConcepts) {
       if (!concept?.name?.trim()) continue;
 
       const value = concept.value || 0;
+      let baseValue = 0;
       let amount = 0;
 
       switch (concept.type) {
         case "fixed":
-          amount = value;
+          baseValue = value;
+          amount = value * totalSweaterQuantity;
           break;
         case "per_unit":
-          amount = value * (concept.quantity || 1);
+          baseValue = value * (concept.quantity || 1);
+          amount = baseValue * totalSweaterQuantity;
           break;
         case "percentage":
           amount = concept.appliesTo === "thread"
             ? threadTotal * (value / 100)
             : runningTotal * (value / 100);
+          baseValue = amount / (totalSweaterQuantity || 1);
           break;
       }
 
       runningTotal += amount;
-      concepts.push({ name: concept.name, amount });
+      concepts.push({ name: concept.name, amount, baseValue });
     }
 
     return {
@@ -100,7 +103,7 @@ const ProspectForm = ({ form, isLoading }: Props) => {
       conceptCosts: concepts,
       totalMinimumCost: runningTotal as number
     };
-  }, [sweaterThreadCosts, watchedConcepts]);
+  }, [sweaterThreadCosts, watchedConcepts, totalSweaterQuantity]);
 
   return (
     <Form {...form}>
@@ -302,26 +305,33 @@ const ProspectForm = ({ form, isLoading }: Props) => {
                       <Trash2 className="h-4 w-4 text-red-400" />
                     </Button>
                   </div>
-                  <div className="flex items-end gap-3">
-                    <InputFormField
-                      controllerProps={{ control, name: `costConcepts.${index}.name` }}
-                      label="Nombre"
-                      name={`costConcepts.${index}.name`}
-                      placeholder="Ej: Mano de obra"
-                      className="flex-1"
-                      debounceMs={300}
-                    />
-                    <InputFormField
-                      controllerProps={{ control, name: `costConcepts.${index}.value` }}
-                      label="Valor (MXN)"
-                      name={`costConcepts.${index}.value`}
-                      type="number"
-                      step="0.01"
-                      placeholder="0.00"
-                      valueModifierOnChange={(value) => (value === "" ? 0 : Number(value))}
-                      className="w-40"
-                      debounceMs={300}
-                    />
+                  <div className="space-y-2">
+                    <div className="flex items-end gap-3">
+                      <InputFormField
+                        controllerProps={{ control, name: `costConcepts.${index}.name` }}
+                        label="Nombre"
+                        name={`costConcepts.${index}.name`}
+                        placeholder="Ej: Mano de obra"
+                        className="flex-1"
+                        debounceMs={300}
+                      />
+                      <InputFormField
+                        controllerProps={{ control, name: `costConcepts.${index}.value` }}
+                        label="Valor (MXN)"
+                        name={`costConcepts.${index}.value`}
+                        type="number"
+                        step="0.01"
+                        placeholder="0.00"
+                        valueModifierOnChange={(value) => (value === "" ? 0 : Number(value))}
+                        className="w-40"
+                        debounceMs={300}
+                      />
+                    </div>
+                    {totalSweaterQuantity > 0 && (
+                      <p className="text-xs text-muted-foreground/60 text-right">
+                        Este valor se multiplicará por {totalSweaterQuantity} suéteres
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}
@@ -404,9 +414,16 @@ const ProspectForm = ({ form, isLoading }: Props) => {
                     <>
                       <Separator />
                       {conceptCosts.map((cc, i) => (
-                        <div key={i} className="flex justify-between">
-                          <span className="text-muted-foreground">{cc.name}:</span>
-                          <span className="font-mono">${cc.amount.toFixed(2)}</span>
+                        <div key={i} className="space-y-1">
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">{cc.name}:</span>
+                            <span className="font-mono">${cc.amount.toFixed(2)}</span>
+                          </div>
+                          {totalSweaterQuantity > 0 && (
+                            <div className="flex justify-end text-xs text-muted-foreground/60">
+                              ${cc.baseValue.toFixed(2)} x {totalSweaterQuantity} suéteres
+                            </div>
+                          )}
                         </div>
                       ))}
                     </>

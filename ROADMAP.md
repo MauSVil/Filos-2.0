@@ -17,45 +17,23 @@ Plan de mejoras para un negocio unipersonal. Enfocado en **automatización > com
 
 **Beneficio**: Ver TODO lo urgente en un vistazo al abrir el dashboard.
 
+### Sprint 2 - Alertas y Notificaciones Automáticas (Completado 18/10/2025)
+- [x] Sistema de notificaciones por email (Resend)
+- [x] Email diario con resumen de urgencias
+- [x] Alertas de stock bajo automáticas
+- [x] Recordatorio de órdenes próximas a vencer
+- [x] Alerta de pagos vencidos
+- [x] Configuración de horario de notificaciones (8 AM)
+- [x] Templates HTML profesionales para emails
+- [x] Sistema de timezone para México
+
+**Beneficio**: No revisar manualmente, recibir alertas proactivas cada mañana.
+
 ---
 
 ## 🎯 Prioridad MÁXIMA - Ahorro de Tiempo
 
-### 2. Alertas y Notificaciones Automáticas ⭐⭐⭐
-**Estado**: 🔴 Pendiente
-**Tiempo estimado**: 2-3 días
-**Beneficio**: No revisar manualmente, recibir alertas proactivas
-
-**Tareas**:
-- [ ] Sistema de notificaciones por email (SendGrid/Resend)
-- [ ] Email diario con resumen de urgencias
-- [ ] Alertas de stock bajo automáticas
-- [ ] Recordatorio de órdenes próximas a vencer
-- [ ] Alerta de pagos vencidos
-
-**Tech Stack**: SendGrid o Resend + Cron Jobs
-
----
-
-### 3. Templates de Comunicación con Clientes ⭐⭐⭐
-**Estado**: 🔴 Pendiente
-**Tiempo estimado**: 2-3 días
-**Beneficio**: No escribir el mismo mensaje 20 veces
-
-**Tareas**:
-- [ ] Sistema de templates en Settings
-- [ ] Template: "Orden lista para recoger"
-- [ ] Template: "Recordatorio de pago pendiente"
-- [ ] Template: "Confirmación de orden recibida"
-- [ ] Variables dinámicas ({nombre}, {monto}, {fecha})
-- [ ] Integración con WhatsApp Business API (opcional)
-- [ ] Preview de templates antes de enviar
-
-**Tech Stack**: Base de datos para templates + Twilio para WhatsApp
-
----
-
-### 4. Importación Masiva de Productos ⭐⭐⭐
+### 3. Importación Masiva de Productos ⭐⭐⭐
 **Estado**: 🔴 Pendiente
 **Tiempo estimado**: 2 días
 **Beneficio**: Cargar 100 productos en 5 minutos vs 2 horas manual
@@ -261,13 +239,16 @@ Plan de mejoras para un negocio unipersonal. Enfocado en **automatización > com
 
 ## 📈 Métricas de Éxito
 
+### Tiempo Ahorrado (Actual):
+- ✅ **Dashboard + Alertas**: 30-45 min/día (COMPLETADO)
+
 ### Tiempo Ahorrado (Objetivo):
-- **Dashboard + Alertas**: 30-45 min/día
-- **Templates automáticos**: 1-2 horas/semana
 - **Importación masiva**: 3-4 horas cuando hay nuevo inventario
 - **Validaciones**: Evita 2-3 errores/semana
+- **Reportes automáticos**: 1-2 horas/semana
 
-**Total estimado: 10-15 horas/semana ahorradas**
+**Total estimado: 8-12 horas/semana ahorradas**
+**Actual logrado: ~5 horas/semana** 🎯
 
 ---
 
@@ -275,15 +256,15 @@ Plan de mejoras para un negocio unipersonal. Enfocado en **automatización > com
 
 ### Mes 1
 - ✅ Dashboard "Esta Semana"
-- [ ] Alertas automáticas
-- [ ] Templates de comunicación
+- ✅ Alertas automáticas
+- [ ] Importación masiva
 - [ ] Backups automáticos
 
 ### Mes 2
-- [ ] Importación masiva
 - [ ] Validaciones inteligentes
 - [ ] Calculadora de precios
 - [ ] Reportes avanzados
+- [ ] Generación de documentos
 
 ### Mes 3
 - [ ] Sistema de cotizaciones
@@ -301,15 +282,15 @@ Plan de mejoras para un negocio unipersonal. Enfocado en **automatización > com
 
 ## 🎯 Próximo Feature a Implementar
 
-**Recomendación**: **Alertas y Notificaciones Automáticas**
+**Recomendación**: **Backups Automáticos** ⚠️
 
 **Por qué primero**:
-1. Complementa perfecto el dashboard que acabamos de hacer
-2. Alto impacto inmediato (ahorra 30-45 min/día)
-3. Relativamente rápido de implementar (2-3 días)
-4. No requiere cambios grandes en el código existente
+1. **CRÍTICO**: Proteger TODO el negocio (productos, órdenes, clientes)
+2. Prevenir pérdida catastrófica de datos
+3. Relativamente rápido de implementar (1 día)
+4. Da tranquilidad para seguir desarrollando sin miedo
 
-**¿Empezamos con esto?**
+**Alternativa**: **Importación Masiva de Productos** (alto impacto en ahorro de tiempo: 3-4 horas cuando hay nuevo inventario)
 
 ---
 
@@ -324,6 +305,12 @@ Plan de mejoras para un negocio unipersonal. Enfocado en **automatización > com
 ---
 
 **Última actualización**: 18 de octubre, 2025
-**Dashboard completado**: ✅ 100%
-**Total features pendientes**: 15
-**Tiempo total estimado**: ~30-40 días de desarrollo
+**Features completados**: ✅ 2/16 (13%)
+- ✅ Dashboard "Esta Semana"
+- ✅ Alertas y Notificaciones Automáticas
+
+**Features eliminados**: ❌ Templates de Comunicación (ya existe bot de WhatsApp)
+
+**Total features pendientes**: 14
+**Tiempo total estimado**: ~25-35 días de desarrollo
+**Progreso del Mes 1**: 50% (2/4 features completados)

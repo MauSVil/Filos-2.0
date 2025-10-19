@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --ext .ts,.tsx --fix",
-    "notify:daily": "npx tsx scripts/notifications/daily.ts"
+    "notify:daily": "npx tsx scripts/notifications/daily.ts",
+    "check:timezone": "npx tsx scripts/check-timezone.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "^2.0.12",

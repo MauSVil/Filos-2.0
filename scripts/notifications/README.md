@@ -2,6 +2,8 @@
 
 Scripts para enviar notificaciones push automáticas desde Coolify Scheduled Tasks.
 
+**⏰ Timezone**: Todas las fechas se manejan en `America/Mexico_City` timezone usando `moment-timezone`.
+
 ---
 
 ## 🏗️ Arquitectura

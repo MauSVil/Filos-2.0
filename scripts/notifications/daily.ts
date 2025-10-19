@@ -17,6 +17,14 @@ import { connectToDatabase, closeDatabase } from "./db";
 import { sendPushNotifications } from "./send-push";
 import { OrderBaseWithIdType } from "@/types/v2/Order/Base.type";
 import { ProductBaseWithIdType } from "@/types/v2/Product/Base.type";
+import {
+  getTodayStartInMexicoCity,
+  getStartOfWeekInMexicoCity,
+  getEndOfWeekInMexicoCity,
+  getDaysDifference,
+  getNowInMexicoCity,
+  formatDateMX
+} from "@/utils/timezone";
 
 interface UrgencyItem {
   type: string;
@@ -27,20 +35,9 @@ interface UrgencyItem {
 }
 
 async function getWeeklyStats() {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  // Start of week (Monday)
-  const startOfWeek = new Date(today);
-  const dayOfWeek = startOfWeek.getDay();
-  const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-  startOfWeek.setDate(startOfWeek.getDate() + diff);
-  startOfWeek.setHours(0, 0, 0, 0);
-
-  // End of week (Sunday)
-  const endOfWeek = new Date(startOfWeek);
-  endOfWeek.setDate(endOfWeek.getDate() + 6);
-  endOfWeek.setHours(23, 59, 59, 999);
+  const today = getTodayStartInMexicoCity();
+  const startOfWeek = getStartOfWeekInMexicoCity();
+  const endOfWeek = getEndOfWeekInMexicoCity();
 
   const [allOrders, criticalStockProducts] = await Promise.all([
     OrderRepository.find({ status: { $ne: "Cancelado" } }),
@@ -66,8 +63,7 @@ async function getWeeklyStats() {
       return dueDate < today && order.status === "Pendiente";
     })
     .map((order: OrderBaseWithIdType) => {
-      const dueDate = new Date(order.dueDate);
-      const daysOverdue = Math.floor((today.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24));
+      const daysOverdue = getDaysDifference(today, order.dueDate);
       return { ...order, daysOverdue };
     });
 
@@ -75,8 +71,7 @@ async function getWeeklyStats() {
   const pendingPayments = allOrders
     .filter((order: OrderBaseWithIdType) => !order.paid && order.status !== "Cancelado")
     .map((order: OrderBaseWithIdType) => {
-      const dueDate = new Date(order.dueDate);
-      const daysUntilDue = Math.floor((dueDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+      const daysUntilDue = getDaysDifference(order.dueDate, today);
       return { ...order, daysUntilDue };
     });
 
@@ -240,7 +235,7 @@ async function sendPushNotification(urgencies: UrgencyItem[]) {
 
 async function main() {
   console.log("🔔 Iniciando script de notificaciones diarias...");
-  console.log(`📅 Fecha: ${new Date().toLocaleString("es-MX")}`);
+  console.log(`📅 Fecha: ${formatDateMX(getNowInMexicoCity(), "DD/MM/YYYY, HH:mm:ss")} (Mexico City)`);
 
   try {
     // Conectar a la base de datos

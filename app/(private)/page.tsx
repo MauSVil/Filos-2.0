@@ -1,12 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Package, ShoppingCart, Users, DollarSign, TrendingUp } from "lucide-react";
+import { Package, ShoppingCart, Users, DollarSign, TrendingUp, Calendar as CalendarIcon } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProductsOutOfStock from "./_components/ProductsOutOfStock";
 import SalesPerMonth from "./_components/SalesPerMonth";
+import UrgentActions from "./_components/UrgentActions";
+import WeekCalendar from "./_components/WeekCalendar";
+import WeeklySummary from "./_components/WeeklySummary";
 
 interface DashboardStats {
   overview: {
@@ -47,10 +51,65 @@ interface SalesStats {
   };
 }
 
+interface WeeklyStats {
+  weekInfo: {
+    startDate: string;
+    endDate: string;
+    currentDay: string;
+  };
+  summary: {
+    deliveriesThisWeek: number;
+    overdueOrders: number;
+    pendingPayments: number;
+    overduePayments: number;
+    criticalStock: number;
+    outOfStock: number;
+    totalPendingAmount: number;
+    totalOverdueAmount: number;
+  };
+  urgentActions: Array<{
+    type: string;
+    priority: "high" | "medium" | "low";
+    title: string;
+    description: string;
+    count: number;
+    amount?: number;
+    actionLabel: string;
+    actionUrl: string;
+    orders?: Array<{
+      id: string;
+      name: string;
+      dueDate: string;
+      totalAmount: number;
+      daysOverdue?: number;
+      daysUntilDue?: number;
+    }>;
+    products?: Array<{
+      id: string;
+      uniqId: string;
+      name: string;
+      color: string;
+      size: string;
+      quantity: number;
+    }>;
+  }>;
+  calendar: Array<{
+    date: string;
+    count: number;
+    orders: Array<{
+      id: string;
+      name: string;
+      totalAmount: number;
+    }>;
+  }>;
+}
+
 const Home = () => {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [salesStats, setSalesStats] = useState<SalesStats | null>(null);
+  const [weeklyStats, setWeeklyStats] = useState<WeeklyStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingWeekly, setIsLoadingWeekly] = useState(false);
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -92,6 +151,21 @@ const Home = () => {
     return greetings[randomIndex];
   };
 
+  const fetchWeeklyStats = async () => {
+    try {
+      setIsLoadingWeekly(true);
+      const response = await fetch("/api/v2/stats/dashboard/weekly");
+      if (response.ok) {
+        const data = await response.json();
+        setWeeklyStats(data);
+      }
+    } catch (error) {
+      console.error("Error fetching weekly stats:", error);
+    } finally {
+      setIsLoadingWeekly(false);
+    }
+  };
+
   useEffect(() => {
     const fetchStats = async () => {
       try {
@@ -103,9 +177,10 @@ const Home = () => {
           dateRangeEnd: now.toISOString(),
         });
 
-        const [dashboardRes, salesRes] = await Promise.all([
+        const [dashboardRes, salesRes, weeklyRes] = await Promise.all([
           fetch(`/api/v2/stats/dashboard?${params}`),
-          fetch(`/api/v2/stats/sales?${params}`)
+          fetch(`/api/v2/stats/sales?${params}`),
+          fetch("/api/v2/stats/dashboard/weekly")
         ]);
 
         if (dashboardRes.ok) {
@@ -116,6 +191,11 @@ const Home = () => {
         if (salesRes.ok) {
           const data = await salesRes.json();
           setSalesStats(data);
+        }
+
+        if (weeklyRes.ok) {
+          const data = await weeklyRes.json();
+          setWeeklyStats(data);
         }
       } catch (error) {
         console.error("Error fetching dashboard stats:", error);
@@ -147,10 +227,42 @@ const Home = () => {
       {/* Greeting */}
       <div>
         <h1 className="text-3xl font-bold tracking-tight">{getGreeting()} 👋</h1>
-        <p className="text-muted-foreground">
-          Resumen de tu negocio
-        </p>
+        <p className="text-muted-foreground">Resumen de tu negocio</p>
       </div>
+
+      {/* Tabs */}
+      <Tabs defaultValue="week" className="w-full">
+        <TabsList className="grid w-full max-w-md grid-cols-2">
+          <TabsTrigger value="week" className="flex items-center gap-2">
+            <CalendarIcon className="h-4 w-4" />
+            Esta Semana
+          </TabsTrigger>
+          <TabsTrigger value="overview" className="flex items-center gap-2">
+            <TrendingUp className="h-4 w-4" />
+            General
+          </TabsTrigger>
+        </TabsList>
+
+        {/* Weekly View */}
+        <TabsContent value="week" className="space-y-4">
+          {weeklyStats && (
+            <>
+              <WeeklySummary summary={weeklyStats.summary} />
+              <UrgentActions actions={weeklyStats.urgentActions} />
+              <WeekCalendar weekInfo={weeklyStats.weekInfo} calendar={weeklyStats.calendar} />
+            </>
+          )}
+          {!weeklyStats && !isLoading && (
+            <Card>
+              <CardContent className="pt-6">
+                <p className="text-center text-muted-foreground">No se pudieron cargar los datos semanales</p>
+              </CardContent>
+            </Card>
+          )}
+        </TabsContent>
+
+        {/* Overview Tab */}
+        <TabsContent value="overview" className="space-y-4">
 
       {/* Stats Cards */}
       {stats && (
@@ -255,6 +367,8 @@ const Home = () => {
           </div>
         )}
       </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

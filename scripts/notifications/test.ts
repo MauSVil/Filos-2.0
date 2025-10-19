@@ -5,7 +5,7 @@
  *   npx tsx scripts/notifications/test.ts
  */
 
-import { connectToDatabase } from "./db";
+import { connectToDatabase, closeDatabase } from "./db";
 
 async function test() {
   console.log("🧪 Iniciando test de configuración...\n");
@@ -79,9 +79,16 @@ async function test() {
     console.log("   3. Ejecutar el script: npm run notify:daily");
     console.log("   4. Configurar en Coolify Scheduled Tasks\n");
 
+    // Cerrar conexión a MongoDB
+    await closeDatabase();
+
     process.exit(0);
   } catch (error) {
     console.error("\n❌ Error:", error);
+
+    // Cerrar conexión a MongoDB incluso si hay error
+    await closeDatabase();
+
     process.exit(1);
   }
 }

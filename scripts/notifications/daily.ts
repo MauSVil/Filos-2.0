@@ -13,7 +13,7 @@
 
 import { ProductRepository } from "@/repositories/v2/ProductRepository";
 import { OrderRepository } from "@/repositories/v2/OrderRepository";
-import { connectToDatabase } from "./db";
+import { connectToDatabase, closeDatabase } from "./db";
 import { sendPushNotifications } from "./send-push";
 import { OrderBaseWithIdType } from "@/types/v2/Order/Base.type";
 import { ProductBaseWithIdType } from "@/types/v2/Product/Base.type";
@@ -277,9 +277,18 @@ async function main() {
     }
 
     console.log("\n✨ Script completado exitosamente");
+
+    // Cerrar conexión a MongoDB
+    await closeDatabase();
+    console.log("🔌 Conexión a MongoDB cerrada");
+
     process.exit(0);
   } catch (error) {
     console.error("\n❌ Error en el script:", error);
+
+    // Cerrar conexión a MongoDB incluso si hay error
+    await closeDatabase();
+
     process.exit(1);
   }
 }

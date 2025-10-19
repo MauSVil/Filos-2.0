@@ -457,20 +457,20 @@ const ProductsContent = () => {
 
       {/* Image Preview Modal */}
       <Dialog open={!!previewImage} onOpenChange={() => setPreviewImage(null)}>
-        <DialogContent className="max-w-5xl max-h-[90vh] overflow-hidden">
+        <DialogContent className="max-w-5xl max-h-[90vh] flex flex-col overflow-hidden">
           {previewImage && (
             <>
-              <DialogHeader className="pb-4">
+              <DialogHeader className="pb-4 flex-shrink-0">
                 <DialogTitle className="flex items-center gap-3 text-xl">
                   <Package className="h-6 w-6 text-primary" />
                   {previewImage.product.name}
                 </DialogTitle>
               </DialogHeader>
-              
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 min-h-0">
                 {/* Image Section */}
-                <div className="lg:col-span-2">
-                  <div className="relative aspect-square rounded-lg overflow-hidden border bg-muted/30">
+                <div className="lg:col-span-2 flex items-center justify-center min-h-0">
+                  <div className="relative aspect-square w-full max-h-full rounded-lg overflow-hidden border bg-muted/30">
                     <Image
                       alt={`Vista completa de ${previewImage.product.name}`}
                       className="w-full h-full object-contain"
@@ -484,7 +484,7 @@ const ProductsContent = () => {
                 </div>
 
                 {/* Product Details Section */}
-                <div className="space-y-6">
+                <div className="space-y-6 overflow-y-auto pr-2 min-h-0 h-full">
                   {/* Basic Info */}
                   <div className="space-y-4">
                     <h3 className="font-semibold text-lg border-b border-border pb-2">Información del Producto</h3>
@@ -516,32 +516,32 @@ const ProductsContent = () => {
                   {/* Pricing */}
                   <div className="space-y-4">
                     <h3 className="font-semibold text-lg border-b border-border pb-2">Precios</h3>
-                    
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-center p-3 bg-green-500/10 rounded-lg border border-green-500/20">
-                        <span className="text-green-400 font-medium">Precio Especial</span>
-                        <span className="text-green-400 font-bold text-lg">
+
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-green-400 text-sm">Precio Especial</span>
+                        <span className="text-green-400 font-semibold">
                           {numeral(previewImage.product.specialPrice).format("$0,0.00")}
                         </span>
                       </div>
-                      
-                      <div className="flex justify-between items-center p-3 bg-purple-500/10 rounded-lg border border-purple-500/20">
-                        <span className="text-purple-400 font-medium">Precio Mayoreo</span>
-                        <span className="text-purple-400 font-bold text-lg">
+
+                      <div className="flex justify-between items-center">
+                        <span className="text-purple-400 text-sm">Precio Mayoreo</span>
+                        <span className="text-purple-400 font-semibold">
                           {numeral(previewImage.product.wholesalePrice).format("$0,0.00")}
                         </span>
                       </div>
-                      
-                      <div className="flex justify-between items-center p-3 bg-yellow-500/10 rounded-lg border border-yellow-500/20">
-                        <span className="text-yellow-400 font-medium">Semi-mayoreo</span>
-                        <span className="text-yellow-400 font-bold text-lg">
+
+                      <div className="flex justify-between items-center">
+                        <span className="text-yellow-400 text-sm">Semi-mayoreo</span>
+                        <span className="text-yellow-400 font-semibold">
                           {numeral(previewImage.product.retailPrice).format("$0,0.00")}
                         </span>
                       </div>
-                      
-                      <div className="flex justify-between items-center p-3 bg-red-500/10 rounded-lg border border-red-500/20">
-                        <span className="text-red-400 font-medium">Página Web</span>
-                        <span className="text-red-400 font-bold text-lg">
+
+                      <div className="flex justify-between items-center">
+                        <span className="text-red-400 text-sm">Página Web</span>
+                        <span className="text-red-400 font-semibold">
                           {numeral(previewImage.product.webPagePrice).format("$0,0.00")}
                         </span>
                       </div>
@@ -549,20 +549,13 @@ const ProductsContent = () => {
                   </div>
 
                   {/* Actions */}
-                  <div className="flex flex-col gap-3 pt-4">
+                  <div className="pt-4">
                     <Button
                       onClick={() => router.push(`/products/${previewImage.product._id}`)}
                       className="w-full"
                     >
                       <Edit className="h-4 w-4 mr-2" />
                       Editar Producto
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => setPreviewImage(null)}
-                      className="w-full"
-                    >
-                      Cerrar
                     </Button>
                   </div>
                 </div>

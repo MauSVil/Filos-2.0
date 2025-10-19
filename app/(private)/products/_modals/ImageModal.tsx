@@ -24,7 +24,7 @@ const ImageComponent = (props: Props) => {
 
   return (
     <AlertDialog open={isOpen} onOpenChange={(open) => !open}>
-      <AlertDialogContent>
+      <AlertDialogContent className="max-h-[90vh] overflow-y-auto">
         <AlertDialogTitle>
           {"Imagen de producto"}
           <Separator className="my-3" />

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Wand2, Upload, RefreshCw, Check, X, User, Heart, Shirt, Image as ImageIcon } from "lucide-react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -70,6 +71,11 @@ const ImageGeneratorSection = ({
   const [isDragOver, setIsDragOver] = useState(false);
   const [isUploadDragOver, setIsUploadDragOver] = useState(false);
 
+  // Validate if file is JPEG
+  const isValidJpeg = (file: File): boolean => {
+    return file.type === 'image/jpeg' || file.type === 'image/jpg';
+  };
+
   // Update custom prompt when selected prompt type changes
   useEffect(() => {
     setCustomPrompt(PROMPT_TEMPLATES[selectedPrompt]);
@@ -109,21 +115,33 @@ const ImageGeneratorSection = ({
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragOver(false);
-    
+
     const file = e.dataTransfer.files?.[0];
-    if (file && file.type.startsWith('image/')) {
-      setSweaterImage(file);
+    if (file) {
+      if (isValidJpeg(file)) {
+        setSweaterImage(file);
+      } else {
+        toast.error("Solo se permiten archivos JPEG", {
+          description: "Por favor, sube una imagen en formato JPEG o JPG"
+        });
+      }
     }
   };
 
   const handleDropzoneClick = () => {
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = 'image/*';
+    input.accept = 'image/jpeg,image/jpg';
     input.onchange = (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (file) {
-        setSweaterImage(file);
+        if (isValidJpeg(file)) {
+          setSweaterImage(file);
+        } else {
+          toast.error("Solo se permiten archivos JPEG", {
+            description: "Por favor, sube una imagen en formato JPEG o JPG"
+          });
+        }
       }
     };
     input.click();
@@ -144,21 +162,33 @@ const ImageGeneratorSection = ({
     setIsUploadDragOver(false);
 
     const file = e.dataTransfer.files?.[0];
-    if (file && file.type.startsWith('image/')) {
-      onImageUploaded(file);
-      handleModeChange("upload");
+    if (file) {
+      if (isValidJpeg(file)) {
+        onImageUploaded(file);
+        handleModeChange("upload");
+      } else {
+        toast.error("Solo se permiten archivos JPEG", {
+          description: "Por favor, sube una imagen en formato JPEG o JPG"
+        });
+      }
     }
   };
 
   const handleUploadDropzoneClick = () => {
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = 'image/*';
+    input.accept = 'image/jpeg,image/jpg';
     input.onchange = (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (file) {
-        onImageUploaded(file);
-        handleModeChange("upload");
+        if (isValidJpeg(file)) {
+          onImageUploaded(file);
+          handleModeChange("upload");
+        } else {
+          toast.error("Solo se permiten archivos JPEG", {
+            description: "Por favor, sube una imagen en formato JPEG o JPG"
+          });
+        }
       }
     };
     input.click();
@@ -308,7 +338,7 @@ const ImageGeneratorSection = ({
                   Sube una imagen del producto terminado
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  PNG, JPG hasta 10MB
+                  Solo archivos JPEG/JPG hasta 10MB
                 </p>
               </div>
             </div>
@@ -387,7 +417,7 @@ const ImageGeneratorSection = ({
                           Sube una imagen del suéter completamente estirado
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          PNG, JPG hasta 10MB
+                          Solo archivos JPEG/JPG hasta 10MB
                         </p>
                       </div>
                     </div>

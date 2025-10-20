@@ -132,6 +132,138 @@ Data integrity:
 - Test cases that might be worth adding
 - Configuration that might need updating
 
+### Project-Specific Customizations
+
+#### Stack & Threat Profile
+- **Internal tooling** for single user/team (low external threat)
+- **TypeScript 5.8.2** with strict mode
+- **Next.js 15.2.4** with App Router (React 19)
+- **MongoDB** native driver (NOT Mongoose)
+- **Zod** for all validation
+- **TanStack Query v5** for state management
+- **Tailwind CSS** + Shadcn/ui components
+
+#### Threat Model Calibration
+
+**De-prioritize (Internal Tool):**
+- XSS concerns (trusted users)
+- CSRF protection (single user)
+- Rate limiting suggestions
+- Multi-tenant isolation
+- Complex authentication flows
+
+**Still Critical:**
+- **Secrets management** - Flag hardcoded values (bad habits)
+- **Data integrity** - MongoDB operations, transaction safety
+- **Error handling** - Prevents crashes and data corruption
+- **Environment variables** - Must be validated (prevents runtime crashes)
+
+**Medium Priority:**
+- Cookie security basics (httpOnly, secure flags)
+- File upload validation (prevents data corruption)
+- Proper error logging (helps debugging)
+
+#### Code Style & Quality Enforcement
+
+**ESLint Rules (eslint.config.js):**
+- ❌ Unused imports (`unused-imports/no-unused-imports`)
+- ❌ Unused variables (except `_.*` pattern)
+- ⚠️ Console statements (warn, not block)
+- ✅ Self-closing components
+- ✅ JSX props sorted (callbacks last, shorthand first)
+- ✅ Import ordering with blank lines between groups:
+  ```
+  1. Type imports
+  2. Built-in modules
+  3. External packages
+  4. Internal packages
+  5. Parent/sibling imports
+  (Blank lines between each group)
+  ```
+
+**TypeScript Strictness:**
+- ❌ No `any` types
+- ❌ No non-null assertions on unchecked env vars
+- ✅ All API inputs have Zod schemas
+- ✅ Infer types from Zod: `type T = z.infer<typeof Schema>`
+
+#### Architecture Patterns to Enforce
+
+**Repository Pattern:**
+- ✅ **Prefer v2 repositories** (`repositories/v2/`)
+- ❌ Don't mix v1 and v2 in same feature
+- ✅ V2 repos: validation at API layer, not in repository
+- ✅ Static methods pattern: `Repository.findOne()`
+
+**API Route Structure:**
+```typescript
+export const POST = async (req: NextRequest) => {
+  try {
+    // 1. Validate with Zod
+    const data = Schema.parse(await req.json());
+    // 2. Business logic
+    const result = await Repository.method(data);
+    // 3. Return success
+    return NextResponse.json({ data: result });
+  } catch (error) {
+    // 4. Use handleError utility (v2)
+    return handleError(error);
+  }
+};
+```
+
+**Module Pattern (Forms):**
+```
+_module/useModule.ts   # Form logic, mutations
+_components/Content.tsx # UI rendering
+page.tsx               # Page wrapper
+```
+
+**File Service:**
+- ✅ All uploads through `FileService.uploadFile()`
+- ✅ Store in MinIO buckets
+- ❌ Don't trust client MIME types
+
+#### Common Issues to Flag
+
+**Critical:**
+1. **Hardcoded secrets** - JWT secrets, API keys in code
+2. **MongoDB injection** - Spreading user input directly into queries
+3. **Missing Zod validation** - API routes without schemas
+4. **Env var crashes** - Using `process.env.X!` without validation
+5. **Data corruption** - Unhandled errors in database operations
+
+**Warnings:**
+1. **Weak validation** - Min password length < 8, missing required fields
+2. **Error disclosure** - Exposing `devError` or stack traces
+3. **Missing cookie flags** - Auth cookies without httpOnly/secure
+4. **Console statements** - Should use proper logging
+5. **Pattern violations** - Using legacy repos in new code
+6. **Import order** - Not following ESLint import grouping
+
+**Suggestions:**
+1. **Missing tests** - Critical paths without test coverage
+2. **Type improvements** - Can infer narrower types
+3. **Existing utilities** - Reimplementing existing functions
+4. **Magic numbers** - Extract to constants
+
+#### Stack-Specific Security
+
+**Next.js 15 + App Router:**
+- ✅ Validate JWT in middleware (current implementation only checks cookie existence!)
+- ✅ Server Actions must validate authorization
+- ✅ Server Components: don't expose sensitive data to client
+
+**MongoDB Native Driver:**
+- ✅ Validate all filter inputs through Zod
+- ✅ Don't spread user input into queries
+- ✅ Use ObjectId validation for IDs
+
+**File Uploads:**
+- ✅ Validate file types server-side (magic bytes, not MIME)
+- ✅ Sanitize filenames
+- ✅ Limit file sizes
+
 ### Output Format
 
 ```markdown

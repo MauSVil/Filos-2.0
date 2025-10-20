@@ -71,9 +71,10 @@ const ImageGeneratorSection = ({
   const [isDragOver, setIsDragOver] = useState(false);
   const [isUploadDragOver, setIsUploadDragOver] = useState(false);
 
-  // Validate if file is JPEG
-  const isValidJpeg = (file: File): boolean => {
-    return file.type === 'image/jpeg' || file.type === 'image/jpg';
+  // Validate if file is PNG
+  const isValidPng = (file: File): boolean => {
+    console.log({ type: file.type });
+    return file.type === 'image/png';
   };
 
   // Update custom prompt when selected prompt type changes
@@ -118,11 +119,11 @@ const ImageGeneratorSection = ({
 
     const file = e.dataTransfer.files?.[0];
     if (file) {
-      if (isValidJpeg(file)) {
+      if (isValidPng(file)) {
         setSweaterImage(file);
       } else {
-        toast.error("Solo se permiten archivos JPEG", {
-          description: "Por favor, sube una imagen en formato JPEG o JPG"
+        toast.error("Solo se permiten archivos PNG", {
+          description: "Por favor, sube una imagen en formato PNG"
         });
       }
     }
@@ -135,11 +136,11 @@ const ImageGeneratorSection = ({
     input.onchange = (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (file) {
-        if (isValidJpeg(file)) {
+        if (isValidPng(file)) {
           setSweaterImage(file);
         } else {
-          toast.error("Solo se permiten archivos JPEG", {
-            description: "Por favor, sube una imagen en formato JPEG o JPG"
+          toast.error("Solo se permiten archivos PNG", {
+            description: "Por favor, sube una imagen en formato PNG"
           });
         }
       }
@@ -163,12 +164,12 @@ const ImageGeneratorSection = ({
 
     const file = e.dataTransfer.files?.[0];
     if (file) {
-      if (isValidJpeg(file)) {
+      if (isValidPng(file)) {
         onImageUploaded(file);
         handleModeChange("upload");
       } else {
-        toast.error("Solo se permiten archivos JPEG", {
-          description: "Por favor, sube una imagen en formato JPEG o JPG"
+        toast.error("Solo se permiten archivos PNG", {
+          description: "Por favor, sube una imagen en formato PNG"
         });
       }
     }
@@ -181,12 +182,12 @@ const ImageGeneratorSection = ({
     input.onchange = (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (file) {
-        if (isValidJpeg(file)) {
+        if (isValidPng(file)) {
           onImageUploaded(file);
           handleModeChange("upload");
         } else {
-          toast.error("Solo se permiten archivos JPEG", {
-            description: "Por favor, sube una imagen en formato JPEG o JPG"
+          toast.error("Solo se permiten archivos PNG", {
+            description: "Por favor, sube una imagen en formato PNG"
           });
         }
       }

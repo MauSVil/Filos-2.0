@@ -73,7 +73,6 @@ const ImageGeneratorSection = ({
 
   // Validate if file is PNG
   const isValidPng = (file: File): boolean => {
-    console.log({ type: file.type });
     return file.type === 'image/png';
   };
 
@@ -132,7 +131,7 @@ const ImageGeneratorSection = ({
   const handleDropzoneClick = () => {
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = 'image/jpeg,image/jpg';
+    input.accept = 'image/png';
     input.onchange = (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (file) {
@@ -178,7 +177,7 @@ const ImageGeneratorSection = ({
   const handleUploadDropzoneClick = () => {
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = 'image/jpeg,image/jpg';
+    input.accept = 'image/png';
     input.onchange = (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (file) {
